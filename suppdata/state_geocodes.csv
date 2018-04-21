@@ -1,0 +1,52 @@
+state_name,state_abb,state_fips,state_census,division,division_name,region,region_name
+Connecticut,CT,9,16,1,"New England",1,Northeast
+Maine,ME,23,11,1,"New England",1,Northeast
+Massachusetts,MA,25,14,1,"New England",1,Northeast
+"New Hampshire",NH,33,12,1,"New England",1,Northeast
+"Rhode Island",RI,44,15,1,"New England",1,Northeast
+Vermont,VT,50,13,1,"New England",1,Northeast
+"New Jersey",NJ,34,22,2,"Middle Atlantic",1,Northeast
+"New York",NY,36,21,2,"Middle Atlantic",1,Northeast
+Pennsylvania,PA,42,23,2,"Middle Atlantic",1,Northeast
+Illinois,IL,17,33,3,"East North Central",2,Midwest
+Indiana,IN,18,32,3,"East North Central",2,Midwest
+Michigan,MI,26,34,3,"East North Central",2,Midwest
+Ohio,OH,39,31,3,"East North Central",2,Midwest
+Wisconsin,WI,55,35,3,"East North Central",2,Midwest
+Iowa,IA,19,42,4,"West North Central",2,Midwest
+Kansas,KS,20,47,4,"West North Central",2,Midwest
+Minnesota,MN,27,41,4,"West North Central",2,Midwest
+Missouri,MO,29,43,4,"West North Central",2,Midwest
+Nebraska,NE,31,46,4,"West North Central",2,Midwest
+"North Dakota",ND,38,44,4,"West North Central",2,Midwest
+"South Dakota",SD,46,45,4,"West North Central",2,Midwest
+Delaware,DE,10,51,5,"South Atlantic",3,South
+"District of Columbia",DC,11,53,5,"South Atlantic",3,South
+Florida,FL,12,59,5,"South Atlantic",3,South
+Georgia,GA,13,58,5,"South Atlantic",3,South
+Maryland,MD,24,52,5,"South Atlantic",3,South
+"North Carolina",NC,37,56,5,"South Atlantic",3,South
+"South Carolina",SC,45,57,5,"South Atlantic",3,South
+Virginia,VA,51,54,5,"South Atlantic",3,South
+"West Virginia",WV,54,55,5,"South Atlantic",3,South
+Alabama,AL,1,63,6,"East South Central",3,South
+Kentucky,KY,21,61,6,"East South Central",3,South
+Mississippi,MS,28,64,6,"East South Central",3,South
+Tennessee,TN,47,62,6,"East South Central",3,South
+Arkansas,AR,5,71,7,"West South Central",3,South
+Louisiana,LA,22,72,7,"West South Central",3,South
+Oklahoma,OK,40,73,7,"West South Central",3,South
+Texas,TX,48,74,7,"West South Central",3,South
+Arizona,AZ,4,86,8,Mountain,4,West
+Colorado,CO,8,84,8,Mountain,4,West
+Idaho,ID,16,82,8,Mountain,4,West
+Montana,MT,30,81,8,Mountain,4,West
+Nevada,NV,32,88,8,Mountain,4,West
+"New Mexico",NM,35,85,8,Mountain,4,West
+Utah,UT,49,87,8,Mountain,4,West
+Wyoming,WY,56,83,8,Mountain,4,West
+Alaska,AK,2,94,9,Pacific,4,West
+California,CA,6,93,9,Pacific,4,West
+Hawaii,HI,15,95,9,Pacific,4,West
+Oregon,OR,41,92,9,Pacific,4,West
+Washington,WA,53,91,9,Pacific,4,West
