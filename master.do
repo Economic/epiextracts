@@ -2,10 +2,11 @@
 * DESC: master do-file to create EPI CPS Basic and ORG extracts
 clear all
 set more off
+set trace off
 
 * project directory structure
 * set your stata working directory to the project root containing master.do
-global dofiles code/
+global code code/
 global extracts extracts/
 global suppdata suppdata/
 
@@ -15,7 +16,8 @@ global censusbasic /data/cps/basic/census/
 global uniconorg /data/cps/org/unicon/
 
 * load key programs
-do ${dofiles}utilities.do
+do ${code}utilities.do
 
 * process the raw data
-processrawdata, begin() end()
+* this is only necessary for new data
+processrawbasic, begin("1976m1") end("2017m12")
