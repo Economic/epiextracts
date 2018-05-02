@@ -14,6 +14,7 @@ global suppdata suppdata/
 global uniconbasic /data/cps/basic/unicon/
 global censusbasic /data/cps/basic/census/
 global uniconorg /data/cps/org/unicon/
+global uniconmay /data/cps/may/unicon/
 
 * load key programs
 do ${code}utilities.do
