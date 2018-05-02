@@ -18,6 +18,6 @@ global uniconorg /data/cps/org/unicon/
 * load key programs
 do ${code}utilities.do
 
-* process the raw data
-* this is only necessary for new data
+* process the raw data and convert it to Stata format
+* this is only necessary for additional months of data
 processrawbasic, begin("1976m1") end("2017m12")
