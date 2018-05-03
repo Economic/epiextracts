@@ -5,13 +5,14 @@ This repository creates cleaned uniform extracts of the CPS basic monthly and ou
 TBD
 
 ## Documentation
-### CPS basic monthly source data
+### Source data
+#### CPS basic monthly
 | Years          | Source           |
 |-----------     |--------            |
 | 1976 - 1993    | Unicon CPS basic |
 | 1994 - Present | Census/BLS monthly |
 
-### CPS ORG data
+### CPS ORG/May
 | Years          | Source     |
 |-----------     |--------    |
 | 1973 - 1978    | Unicon CPS May   |
