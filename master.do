@@ -10,15 +10,23 @@ global code code/
 global extracts extracts/
 global suppdata suppdata/
 
-* CPS raw data directories
-global uniconbasic /data/cps/basic/unicon/
-global censusbasic /data/cps/basic/census/
-global uniconorg /data/cps/org/unicon/
-global uniconmay /data/cps/may/unicon/
-
 * load key programs
 do ${code}utilities.do
 
+* CPS raw data directories  - only necessary for converting raw to Stata format
+* Unicon data already in Stata format
+global uniconbasic /data/cps/basic/unicon/
+global uniconorg /data/cps/org/unicon/
+global uniconmay /data/cps/may/unicon/
+* Census data needs to be converted
+global censusbasicraw /data/cps/basic/census/raw/
+global censusbasicstata /data/cps/basic/census/stata/
+
+
 * process the raw data and convert it to Stata format
 * this is only necessary for additional months of data
-processrawbasic, begin("1976m1") end("2017m12")
+process_rawbasic, begin("1976m1") end("2017m12")
+
+* create EPI's extracts from the processed raw data
+* creates both basic monthly and ORG subsample
+*create_extracts, begin("1976m1") end("2017m12")
