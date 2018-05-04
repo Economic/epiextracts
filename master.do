@@ -22,13 +22,18 @@ global uniconmay /data/cps/may/unicon/
 global censusbasicraw /data/cps/basic/census/raw/
 global censusbasicstata /data/cps/basic/census/stata/
 
-* making a cahnge
+* path names for docs
+global docs docs/
+global variabledesc ${docs}variables/
 
 
 * process the raw data and convert it to Stata format
 * this is only necessary for additional months of data
-process_rawbasic, begin("1976m1") end("2017m12")
+*process_rawbasic, begin("1976m1") end("2017m12")
 
 * create EPI's extracts from the processed raw data
 * creates both basic monthly and ORG subsample
 *create_extracts, begin("1976m1") end("2017m12")
+
+* create documentation
+do ${code}createdocs.do

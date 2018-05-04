@@ -1,8 +1,21 @@
+# cmsacode14: CSA Code
+## Description
+cmsacode14 is a CSA code, available for 2014-present.
+## Variable notes
+```eval_rst
+
+cmsacode14:
+  1.  CPS: gtcsa
+  2.  Consistent from May 2014-on
+
+```
+## Values
+```none
 cmsacode14:
          104 Albany-Schenectady, NY
          106 Albuquerque-Santa Fe-Las Vegas, NM
          118 Appleton-Oshkosh-Neenah, WI
-         122 Atlanta--Athens-Clarke County—Sandy Springs, GA
+         122 Atlanta--Athens-Clarke Countyâ€”Sandy Springs, GA
          148 Boston-Worcester-Providence, MA-RI-NH-CT
          162 Cape Coral-Fort Myers-Naples, FL
          168 Cedar Rapids-Iowa City, IA
@@ -18,7 +31,7 @@ cmsacode14:
          238 El Paso-Las Cruses, TX-NM
          260 Fresno-Madera, CA
          266 Grand Rapids-Wyoming-Muskegon, MI
-         268 Greensboro--Winston-Salem–High Point, NC
+         268 Greensboro--Winston-Salemâ€“High Point, NC
          272 Greenville-Anderson-Seneca, SC
          273 Greenville-Spartanburg-Anderson, SC
          276 Harrisburg-York-Lebanon, PA
@@ -45,8 +58,10 @@ cmsacode14:
          488 San Jose-San Francisco-Oakland, CA
          500 Seattle-Tacoma-Olympia, WA
          515 South Bend-Elkhart-Mishawaka, IN-MI
-         518 Spokane-Spokane Valley-Coeur d’Alene, WA-ID
+         518 Spokane-Spokane Valley-Coeur dâ€™Alene, WA-ID
          546 Visalia-Porterville-Hanford, CA
          548 Washington-Baltimore-Arlington, DC-MD-VA-WV-PA
          715 Boston-Worcester-Manchester, MA-NH-CT-ME
          720 Bridgeport-New Haven-Stamford, CT
+
+```

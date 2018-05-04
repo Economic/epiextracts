@@ -13,3 +13,4 @@ EPI CPS Extracts Documentation
    sources
    variables/index
    examples/index
+   test
