@@ -22,6 +22,8 @@ global uniconmay /data/cps/may/unicon/
 global censusbasicraw /data/cps/basic/census/raw/
 global censusbasicstata /data/cps/basic/census/stata/
 
+* making a cahnge
+
 
 * process the raw data and convert it to Stata format
 * this is only necessary for additional months of data
