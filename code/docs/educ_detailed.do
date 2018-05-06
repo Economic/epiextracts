@@ -31,7 +31,7 @@ legend(off) ///
 xlabel(1980(5)2015) ///
 xtitle("") ytitle("") ///
 graphregion(color("252 252 252")) plotregion(margin(r=15) color("252 252 252")) ///
-title("Share of population by race/ethnicity, 1979-2017", size(medium)) ///
+title("Share of population by educational attainment, 1979-2017", size(medium)) ///
 text(`lthsyvalue' `lthsxvalue' "LTHS", color("`lthscolor'") placement(e)) ///
 text(`hsyvalue' `hsxvalue' "HS", color("`hscolor'") placement(e)) ///
 text(`someyvalue' `somexvalue' "Some college", color("`somecolor'") placement(e)) ///

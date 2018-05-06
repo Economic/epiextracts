@@ -13,7 +13,7 @@ do ${codedocs}create_fakedatafordocs.do
 tempfile fakedata
 save `fakedata'
 
-foreach var of varlist /*_all*/ educ wage4 {
+foreach var of varlist _all {
 
 	* determine if values will be displayed in documentation
 	capture lab li `var'
