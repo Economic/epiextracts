@@ -1,2 +1,7 @@
 # sphinx build folder
 _build
+
+# main variable pages and descriptions
+variables/*
+!variables/index.rst
+!variables/descriptions/
