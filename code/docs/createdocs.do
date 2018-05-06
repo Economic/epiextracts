@@ -10,7 +10,10 @@
 
 * load data for a given year and then loop over all variables
 do ${codedocs}create_fakedatafordocs.do
-foreach var of varlist _all {
+tempfile fakedata
+save `fakedata'
+
+foreach var of varlist /*_all*/ educ wage4 {
 
 	* determine if values will be displayed in documentation
 	capture lab li `var'
@@ -23,5 +26,12 @@ foreach var of varlist _all {
 	if _rc != 0 local detailed nodetails
 	di "`var' - `detailed'"
 
-	webdoc do ${codedocs}docwrite.do `var' `dvalues' `detailed', md raw nokeep
+	* determine if there is a title image
+	capture confirm file ${variableanalysis}`var'_titleimage.svg
+	if _rc == 0 local image titleimage
+	if _rc != 0 local image notitleimage
+	di "`var' - `image'"
+
+	use `fakedata', clear
+	webdoc do ${codedocs}docwrite.do `var' `dvalues' `detailed' `image', md raw nokeep
 }
