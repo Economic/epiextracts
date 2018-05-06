@@ -9,6 +9,7 @@ set trace off
 global code code/
 global extracts extracts/
 global suppdata suppdata/
+global codedocs ${code}docs/
 
 * load key programs
 do ${code}utilities.do
@@ -22,10 +23,13 @@ global uniconmay /data/cps/may/unicon/
 global censusbasicraw /data/cps/basic/census/raw/
 global censusbasicstata /data/cps/basic/census/stata/
 
+global ceprdata /data/cps/org/cepr/
+
 * path names for docs
 global docs docs/
-global variabledesc ${docs}variables/
-
+global variabledocs ${docs}variables/
+global variabledesc ${docs}variables/descriptions/
+global variableanalysis ${docs}variables/analysis/
 
 * process the raw data and convert it to Stata format
 * this is only necessary for additional months of data
@@ -36,4 +40,4 @@ global variabledesc ${docs}variables/
 *create_extracts, begin("1976m1") end("2017m12")
 
 * create documentation
-do ${code}createdocs.do
+do ${codedocs}createdocs.do
