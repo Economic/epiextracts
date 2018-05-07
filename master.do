@@ -10,6 +10,7 @@ global code code/
 global extracts extracts/
 global suppdata suppdata/
 global codedocs ${code}docs/
+global dictionaries ${code}dictionaries/
 
 * load key programs
 do ${code}utilities.do
@@ -36,11 +37,11 @@ global variablelevels ${docs}variables/levels/
 
 * process the raw data and convert it to Stata format
 * this is only necessary for additional months of data
-*process_rawbasic, begin("1976m1") end("2017m12")
+process_rawbasic, begin("1994m1") end("1994m1")
 
 * create EPI's extracts from the processed raw data
 * creates both basic monthly and ORG subsample
 *create_extracts, begin("1976m1") end("2017m12")
 
 * create documentation
-do ${codedocs}createdocs.do
+*do ${codedocs}createdocs.do

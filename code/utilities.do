@@ -39,11 +39,11 @@ if `begindate' <= tm(1993m12) {
 * Process Census data all years 1994-present
 if `begindate' >= tm(1994m1) | `enddate' >= tm(1994m1) {
   if `begindate' >= tm(1994m1) local tempbegindate = `begindate'
-  else local tempbegindate = tm(1989m1)
+  else local tempbegindate = tm(1994m1)
   foreach date of numlist `tempbegindate'/`enddate' {
     di "Census CPS " %tm `date' " ... converting to Stata"
 		* Use process_censusbasic function to convert the data to Stata
-    process_censusbasic, month(`date')
+    process_censusbasic, datenum(`date')
   }
 }
 
@@ -61,9 +61,90 @@ end
 * use raw Census data and NBER dictionaries for 1994+
 capture program drop process_censusbasic
 program define process_censusbasic
-syntax, month(string)
+syntax, datenum(string)
 
-di "Running process_censusbasic, month(`month')"
+* deal with dates
+local month = month(dofm(`datenum'))
+local year = year(dofm(`datenum'))
+local shortyear: di substr("`year'",3,.)
+if `month' == 1 local monthname jan
+if `month' == 2 local monthname feb
+if `month' == 3 local monthname mar
+if `month' == 4 local monthname apr
+if `month' == 5 local monthname may
+if `month' == 6 local monthname jun
+if `month' == 7 local monthname jul
+if `month' == 8 local monthname aug
+if `month' == 9 local monthname sep
+if `month' == 10 local monthname oct
+if `month' == 11 local monthname nov
+if `month' == 12 local monthname dec
+
+di "Running process_censusbasic, `year'm`month'"
+
+******************************************
+*** NEED TO ADD CODE TO PROCESS REWEIGHTS
+******************************************
+* add it here, go month by month
+
+
+* determine dictionary/NBER do-file to use
+* January 2015 - most recent date
+if  tm(2015m1) <= `datenum' & `datenum' <= tm(2017m12) local nberprogname cpsbjan2015
+* April 2014 - December 2014
+if  tm(2014m4) <= `datenum' & `datenum' <= tm(2014m12) local nberprogname cpsbapr2014
+* January 2014 - March 2014
+if  tm(2014m1) <= `datenum' & `datenum' <= tm(2014m3) local nberprogname cpsbjan2014
+* January 2013 - December 2013
+if  tm(2013m1) <= `datenum' & `datenum' <= tm(2013m12) local nberprogname cpsbjan13
+* May 2012 - December 2012
+if  tm(2012m5) <= `datenum' & `datenum' <= tm(2012m12) local nberprogname cpsbmay12
+* January 2010 - April 2012
+if  tm(2010m1) <= `datenum' & `datenum' <= tm(2012m4) local nberprogname cpsbjan10
+* January 2009 - December 2009
+if  tm(2009m1) <= `datenum' & `datenum' <= tm(2009m12) local nberprogname cpsbjan09
+***** revised weights dec 2007? *****
+* January 2007 - December 2008
+if  tm(2007m1) <= `datenum' & `datenum' <= tm(2008m12) local nberprogname cpsbjan07
+* August 2005 - December 2006
+if  tm(2005m8) <= `datenum' & `datenum' <= tm(2006m12) local nberprogname cpsbaug05
+* May 2004 - July 2005
+if  tm(2004m5) <= `datenum' & `datenum' <= tm(2006m7) local nberprogname cpsbmay04
+* January 2003 - April 2004
+if  tm(2003m1) <= `datenum' & `datenum' <= tm(2004m4) local nberprogname cpsbjan03
+* January 1998 - December 2002
+if  tm(1998m1) <= `datenum' & `datenum' <= tm(2002m12) local nberprogname cpsbjan98
+* September 1995 - December 1997
+if  tm(1995m9) <= `datenum' & `datenum' <= tm(1997m12) local nberprogname cpsbsep95
+* June 1995 - August 1995
+if  tm(1995m6) <= `datenum' & `datenum' <= tm(1995m8) local nberprogname cpsbjun95
+* April 1994 - May 1995
+if  tm(1994m4) <= `datenum' & `datenum' <= tm(1995m5) local nberprogname cpsbapr94
+* January 1994 - March 1994
+if  tm(1994m1) <= `datenum' & `datenum' <= tm(1994m3) local nberprogname cpsbjan94
+
+* determine raw data to use
+ashell zipinfo -1 "${censusbasicraw}`monthname'`shortyear'pub.zip"
+local inputfilename: di r(o1)
+* decompress raw data into current dir
+unzipfile ${censusbasicraw}`monthname'`shortyear'pub.zip, replace
+* use appropriate NBER .do/.dct
+* arguments refer to dat_name (`1') and dct_name (`2') in NBER do files
+* before running, make necessary changes NBER do files to accept arguments
+clear
+do ${dictionaries}`nberprogname'.do `inputfilename' ${dictionaries}`nberprogname'.dct
+
+* include code here for certain months to add reweights
+
+* save, compress, clean up
+compress
+save cps_`year'_`month'.dta, replace
+zipfile cps_`year'_`month'.dta, saving(cps_`year'_`month'.dta.zip, replace)
+copy cps_`year'_`month'.dta.zip ${censusbasicstata}cps_`year'_`month'.dta.zip, replace
+erase cps_`year'_`month'.dta
+erase cps_`year'_`month'.dta.zip
+erase `inputfilename'
+
 
 end
 
