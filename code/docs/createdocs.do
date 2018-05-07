@@ -29,9 +29,9 @@ foreach var of varlist _all {
 	*		(2) do the analysis over certain variables
 	*		(3) save each variables detailed md file
 	* 	(4) then this loop should confirm/deny existence of detailed .md
-	capture webdoc do ${codedocs}`var'_detailed.do, md raw nokeep
-	if _rc == 0 local detailed details
-	if _rc != 0 local detailed nodetails
+	*capture webdoc do ${codedocs}`var'_detailed.do, md raw nokeep
+	*if _rc == 0 local detailed details
+	*if _rc != 0 local detailed nodetails
 	di "`var' - `detailed'"
 	local detailed nodetails
 
