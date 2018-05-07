@@ -22,22 +22,21 @@ if "`4'" == "titleimage" {
 webdoc put ## Description
 webdoc append ${variabledesc}`1'_shortdesc.md
 
+* conditionally, list value labels
+if "`2'" == "displayvalues" {
+	webdoc put ## Values
+	webdoc put ```eval_rst
+	webdoc put .. csv-table::
+	webdoc put    :file: docs/variables/levels/`1'.csv
+	webdoc put ```
+}
+
 webdoc put ## Variable notes
 webdoc put ```eval_rst
 webdoc stlog, cmdstrip raw
 notes `1'
 webdoc stlog close
 webdoc put ```
-
-* conditionally, list value labels
-if "`2'" == "displayvalues" {
-	webdoc put ## Values
-	webdoc put ```none
-	webdoc stlog, cmdstrip raw
-	lab li `1'
-	webdoc stlog close
-	webdoc put ```
-}
 
 if "`3'" == "details" {
 	webdoc put ## Detailed analysis

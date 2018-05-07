@@ -28,6 +28,8 @@ global docs docs/
 global variabledocs ${docs}variables/
 global variabledesc ${docs}variables/descriptions/
 global variableanalysis ${docs}variables/analysis/
+global variablelevels ${docs}variables/levels/
+
 
 * process the raw data and convert it to Stata format
 * this is only necessary for additional months of data

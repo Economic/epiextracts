@@ -26,3 +26,13 @@ Hello
 
 A new title
 ===========
+some text, and then a warning and note
+
+.. important:: This is a warning directive.
+   some warning text is important here, and don't forget
+
+   - to watch out for this
+   - and that.
+
+.. note:: This is an important note that I put here
+	in order to note something.

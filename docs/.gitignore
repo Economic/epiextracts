@@ -1,8 +1,11 @@
 # sphinx build folder
 _build
 
-# main variable pages and descriptions
+# main variable pages will be generated
 variables/*
 !variables/index.rst
+
+# keep the following folders; they will include their own gitignores
 !variables/descriptions/
 !variables/analysis/
+!variables/levels/
