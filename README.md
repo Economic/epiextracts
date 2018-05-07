@@ -5,4 +5,4 @@ This repository creates cleaned uniform extracts of the CPS basic monthly and ou
 TBD
 
 ## Documentation
-On maynard, visit file:///data/epiextracts_docs/docs/_build/html/index.html
+On maynard, go [here](file:///data/epiextracts_docs/docs/_build/html/index.html)
