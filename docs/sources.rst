@@ -2,11 +2,18 @@
 Sources
 =======
 
-The EPI extracts rely on several sources of code and data.
+The EPI code is available on
+`github <https://github.com/Economic/epiextracts_basicorg>`_
+(currently a private repository). It draws heavily from other sources of code
+and raw data.
 
 Code
 =======
-NBER, CEPR
+* `CEPR <http://ceprdata.org/cps-uniform-data-extracts/cps-basic-programs/cps-basic-monthly-programs/>`_:
+  test
+* `NBER <http://www.nber.org/data/cps_basic_progs.html>`_:
+  scripts for transforming BLS/Census flat files into Stata data
+
 
 Data
 =======
