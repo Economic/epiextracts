@@ -20,4 +20,4 @@ help:
 	@$(SPHINXBUILD) -M $@ "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
 
 deploy:
-	rsync -avh _build/html/ maynard:/data/epiextracts_docs/ --delete
+	rsync -rvh _build/html/ maynard:/var/www/html/epiextracts_docs/ --delete
