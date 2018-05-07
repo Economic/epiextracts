@@ -6,7 +6,7 @@ webdoc set _stlog
 local counter = 0
 forvalues year = 1979(1)2017 {
 	local counter = `counter' + 1
-	unzipfile /home/bzipperer/cepr_org_`year'.zip, replace
+	unzipfile ${ceprdata}cepr_org_`year'.zip, replace
 	if `counter' == 1 use year orgwgt educ age using cepr_org_`year', clear
 	else append using cepr_org_`year', keep(year orgwgt educ age)
 	erase cepr_org_`year'.dta
