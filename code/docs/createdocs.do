@@ -16,6 +16,7 @@ save `fakedata'
 foreach var of varlist _all {
 
 	* determine if values will be displayed in documentation
+	use `fakedata', clear
 	local labelname: value label `var'
 	if "`labelname'" == "" local dvalues nodisplayvalues
 	if "`labelname'" != "" {
@@ -32,14 +33,12 @@ foreach var of varlist _all {
 	*capture webdoc do ${codedocs}`var'_detailed.do, md raw nokeep
 	*if _rc == 0 local detailed details
 	*if _rc != 0 local detailed nodetails
-	di "`var' - `detailed'"
 	local detailed nodetails
 
 	* determine if there is a title image
 	capture confirm file ${variableanalysis}`var'_titleimage.svg
 	if _rc == 0 local image titleimage
 	if _rc != 0 local image notitleimage
-	di "`var' - `image'"
 
 	use `fakedata', clear
 	webdoc do ${codedocs}docwrite.do `var' `dvalues' `detailed' `image', md raw nokeep

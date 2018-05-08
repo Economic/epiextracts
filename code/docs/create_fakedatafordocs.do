@@ -3,43 +3,15 @@
 /* for now, use example CEPR data variable/value labels and notes, and other stuff */
 clear
 
+unzipfile ${extracts}epi_cpsbasic_2017.dta.zip, replace
+use epi_cpsbasic_2017.dta, clear
+erase epi_cpsbasic_2017.dta
+
 gen mind_16 = .
 lab var mind_16 "Major industry"
 label define ind_lab 1 "Agriculture, mining, forestry and fisheries" 2 "Construction" 3 "Manufacturing, durable goods" 4 "Manufacturing, nondurable goods" 5 "Transportation" 6 "Communications and utilities" 7 "Wholesale trade" 8 "Retail trade" 9 "Finance, insurance and real estate. Business, auto, repair, and other professional services." 10 "Personal services, including private household" 11 "Entertainment and recreation" 12 "Hospital" 13 "Medical, except hospital" 14 "Educational" 15 "Social Services" 16 "Public administration"
 label value mind_16 ind_lab
 notes mind_16: 16 major industries using Julia's coding
-
-gen educ = .
-lab var educ "Education level"
-#delimit ;
-lab define educ
-1 "LTHS"
-2 "HS"
-3 "Some college"
-4 "College"
-5 "Advanced"
-;
-#delimit cr
-lab val educ educ
-notes educ: Follows Jaeger (1997) classifications
-notes educ: CPS: derived from a-hga, a-hgc, peeduca
-
-gen wbho = .
-lab var wbho "Race"
-#delimit ;
-lab define wbho
-1 "White"
-2 "Black"
-3 "Hispanic"
-4 "Other";
-#delimit cr
-lab val wbho wbho
-notes wbho: Racial and ethnic categories are mutually exclusive
-notes wbho: Major recoding of race variable in 2003
-notes wbho: From 2003, black includes all respondents listing black; other /*
-*/ includes all respondents listing non-white or non-black races, except /*
-*/ those also listing black
-notes wbho: CPS: derived from perace, prdtrace, ptdtrace, prorigin, prdthsp
 
 gen wage4 = .
 lab var wage4 "Hourly wage"
