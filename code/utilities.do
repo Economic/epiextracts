@@ -15,6 +15,7 @@ syntax, begin(string) end(string)
 local begindate = tm(`begin')
 local enddate = tm(`end')
 
+
 * No data prior to 1973: otherwise exit with error
 if `begindate' < tm(1973m1) {
   di "No data prior to 1973"
@@ -109,7 +110,7 @@ if  tm(2007m1) <= `datenum' & `datenum' <= tm(2008m12) local nberprogname cpsbja
 * August 2005 - December 2006
 if  tm(2005m8) <= `datenum' & `datenum' <= tm(2006m12) local nberprogname cpsbaug05
 * May 2004 - July 2005
-if  tm(2004m5) <= `datenum' & `datenum' <= tm(2006m7) local nberprogname cpsbmay04
+if  tm(2004m5) <= `datenum' & `datenum' <= tm(2005m7) local nberprogname cpsbmay04
 * January 2003 - April 2004
 if  tm(2003m1) <= `datenum' & `datenum' <= tm(2004m4) local nberprogname cpsbjan03
 * January 1998 - December 2002
@@ -156,9 +157,21 @@ syntax, begin(string) end(string)
 * code to determine months and years to process
 * output should be local monthlist`year'
 
+* deal with dates
+local begindate = tm(`begin')
+local enddate = tm(`end')
+local minyear = year(dofm(`begindate'))
+local maxyear = year(dofm(`enddate'))
+
+* create list of months for each year to process
+foreach date of numlist `begindate'(1)`enddate' {
+  local year = year(dofm(`date'))
+  local month = month(dofm(`date'))
+  local monthlist`year' `monthlist`year'' `month'
+}
 
 * process all data
-foreach year of numlist `yearlist' {
+foreach year of numlist `minyear'(1)`maxyear' {
 
 	* first process annual may if necessary
 	if `year' < 1979 {
@@ -180,59 +193,105 @@ foreach year of numlist `yearlist' {
 		foreach month of numlist `monthlist`year'' {
 			local counter = `counter' + 1
 
+      local date = tm(`year'm`month')
+
 			* indicator to determine if we use separate ORG files
-			if tm(`year'm`month') < tm(1983m1) local separateorg == 1
+      if `date' >= tm(1979m1) local orgexists = 1
+      else local orgexists = 0
+			if tm(1979m1) <= `date' & `date' <= tm(1982m12) local separateorg = 1
 			else local separateorg = 0
 
-			* identify which files to use and use statement
 
-			* create basic monthly extract
-			* load basic monthly data
+			* FOR NOW DO NOT PROCESS ORG
+			local orgexists = 0
+
+
+			* process basic monthly
+			if tm(1976m1) <= `date' & `date' <= tm(1993m12) {
+				local inputpath ${uniconbasic}
+				local inputfile unicon_basic_`year'_`month'.dta
+			}
+			if tm(1994m1) <= `date' {
+				local inputpath ${censusbasicstata}
+				local inputfile cps_`year'_`month'.dta
+			}
+			unzipfile `inputpath'`inputfile'.zip, replace
+			use `inputfile', clear
+
+			* run key basic programs
+			do ${code}epi_cpsbasic_idwgt.do `date'
+			do ${code}epi_cpsbasic_demog.do `date'
+			do ${code}epi_cpsbasic_keepord.do `date'
+
 			* save extract
 			tempfile basic_month`month'
-			*save `basic_month`month''
+			save `basic_month`month''
 			di "test: saving temp basic `year'-`month': `basic_month`month''"
+			* clean up basic monthly files
+			erase `inputfile'
 
-			* create org extract
-			* load org data if necessary
-			* save extract
-			tempfile org_month`month'
-			*save `org_month`month''
-			di "test: saving temp org `year'-`month': `org_month`month''"
+      if `orgexists' == 1 {
+        * create org extract
+        * load org data if necessary
+        * save extract
+        tempfile org_month`month'
+        *save `org_month`month''
+        di "test: saving temp org `year'-`month': `org_month`month''"
+      }
 
-			* clean up decompressed files
 
 		}
+    if `counter' == 12 di "year `year' is a full year"
+    else di "year `year' is NOT a full year"
 
-		* combine all months into full year if necessary
+
+		* if complete year, combine all months into one year dataset
 		if `counter' == 12 {
+			* Basic monthly
 			forvalues month = 1 / 12 {
 				if `month' == 1 use `basic_month`month'', clear
 				else append using `basic_month`month''
 			}
-			save epi_cpsbasic_`year'.dta, replace
-			forvalues month = 1 / 12 {
-				if `month' == 1 use `org_month`month'', clear
-				else append using `org_month`month''
+			compress
+			saveold epi_cpsbasic_`year'.dta, replace version(13)
+			zipfile epi_cpsbasic_`year'.dta, saving(epi_cpsbasic_`year'.dta.zip, replace)
+			copy epi_cpsbasic_`year'.dta.zip ${extracts}epi_cpsbasic_`year'.dta.zip, replace
+			erase epi_cpsbasic_`year'.dta
+			erase epi_cpsbasic_`year'.dta.zip
+
+			* ORG, if exists
+			if `orgexists' == 1 {
+				forvalues month = 1 / 12 {
+					if `month' == 1 use `org_month`month'', clear
+					else append using `org_month`month''
+				}
+				compress
+				save ${extracts}epi_cpsorg_`year'.dta, replace
 			}
-			save epi_cpsorg_`year'.dta, replace
 		}
 		* otherwise save individual months
 		else {
 			foreach month of numlist `monthlist`year'' {
 				use `basic_month`month'', clear
-				epi_cpsbasic_`year'_`month'.dta, replace
+				compress
+				saveold epi_cpsbasic_`year'_`month'.dta, replace version(13)
+				zipfile epi_cpsbasic_`year'_`month'.dta, saving(epi_cpsbasic_`year'_`month'.dta.zip, replace)
+				copy epi_cpsbasic_`year'_`month'.dta.zip ${extracts}epi_cpsbasic_`year'_`month'.dta.zip, replace
+				erase epi_cpsbasic_`year'_`month'.dta
+				erase epi_cpsbasic_`year'_`month'.dta.zip
 
-				use `org_month`month'', clear
-				epi_cpsorg_`year'_`month'.dta, replace
+				* ORG, if exists
+				if `orgexists' == 1 {
+
+				}
+
+
 			}
 		}
 
+
 	}
 }
-
-
-
 
 
 end
