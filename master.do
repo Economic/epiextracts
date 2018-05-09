@@ -31,8 +31,6 @@ global censusbasicstata /data/cps/basic/census/stata/
 * CEPR data: temporary for doc testing
 global ceprdata /data/cps/org/cepr/
 
-* test
-
 * path names for docs
 global docs docs/
 global variabledocs ${docs}variables/
