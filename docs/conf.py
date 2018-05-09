@@ -28,9 +28,9 @@ copyright = u'2018, Economic Policy Institute'
 author = u'Economic Policy Institute'
 
 # The short X.Y version
-version = u''
+version = '0.1'
 # The full version, including alpha/beta/rc tags
-release = u''
+release = version
 
 
 # -- General configuration ---------------------------------------------------

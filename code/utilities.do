@@ -179,8 +179,11 @@ foreach year of numlist `minyear'(1)`maxyear' {
 		* use may
 		* run programs
 		* save data
-		*saveold epi_cpsmay_`year'.dta, replace version(13)
-		di "test: saveold epi_cpsmay_`year'.dta, replace version(13)"
+		compress
+		notes _dta drop
+		label data "EPI CPS May Extract, Version $dataversion"
+		saveold ${extracts}epi_cpsmay_`year'.dta, replace version(13)
+
 	}
 
 	* 1976 and later, process monthly basic and possibly monthly ORG
@@ -253,6 +256,8 @@ foreach year of numlist `minyear'(1)`maxyear' {
 				else append using `basic_month`month''
 			}
 			compress
+			notes _dta drop
+			label data "EPI CPS Basic Monthly Extract, Version $dataversion"
 			saveold epi_cpsbasic_`year'.dta, replace version(13)
 			zipfile epi_cpsbasic_`year'.dta, saving(epi_cpsbasic_`year'.dta.zip, replace)
 			copy epi_cpsbasic_`year'.dta.zip ${extracts}epi_cpsbasic_`year'.dta.zip, replace
@@ -266,7 +271,9 @@ foreach year of numlist `minyear'(1)`maxyear' {
 					else append using `org_month`month''
 				}
 				compress
-				save ${extracts}epi_cpsorg_`year'.dta, replace
+				notes _dta drop
+				label data "EPI CPS ORG Extract, Version $dataversion"
+				saveold ${extracts}epi_cpsorg_`year'.dta, replace version(13)
 			}
 		}
 		* otherwise save individual months
@@ -274,6 +281,8 @@ foreach year of numlist `minyear'(1)`maxyear' {
 			foreach month of numlist `monthlist`year'' {
 				use `basic_month`month'', clear
 				compress
+				notes _dta drop
+				label data "EPI CPS Basic Monthly Extract, Version $dataversion"
 				saveold epi_cpsbasic_`year'_`month'.dta, replace version(13)
 				zipfile epi_cpsbasic_`year'_`month'.dta, saving(epi_cpsbasic_`year'_`month'.dta.zip, replace)
 				copy epi_cpsbasic_`year'_`month'.dta.zip ${extracts}epi_cpsbasic_`year'_`month'.dta.zip, replace
@@ -282,7 +291,14 @@ foreach year of numlist `minyear'(1)`maxyear' {
 
 				* ORG, if exists
 				if `orgexists' == 1 {
-
+					compress
+					notes _dta drop
+					label data "EPI CPS ORG Extract, Version $dataversion"
+					saveold epi_cpsorg_`year'_`month'.dta, replace version(13)
+					zipfile epi_cpsorg_`year'_`month'.dta, saving(epi_cpsorg_`year'_`month'.dta.zip, replace)
+					copy epi_cpsorg_`year'_`month'.dta.zip ${extracts}epi_cpsorg_`year'_`month'.dta.zip, replace
+					erase epi_cpsorg_`year'_`month'.dta
+					erase epi_cpsorg_`year'_`month'.dta.zip
 				}
 
 
