@@ -1,7 +1,7 @@
 ===================================
 EPI CPS Extracts Documentation
 ===================================
-This is the documentation for the EPI CPS Extracts, version |release|
+This is the documentation for the EPI CPS Extracts, |release|
 
 .. toctree::
 	:maxdepth: 1
