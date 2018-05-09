@@ -48,4 +48,4 @@ global variablelevels ${docs}variables/levels/
 create_extracts, begin("2017m1") end("2017m12")
 
 * create documentation
-*do ${codedocs}createdocs.do
+do ${codedocs}createdocs.do

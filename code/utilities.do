@@ -154,8 +154,9 @@ capture program drop create_extracts
 program define create_extracts
 syntax, begin(string) end(string)
 
-* code to determine months and years to process
-* output should be local monthlist`year'
+* preliminary data
+* state codes
+* cpi
 
 * deal with dates
 local begindate = tm(`begin')
@@ -180,7 +181,7 @@ foreach year of numlist `minyear'(1)`maxyear' {
 		* run programs
 		* save data
 		compress
-		notes _dta drop
+		notes drop _dta
 		label data "EPI CPS May Extract, Version $dataversion"
 		saveold ${extracts}epi_cpsmay_`year'.dta, replace version(13)
 
@@ -224,6 +225,7 @@ foreach year of numlist `minyear'(1)`maxyear' {
 			* run key basic programs
 			do ${code}epi_cpsbasic_idwgt.do `date'
 			do ${code}epi_cpsbasic_demog.do `date'
+			do ${code}epi_cpsbasic_empstat.do `date'
 			do ${code}epi_cpsbasic_keepord.do `date'
 
 			* save extract
@@ -256,7 +258,7 @@ foreach year of numlist `minyear'(1)`maxyear' {
 				else append using `basic_month`month''
 			}
 			compress
-			notes _dta drop
+			notes drop _dta
 			label data "EPI CPS Basic Monthly Extract, Version $dataversion"
 			saveold epi_cpsbasic_`year'.dta, replace version(13)
 			zipfile epi_cpsbasic_`year'.dta, saving(epi_cpsbasic_`year'.dta.zip, replace)
@@ -271,7 +273,7 @@ foreach year of numlist `minyear'(1)`maxyear' {
 					else append using `org_month`month''
 				}
 				compress
-				notes _dta drop
+				notes drop _dta
 				label data "EPI CPS ORG Extract, Version $dataversion"
 				saveold ${extracts}epi_cpsorg_`year'.dta, replace version(13)
 			}
@@ -281,7 +283,7 @@ foreach year of numlist `minyear'(1)`maxyear' {
 			foreach month of numlist `monthlist`year'' {
 				use `basic_month`month'', clear
 				compress
-				notes _dta drop
+				notes drop _dta
 				label data "EPI CPS Basic Monthly Extract, Version $dataversion"
 				saveold epi_cpsbasic_`year'_`month'.dta, replace version(13)
 				zipfile epi_cpsbasic_`year'_`month'.dta, saving(epi_cpsbasic_`year'_`month'.dta.zip, replace)
@@ -292,7 +294,7 @@ foreach year of numlist `minyear'(1)`maxyear' {
 				* ORG, if exists
 				if `orgexists' == 1 {
 					compress
-					notes _dta drop
+					notes drop _dta
 					label data "EPI CPS ORG Extract, Version $dataversion"
 					saveold epi_cpsorg_`year'_`month'.dta, replace version(13)
 					zipfile epi_cpsorg_`year'_`month'.dta, saving(epi_cpsorg_`year'_`month'.dta.zip, replace)
