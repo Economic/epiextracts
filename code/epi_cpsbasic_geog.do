@@ -9,6 +9,8 @@ gen byte statefips = .
 * for now, ensure missing codes for 1976-1977
 if tm(1976m1) <= `date' & `date' <= tm(1977m12) {
 	drop region
+	* even though all state (and other geographic) codes will be missing
+	* we want the missing values and the full value labels, so do the following merge
 	merge m:1 statefips using `stategeocodes', nogenerate keep(1)
 
 	* ridiculous hack to pull in value labels for statefips
@@ -20,11 +22,16 @@ if tm(1978m1) <= `date' & `date' <= tm(1993m12) {
 	drop region statefips
 	rename state statecensus
 
-	* invalid state code of 3 in 1985m4
-	replace statecensus = . if statecensus == 3 & `date' == tm(1985m4)
+	merge m:1 statecensus using `stategeocodes'
 
-	merge m:1 statecensus using `stategeocodes', assert(3) nogenerate
-	d state* division* region*
+	* deal with invalid state codes
+	* invalid state census code = 3 in 1985m4
+	if `date' == tm(1985m4) {
+		assert _merge == 3 if statecensus != 3
+		replace statecensus = . if statecensus == 3
+	}
+	else assert _merge == 3
+	drop _merge
 
 	if `date' >= tm(1989m1) assert statefips == stfips
 
