@@ -9,8 +9,8 @@ and raw data.
 
 Code
 =======
-* `EPI <https://www.epi.org/data/> data library code
-that processes raw CPS data, creates uniform extracts, and analyzes data
+* `EPI <https://www.epi.org/data/>`_:
+  data library code	that processes raw CPS data, creates uniform extracts, and analyzes data
 * `CEPR <http://ceprdata.org/cps-uniform-data-extracts/cps-basic-programs/cps-basic-monthly-programs/>`_:
   scripts for processing raw data and uniform coding of several variables
 * `NBER <http://www.nber.org/data/cps_basic_progs.html>`_:
