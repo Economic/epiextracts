@@ -160,6 +160,7 @@ labmask statefips, val(stateabb)
 labmask statecensus, val(stateabb)
 labmask division, val(divisionname)
 labmask region, val(regionname)
+drop *name
 * start ridiculous hack to add value labels for these variables
 * after merging them later in epi_cpsbasic_geog.do
 foreach var of varlist statefips statecensus {
@@ -188,6 +189,7 @@ foreach date of numlist `begindate'(1)`enddate' {
 * process all data
 foreach year of numlist `minyear'(1)`maxyear' {
 
+/*
 	* first process annual may if necessary
 	if `year' < 1979 {
 		* unzip may
@@ -198,8 +200,13 @@ foreach year of numlist `minyear'(1)`maxyear' {
 		notes drop _dta
 		label data "EPI CPS May Extract, Version $dataversion"
 		saveold ${extracts}epi_cpsmay_`year'.dta, replace version(13)
+		zipfile epi_cpsmayc_`year'.dta, saving(epi_cpsmay_`year'.dta.zip, replace)
+		copy epi_cpsmay_`year'.dta.zip ${extracts}epi_cpsmay_`year'.dta.zip, replace
+		erase epi_cpsmay_`year'.dta
+		erase epi_cpsmay_`year'.dta.zip
 
 	}
+*/
 
 	* 1976 and later, process monthly basic and possibly monthly ORG
 	if `year' >= 1976 {
@@ -255,7 +262,7 @@ foreach year of numlist `minyear'(1)`maxyear' {
         * load org data if necessary
         * save extract
         tempfile org_month`month'
-        *save `org_month`month''
+        save `org_month`month''
         di "test: saving temp org `year'-`month': `org_month`month''"
       }
 

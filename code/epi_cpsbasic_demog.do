@@ -1,30 +1,28 @@
 local date = `1'
 
-*******************
-* KEY RESTRICTION *
-*******************
-* only include adult civilians
-keep if prpertyp == 2
-
-
-
 *******
 * Age *
 *******
-gen int age = .
+if tm(1976m1) <= `date' & `date' <= tm(1993m1) {
+	* age already exists
+}
+
 if tm(1994m1) <= `date' & `date' <= tm(2012m4) {
+	gen int age = .
 	replace age = peage
 	replace age = . if peage < 0
 }
 if tm(2012m5) <= `date' & `date' <= tm(2017m12) {
+	gen int age = .
 	replace age = prtage
 	replace age = . if prtage < 0
 }
-
+recode age (80/max = 80)
 lab var age "Age"
+notes age: Unicon, 1976-1993, age
 notes age: CPS, 1994-2012: peage
 notes age: CPS, 2013-present: prtage
-
+notes age: top-coded at 80 for consistency across years
 
 
 **********
@@ -52,6 +50,8 @@ notes female: CPS: pesex
 * Education *
 *************
 gen byte educ = .
+
+/* - need to adjust for Unicon data
 if tm(1979m1) <= `date' & `date' <= tm(1990m12) {
 	replace educ=1 if 1<=gradeat & gradeat<=11
 	replace educ=1 if gradeat==12 & gradecp==2 /* didn't complete 12th */
@@ -89,6 +89,7 @@ if tm(1994m1) <= `date' & `date' <= tm(2017m12) {
 	replace educ=4 if peeduca==43
 	replace educ=5 if 44<=peeduca & peeduca<=46
 }
+*/
 
 lab var educ "Education level"
 #delimit ;

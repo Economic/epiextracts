@@ -1,14 +1,29 @@
 local date = `1'
 
+*******************
+* KEY RESTRICTION *
+*******************
+* only include adults with labor force status, 16+
+if tm(1976m1) <= `date' & `date' <= tm(1988m12) {
+	keep if mlr >= 1 & mlr <= 7 & age >= 16 & age != .
+}
+if tm(1994m1) <= `date' & `date' <= tm(2012m4) {
+	assert prpertyp == 2 if pemlr >= 1 & pemlr <= 7
+	assert pemlr >= 1 & pemlr <= 7 if prpertyp == 2
+	assert (pemlr >= 1 & pemlr <= 7) | pemlr == -1
+	keep if pemlr >= 1 & pemlr <= 7 & age >= 16 & age != .
+}
+
+
 
 **********************
 * Labor force status *
 **********************
 gen byte lfstat=.
 if tm(1994m1) <= `date' & `date' <= tm(2017m12) {
-	replace lfstat=1 if pemlr==1 | pemlr==2
-	replace lfstat=2 if 3<=pemlr & pemlr<=4
-	replace lfstat=3 if 5<=pemlr & pemlr<=7
+	replace lfstat = 1 if pemlr == 1 | pemlr == 2
+	replace lfstat = 2 if 3 <= pemlr & pemlr <= 4
+	replace lfstat = 3 if 5 <= pemlr & pemlr <= 7
 }
 lab var lfstat "Labor-force status"
 #delimit ;

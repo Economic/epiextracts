@@ -5,6 +5,7 @@ local date = `1'
 ***************************
 * Calendar interview year *
 ***************************
+cap drop year
 gen int year = year(dofm(`date'))
 lab var year "Year"
 notes year: Generated from file date
@@ -14,12 +15,14 @@ notes year: Generated from file date
 ****************************
 * Calendar interview month *
 ****************************
+* we could use hrmonth in CPS data
+* however, according to unicon, there are values of 68,78,88 in 1978
+* so instead we simply just use the month of the file
+cap drop month
 gen byte month = .
-if tm(1994m1) <= `date' & `date' <= tm(2017m12) {
-	replace month = hrmonth
-}
+replace month = month(dofm(`date'))
 lab var month "Month"
-notes month: CPS: hrmonth
+notes month: Generated from file date
 
 
 
