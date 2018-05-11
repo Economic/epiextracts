@@ -1,4 +1,4 @@
-all: deploybasic deploydocs
+all: deploybasic deployorg deploydocs
 
 .PHONY: all deploybasic deployorg deploydocs
 

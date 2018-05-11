@@ -84,6 +84,7 @@ if tm(1992m1) <= `date' & `date' <= tm(1993m12) {
 	replace educ=4 if grade92==43
 	replace educ=5 if 44<=grade92 & grade92<=46
 }
+*/
 
 if tm(1994m1) <= `date' & `date' <= tm(2017m12) {
 	replace educ=1 if 31<=peeduca & peeduca<=37
@@ -92,7 +93,7 @@ if tm(1994m1) <= `date' & `date' <= tm(2017m12) {
 	replace educ=4 if peeduca==43
 	replace educ=5 if 44<=peeduca & peeduca<=46
 }
-*/
+
 
 lab var educ "Education level"
 #delimit ;

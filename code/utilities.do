@@ -226,11 +226,6 @@ foreach year of numlist `minyear'(1)`maxyear' {
 			if tm(1979m1) <= `date' & `date' <= tm(1982m12) local separateorg = 1
 			else local separateorg = 0
 
-
-			* FOR NOW DO NOT PROCESS ORG
-			local orgexists = 0
-
-
 			* process basic monthly
 			if tm(1976m1) <= `date' & `date' <= tm(1993m12) {
 				local inputpath ${uniconbasic}
@@ -244,28 +239,35 @@ foreach year of numlist `minyear'(1)`maxyear' {
 			use `inputfile', clear
 
 			* run key basic programs
+			do ${code}epi_cpsbasic_sample.do `date'
 			do ${code}epi_cpsbasic_idwgt.do `date'
 			do ${code}epi_cpsbasic_geog.do `date' `stategeocodes'
 			do ${code}epi_cpsbasic_demog.do `date'
 			do ${code}epi_cpsbasic_empstat.do `date'
+			* add org variables
+			do ${code}epi_cpsorg_wages.do `date'
+			* keep only necessary vars
 			do ${code}epi_cpsbasic_keepord.do `date'
 
-			* save extract
+			* save basic monthly extract
 			tempfile basic_month`month'
 			save `basic_month`month''
-			di "test: saving temp basic `year'-`month': `basic_month`month''"
-			* clean up basic monthly files
-			erase `inputfile'
 
-      if `orgexists' == 1 {
-        * create org extract
-        * load org data if necessary
-        * save extract
+			* save org subsample
+      if `orgexists' == 1 & `separateorg' == 0 {
+				* keep org subsample
+				do ${code}epi_cpsorg_sample.do `date'
         tempfile org_month`month'
         save `org_month`month''
-        di "test: saving temp org `year'-`month': `org_month`month''"
       }
 
+			* clean up basic monthly input file
+			erase `inputfile'
+
+			* process separate 1979-1982 ORG
+			if `orgexists' == 1 & `separateorg' == 1 {
+
+			}
 
 		}
     if `counter' == 12 di "year `year' is a full year"
@@ -289,7 +291,8 @@ foreach year of numlist `minyear'(1)`maxyear' {
 			erase epi_cpsbasic_`year'.dta.zip
 
 			* ORG, if exists
-			if `orgexists' == 1 {
+			* for now do not process separate ORG
+			if `orgexists' == 1 & `separateorg' == 0 {
 				forvalues month = 1 / 12 {
 					if `month' == 1 use `org_month`month'', clear
 					else append using `org_month`month''
@@ -297,7 +300,11 @@ foreach year of numlist `minyear'(1)`maxyear' {
 				compress
 				notes drop _dta
 				label data "EPI CPS ORG Extract, Version $dataversion"
-				saveold ${extracts}epi_cpsorg_`year'.dta, replace version(13)
+				saveold epi_cpsorg_`year'.dta, replace version(13)
+				zipfile epi_cpsorg_`year'.dta, saving(epi_cpsorg_`year'.dta.zip, replace)
+				copy epi_cpsorg_`year'.dta.zip ${extracts}epi_cpsorg_`year'.dta.zip, replace
+				erase epi_cpsorg_`year'.dta
+				erase epi_cpsorg_`year'.dta.zip
 			}
 		}
 		* otherwise save individual months
@@ -315,6 +322,7 @@ foreach year of numlist `minyear'(1)`maxyear' {
 
 				* ORG, if exists
 				if `orgexists' == 1 {
+					use `org_month`month'', clear
 					compress
 					notes drop _dta
 					label data "EPI CPS ORG Extract, Version $dataversion"

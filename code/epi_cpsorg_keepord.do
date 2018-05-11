@@ -4,5 +4,4 @@ keep year month minsamp orgwgt ///
 	statefips statecensus division region ///
 	age female wbho ///
 	educ ///
-	lfstat emp unemp nilf selfemp selfinc ///
-	paidhre wage1 weekpay wage2 wage3
+	lfstat emp unemp nilf selfemp selfinc
