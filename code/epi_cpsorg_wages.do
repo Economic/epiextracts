@@ -27,8 +27,7 @@ if tm(1994m1) <= `date' & `date' <= tm(2017m12) {
 }
 lab var wage1 "Hourly wage (if hourly worker)"
 notes wage1: Dollars per hour
-notes wage1: For hourly workers only
-notes wage1: Excludes overtime, tips, commissions
+notes wage1: For hourly workers only; excludes overtime, tips, commissions
 notes wage1: Top-code 1979-84: 99.00
 notes wage1: Top-code 1985-98: set so that hours worked times earnhre /*
 */ < weekly earnings top-code
