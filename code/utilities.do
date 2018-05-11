@@ -155,7 +155,21 @@ program define create_extracts
 syntax, begin(string) end(string)
 
 * preliminary data
-* state codes
+import delimited using ${suppdata}state_geocodes.csv, clear varnames(1)
+labmask statefips, val(stateabb)
+labmask statecensus, val(stateabb)
+labmask division, val(divisionname)
+labmask region, val(regionname)
+* start ridiculous hack to add value labels for these variables
+* after merging them later in epi_cpsbasic_geog.do
+foreach var of varlist statefips statecensus {
+	gen `var'_alt = `var'
+	lab val `var'_alt `var'
+}
+keep statefips* statecensus* division* region*
+tempfile stategeocodes
+save `stategeocodes'
+
 * cpi
 
 * deal with dates
@@ -224,6 +238,7 @@ foreach year of numlist `minyear'(1)`maxyear' {
 
 			* run key basic programs
 			do ${code}epi_cpsbasic_idwgt.do `date'
+			do ${code}epi_cpsbasic_geog.do `date' `stategeocodes'
 			do ${code}epi_cpsbasic_demog.do `date'
 			do ${code}epi_cpsbasic_empstat.do `date'
 			do ${code}epi_cpsbasic_keepord.do `date'
