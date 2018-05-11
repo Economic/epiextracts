@@ -7,6 +7,7 @@ unzipfile ${extracts}epi_cpsbasic_2017.dta.zip, replace
 use epi_cpsbasic_2017.dta, clear
 erase epi_cpsbasic_2017.dta
 
+/*
 gen mind_16 = .
 lab var mind_16 "Major industry"
 label define ind_lab 1 "Agriculture, mining, forestry and fisheries" 2 "Construction" 3 "Manufacturing, durable goods" 4 "Manufacturing, nondurable goods" 5 "Transportation" 6 "Communications and utilities" 7 "Wholesale trade" 8 "Retail trade" 9 "Finance, insurance and real estate. Business, auto, repair, and other professional services." 10 "Personal services, including private household" 11 "Entertainment and recreation" 12 "Hospital" 13 "Medical, except hospital" 14 "Educational" 15 "Social Services" 16 "Public administration"
@@ -86,3 +87,4 @@ lab var cmsacode14 "CSA Code"
 lab val cmsacode14 cmsacode14
 notes cmsacode14: CPS: gtcsa
 notes cmsacode14: Consistent from May 2014-on
+*/

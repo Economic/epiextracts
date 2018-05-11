@@ -9,8 +9,10 @@ and raw data.
 
 Code
 =======
+* `EPI <https://www.epi.org/data/> data library code
+that processes raw CPS data, creates uniform extracts, and analyzes data
 * `CEPR <http://ceprdata.org/cps-uniform-data-extracts/cps-basic-programs/cps-basic-monthly-programs/>`_:
-  test
+  scripts for processing raw data and uniform coding of several variables
 * `NBER <http://www.nber.org/data/cps_basic_progs.html>`_:
   scripts for transforming BLS/Census flat files into Stata data
 

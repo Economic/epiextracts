@@ -1,1 +1,5 @@
-and this is the description for wbho
+Race or ethnicity of the individual
+```eval_rst
+.. note::
+		White, black, Hispanic, and other are coded as mutually exclusive.
+```

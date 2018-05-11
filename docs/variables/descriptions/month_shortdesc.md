@@ -1,1 +1,1 @@
-The month of the interview is generated from the CPS variable hrmonth.
+The month of the interview is generated from the file date.

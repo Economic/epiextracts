@@ -18,6 +18,9 @@ if tm(2012m5) <= `date' & `date' <= tm(2017m12) {
 	replace age = . if prtage < 0
 }
 recode age (80/max = 80)
+cap lab drop age
+lab def age 80 "80+"
+lab val age age
 lab var age "Age"
 notes age: Unicon, 1976-1993, age
 notes age: CPS, 1994-2012: peage

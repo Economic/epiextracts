@@ -1,1 +1,1 @@
-and this is the description for statefips
+State of residence using Census state codes

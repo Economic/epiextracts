@@ -1,1 +1,1 @@
-Gender of the individual.
+Gender of the person record.

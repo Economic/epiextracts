@@ -1,1 +1,1 @@
-and this is the description for statefips
+Census geographic region (1-4)

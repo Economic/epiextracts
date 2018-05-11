@@ -1,1 +1,1 @@
-the description for educ
+the description for the education variable
