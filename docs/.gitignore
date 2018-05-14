@@ -7,5 +7,5 @@ variables/*
 
 # keep the following folders; they will include their own gitignores
 !variables/descriptions/
-!variables/analysis/
-!variables/levels/
+!variables/analysis/.gitignore
+!variables/levels/.gitignore
