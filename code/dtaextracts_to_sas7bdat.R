@@ -13,39 +13,40 @@ registerDoMC(cores=8)
 # multicore options
 mcoptions <- list(preschedule=FALSE)
 
-filelist <- Sys.glob("epiextracts_basicorg/extracts/*.zip") %>% 
-  basename() %>% 
-  sub("^([^.]*).*", "\\1", .)
+filelistorg <- Sys.glob("extracts/epi_cpsorg_*.dta.zip") %>%
+  basename() %>%
+  sub("^([^.]*).*", "\\1", .) %>% 
+  expand.grid(filename=.) %>% 
+  mutate(id="org")
 
-origpath <- file.path("epiextracts_basicorg/extracts")
+filelistbasic <- Sys.glob("extracts/epi_cpsbasic_*.dta.zip") %>%
+  basename() %>%
+  sub("^([^.]*).*", "\\1", .) %>% 
+  expand.grid(filename=.) %>% 
+  mutate(id="basic")
 
-mygrid <- expand.grid(filename=filelist,n=1)
+filelist <- bind_rows(filelistorg,filelistbasic)
+
+origpath <- file.path("extracts")
 
 myfunction <- function(x) {
   filename <- x$filename
+  datasource <- x$id
 
   origfilename <- paste0(filename,".dta.zip")
   dtafilename <- paste0(filename,".dta")
   sasfilename <- paste0(filename,".sas7bdat")
   finalfilename <- paste0(sasfilename,".zip")
   rawdest <- file.path(origpath,origfilename)
-  
-  system(paste("echo","Processing",rawdest))
+  finaldest <- file.path("/data/cps",datasource,"epiextracts",finalfilename)
   
   system(paste("pigz -dc",rawdest,">",dtafilename))
   write_sas(read_dta(dtafilename,encoding="latin1"),sasfilename)
+	system(paste("chmod 0444",sasfilename))
   system(paste("pigz -Kf",sasfilename))
+  system(paste("mv -f",finalfilename,finaldest))
   file.remove(dtafilename)
 }
 
-foreach(i=iter(mygrid, by="row"), .options.multicore=mcoptions) %dopar% myfunction(i)
-
-# add lines here to move sas7bdat files to appropriate org and basic directories
-# where perhaps arguments to R script (from makefile) are the final destination directories
-# should really be using temp files or temp directories for all of this
-system("mv epi_cpsbasic_*.sas7bdat.zip /data/cps/basic/epiextracts/")
-system("chmod 0444 /data/cps/basic/epiextracts/*.sas7bdat.zip")
-system("mv epi_cpsorg_*.sas7bdat.zip /data/cps/org/epiextracts/")
-system("chmod 0444 /data/cps/org/epiextracts/*.sas7bdat.zip")
-
+foreach(i=iter(filelist, by="row"), .options.multicore=mcoptions) %dopar% myfunction(i)
 
