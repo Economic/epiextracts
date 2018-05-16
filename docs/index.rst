@@ -9,5 +9,7 @@ This is the documentation for the EPI CPS Extracts, |release|
 
 	variables/index
 	sources
+	issues
+	contributions/index
 	examples/index
 	test
