@@ -18,3 +18,5 @@ requests. If you don't know what that means, read on for a tutorial:
 	preliminaries
 	git_tutorial_basics
 	git_tutorial_branches
+	git_tutorial_atom
+	git_tutorial_pullrequests

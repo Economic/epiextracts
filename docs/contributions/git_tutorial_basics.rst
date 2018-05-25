@@ -2,11 +2,11 @@
 Basics of using git
 ========================================
 
-- Create repo on github
-- Clone to local machine
-- make commits
-- push to remote
+Use `git <https://git-scm.com/>`_ and `Github <https://github.com/Economic/epiextracts_basicorg>`_ to manage contributions to the EPI extracts.
 
-extra stuff:
-- revert
-- squash
+This tutorial helps you
+
+- Create repo on github
+- Clone the repo to your local machine
+- Make commits
+- Push the commits to github
