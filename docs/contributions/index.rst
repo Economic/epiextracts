@@ -20,3 +20,4 @@ requests. If you don't know what that means, read on for a tutorial:
 	git_tutorial_branches
 	git_tutorial_atom
 	git_tutorial_pullrequests
+	git_tutorial_extras
