@@ -7,9 +7,10 @@ This is the documentation for the EPI CPS Extracts, |release|
 	:maxdepth: 1
 	:caption: Contents:
 
+	datacode
 	variables/index
 	sources
-	issues
 	contributions/index
+	issues
 	examples/index
 	test
