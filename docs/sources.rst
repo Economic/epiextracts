@@ -1,24 +1,26 @@
 =======
 Sources
 =======
+If you use the EPI extracts for your research, you can cite them as
+
+	Economic Policy Institute. 2018. Current Population Survey Extracts, |release|.
 
 The EPI code is available on
 `github <https://github.com/Economic/epiextracts_basicorg>`_
 (currently a private repository). It draws heavily from other sources of code
 and raw data.
 
-Code
-=======
+Other code incorporated into the EPI extracts
+=============================================
 * `EPI <https://www.epi.org/data/>`_:
   data library code	that processes raw CPS data, creates uniform extracts, and analyzes data
 * `CEPR <http://ceprdata.org/cps-uniform-data-extracts/cps-basic-programs/cps-basic-monthly-programs/>`_:
   scripts for processing raw data and uniform coding of several variables
 * `NBER <http://www.nber.org/data/cps_basic_progs.html>`_:
   scripts for transforming BLS/Census flat files into Stata data
-
-
-Data
-=======
+	
+Raw data underlying the EPI extracts
+====================================
 
 CPS Basic Monthly, 1976 - Present
 ---------------------------------
