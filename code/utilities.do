@@ -217,16 +217,15 @@ foreach year of numlist `minyear'(1)`maxyear' {
 		local counter = 0
 		foreach month of numlist `monthlist`year'' {
 			local counter = `counter' + 1
-
+      * define current month
       local date = tm(`year'm`month')
-
-			* indicator to determine if we use separate ORG files
+			* indicator for existence of ORG files
       if `date' >= tm(1979m1) local orgexists = 1
       else local orgexists = 0
+      * indicator for ORG files being separate from basic files
 			if tm(1979m1) <= `date' & `date' <= tm(1982m12) local separateorg = 1
 			else local separateorg = 0
-
-			* process basic monthly
+			* file names of source data in stata format
 			if tm(1976m1) <= `date' & `date' <= tm(1993m12) {
 				local inputpath ${uniconbasic}
 				local inputfile unicon_basic_`year'_`month'.dta
@@ -235,6 +234,8 @@ foreach year of numlist `minyear'(1)`maxyear' {
 				local inputpath ${censusbasicstata}
 				local inputfile cps_`year'_`month'.dta
 			}
+
+      * unzip and load source data into memory
 			unzipfile `inputpath'`inputfile'.zip, replace
 			use `inputfile', clear
 
@@ -253,7 +254,7 @@ foreach year of numlist `minyear'(1)`maxyear' {
 			tempfile basic_month`month'
 			save `basic_month`month''
 
-			* save org subsample
+			* save separate org subsample
       if `orgexists' == 1 & `separateorg' == 0 {
 				* keep org subsample
 				do ${code}epi_cpsorg_sample.do `date'
