@@ -91,7 +91,7 @@ notes selfemp: Universe: Class of worker assigned (not necessarily employed)
 ******************************
 gen byte selfinc=.
 if tm(1989m1) <= `date' & `date' <= tm(1993m12) {
-	replace selfemp = 0 if class >= 1 & peio1cow != .
+	replace selfemp = 0 if class >= 1 & class != .
 	replace selfemp = 1 if class == 5
 }
 if tm(1994m1) <= `date' & `date' <= tm(2017m12) {
