@@ -97,8 +97,6 @@ if tm(1994m1) <= `date' & `date' <= tm(2017m12) {
 	replace educ=4 if peeduca==43
 	replace educ=5 if 44<=peeduca & peeduca<=46
 }
-
-
 lab var educ "Education level"
 #delimit ;
 lab define educ
