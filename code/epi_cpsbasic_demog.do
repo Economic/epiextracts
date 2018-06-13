@@ -32,11 +32,14 @@ notes age: top-coded at 80 for consistency across years
 * Gender *
 **********
 gen byte female = .
+if tm(1976m1) <= `date' & `date' <= tm(1993m12) {
+	replace female = 0 if sex == 1
+	replace female = 1 if sex == 2
+}
 if tm(1994m1) <= `date' & `date' <= tm(2017m12) {
 	replace female = 0 if pesex == 1
 	replace female = 1 if pesex == 2
 }
-
 lab var female "Female"
 #delimit ;
 lab define female
@@ -45,7 +48,8 @@ lab define female
 ;
 #delimit cr
 lab val female female
-notes female: CPS: pesex
+notes female: 1976-1993 Unicon: sex
+notes female: 1994-present CPS: pesex
 
 
 
