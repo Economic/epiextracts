@@ -259,7 +259,7 @@ foreach year of numlist `minyear'(1)`maxyear' {
       if `date' >= tm(1979m1) local orgexists = 1
       else local orgexists = 0
       * indicator for ORG files being separate from basic files
-			if tm(1979m1) <= `date' & `date' <= tm(1982m12) local separateorg = 1
+			if tm(1979m1) <= `date' & `date' <= tm(1981m12) local separateorg = 1
 			else local separateorg = 0
 			* file names of source data in stata format
 			if tm(1976m1) <= `date' & `date' <= tm(1993m12) {

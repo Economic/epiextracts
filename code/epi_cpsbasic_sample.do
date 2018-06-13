@@ -4,7 +4,7 @@ local date = `1'
 * BASIC SAMPLE RESTRICTION *
 ****************************
 * only include adults with labor force status, 16+
-if tm(1976m1) <= `date' & `date' <= tm(1988m12) {
+if tm(1976m1) <= `date' & `date' <= tm(1993m12) {
 	keep if mlr >= 1 & mlr <= 7 & age >= 16 & age != .
 }
 if tm(1994m1) <= `date' & `date' <= tm(2012m4) {
