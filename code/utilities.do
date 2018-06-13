@@ -1,6 +1,44 @@
 * Utility programs called by master.do
 
 
+
+
+*************************************************************************
+* NAME: valuelabel2csv
+* DESC: converts value label definitions to csv file
+* used in documentation making programs
+*************************************************************************
+capture program drop valuelabel2csv
+program define valuelabel2csv
+syntax using, [VARiable(varname) label(string) replace]
+
+if "`variable'" != "" & "`label'" != "" {
+	di "specify either varname() or valname(), but not both"
+	exit
+}
+
+if "`variable'" != "" {
+	local labelname: value label `variable'
+}
+else {
+	local labelname `label'
+}
+
+local outputfile = subinstr("`2'",",","",1)
+
+label save `labelname' using `outputfile', `replace'
+mac li _all
+!sed -i.bak "s/label define `labelname' //g" `outputfile'
+!sed -i.bak "s/', modify//g" `outputfile'
+!sed -i.bak 's/\`//g' `outputfile'
+!sed -i.bak 's/ "/,"/' `outputfile'
+erase `outputfile'.bak
+type `outputfile'
+
+end
+
+
+
 *************************************************************************
 * NAME: process_rawbasic
 * DESC: Processes raw data from Unicon or Census and converts to Stata
@@ -14,7 +52,6 @@ syntax, begin(string) end(string)
 * numeric codes beginning and end dates
 local begindate = tm(`begin')
 local enddate = tm(`end')
-
 
 * No data prior to 1973: otherwise exit with error
 if `begindate' < tm(1973m1) {
@@ -146,13 +183,12 @@ erase cps_`year'_`month'.dta
 erase cps_`year'_`month'.dta.zip
 erase `inputfilename'
 
-
 end
 
 * create both basic monthly and ORG extracts
 capture program drop create_extracts
 program define create_extracts
-syntax, begin(string) end(string)
+syntax, begin(string) end(string) [keeponly(string)]
 
 * preliminary data
 import delimited using ${suppdata}state_geocodes.csv, clear varnames(1)
@@ -217,16 +253,15 @@ foreach year of numlist `minyear'(1)`maxyear' {
 		local counter = 0
 		foreach month of numlist `monthlist`year'' {
 			local counter = `counter' + 1
-
+      * define current month
       local date = tm(`year'm`month')
-
-			* indicator to determine if we use separate ORG files
+			* indicator for existence of ORG files
       if `date' >= tm(1979m1) local orgexists = 1
       else local orgexists = 0
+      * indicator for ORG files being separate from basic files
 			if tm(1979m1) <= `date' & `date' <= tm(1982m12) local separateorg = 1
 			else local separateorg = 0
-
-			* process basic monthly
+			* file names of source data in stata format
 			if tm(1976m1) <= `date' & `date' <= tm(1993m12) {
 				local inputpath ${uniconbasic}
 				local inputfile unicon_basic_`year'_`month'.dta
@@ -235,6 +270,8 @@ foreach year of numlist `minyear'(1)`maxyear' {
 				local inputpath ${censusbasicstata}
 				local inputfile cps_`year'_`month'.dta
 			}
+
+      * unzip and load source data into memory
 			unzipfile `inputpath'`inputfile'.zip, replace
 			use `inputfile', clear
 
@@ -249,14 +286,21 @@ foreach year of numlist `minyear'(1)`maxyear' {
 			* keep only necessary vars
 			do ${code}epi_cpsbasic_keepord.do `date'
 
+      * limit sample to certain variables for debugging
+      if "`keeponly'" ~= "" keep year month minsamp orgwgt `keeponly'
+
 			* save basic monthly extract
 			tempfile basic_month`month'
 			save `basic_month`month''
 
-			* save org subsample
+			* save separate org subsample
       if `orgexists' == 1 & `separateorg' == 0 {
 				* keep org subsample
 				do ${code}epi_cpsorg_sample.do `date'
+
+        * limit sample to certain variables for debugging
+        if "`keeponly'" ~= "" keep year month minsamp orgwgt `keeponly'
+
         tempfile org_month`month'
         save `org_month`month''
       }
@@ -341,41 +385,5 @@ foreach year of numlist `minyear'(1)`maxyear' {
 	}
 }
 
-
-end
-
-
-
-*************************************************************************
-* NAME: valuelabel2csv
-* DESC: converts value label definitions to csv file
-* used in documentation making programs
-*************************************************************************
-capture program drop valuelabel2csv
-program define valuelabel2csv
-syntax using, [VARiable(varname) label(string) replace]
-
-if "`variable'" != "" & "`label'" != "" {
-	di "specify either varname() or valname(), but not both"
-	exit
-}
-
-if "`variable'" != "" {
-	local labelname: value label `variable'
-}
-else {
-	local labelname `label'
-}
-
-local outputfile = subinstr("`2'",",","",1)
-
-label save `labelname' using `outputfile', `replace'
-mac li _all
-!sed -i.bak "s/label define `labelname' //g" `outputfile'
-!sed -i.bak "s/', modify//g" `outputfile'
-!sed -i.bak 's/\`//g' `outputfile'
-!sed -i.bak 's/ "/,"/' `outputfile'
-erase `outputfile'.bak
-type `outputfile'
 
 end
