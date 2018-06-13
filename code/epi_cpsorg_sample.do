@@ -3,9 +3,7 @@ local date = `1'
 **************************
 * ORG SAMPLE RESTRICTION *
 **************************
-if tm(1979m1) <= `date' & `date' <= tm(1993m1) {
+keep if minsamp == 4 | minsamp == 8
 
-}
-if tm(1994m1) <= `date' & `date' <= tm(2017m12) {
-	keep if minsamp == 4 | minsamp == 8
-}
+* also restrict to positive earnings weight
+keep if orgwgt > 0 & orgwgt ~= .

@@ -55,7 +55,6 @@ if tm(1994m1) <= `date' & `date' <= tm(2017m12) {
 lab var statefips "State - FIPS code"
 notes statefips: CPS: gestfips
 
-
 lab var statecensus "State - Census code"
 notes statecensus: derived from statefips
 
