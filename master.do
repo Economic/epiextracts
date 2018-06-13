@@ -6,7 +6,7 @@ set trace off
 
 * Data Version
 * This version is saved on data
-global dataversion 0.1
+global dataversion 0.2.0
 
 * project directory structure
 * set your stata working directory to the project root containing master.do
@@ -45,7 +45,7 @@ global variablelevels ${docs}variables/levels/
 
 * create EPI's extracts from the processed raw data
 * creates both basic monthly and ORG subsample
-create_extracts, begin("1989m1") end("2017m12")
+create_extracts, begin("1979m1") end("2017m12")
 
 * create documentation
-*do ${codedocs}createdocs.do
+do ${codedocs}createdocs.do
