@@ -15,7 +15,7 @@ webdoc put # `1': `label'
 
 if "`4'" == "titleimage" {
 	webdoc put ```eval_rst
-	webdoc put .. image:: analysis/`1'_titleimage.svg
+	webdoc put .. image:: images/`1'_titleimage.svg
 	webdoc put ```
 }
 
@@ -31,14 +31,14 @@ if "`2'" == "displayvalues" {
 	webdoc put ```
 }
 
+if "`3'" == "details" {
+	webdoc put ## Detailed comments
+	webdoc append ${variabledesc}`1'_detailed.md
+}
+
 webdoc put ## Variable notes
 webdoc put ```eval_rst
 webdoc stlog, cmdstrip raw
 notes `1'
 webdoc stlog close
 webdoc put ```
-
-if "`3'" == "details" {
-	webdoc put ## Detailed analysis
-	webdoc append ${variableanalysis}`1'_detailed.md
-}

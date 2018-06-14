@@ -1,26 +1,17 @@
-webdoc init ${variableanalysis}educ_detailed, replace
+webdoc init ${variableanalysis}educ_analysis, replace
 * some webdoc options to deal with formatting
 webdoc set stlog
 webdoc set _stlog
 
-local counter = 0
-forvalues year = 1979(1)2017 {
-	local counter = `counter' + 1
-	unzipfile ${ceprdata}cepr_org_`year'.zip, replace
-	if `counter' == 1 use year orgwgt educ age using cepr_org_`year', clear
-	else append using cepr_org_`year', keep(year orgwgt educ age)
-	erase cepr_org_`year'.dta
-}
-
-gen lths = educ == 1
-gen hs = educ == 2
-gen some = educ == 3
-gen college = educ == 4
-gen advanced = educ == 5
+gen byte lths = educ == 1 if educ ~= .
+gen byte hs = educ == 2 if educ ~= .
+gen byte some = educ == 3 if educ ~= .
+gen byte college = educ == 4 if educ ~= .
+gen byte advanced = educ == 5 if educ ~= .
 
 keep if age >= 25 & age ~= .
 
-collapse (mean) lths hs some college advanced [pw=orgwgt], by(year)
+collapse (mean) lths hs some college advanced [pw=basicwgt], by(year) fast
 sum year
 local maxyear = r(max)
 foreach ed of varlist lths hs some college advanced {
@@ -40,11 +31,11 @@ legend(off) ///
 xlabel(1980(5)2015) ///
 xtitle("") ytitle("") ///
 lcolor("`color1'" "`color2'" "`color3'" "`color4'" "`color5'") ///
-graphregion(color("252 252 252")) plotregion(margin(r=15) color("252 252 252")) ///
+graphregion(color("252 252 252")) plotregion(margin(r=17) color("252 252 252")) ///
 title("Share of population age 25 and over by educational attainment, 1979-2017", size(medium)) ///
 text(`lthsyvalue' `lthsxvalue' "LTHS", color("`color1'") placement(e)) ///
 text(`hsyvalue' `hsxvalue' "HS", color("`color2'") placement(e)) ///
 text(`someyvalue' `somexvalue' "Some college", color("`color3'") placement(e)) ///
 text(`collegeyvalue' `collegexvalue' "College", color("`color4'") placement(e)) ///
 text(`advancedyvalue' `advancedxvalue' "Advanced", color("`color5'") placement(e))
-graph export ${variableanalysis}educ_titleimage.svg, replace
+graph export ${variableimages}educ_titleimage.svg, replace

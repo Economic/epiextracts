@@ -35,7 +35,7 @@ global ceprdata /data/cps/org/cepr/
 global docs docs/
 global variabledocs ${docs}variables/
 global variabledesc ${docs}variables/descriptions/
-global variableanalysis ${docs}variables/analysis/
+global variableimages ${docs}variables/images/
 global variablelevels ${docs}variables/levels/
 
 
@@ -45,7 +45,7 @@ global variablelevels ${docs}variables/levels/
 
 * create EPI's extracts from the processed raw data
 * creates both basic monthly and ORG subsample
-create_extracts, begin("1979m1") end("2017m12")
+*create_extracts, begin("1979m1") end("2017m12")
 
 * create documentation
 do ${codedocs}createdocs.do
