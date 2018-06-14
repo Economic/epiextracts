@@ -46,7 +46,7 @@ global variablelevels ${docs}variables/levels/
 
 * create EPI's extracts from the processed raw data
 * creates both basic monthly and ORG subsample
-*create_extracts, begin("1979m1") end("2017m12")
+*create_extracts, begin("1979m1") end("2016m12")
 
 * create documentation
 do ${codedocs}createdocs.do
