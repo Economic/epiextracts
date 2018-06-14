@@ -246,9 +246,6 @@ foreach year of numlist `minyear'(1)`maxyear' {
 
 	* 1976 and later, process monthly basic and possibly monthly ORG
 	if `year' >= 1976 {
-		* determine list of months to process for each year
-		* some code that results in `monthlist`year''
-
 		* start a counter to help determine if we have a full year of data
 		local counter = 0
 		foreach month of numlist `monthlist`year'' {
@@ -261,7 +258,8 @@ foreach year of numlist `minyear'(1)`maxyear' {
       * indicator for ORG files being separate from basic files
 			if tm(1979m1) <= `date' & `date' <= tm(1981m12) local separateorg = 1
 			else local separateorg = 0
-			* file names of source data in stata format
+
+			* file names of basic source data in stata format
 			if tm(1976m1) <= `date' & `date' <= tm(1993m12) {
 				local inputpath ${uniconbasic}
 				local inputfile unicon_basic_`year'_`month'.dta
@@ -270,20 +268,17 @@ foreach year of numlist `minyear'(1)`maxyear' {
 				local inputpath ${censusbasicstata}
 				local inputfile cps_`year'_`month'.dta
 			}
-
       * unzip and load source data into memory
 			unzipfile `inputpath'`inputfile'.zip, replace
 			use `inputfile', clear
 
-			* run key basic programs
+			* run key basic/org programs
 			do ${code}epi_cpsbasic_sample.do `date'
 			do ${code}epi_cpsbasic_idwgt.do `date'
 			do ${code}epi_cpsbasic_geog.do `date' `stategeocodes'
 			do ${code}epi_cpsbasic_demog.do `date'
 			do ${code}epi_cpsbasic_empstat.do `date'
-			* add org variables
 			do ${code}epi_cpsorg_wages.do `date'
-			* keep only necessary vars
 			do ${code}epi_cpsbasic_keepord.do `date'
 
       * limit sample to certain variables for debugging
@@ -308,15 +303,37 @@ foreach year of numlist `minyear'(1)`maxyear' {
 			* clean up basic monthly input file
 			erase `inputfile'
 
-			* process separate 1979-1982 ORG
+			* process separate 1979-1981 ORG
 			if `orgexists' == 1 & `separateorg' == 1 {
+				* file names of ORG source data in stata format
+				local inputpath ${uniconorg}
+				local inputfile unicon_org_`year'_`month'.dta
 
+				unzipfile `inputpath'`inputfile'.zip, replace
+				use `inputfile', clear
+
+				* run key basic/org programs
+				do ${code}epi_cpsbasic_sample.do `date'
+				do ${code}epi_cpsbasic_idwgt.do `date'
+				do ${code}epi_cpsbasic_geog.do `date' `stategeocodes'
+				do ${code}epi_cpsbasic_demog.do `date'
+				do ${code}epi_cpsbasic_empstat.do `date'
+				do ${code}epi_cpsorg_wages.do `date'
+				do ${code}epi_cpsbasic_keepord.do `date'
+
+				* keep org subsample
+				do ${code}epi_cpsorg_sample.do `date'
+
+				* limit sample to certain variables for debugging
+				if "`keeponly'" ~= "" keep year month minsamp orgwgt `keeponly'
+
+				* save basic monthly extract
+				tempfile org_month`month'
+				save `org_month`month''
+
+				erase `inputfile'
 			}
-
 		}
-    if `counter' == 12 di "year `year' is a full year"
-    else di "year `year' is NOT a full year"
-
 
 		* if complete year, combine all months into one year dataset
 		if `counter' == 12 {
@@ -335,8 +352,7 @@ foreach year of numlist `minyear'(1)`maxyear' {
 			erase epi_cpsbasic_`year'.dta.zip
 
 			* ORG, if exists
-			* for now do not process separate ORG
-			if `orgexists' == 1 & `separateorg' == 0 {
+			if `orgexists' == 1 {
 				forvalues month = 1 / 12 {
 					if `month' == 1 use `org_month`month'', clear
 					else append using `org_month`month''

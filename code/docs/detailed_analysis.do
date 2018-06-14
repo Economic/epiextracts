@@ -3,7 +3,7 @@ local analysisvarlist educ wbho emp region division
 local othervars year basicwgt age statefips
 
 local counter = 0
-forvalues year = 1979(1)2017 {
+forvalues year = 1976(1)2017 {
 	local counter = `counter' + 1
 	unzipfile ${extracts}epi_cpsbasic_`year'.dta.zip, replace
 	if `counter' == 1 use `analysisvarlist' `othervars' using epi_cpsbasic_`year'.dta, clear
