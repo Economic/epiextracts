@@ -9,14 +9,16 @@
 *		value labels
 
 * load data for a given year and then loop over all variables
-do ${codedocs}create_fakedatafordocs.do
-tempfile fakedata
-save `fakedata'
+unzipfile ${extracts}epi_cpsbasic_2017.dta.zip, replace
+use epi_cpsbasic_2017.dta, clear
+tempfile basedata
+save `basedata'
+erase epi_cpsbasic_2017.dta
 
 foreach var of varlist _all {
 
 	* determine if values will be displayed in documentation
-	use `fakedata', clear
+	use `basedata', clear
 	local labelname: value label `var'
 	if "`labelname'" == "" local dvalues nodisplayvalues
 	if "`labelname'" != "" {
@@ -40,6 +42,6 @@ foreach var of varlist _all {
 	if _rc == 0 local image titleimage
 	if _rc != 0 local image notitleimage
 
-	use `fakedata', clear
+	use `basedata', clear
 	webdoc do ${codedocs}docwrite.do `var' `dvalues' `detailed' `image', md raw nokeep
 }
