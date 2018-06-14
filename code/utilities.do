@@ -362,6 +362,7 @@ foreach year of numlist `minyear'(1)`maxyear' {
 				label data "EPI CPS ORG Extract, Version $dataversion"
 				saveold epi_cpsorg_`year'.dta, replace version(13)
 				zipfile epi_cpsorg_`year'.dta, saving(epi_cpsorg_`year'.dta.zip, replace)
+				stop
 				copy epi_cpsorg_`year'.dta.zip ${extracts}epi_cpsorg_`year'.dta.zip, replace
 				erase epi_cpsorg_`year'.dta
 				erase epi_cpsorg_`year'.dta.zip

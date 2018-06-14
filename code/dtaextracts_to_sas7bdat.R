@@ -40,7 +40,8 @@ myfunction <- function(x) {
   rawdest <- file.path(origpath,origfilename)
   finaldest <- file.path("/data/cps",datasource,"epiextracts",finalfilename)
 
-  system(paste("pigz -dc",rawdest,">",dtafilename))
+  #system(paste("pigz -dc",rawdest,">",dtafilename))
+  system(paste("unzip",rawdest))
   write_sas(read_dta(dtafilename,encoding="latin1"),sasfilename)
 	system(paste("chmod 0444",sasfilename))
   system(paste("pigz -Kf",sasfilename))
