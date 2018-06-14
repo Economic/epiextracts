@@ -2,10 +2,5 @@
 _build
 
 # main variable pages will be generated
-variables/*
+variables/*.md
 !variables/index.rst
-
-# keep the following folders; they will include their own gitignores
-!variables/descriptions/
-!variables/analysis/.gitignore
-!variables/levels/.gitignore

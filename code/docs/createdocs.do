@@ -1,6 +1,7 @@
 * create docs for all variabels
 
 * (1) do detailed analysis for some variables
+do ${codedocs}detailed_analysis.do
 
 * (2) create a markdown document for each variable consisting of
 *		name of variable and variable label [pulled from data]
@@ -9,14 +10,17 @@
 *		value labels
 
 * load data for a given year and then loop over all variables
-do ${codedocs}create_fakedatafordocs.do
-tempfile fakedata
-save `fakedata'
+unzipfile ${extracts}epi_cpsbasic_2017.dta.zip, replace
+use epi_cpsbasic_2017.dta, clear
+tempfile basedata
+save `basedata'
+erase epi_cpsbasic_2017.dta
 
 foreach var of varlist _all {
 
 	* determine if values will be displayed in documentation
-	use `fakedata', clear
+	* if so, create .csv file of value labels
+	use `basedata', clear
 	local labelname: value label `var'
 	if "`labelname'" == "" local dvalues nodisplayvalues
 	if "`labelname'" != "" {
@@ -31,15 +35,16 @@ foreach var of varlist _all {
 	*		(3) save each variables detailed md file
 	* 	(4) then this loop should confirm/deny existence of detailed .md
 	*capture webdoc do ${codedocs}`var'_detailed.do, md raw nokeep
-	*if _rc == 0 local detailed details
-	*if _rc != 0 local detailed nodetails
-	local detailed nodetails
+	capture confirm file ${variablelongdesc}`var'_longdesc.md
+	if _rc == 0 local detailed details
+	if _rc != 0 local detailed nodetails
+	*local detailed nodetails
 
 	* determine if there is a title image
-	capture confirm file ${variableanalysis}`var'_titleimage.svg
+	capture confirm file ${variableimages}`var'_titleimage.svg
 	if _rc == 0 local image titleimage
 	if _rc != 0 local image notitleimage
 
-	use `fakedata', clear
+	use `basedata', clear
 	webdoc do ${codedocs}docwrite.do `var' `dvalues' `detailed' `image', md raw nokeep
 }
