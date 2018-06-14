@@ -24,10 +24,10 @@ local color4 152 78 163
 
 line white black hispanic other year, ///
 legend(off) ///
-xlabel(1980(5)2015) ///
+xlabel(1975(5)2015) ///
 xtitle("") ytitle("") ///
 lcolor("`color1'" "`color2'" "`color3'" "`color4'") ///
-graphregion(color("252 252 252")) plotregion(margin(r=15) color("252 252 252")) ///
+graphregion(color("252 252 252") margin(r=17)) plotregion(color("252 252 252")) ///
 title("Share of population by race/ethnicity, ages 16 and over, 1979-2017", size(medium)) ///
 text(`whiteyvalue' `whitexvalue' "White", color("`color1'") placement(e)) ///
 text(`blackyvalue' `blackxvalue' "Black", color("`color2'") placement(e)) ///

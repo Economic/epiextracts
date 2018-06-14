@@ -23,10 +23,10 @@ local color5 255 127 0
 
 line allepop primeepop year, ///
 legend(off) ///
-xlabel(1980(5)2015) ///
+xlabel(1975(5)2015) ///
 xtitle("") ytitle("") ///
 lcolor("`color1'" "`color2'") ///
-graphregion(color("252 252 252")) plotregion(margin(r=17) color("252 252 252")) ///
+graphregion(color("252 252 252") margin(r=17)) plotregion(color("252 252 252")) ///
 title("Employment-to-population ratios, overall and prime-age (25-54)", size(medium)) ///
 text(`allepopyvalue' `allepopxvalue' "Overall", color("`color1'") placement(e)) ///
 text(`primeepopyvalue' `primeepopxvalue' "Prime-age", color("`color2'") placement(e))

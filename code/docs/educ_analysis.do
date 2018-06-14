@@ -28,10 +28,10 @@ local color5 255 127 0
 
 line lths hs some college advanced year, ///
 legend(off) ///
-xlabel(1980(5)2015) ///
+xlabel(1975(5)2015) ///
 xtitle("") ytitle("") ///
 lcolor("`color1'" "`color2'" "`color3'" "`color4'" "`color5'") ///
-graphregion(color("252 252 252")) plotregion(margin(r=17) color("252 252 252")) ///
+graphregion(color("252 252 252") margin(r=21)) plotregion(color("252 252 252")) ///
 title("Share of population age 25 and over by educational attainment, 1979-2017", size(medium)) ///
 text(`lthsyvalue' `lthsxvalue' "LTHS", color("`color1'") placement(e)) ///
 text(`hsyvalue' `hsxvalue' "HS", color("`color2'") placement(e)) ///
