@@ -18,6 +18,7 @@ erase epi_cpsbasic_2017.dta
 foreach var of varlist _all {
 
 	* determine if values will be displayed in documentation
+	* if so, create .csv file of value labels
 	use `basedata', clear
 	local labelname: value label `var'
 	if "`labelname'" == "" local dvalues nodisplayvalues
