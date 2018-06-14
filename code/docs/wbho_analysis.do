@@ -1,4 +1,4 @@
-webdoc init ${variableanalysis}wbho_detailed, replace
+webdoc init ${variablelongdesc}wbho_longdesc, replace
 * some webdoc options to deal with formatting
 webdoc set stlog
 webdoc set _stlog
@@ -8,7 +8,7 @@ gen byte black = wbho == 2 if wbho ~= .
 gen byte hispanic = wbho == 3 if wbho ~= .
 gen byte other = wbho == 4 if wbho ~= .
 
-collapse (mean) white black hispanic other [pw=orgwgt], by(year)
+collapse (mean) white black hispanic other [pw=basicwgt], by(year) fast
 sum year
 local maxyear = r(max)
 foreach race of varlist white black hispanic other {

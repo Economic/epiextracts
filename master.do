@@ -34,7 +34,8 @@ global ceprdata /data/cps/org/cepr/
 * path names for docs
 global docs docs/
 global variabledocs ${docs}variables/
-global variabledesc ${docs}variables/descriptions/
+global variableshortdesc ${docs}variables/descriptions/shortdesc/
+global variablelongdesc ${docs}variables/descriptions/longdesc/
 global variableimages ${docs}variables/images/
 global variablelevels ${docs}variables/levels/
 

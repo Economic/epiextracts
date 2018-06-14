@@ -35,7 +35,7 @@ foreach var of varlist _all {
 	*		(3) save each variables detailed md file
 	* 	(4) then this loop should confirm/deny existence of detailed .md
 	*capture webdoc do ${codedocs}`var'_detailed.do, md raw nokeep
-	capture confirm file ${variabledesc}`var'_detailed.md
+	capture confirm file ${variablelongdesc}`var'_longdesc.md
 	if _rc == 0 local detailed details
 	if _rc != 0 local detailed nodetails
 	*local detailed nodetails

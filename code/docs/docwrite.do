@@ -20,7 +20,7 @@ if "`4'" == "titleimage" {
 }
 
 webdoc put ## Description
-webdoc append ${variabledesc}`1'_shortdesc.md
+webdoc append ${variableshortdesc}`1'_shortdesc.md
 
 * conditionally, list value labels
 if "`2'" == "displayvalues" {
@@ -33,7 +33,7 @@ if "`2'" == "displayvalues" {
 
 if "`3'" == "details" {
 	webdoc put ## Detailed comments
-	webdoc append ${variabledesc}`1'_detailed.md
+	webdoc append ${variablelongdesc}`1'_longdesc.md
 }
 
 webdoc put ## Variable notes

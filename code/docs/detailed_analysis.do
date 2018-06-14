@@ -1,7 +1,5 @@
-* this do file will call educ_detailed.do, wbho_detailed.do, etc.
-
 * basic analysis
-local analysisvarlist educ /*wbho*/
+local analysisvarlist educ wbho emp
 local othervars year basicwgt age
 
 local counter = 0

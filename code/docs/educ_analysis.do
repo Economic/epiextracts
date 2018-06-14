@@ -1,4 +1,4 @@
-webdoc init ${variableanalysis}educ_analysis, replace
+webdoc init ${variablelongdesc}educ_longdesc, replace
 * some webdoc options to deal with formatting
 webdoc set stlog
 webdoc set _stlog
@@ -39,3 +39,7 @@ text(`someyvalue' `somexvalue' "Some college", color("`color3'") placement(e)) /
 text(`collegeyvalue' `collegexvalue' "College", color("`color4'") placement(e)) ///
 text(`advancedyvalue' `advancedxvalue' "Advanced", color("`color5'") placement(e))
 graph export ${variableimages}educ_titleimage.svg, replace
+
+/***
+some detailed analysis for educ
+***/
