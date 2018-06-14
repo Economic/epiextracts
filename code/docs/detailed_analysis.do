@@ -1,5 +1,5 @@
 * basic analysis
-local analysisvarlist educ wbho emp region
+local analysisvarlist educ wbho emp region division
 local othervars year basicwgt age statefips
 
 local counter = 0
