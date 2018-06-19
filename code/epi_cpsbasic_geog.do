@@ -68,7 +68,7 @@ notes region: derived from statefips
 **********
 * County *
 **********
-/*
+
 gen countyfips = .
 if tm(1995m9) <= `date' & `date' <= tm(2004m4) {
 	replace countyfips = geco
@@ -82,4 +82,3 @@ lab val countyfips countyfips
 notes countyfips: 1995m9-2004m4, CPS: geco
 notes countyfips: 2004m5-present, CPS: gtco
 notes countyfips: Not consistent over time
-*/
