@@ -63,3 +63,22 @@ notes division: derived from statefips
 
 lab var region "Census region (1-4)"
 notes region: derived from statefips
+
+
+**********
+* County *
+**********
+/*
+gen countyfips = .
+if tm(1994m1) <= `date' & `date' <= tm(2004m4) {
+	replace countyfips = geco
+}
+if tm(2004m5) <= `date' & `date' <= tm(2017m12) {
+	replace countyfips = gtco
+}
+lab var countyfips "County - FIPS code"
+lab def countyfips 0 "Not identified"
+lab val countyfips countyfips
+notes countyfips: 1994-present, CPS: geco
+notes countyfips: Not consistent over time
+*/
