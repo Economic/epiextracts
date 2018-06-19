@@ -7,7 +7,8 @@ local date = `1'
 if tm(1976m1) <= `date' & `date' <= tm(1993m12) {
 	keep if mlr >= 1 & mlr <= 7 & age >= 16 & age != .
 }
-if tm(1994m1) <= `date' & `date' <= tm(2012m4) {
+* sanity check for civilian household records
+if tm(1994m1) <= `date' & `date' <= tm(2017m12) {
 	* it should be the case that pemlr is only defined iff prpertyp = 2
 	* exceptions in 2005m1
 	if `date' == tm(2005m1) {
@@ -29,5 +30,11 @@ if tm(1994m1) <= `date' & `date' <= tm(2012m4) {
 		assert pemlr >= 1 & pemlr <= 7 if prpertyp == 2
 	}
 	assert (pemlr >= 1 & pemlr <= 7) | pemlr == -1
+}
+* only include adults with labor force status, 16+
+if tm(1994m1) <= `date' & `date' <= tm(2012m4) {
 	keep if pemlr >= 1 & pemlr <= 7 & peage >= 16 & peage != .
+}
+if tm(2012m5) <= `date' & `date' <= tm(2017m12) {
+	keep if pemlr >= 1 & pemlr <= 7 & prtage >= 16 & prtage != .
 }
