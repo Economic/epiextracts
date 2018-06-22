@@ -1,4 +1,4 @@
-all: deploybasic deployorg deploydocs
+all: deploybasic deployorg createdocs deploydocs
 
 .PHONY: all deploybasic deployorg deploydocs deploysas
 
@@ -7,6 +7,9 @@ deploybasic:
 
 deployorg:
 	rsync -avh --chmod=0444 extracts/epi_cpsorg*.dta.zip maynard:/data/cps/org/epiextracts/
+
+createdocs:
+	cd docs && $(MAKE) clean html
 
 deploydocs:
 	rsync -rvh docs/_build/html/ maynard:/var/www/html/epiextracts_docs/ --delete
