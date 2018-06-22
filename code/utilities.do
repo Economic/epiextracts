@@ -187,6 +187,13 @@ erase `inputfilename'
 
 end
 
+
+
+*************************************************************************
+* NAME: create_extracts
+* DESC: Create uniform EPI extracts of CPS basic monthlies and May/ORG
+* Called by master.do
+*************************************************************************
 * create both basic monthly and ORG extracts
 capture program drop create_extracts
 program define create_extracts
