@@ -2,6 +2,87 @@
 
 
 
+*************************************************************************
+* NAME: append_extracts
+* DESC: Append uniform extracts in extracts/ and load into memory.
+* Useful for analysis/testing. Not used in the creation of extracts.
+*************************************************************************
+capture program drop append_extracts
+program define append_extracts
+syntax, begin(string) end(string) sample(string) [keeponly(string)]
+
+local lowersample = lower("`sample'")
+
+if "`lowersample'" == "org" local samplename ORG
+else if "`lowersample'" == "basic" local samplename Basic
+else {
+	di "Must specify Basic or ORG sample"
+	exit
+}
+
+* deal with dates
+local begindate = tm(`begin')
+local enddate = tm(`end')
+local minyear = year(dofm(`begindate'))
+local maxyear = year(dofm(`enddate'))
+
+* create list of months for each year to process
+foreach date of numlist `begindate'(1)`enddate' {
+  local year = year(dofm(`date'))
+  local month = month(dofm(`date'))
+  local monthlist`year' `monthlist`year'' `month'
+}
+
+foreach year of numlist `minyear'(1)`maxyear' {
+	local counter = 0
+	foreach month of numlist `monthlist`year'' {
+		local counter = `counter' + 1
+	}
+
+	if `counter' == 12 {
+		local inputfile epi_cps`lowersample'_`year'.dta
+		unzipfile ${extracts}`inputfile'.zip, replace
+		if "`keeponly'" ~= "" use year month minsamp orgwgt `keeponly' using `inputfile', clear
+		else use `inputfile', clear
+		tempfile annualdata`year'
+		save `annualdata`year''
+		erase `inputfile'
+	}
+
+	else {
+		foreach month of numlist `monthlist`year'' {
+			local inputfile epi_cps`lowersample'_`year'_`month'.dta
+			unzipfile ${extracts}`inputfile'.zip, replace
+			if "`keeponly'" ~= "" use year month minsamp orgwgt `keeponly' using `inputfile', clear
+			else use `inputfile', clear
+			tempfile monthlydata`month'
+			save `monthlydata`month''
+			erase `inputfile'
+		}
+		local counter = 0
+		foreach month of numlist `monthlist`year'' {
+			local counter = `counter' + 1
+			if `counter' == 1 use `monthlydata`month'', clear
+			else append using `monthlydata`month''
+		}
+		tempfile annualdata`year'
+		save `annualdata`year''
+	}
+
+}
+
+local counter = 0
+foreach year of numlist `minyear'(1)`maxyear' {
+	local counter = `counter' + 1
+	if `counter' == 1 use `annualdata`year'', clear
+	else append using `annualdata`year''
+}
+
+
+
+
+
+end
 
 *************************************************************************
 * NAME: valuelabel2csv
@@ -194,7 +275,6 @@ end
 * DESC: Create uniform EPI extracts of CPS basic monthlies and May/ORG
 * Called by master.do
 *************************************************************************
-* create both basic monthly and ORG extracts
 capture program drop create_extracts
 program define create_extracts
 syntax, begin(string) end(string) [keeponly(string)]
