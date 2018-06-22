@@ -466,10 +466,7 @@ label define hufinal
 	256         "REMOVED DURING SUB-SAMPLING"
 	257         "UNIT ALREADY HAD A CHANCE OF SELECTION"
 ;
-label values huspnish huspnish;
-label define huspnish
-	1           "SPANISH ONLY LANGUAGE SPOKEN"
-;
+
 label values hetenure hetenure;
 label define hetenure
 	1           "OWNED OR BEING BOUGHT BY A HH MEMBER"

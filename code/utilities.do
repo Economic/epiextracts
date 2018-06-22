@@ -127,8 +127,10 @@ di "Running process_censusbasic, `year'm`month'"
 
 
 * determine dictionary/NBER do-file to use
-* January 2015 - most recent date
-if  tm(2015m1) <= `datenum' & `datenum' <= tm(2017m12) local nberprogname cpsbjan2015
+* January 2017 - present date
+if  tm(2017m1) <= `datenum' & `datenum' <= tm(2018m5) local nberprogname cpsbjan2017
+* January 2015 - December 2016
+if  tm(2015m1) <= `datenum' & `datenum' <= tm(2016m12) local nberprogname cpsbjan2015
 * April 2014 - December 2014
 if  tm(2014m4) <= `datenum' & `datenum' <= tm(2014m12) local nberprogname cpsbapr2014
 * January 2014 - March 2014

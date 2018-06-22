@@ -4,7 +4,7 @@ local date = `1'
 * Paid hourly *
 ***************
 gen paidhre = .
-if tm(1994m1) <= `date' & `date' <= tm(2017m12) {
+if tm(1994m1) <= `date' & `date' <= tm(2018m5) {
 	replace paidhre = 0 if peernhry == 2
 	replace paidhre = 1 if peernhry == 1
 }
@@ -20,7 +20,7 @@ notes paidhre: CPS: derived from peernhry
 * Hourly earnings if "paid by hour" (paidhre==1) *
 **************************************************
 gen wage1 = .
-if tm(1994m1) <= `date' & `date' <= tm(2017m12) {
+if tm(1994m1) <= `date' & `date' <= tm(2018m5) {
 	* convert from pennies to dollars
 	replace wage1 = prernhly / 100 if paidhre == 1
 	replace wage1 = . if prernhly < 0
@@ -125,7 +125,7 @@ replace weekpay=earnwke if paidhre==0
 replace weekpay=uearnwk if paidhre==1 /* note shift from uearnwke to uearnwk */
 }
 */
-if tm(1994m1) <= `date' & `date' <= tm(2017m12) {
+if tm(1994m1) <= `date' & `date' <= tm(2018m5) {
 	replace weekpay=prernwa/100 if paidhre==0 /* convert from pennies to dollars */
 	replace weekpay=prernwa/100 if paidhre==1
 	replace weekpay=. if prernwa<0
@@ -149,7 +149,7 @@ replace wage2=weekpay/uhourse if paidhre==0
 replace wage2=. if wage2<0
 }
 */
-if tm(1994m1) <= `date' & `date' <= tm(2017m12) {
+if tm(1994m1) <= `date' & `date' <= tm(2018m5) {
 	replace wage2=weekpay/pehrusl1 if paidhre==0
 	replace wage2=. if wage2<0
 }

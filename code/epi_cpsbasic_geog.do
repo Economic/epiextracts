@@ -40,7 +40,7 @@ if tm(1978m1) <= `date' & `date' <= tm(1993m12) {
 	drop statecensus
 	rename statecensus_alt statecensus
 }
-if tm(1994m1) <= `date' & `date' <= tm(2017m12) {
+if tm(1994m1) <= `date' & `date' <= tm(2018m5) {
 	replace statefips = gestfips
 	merge m:1 statefips using `stategeocodes', assert(3) nogenerate
 	if `date' <= tm(2013m12) assert statecensus == gestcen
@@ -73,7 +73,7 @@ gen countyfips = .
 if tm(1995m9) <= `date' & `date' <= tm(2004m4) {
 	replace countyfips = geco
 }
-if tm(2004m5) <= `date' & `date' <= tm(2017m12) {
+if tm(2004m5) <= `date' & `date' <= tm(2018m5) {
 	replace countyfips = gtco
 }
 lab var countyfips "County - FIPS code"
