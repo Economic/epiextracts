@@ -9,7 +9,7 @@
 *************************************************************************
 capture program drop append_extracts
 program define append_extracts
-syntax, begin(string) end(string) sample(string) [keeponly(string)]
+syntax, begin(string) end(string) sample(string) [version(string)] [keeponly(string)]
 
 local lowersample = lower("`sample'")
 
@@ -19,6 +19,18 @@ else {
 	di "Must specify Basic or ORG sample"
 	exit
 }
+
+local dataversion = lower("`version'")
+if "`version'" == "" local dataversion "local"
+if "`dataversion'" ~= "production" & "`dataversion'" ~= "local" {
+	di "Version must be local or production"
+	exit
+}
+
+if "`dataversion'" == "production" local inputpath /data/cps/`lowersample'/epiextracts/
+else local inputpath ${extracts}
+
+di "Using `dataversion' version of the extracts located in `inputpath'"
 
 * deal with dates
 local begindate = tm(`begin')
@@ -41,7 +53,7 @@ foreach year of numlist `minyear'(1)`maxyear' {
 
 	if `counter' == 12 {
 		local inputfile epi_cps`lowersample'_`year'.dta
-		unzipfile ${extracts}`inputfile'.zip, replace
+		unzipfile `inputpath'`inputfile'.zip, replace
 		if "`keeponly'" ~= "" use year month minsamp orgwgt `keeponly' using `inputfile', clear
 		else use `inputfile', clear
 		tempfile annualdata`year'
@@ -52,7 +64,7 @@ foreach year of numlist `minyear'(1)`maxyear' {
 	else {
 		foreach month of numlist `monthlist`year'' {
 			local inputfile epi_cps`lowersample'_`year'_`month'.dta
-			unzipfile ${extracts}`inputfile'.zip, replace
+			unzipfile `inputpath'`inputfile'.zip, replace
 			if "`keeponly'" ~= "" use year month minsamp orgwgt `keeponly' using `inputfile', clear
 			else use `inputfile', clear
 			tempfile monthlydata`month'
