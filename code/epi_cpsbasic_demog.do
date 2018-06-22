@@ -12,7 +12,7 @@ if tm(1994m1) <= `date' & `date' <= tm(2012m4) {
 	replace age = peage
 	replace age = . if peage < 0
 }
-if tm(2012m5) <= `date' & `date' <= tm(2017m12) {
+if tm(2012m5) <= `date' & `date' <= tm(2018m5) {
 	gen int age = .
 	replace age = prtage
 	replace age = . if prtage < 0
@@ -36,7 +36,7 @@ if tm(1976m1) <= `date' & `date' <= tm(1993m12) {
 	replace female = 0 if sex == 1
 	replace female = 1 if sex == 2
 }
-if tm(1994m1) <= `date' & `date' <= tm(2017m12) {
+if tm(1994m1) <= `date' & `date' <= tm(2018m5) {
 	replace female = 0 if pesex == 1
 	replace female = 1 if pesex == 2
 }
@@ -90,7 +90,7 @@ if tm(1992m1) <= `date' & `date' <= tm(1993m12) {
 }
 */
 
-if tm(1994m1) <= `date' & `date' <= tm(2017m12) {
+if tm(1994m1) <= `date' & `date' <= tm(2018m5) {
 	replace educ=1 if 31<=peeduca & peeduca<=37
 	replace educ=2 if 38<=peeduca & peeduca<=39 /* includes "no diploma" */
 	replace educ=3 if 40<=peeduca & peeduca<=42
@@ -163,7 +163,7 @@ if tm(2012m5) <= `date' & `date' <= tm(2013m12) {
 	*/ | ptdtrace==25 /* Other 3 races */ | ptdtrace==26 /* 4 and 5 races */
 	replace wbho=3 if (1<=prdthsp & prdthsp<=5) /* hispanic */
 }
-if tm(2014m1) <= `date' & `date' <= tm(2017m12) {
+if tm(2014m1) <= `date' & `date' <= tm(2018m5) {
 	replace wbho=1 if ptdtrace==1 /* white */
 	replace wbho=2 if ptdtrace==2 /* black */
 	replace wbho=2 if ptdtrace==6 /* black-white */ | ptdtrace==10 /*

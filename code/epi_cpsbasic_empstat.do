@@ -10,7 +10,7 @@ if tm(1976m1) <= `date' & `date' <= tm(1993m12) {
 	replace lfstat = 2 if mlr == 3
 	replace lfstat = 3 if 4 <= mlr & mlr <= 7
 }
-if tm(1994m1) <= `date' & `date' <= tm(2017m12) {
+if tm(1994m1) <= `date' & `date' <= tm(2018m5) {
 	replace lfstat = 1 if 1 <= pemlr & pemlr <= 2
 	replace lfstat = 2 if 3 <= pemlr & pemlr <= 4
 	replace lfstat = 3 if 5 <= pemlr & pemlr <= 7
@@ -72,7 +72,7 @@ if tm(1989m1) <= `date' & `date' <= tm(1993m12) {
 	replace selfemp = 0 if class >= 1 & class != .
 	replace selfemp = 1 if class == 6
 }
-if tm(1994m1) <= `date' & `date' <= tm(2017m12) {
+if tm(1994m1) <= `date' & `date' <= tm(2018m5) {
 	replace selfemp = 0 if peio1cow >= 1 & peio1cow != .
 	replace selfemp = 1 if peio1cow == 7
 }
@@ -94,7 +94,7 @@ if tm(1989m1) <= `date' & `date' <= tm(1993m12) {
 	replace selfemp = 0 if class >= 1 & class != .
 	replace selfemp = 1 if class == 5
 }
-if tm(1994m1) <= `date' & `date' <= tm(2017m12) {
+if tm(1994m1) <= `date' & `date' <= tm(2018m5) {
 	replace selfinc = 0 if peio1cow >= 1 & peio1cow != .
 	replace selfinc = 1 if peio1cow == 6
 }
@@ -120,7 +120,7 @@ if tm(1989m1) <= `date' & `date' <= tm(1993m12) {
 	replace selfany = 0 if class >= 1 & class != .
 	replace selfany = 1 if class == 5 | class == 6
 }
-if tm(1994m1) <= `date' & `date' <= tm(2017m12) {
+if tm(1994m1) <= `date' & `date' <= tm(2018m5) {
 	replace selfany = 0 if peio1cow >= 1 & peio1cow != .
 	replace selfany = 1 if peio1cow == 6 | peio1cow == 7
 }

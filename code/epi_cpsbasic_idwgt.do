@@ -48,7 +48,7 @@ if tm(1994m1) <= `date' & `date' <= tm(2004m4) {
 	gen byte unicon_recnum = .
 	gen hrhhid2 = ""
 }
-if tm(2004m5) <= `date' & `date' <= tm(2017m12) {
+if tm(2004m5) <= `date' & `date' <= tm(2018m5) {
 	* use already existing hrhhid hrsersuf huhhnum pulineno to uniquely id persons
 	duplicates report hrhhid hrhhid2 pulineno
 	assert r(unique_value) == r(N)
@@ -103,7 +103,7 @@ if tm(1976m1) <= `date' & `date' <= tm(1993m12) {
 	replace minsamp = mis
 	assert minsamp >= 1 & minsamp <= 8
 }
-if tm(1994m1) <= `date' & `date' <= tm(2017m12) {
+if tm(1994m1) <= `date' & `date' <= tm(2018m5) {
 	replace minsamp = hrmis
 	*replace minsamp = . if hrmis < 1
 	assert minsamp >= 1 & minsamp <= 8
@@ -125,7 +125,7 @@ if tm(1979m1) <= `date' & `date' <= tm(1993m12) {
 		replace orgwgt = ernwgt / 100
 	}
 }
-if tm(1994m1) <= `date' & `date' <= tm(2017m12) {
+if tm(1994m1) <= `date' & `date' <= tm(2018m5) {
 	replace orgwgt = pworwgt
 }
 replace orgwgt = . if orgwgt <= 0
@@ -145,7 +145,7 @@ gen basicwgt = .
 if tm(1976m1) <= `date' & `date' <= tm(1993m12) {
 	replace basicwgt = wgt / 100
 }
-if tm(1994m1) <= `date' & `date' <= tm(2017m12) {
+if tm(1994m1) <= `date' & `date' <= tm(2018m5) {
 	replace basicwgt = pwsswgt
 }
 replace basicwgt = . if basicwgt <= 0

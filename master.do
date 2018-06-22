@@ -39,11 +39,11 @@ global variablelevels ${docs}variables/levels/
 
 * process the raw data and convert it to Stata format
 * this is only necessary for additional months of data
-*process_rawbasic, begin("2003m1") end("2004m1")
+*process_rawbasic, begin("2018m1") end("2018m5")
 
 * create EPI's extracts from the processed raw data
 * creates both basic monthly and ORG subsample
-create_extracts, begin("2016m1") end("2016m5")
+create_extracts, begin("2016m1") end("2018m5")
 
 * create documentation
 *do ${codedocs}createdocs.do
