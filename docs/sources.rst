@@ -18,7 +18,7 @@ Other code incorporated into the EPI extracts
   scripts for processing raw data and uniform coding of several variables
 * `NBER <http://www.nber.org/data/cps_basic_progs.html>`_:
   scripts for transforming BLS/Census flat files into Stata data
-	
+
 Raw data underlying the EPI extracts
 ====================================
 
@@ -48,3 +48,20 @@ CPS ORG/May 1973-Present
 +----------------+--------------------+
 | 1994 - Present | Census/BLS monthly |
 +----------------+--------------------+
+
+Documentation for source data
+====================================
+On maynard you can find documentation for the underlying source data as well
+as the original EPI extracts:
+
++-------------------------+---------------------------------------------------------+
+| Source data             | Documentation                                           |
++=========================+=========================================================+
+| Original EPI CPS Basic  | :file:`/data/cps/basic/epi/raw/codebooks/`              |
++-------------------------+---------------------------------------------------------+
+| Original EPI CPS ORG    | :file:`/data/cps/org/epi/raw/codebooks/`                |
++-------------------------+---------------------------------------------------------+
+| Unicon CPS Basic        | :file:`/data/cps/basic/unicon/codebooks/`               |
++-------------------------+---------------------------------------------------------+
+| Unicon CPS ORG          | :file:`/data/cps/org/unicon/codebooks/`                 |
++-------------------------+---------------------------------------------------------+
