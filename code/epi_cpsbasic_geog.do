@@ -53,10 +53,12 @@ if tm(1994m1) <= `date' & `date' <= tm(2018m5) {
 }
 
 lab var statefips "State - FIPS code"
-notes statefips: CPS: gestfips
+notes statefips: 1978-1993, derived from Unicon state census code: state
+notes statefips: 1994-present, CPS: gestfips
 
 lab var statecensus "State - Census code"
-notes statecensus: derived from statefips
+notes statecensus: 1978-1993, Unicon: state
+notes statecensus: 1994-present, derived from CPS state FIPS code: gestfips
 
 lab var division "Census division (1-9)"
 notes division: derived from statefips
