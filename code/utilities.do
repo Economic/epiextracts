@@ -373,13 +373,17 @@ foreach year of numlist `minyear'(1)`maxyear' {
 			unzipfile `inputpath'`inputfile'.zip, replace
 			use `inputfile', clear
 
+			* indicator if file contains earner info
+			if `date' >= tm(1982m1) local earnerinfo = 1
+			else local earnerinfo = 0
+
 			* run key basic/org programs
 			do ${code}epi_cpsbasic_sample.do `date'
 			do ${code}epi_cpsbasic_idwgt.do `date'
 			do ${code}epi_cpsbasic_geog.do `date' `stategeocodes'
 			do ${code}epi_cpsbasic_demog.do `date'
 			do ${code}epi_cpsbasic_empstat.do `date'
-			do ${code}epi_cpsorg_wages.do `date'
+			do ${code}epi_cpsorg_wages.do `date' `earnerinfo'
 			do ${code}epi_cpsbasic_keepord.do `date'
 
       * limit sample to certain variables for debugging
@@ -413,13 +417,16 @@ foreach year of numlist `minyear'(1)`maxyear' {
 				unzipfile `inputpath'`inputfile'.zip, replace
 				use `inputfile', clear
 
+				* indicator if file contains earner info
+				local earnerinfo = 1
+
 				* run key basic/org programs
 				do ${code}epi_cpsbasic_sample.do `date'
 				do ${code}epi_cpsbasic_idwgt.do `date'
 				do ${code}epi_cpsbasic_geog.do `date' `stategeocodes'
 				do ${code}epi_cpsbasic_demog.do `date'
 				do ${code}epi_cpsbasic_empstat.do `date'
-				do ${code}epi_cpsorg_wages.do `date'
+				do ${code}epi_cpsorg_wages.do `date' `earnerinfo'
 				do ${code}epi_cpsbasic_keepord.do `date'
 
 				* keep org subsample

@@ -8,6 +8,6 @@ keep
 	educ
 	lfstat emp unemp nilf
 	selfemp selfinc selfany
-	paidhre wage1 weekpay wage2 wage3
+	weekpay paidhre otcrec otcamt	wage1 wage2 wage3 wage4
 ;
 #delimit cr;
