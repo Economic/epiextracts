@@ -21,9 +21,11 @@ foreach var of varlist `analysisvarlist' {
 	if `r(o1)' == 0 erase "${variablelongdesc}`var'_longdesc.md"
 }
 
+
+
 * CPS Basic analysis
-local analysisvarlist educ wbho emp region division
-local othervars year basicwgt age statefips
+local analysisvarlist countyfips age educ wbho emp region division
+local othervars year basicwgt statefips
 
 local counter = 0
 forvalues year = 1976(1)2017 {

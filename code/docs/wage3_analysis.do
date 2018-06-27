@@ -22,13 +22,13 @@ replace wage3 = wage3 * `basevalue' / cpiurs
 
 * make wide and graph
 reshape wide wage3_, i(year) j(female)
-sum year
-local maxyear = r(max)
 foreach var of varlist wage3_* {
-	sum `var' if year == `maxyear'
+	sum `var' if year == 2009
 	local `var'yvalue = r(mean)
-	local `var'xvalue = `maxyear' + 0.5
+	local `var'xvalue = 2009
 }
+local wage3_0yvalue = `wage3_0yvalue' - 1.2
+local wage3_1yvalue = `wage3_1yvalue' - 1
 
 local color1 228 26 28
 local color2 55 126 184
@@ -42,10 +42,10 @@ xlabel(1975(5)2015) ///
 ylabel(12(2)18 20 "$20", angle(0)) ///
 xtitle("") ytitle("") ///
 lcolor("`color4'" "`color2'") ///
-graphregion(color("252 252 252") margin(r=15)) plotregion(color("252 252 252")) ///
-title("Median wages by gender, 1979-2017 (in 2017$)", size(medium)) ///
-text(`wage3_0yvalue' `wage3_0xvalue' "Male", color("`color4'") placement(e)) ///
-text(`wage3_1yvalue' `wage3_1xvalue' "Female", color("`color2'") placement(e))
+graphregion(color("252 252 252")) plotregion(color("252 252 252")) ///
+title("Median real wages by gender, 1979-2017 (in 2017$)", size(medium)) ///
+text(`wage3_0yvalue' `wage3_0xvalue' "Male", color("`color4'") placement(c)) ///
+text(`wage3_1yvalue' `wage3_1xvalue' "Female", color("`color2'") placement(c))
 graph export ${variableimages}wage3_titleimage.svg, replace
 
 /***
