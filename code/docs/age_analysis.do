@@ -54,3 +54,7 @@ text(`midyvalue' `midxvalue' "Ages 40-54", color("`color4'") placement(r)) ///
 text(`lateyvalue' `latexvalue' "Ages 55-64", color("`color5'") placement(r)) ///
 text(`oldyvalue' `oldxvalue' "Ages 65+", color("`color6'") placement(r))
 graph export ${variableimages}age_titleimage.svg, replace
+
+/***
+The minimum age of the sample in the CPS extracts is consistent since 1982. However, in 1985, about 16-17% of observations ages 0-13 have zero values for basicwgt. The zero weight values in that year explain the spike in (sample-weighted) age shares illustrated above.
+***/

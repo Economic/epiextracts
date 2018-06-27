@@ -1,5 +1,3 @@
-* create docs for all variabels
-
 * (1) do detailed analysis for some variables
 do ${codedocs}detailed_analysis.do
 
@@ -29,16 +27,9 @@ foreach var of varlist _all {
 	}
 
 	* determine if there is and detailed documentation
-	* we should really move this into a prior loop to save time
-	* 	(1) load all necessary data
-	*		(2) do the analysis over certain variables
-	*		(3) save each variables detailed md file
-	* 	(4) then this loop should confirm/deny existence of detailed .md
-	*capture webdoc do ${codedocs}`var'_detailed.do, md raw nokeep
 	capture confirm file ${variablelongdesc}`var'_longdesc.md
 	if _rc == 0 local detailed details
 	if _rc != 0 local detailed nodetails
-	*local detailed nodetails
 
 	* determine if there is a title image
 	capture confirm file ${variableimages}`var'_titleimage.svg
