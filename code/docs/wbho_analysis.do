@@ -3,6 +3,8 @@ webdoc init ${variablelongdesc}wbho_longdesc, replace
 webdoc set stlog
 webdoc set _stlog
 
+keep if age >= 16 & age ~= .
+
 gen byte white = wbho == 1 if wbho ~= .
 gen byte black = wbho == 2 if wbho ~= .
 gen byte hispanic = wbho == 3 if wbho ~= .
