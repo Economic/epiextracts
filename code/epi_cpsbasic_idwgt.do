@@ -34,7 +34,7 @@ if tm(1976m1) <= `date' & `date' <= tm(1993m12) {
 	rename recnum unicon_recnum
 	duplicates report unicon_recnum
 	assert r(unique_value) == r(N)
-	gen byte hrhhid = .
+	gen hrhhid = ""
 	gen hrsample = ""
 	gen hrsersuf = ""
 	gen byte huhhnum = .
