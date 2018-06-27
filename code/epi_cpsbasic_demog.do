@@ -26,6 +26,8 @@ notes age: Unicon, 1976-1993, age
 notes age: CPS, 1994-2012: peage
 notes age: CPS, 2013-present: prtage
 notes age: top-coded at 80 for consistency across years
+notes age: 1976-1981 range 14-80
+notes age: 1982-present range 0-80
 
 
 **********
