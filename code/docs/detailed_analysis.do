@@ -17,7 +17,7 @@ foreach var of varlist `analysisvarlist' {
 	if `r(o1)' == 0 erase "${variablelongdesc}`var'_longdesc.md"
 }
 
-/*
+
 * CPS Basic analysis - multi-year
 local analysisvarlist countyfips age educ wbho emp region division
 local othervars year basicwgt statefips
@@ -63,6 +63,3 @@ foreach var of varlist `analysisvarlist' {
 	ashell du -k "${variablelongdesc}`var'_longdesc.md" | cut -f1
 	if `r(o1)' == 0 erase "${variablelongdesc}`var'_longdesc.md"
 }
-
-
-*/

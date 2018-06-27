@@ -148,7 +148,7 @@ if tm(1976m1) <= `date' & `date' <= tm(1993m12) {
 if tm(1994m1) <= `date' & `date' <= tm(2018m5) {
 	replace basicwgt = pwsswgt
 }
-replace basicwgt = . if basicwgt <= 0
+replace basicwgt = . if basicwgt < 0
 lab var basicwgt "Basic monthly weight"
 notes basicwgt: Use for most basic CPS tabulations
 notes basicwgt: Sum to civilian, non-institutional population in each month
