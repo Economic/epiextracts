@@ -54,7 +54,7 @@ foreach year of numlist `minyear'(1)`maxyear' {
 	if `counter' == 12 {
 		local inputfile epi_cps`lowersample'_`year'.dta
 		unzipfile `inputpath'`inputfile'.zip, replace
-		if "`keeponly'" ~= "" use year month minsamp orgwgt `keeponly' using `inputfile', clear
+		if "`keeponly'" ~= "" use year month minsamp basicwgt orgwgt `keeponly' using `inputfile', clear
 		else use `inputfile', clear
 		tempfile annualdata`year'
 		save `annualdata`year''
@@ -65,7 +65,7 @@ foreach year of numlist `minyear'(1)`maxyear' {
 		foreach month of numlist `monthlist`year'' {
 			local inputfile epi_cps`lowersample'_`year'_`month'.dta
 			unzipfile `inputpath'`inputfile'.zip, replace
-			if "`keeponly'" ~= "" use year month minsamp orgwgt `keeponly' using `inputfile', clear
+			if "`keeponly'" ~= "" use year month minsamp basicwgt orgwgt `keeponly' using `inputfile', clear
 			else use `inputfile', clear
 			tempfile monthlydata`month'
 			save `monthlydata`month''
