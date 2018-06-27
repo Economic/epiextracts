@@ -19,7 +19,7 @@ foreach var of varlist `analysisvarlist' {
 
 
 * CPS Basic analysis - multi-year
-local analysisvarlist countyfips age educ wbho emp region division
+local analysisvarlist age educ wbho emp
 local othervars year basicwgt statefips
 
 local counter = 0
