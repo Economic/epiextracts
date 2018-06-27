@@ -1,9 +1,11 @@
 local date = `1'
 local stategeocodes `2'
 
-*********
-* State *
-*********
+
+
+********************************************************************************
+* State
+********************************************************************************
 gen byte statefips = .
 * some codes in 1976 do not match Unicon documentation
 * for now, ensure missing codes for 1976-1977
@@ -67,10 +69,10 @@ lab var region "Census region (1-4)"
 notes region: derived from statefips
 
 
-**********
-* County *
-**********
 
+********************************************************************************
+* County
+********************************************************************************
 gen countyfips = .
 if tm(1995m9) <= `date' & `date' <= tm(2004m4) {
 	replace countyfips = geco
@@ -84,3 +86,18 @@ lab val countyfips countyfips
 notes countyfips: 1995m9-2004m4, CPS: geco
 notes countyfips: 2004m5-present, CPS: gtco
 notes countyfips: Not consistent over time
+
+
+
+********************************************************************************
+* CBSA
+********************************************************************************
+gen cbsafips = .
+if tm(2004m5) <= `date' & `date' <= tm(2018m5) {
+	replace cbsafips = gtcbsa
+}
+lab var cbsafips "Core Based Statistical Area - FIPS code"
+lab def cbsafips 0 "Not identified"
+lab val cbsafips cbsafips
+notes cbsafips: 2004m5-present, CPS: gtcbsa
+notes cbsafips: Not consistent over time
