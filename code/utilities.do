@@ -376,6 +376,24 @@ capture program drop create_extracts
 program define create_extracts
 syntax, begin(string) end(string) [keeponly(string)]
 
+* deal with dates
+local begindate = tm(`begin')
+local enddate = tm(`end')
+local minyear = year(dofm(`begindate'))
+local maxyear = year(dofm(`enddate'))
+
+* create list of months for each year to process
+foreach date of numlist `begindate'(1)`enddate' {
+  local year = year(dofm(`date'))
+  local month = month(dofm(`date'))
+  local monthlist`year' `monthlist`year'' `month'
+}
+
+if `begindate' < tm(1973m1) {
+	di _n "Data is not available for" %tm `begindate'
+	error 1
+}
+
 * preliminary data
 import delimited using ${suppdata}state_geocodes.csv, clear varnames(1)
 labmask statefips, val(stateabb)
@@ -395,43 +413,48 @@ save `stategeocodes'
 
 * cpi
 
-* deal with dates
-local begindate = tm(`begin')
-local enddate = tm(`end')
-local minyear = year(dofm(`begindate'))
-local maxyear = year(dofm(`enddate'))
 
-* create list of months for each year to process
-foreach date of numlist `begindate'(1)`enddate' {
-  local year = year(dofm(`date'))
-  local month = month(dofm(`date'))
-  local monthlist`year' `monthlist`year'' `month'
-}
 
 * process all data
 foreach year of numlist `minyear'(1)`maxyear' {
 
-/*
 	* first process annual may if necessary
-	if `year' < 1979 {
-		* unzip may
-		* use may
-		* run programs
+	if 1973 <= `year' & `year' <= 1978 {
+		global monthlycps = 0
+		global maycps = 1
+		* so the date restrictions in the following code work, assume month=may
+		local date = tm(`year'm5)
+		local inputpath ${uniconmay}
+		local inputfile unicon_may_`year'.dta
+		local earnerinfo 1
+		unzipfile `inputpath'`inputfile'.zip, replace
+		use `inputfile', clear
+		* run key basic/org programs
+		do ${code}epi_cpsbasic_sample.do `date'
+		do ${code}epi_cpsbasic_idwgt.do `date'
+		do ${code}epi_cpsbasic_geog.do `date' `stategeocodes'
+		do ${code}epi_cpsbasic_demog.do `date'
+		do ${code}epi_cpsbasic_empstat.do `date'
+		do ${code}epi_cpsorg_wages.do `date' `earnerinfo'
+		do ${code}epi_cpsbasic_keepord.do `date'
+		* clean up input file
+		erase `inputfile'
 		* save data
 		compress
 		notes drop _dta
 		label data "EPI CPS May Extract, Version $dataversion"
-		saveold ${extracts}epi_cpsmay_`year'.dta, replace version(13)
-		zipfile epi_cpsmayc_`year'.dta, saving(epi_cpsmay_`year'.dta.zip, replace)
+		saveold epi_cpsmay_`year'.dta, replace version(13)
+		zipfile epi_cpsmay_`year'.dta, saving(epi_cpsmay_`year'.dta.zip, replace)
 		copy epi_cpsmay_`year'.dta.zip ${extracts}epi_cpsmay_`year'.dta.zip, replace
 		erase epi_cpsmay_`year'.dta
 		erase epi_cpsmay_`year'.dta.zip
-
 	}
-*/
+
 
 	* 1976 and later, process monthly basic and possibly monthly ORG
 	if `year' >= 1976 {
+		global monthlycps = 1
+		global maycps = 0
 		* start a counter to help determine if we have a full year of data
 		local counter = 0
 		foreach month of numlist `monthlist`year'' {
@@ -472,7 +495,7 @@ foreach year of numlist `minyear'(1)`maxyear' {
 			do ${code}epi_cpsbasic_keepord.do `date'
 
       * limit sample to certain variables for debugging
-      if "`keeponly'" ~= "" keep year month minsamp orgwgt `keeponly'
+      if "`keeponly'" ~= "" keep year month minsamp basicwgt orgwgt `keeponly'
 
 			* save basic monthly extract
 			tempfile basic_month`month'
@@ -484,7 +507,7 @@ foreach year of numlist `minyear'(1)`maxyear' {
 				do ${code}epi_cpsorg_sample.do `date'
 
         * limit sample to certain variables for debugging
-        if "`keeponly'" ~= "" keep year month minsamp orgwgt `keeponly'
+        if "`keeponly'" ~= "" keep year month minsamp basicwgt orgwgt `keeponly'
 
         tempfile org_month`month'
         save `org_month`month''
@@ -536,6 +559,9 @@ foreach year of numlist `minyear'(1)`maxyear' {
 				else append using `basic_month`month''
 			}
 			compress
+
+			* right here is probably where we should handle earnings & hours imputations
+
 			notes drop _dta
 			label data "EPI CPS Basic Monthly Extract, Version $dataversion"
 			saveold epi_cpsbasic_`year'.dta, replace version(13)
@@ -551,6 +577,9 @@ foreach year of numlist `minyear'(1)`maxyear' {
 					else append using `org_month`month''
 				}
 				compress
+
+				* right here is probably where we should handle earnings & hours imputations
+
 				notes drop _dta
 				label data "EPI CPS ORG Extract, Version $dataversion"
 				saveold epi_cpsorg_`year'.dta, replace version(13)

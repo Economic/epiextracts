@@ -112,7 +112,19 @@ notes selfinc: Universe: Class of worker assigned (not necessarily employed)
 * Self-employed (unincorporated or incorporated) *
 **************************************************
 gen byte selfany=.
-if tm(1976m1) <= `date' & `date' <= tm(1988m12) {
+if $monthlycps == 0 & $maycps == 1 {
+	if tm(1973m1) <= `date' & `date' <= tm(1978m12) {
+		replace selfany = 0 if class4 >= 1 & class4 != .
+		replace selfany = 1 if class4 == 3
+	}
+}
+if $monthlycps == 1 & $maycps == 0 {
+	if tm(1976m1) <= `date' & `date' <= tm(1978m12) {
+		replace selfany = 0 if class >= 1 & class != .
+		replace selfany = 1 if class == 3
+	}
+}
+if tm(1979m1) <= `date' & `date' <= tm(1988m12) {
 	replace selfany = 0 if class >= 1 & class != .
 	replace selfany = 1 if class == 3
 }
