@@ -9,12 +9,11 @@ local stategeocodes `2'
 gen byte statefips = .
 * some codes in 1976 do not match Unicon documentation
 * for now, ensure missing codes for 1976-1977
-if tm(1976m1) <= `date' & `date' <= tm(1977m12) {
+if tm(1973m1) <= `date' & `date' <= tm(1977m12) {
 	drop region
 	* even though all state (and other geographic) codes will be missing
 	* we want the missing values and the full value labels, so do the following merge
 	merge m:1 statefips using `stategeocodes', nogenerate keep(1)
-
 	* ridiculous hack to pull in value labels for statefips
 	* which are not merged above
 	drop statefips
