@@ -1,9 +1,8 @@
-Variables
+Income
 ===================================
 
 .. toctree::
 	:glob:
-	:maxdepth: 2
+	:maxdepth: 1
 
-	income/index.rst
-	other/index.rst
+	*
