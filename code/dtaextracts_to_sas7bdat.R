@@ -25,7 +25,13 @@ filelistbasic <- Sys.glob("extracts/epi_cpsbasic_*.dta.zip") %>%
   expand.grid(filename=.) %>%
   mutate(id="basic")
 
-filelist <- bind_rows(filelistorg,filelistbasic)
+filelistmay <- Sys.glob("extracts/epi_cpsmay_*.dta.zip") %>%
+  basename() %>%
+  sub("^([^.]*).*", "\\1", .) %>%
+  expand.grid(filename=.) %>%
+  mutate(id="may")
+
+filelist <- bind_rows(filelistorg,filelistbasic,filelistmay)
 
 origpath <- file.path("extracts")
 

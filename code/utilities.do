@@ -16,8 +16,9 @@ local lowersample = lower("`sample'")
 if "`lowersample'" == "org" local samplename ORG
 else if "`lowersample'" == "basic" local samplename Basic
 else if "`lowersample'" == "swa" local samplename SWA
+else if "`lowersample'" == "may" local samplename May
 else {
-	di _n "You must specify Basic or ORG or SWA sample."
+	di _n "You must specify Basic or ORG or SWA or May sample."
 	error 1
 }
 
@@ -35,7 +36,7 @@ if ("`dataversion'" == "production" | "`dataversion'" == "local") & "`lowersampl
 
 * determine path of version and sample
 if "`dataversion'" == "production" local inputpath /data/cps/`lowersample'/epiextracts/
-if "`dataversion'" == "old" & ("`lowersample'" == "org" | "`lowersample'" == "swa") local inputpath /data/cps/org/epi/stata/
+if "`dataversion'" == "old" & ("`lowersample'" == "org" | "`lowersample'" == "swa" | "`lowersample'" == "may") local inputpath /data/cps/org/epi/stata/
 if "`dataversion'" == "old" & "`lowersample'" == "basic" local inputpath /data/cps/basic/epi/stata/
 if "`dataversion'" == "local" local inputpath ${extracts}
 
@@ -70,8 +71,8 @@ if "`dataversion'" == "old" & "`lowersample'" == "basic" {
 	}
 }
 
-* min month and max month check for old ORG
-if "`dataversion'" == "old" & ("`lowersample'" == "org" | "`lowersample'" == "swa") {
+* min month and max month check for old ORG/May
+if "`dataversion'" == "old" & ("`lowersample'" == "org" | "`lowersample'" == "swa" | "`lowersample'" == "may") {
 	local invalidmonth = 0
 	if `minmonth' ~= 1 {
 		local invalidmonth = 1
@@ -82,7 +83,7 @@ if "`dataversion'" == "old" & ("`lowersample'" == "org" | "`lowersample'" == "sw
 		di "Ending month invalid."
 	}
 	if `invalidmonth' == 1 {
-		di _n "Mid-year samples are not available for the old EPI SWA or EPI ORG samples, which are available annually"
+		di _n "Mid-year samples are not available for the old EPI SWA/ORG/May samples, which are available annually"
 		di "For these datasets, select month ranges comprising full years -- e.g., begin(2012m1) end(2015m12)"
 		error 1
 	}
@@ -102,6 +103,12 @@ if "`keeponly'" ~= "" {
 	}
 	if "`dataversion'" == "old" & "`lowersample'" == "basic" {
 		local keeponlylist `keeponly' month mins *wgt*
+	}
+	if "`dataversion'" == "old" & "`lowersample'" == "may" {
+		local keeponlylist `keeponly' month finalwt
+	}
+	if "`dataversion'" == "production" | "`dataversion'" == "local" {
+		local keeponlylist `keeponly' year month mins *wgt*
 	}
 }
 
@@ -142,6 +149,9 @@ else {
 			if "`dataversion'" == "old" & "`lowersample'" == "swa" {
 				local inputfile wage`shortyear'c.dta
 			}
+			if "`dataversion'" == "old" & "`lowersample'" == "may" {
+				local inputfile may`shortyear'c.dta
+			}
 			unzipfile `inputpath'`inputfile'.zip, replace
 			use `keeponlylist' using `inputfile', clear
 			if "`dataversion'" == "old" gen year = `year'
@@ -149,7 +159,7 @@ else {
 			save `annualdata`year''
 			erase `inputfile'
 		}
-
+		* monthly files will be either production or local
 		else {
 			foreach month of numlist `monthlist`year'' {
 				local inputfile epi_cps`lowersample'_`year'_`month'.dta
