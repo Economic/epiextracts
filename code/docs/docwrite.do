@@ -27,7 +27,7 @@ if "`2'" == "displayvalues" {
 	webdoc put ## Values
 	webdoc put ```eval_rst
 	webdoc put .. csv-table::
-	webdoc put    :file: docs/variables/levels/`1'.csv
+	webdoc put    :file: ${variablelevels}`1'.csv
 	webdoc put ```
 }
 

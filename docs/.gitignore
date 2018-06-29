@@ -2,5 +2,5 @@
 _build
 
 # main variable pages will be generated
-variables/*.md
+variables/
 !variables/index.rst
