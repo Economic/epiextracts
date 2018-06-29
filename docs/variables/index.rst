@@ -1,4 +1,4 @@
-Variables
+Variables in EPI extracts
 ===================================
 
 .. toctree::
