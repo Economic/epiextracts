@@ -19,16 +19,18 @@ foreach var of varlist `analysisvarlist' {
 
 
 * CPS Basic analysis - multi-year
-local analysisvarlist age educ wbho emp
+local analysisvarlist wbho age educ emp
 local othervars year basicwgt statefips
 
 local counter = 0
-forvalues year = 1976(1)2017 {
+forvalues year = 1973(1)2017 {
+  if 1973 >= `year' & `year' <= 1975 local filename epi_cpsmay_`year'.dta
+  if `year' >= 1976 local filename epi_cpsbasic_`year'.dta
 	local counter = `counter' + 1
-	unzipfile ${extracts}epi_cpsbasic_`year'.dta.zip, replace
-	if `counter' == 1 use `analysisvarlist' `othervars' using epi_cpsbasic_`year'.dta, clear
-	else append using epi_cpsbasic_`year'.dta, keep(`analysisvarlist' `othervars')
-	erase epi_cpsbasic_`year'.dta
+	unzipfile ${extracts}`filename'.zip, replace
+	if `counter' == 1 use `analysisvarlist' `othervars' using `filename', clear
+	else append using `filename', keep(`analysisvarlist' `othervars')
+	erase `filename'
 }
 tempfile fulldata
 save `fulldata'
@@ -44,18 +46,9 @@ foreach var of varlist `analysisvarlist' {
 * CPS ORG analysis
 local analysisvarlist wage3
 local othervars year orgwgt female
-
-local counter = 0
-forvalues year = 1979(1)2017 {
-	local counter = `counter' + 1
-	unzipfile ${extracts}epi_cpsorg_`year'.dta.zip, replace
-	if `counter' == 1 use `analysisvarlist' `othervars' using epi_cpsorg_`year'.dta, clear
-	else append using epi_cpsorg_`year'.dta, keep(`analysisvarlist' `othervars')
-	erase epi_cpsorg_`year'.dta
-}
+append_extracts, begin(1979m1) end(2017m12) sample(org) version(local) keeponly(`analysisvarlist' `othervars')
 tempfile fulldata
 save `fulldata'
-
 foreach var of varlist `analysisvarlist' {
   use `fulldata', clear
   webdoc do ${codedocs}`var'_analysis.do, md raw nokeep
