@@ -1,8 +1,10 @@
 local date = `1'
 
-*******
-* Age *
-*******
+
+
+********************************************************************************
+* Age
+********************************************************************************
 if tm(1976m1) <= `date' & `date' <= tm(1993m1) {
 	* age already exists
 }
@@ -30,9 +32,10 @@ notes age: 1976-1981 range 14-80
 notes age: 1982-present range 0-80
 
 
-**********
-* Gender *
-**********
+
+********************************************************************************
+* Gender
+********************************************************************************
 gen byte female = .
 if tm(1976m1) <= `date' & `date' <= tm(1993m12) {
 	replace female = 0 if sex == 1
@@ -55,9 +58,9 @@ notes female: 1994-present CPS: pesex
 
 
 
-*************
+********************************************************************************
 * Education *
-*************
+********************************************************************************
 gen byte educ = .
 
 /* - need to adjust for Unicon data
@@ -118,21 +121,43 @@ notes educ: CPS 1994-present: derived from peeduca
 
 
 
-********
-* Race *
-********
+********************************************************************************
+* Race
+********************************************************************************
 gen byte wbho = .
-if tm(1994m1) <= `date' & `date' <= tm(2002m12) {
-	replace wbho=1 if perace==1
-	replace wbho=2 if perace==2
-	replace wbho=4 if (3<=perace & perace<=5)
-	replace wbho=3 if (1<=prorigin & prorigin<=7)
+if tm(1973m1) <= `date' & `date' <= tm(1988m12) {
+	if tm(1974m1) <= `date' & `date' <= tm(1988m12) {
+		replace spneth = "" if spneth == "A"
+		destring spneth, replace
+	}
+	replace wbho = 1 if race == 1
+	replace wbho = 2 if race == 2
+	replace wbho = 4 if race == 3
+	replace wbho = 3 if (1 <= spneth & spneth <= 7)
 }
-* May 2004- June 2005: ptdtrace variable renamed to prdtrace
-if tm(2004m5) <= `date' & `date' <= tm(2005m7) {
-	gen ptdtrace = prdtrace
+if tm(1989m1) <= `date' & `date' <= tm(1993m12) {
+	replace wbho = 1 if race == 1
+	replace wbho = 2 if race == 2
+	replace wbho = 4 if (3 <= race & race <= 5)
+	replace wbho = 3 if (1 <= spneth & spneth <= 7)
+}
+if tm(1994m1) <= `date' & `date' <= tm(1995m12) {
+	replace wbho = 1 if perace == 1
+	replace wbho = 2 if perace == 2
+	replace wbho = 4 if (3 <= perace & perace <= 5)
+	replace wbho = 3 if (1 <= prorigin & prorigin <= 7)
+}
+if tm(1996m1) <= `date' & `date' <= tm(2002m12) {
+	replace wbho = 1 if perace == 1
+	replace wbho = 2 if perace == 2
+	replace wbho = 4 if (3 <= perace & perace <= 4)
+	replace wbho = 3 if (1 <= prorigin & prorigin <= 7)
 }
 if tm(2003m1) <= `date' & `date' <= tm(2012m4) {
+	* May 2004- June 2005: ptdtrace variable renamed to prdtrace
+	if tm(2004m5) <= `date' & `date' <= tm(2005m7) {
+		gen ptdtrace = prdtrace
+	}
 	replace wbho=1 if ptdtrace==1
 	replace wbho=2 if ptdtrace==2
 	replace wbho=2 if ptdtrace==6 /* black-white */ | ptdtrace==10 /*
@@ -148,7 +173,6 @@ if tm(2003m1) <= `date' & `date' <= tm(2012m4) {
 	replace wbho=3 if (1<=prdthsp & prdthsp<=5) /* hispanic */
 }
 if tm(2012m5) <= `date' & `date' <= tm(2013m12) {
-	/* coding changed May 2012 */
 	replace wbho=1 if ptdtrace==1 /* white */
 	replace wbho=2 if ptdtrace==2 /* black */
 	replace wbho=2 if ptdtrace==6 /* black-white */ | ptdtrace==10 /*
@@ -196,7 +220,9 @@ notes wbho: Major recoding of race variable in 2003
 notes wbho: From 2003, black includes all respondents listing black; other /*
 */ includes all respondents listing non-white or non-black races, except /*
 */ those also listing black
-notes wbho: CPS, 1994m1-2002m12: derived from perace, prorigin
-notes wbho: CPS, 2003m1-2004m4: derived from ptdtrace, prdthsp
-notes wbho: CPS, 2004m5-2005m7: derived from prdtrace, prdthsp
-notes wbho: CPS, 2005m8-present: derived from ptdtrace, prdthsp
+notes wbho: 1973-1988m12 Unicon: race, spneth
+notes wbho: 1989m1-1993m12 Unicon: race, spneth
+notes wbho: 1994m1-2002m12 CPS: perace, prorigin
+notes wbho: 2003m1-2004m4 CPS: ptdtrace, prdthsp
+notes wbho: 2004m5-2005m7 CPS: prdtrace, prdthsp
+notes wbho: 2005m8-present CPS: ptdtrace, prdthsp
