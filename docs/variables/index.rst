@@ -10,4 +10,3 @@ Variables
 	geography/index.rst
 	idweight/index.rst
 	income/index.rst
-	other/index.rst
