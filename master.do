@@ -30,12 +30,6 @@ global censusbasicstata /data/cps/basic/census/stata/
 
 * path names for docs
 global docs docs/
-global variabledocs ${docs}variables/
-global variableshortdesc ${docs}variables/descriptions/shortdesc/
-global variablelongdesc ${docs}variables/descriptions/longdesc/
-global variableimages ${docs}variables/images/
-global variablelevels ${docs}variables/levels/
-
 
 * process the raw data and convert it to Stata format
 * this is only necessary for additional months of data

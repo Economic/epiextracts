@@ -1,3 +1,13 @@
+unzipfile ${extracts}epi_cpsbasic_2017.dta.zip, replace
+use epi_cpsbasic_2017.dta, clear
+tempfile basedata
+save `basedata'
+erase epi_cpsbasic_2017.dta
+foreach var of varlist _all {
+	if inlist("`var'","wage1","wage2","wage3","wage4","otcamt","otcrec","paidhre","weekpay") == 1 local group`var' income
+	else local group`var' other
+}
+
 * CPS Basic analysis - single-year
 local analysisvarlist cbsafips countyfips region division
 local othervars year basicwgt statefips age
@@ -10,6 +20,12 @@ tempfile fulldata
 save `fulldata'
 
 foreach var of varlist `analysisvarlist' {
+  * use globals because we will reference these in docwrite.do
+  global variableshortdesc ${codedocs}descriptions/shortdesc/
+  global variablelongdesc ${codedocs}descriptions/longdesc/
+  global variabledocs ${docs}variables/`group`var''/
+  global variableimages ${variabledocs}images/
+  global variablelevels ${variabledocs}levels/
   use `fulldata', clear
   webdoc do ${codedocs}`var'_analysis.do, md raw nokeep
 	* if longdesc output is empty, delete
@@ -36,6 +52,12 @@ tempfile fulldata
 save `fulldata'
 
 foreach var of varlist `analysisvarlist' {
+  * use globals because we will reference these in docwrite.do
+  global variableshortdesc ${codedocs}descriptions/shortdesc/
+  global variablelongdesc ${codedocs}descriptions/longdesc/
+  global variabledocs ${docs}variables/`group`var''/
+  global variableimages ${variabledocs}images/
+  global variablelevels ${variabledocs}levels/
   use `fulldata', clear
   webdoc do ${codedocs}`var'_analysis.do, md raw nokeep
 	* if longdesc output is empty, delete
@@ -50,6 +72,12 @@ append_extracts, begin(1979m1) end(2017m12) sample(org) version(local) keeponly(
 tempfile fulldata
 save `fulldata'
 foreach var of varlist `analysisvarlist' {
+  * use globals because we will reference these in docwrite.do
+  global variableshortdesc ${codedocs}descriptions/shortdesc/
+  global variablelongdesc ${codedocs}descriptions/longdesc/
+  global variabledocs ${docs}variables/`group`var''/
+  global variableimages ${variabledocs}images/
+  global variablelevels ${variabledocs}levels/
   use `fulldata', clear
   webdoc do ${codedocs}`var'_analysis.do, md raw nokeep
 	* if longdesc output is empty, delete

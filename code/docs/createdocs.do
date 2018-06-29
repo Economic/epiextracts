@@ -1,25 +1,25 @@
-* (1) do detailed analysis for some variables
-*do ${codedocs}detailed_analysis.do
+do ${codedocs}detailed_analysis.do
 
-* (2) create a markdown document for each variable consisting of
-*		name of variable and variable label [pulled from data]
-*		simple description [hand coded in variables/descriptions/]
-*		variable notes
-*		value labels
-
-*import delimited variables_groups.csv, clear
-
-* load data for a given year and then loop over all variables
+* load data for a given year to gather all variables
 unzipfile ${extracts}epi_cpsbasic_2017.dta.zip, replace
 use epi_cpsbasic_2017.dta, clear
 tempfile basedata
 save `basedata'
 erase epi_cpsbasic_2017.dta
+foreach var of varlist _all {
+	if inlist("`var'","wage1","wage2","wage3","wage4","otcamt","otcrec","paidhre","weekpay") == 1 local group`var' income
+	else local group`var' other
+}
 
+use `basedata', clear
 foreach var of varlist _all {
 
-	if inlist("`var'","wage1","wage2","wage3","wage4","otcamt","otcrec","paidhre","weekpay") == 1 local group income
-	else local group other
+	* use globals because we will reference these in docwrite.do
+	global variableshortdesc ${codedocs}descriptions/shortdesc/
+	global variablelongdesc ${codedocs}descriptions/longdesc/
+	global variabledocs ${docs}variables/`group`var''/
+	global variableimages ${variabledocs}images/
+	global variablelevels ${variabledocs}levels/
 
 	* determine if values will be displayed in documentation
 	* if so, create .csv file of value labels
