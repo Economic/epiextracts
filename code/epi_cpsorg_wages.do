@@ -1,7 +1,7 @@
 local date = `1'
 
 * does the current data contain earner information?
-assert $earnerinfo' == 1 | $earnerinfo' == 0
+assert $earnerinfo == 1 | $earnerinfo == 0
 
 
 

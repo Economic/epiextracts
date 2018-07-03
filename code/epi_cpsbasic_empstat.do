@@ -120,7 +120,7 @@ notes selfinc: Universe: Class of worker assigned (not necessarily employed)
 *******************************************************************************
 gen byte selfany=.
 if $monthlycps == 0 & $maycps == 1 {
-	if tm(1973m1) <= `date' & `date' <= tm(1978m12) {
+	if tm(1973m1) <= `date' & `date' <= tm(1981m12) {
 		replace selfany = 0 if class4 >= 1 & class4 != .
 		replace selfany = 1 if class4 == 3
 	}
@@ -130,18 +130,18 @@ if $monthlycps == 1 & $maycps == 0 {
 		replace selfany = 0 if class >= 1 & class != .
 		replace selfany = 1 if class == 3
 	}
-}
-if tm(1979m1) <= `date' & `date' <= tm(1988m12) {
-	replace selfany = 0 if class >= 1 & class != .
-	replace selfany = 1 if class == 3
-}
-if tm(1989m1) <= `date' & `date' <= tm(1993m12) {
-	replace selfany = 0 if class >= 1 & class != .
-	replace selfany = 1 if class == 5 | class == 6
-}
-if tm(1994m1) <= `date' & `date' <= tm(2018m5) {
-	replace selfany = 0 if peio1cow >= 1 & peio1cow != .
-	replace selfany = 1 if peio1cow == 6 | peio1cow == 7
+	if tm(1979m1) <= `date' & `date' <= tm(1988m12) {
+		replace selfany = 0 if class >= 1 & class != .
+		replace selfany = 1 if class == 3
+	}
+	if tm(1989m1) <= `date' & `date' <= tm(1993m12) {
+		replace selfany = 0 if class >= 1 & class != .
+		replace selfany = 1 if class == 5 | class == 6
+	}
+	if tm(1994m1) <= `date' & `date' <= tm(2018m5) {
+		replace selfany = 0 if peio1cow >= 1 & peio1cow != .
+		replace selfany = 1 if peio1cow == 6 | peio1cow == 7
+	}
 }
 lab var selfany "Self-employed (unincorporated or incorporated)"
 lab def selfany 1 "Self-employed (uninc or inc)" 0 "Not self-employed (uninc or inc)"
@@ -153,26 +153,21 @@ notes selfemp: Universe: Class of worker assigned (not necessarily employed)
 
 
 
-if 1994<=`year' & `year'<=2017 {
-replace unmem=0 if peernlab==2 /* asked only if in months 4 & 8 */
-replace unmem=1 if peernlab==1
-}
-
-
 *******************************************************************************
 * Union membership
 *******************************************************************************
+capture rename unmem old_unmem
 gen byte unmem = .
 if $monthlycps == 0 & $maycps == 1 {
 	if tm(1973m1) <= `date' & `date' <= tm(1981m12) {
-		replace unmem = 0 if unmem == 1
-		replace unmem = 1 if unmem == 0
+		replace unmem = 0 if old_unmem == 1
+		replace unmem = 1 if old_unmem == 0
  	}
 }
 if $monthlycps == 1 & $maycps == 0 {
 	if tm(1983m1) <= `date' & `date' <= tm(1993m12) {
-		replace unmem = 0 if unmem == 2
-		replace unmem = 1 if unmem == 1
+		replace unmem = 0 if old_unmem == 2
+		replace unmem = 1 if old_unmem == 1
 	}
 	if tm(1994m1) <= `date' & `date' <= tm(2018m5) {
 		replace unmem = 0 if peernlab == 2
@@ -193,27 +188,37 @@ notes unmem: 1994-present CPS: peernlab
 *******************************************************************************
 * Union coverage
 *******************************************************************************
+capture rename uncov old_uncov
 gen byte uncov = .
 if $monthlycps == 0 & $maycps == 1 {
 	if tm(1977m1) <= `date' & `date' <= tm(1981m12) {
-		replace uncov = 0 if uncov == 1
-		replace uncov = 1 if uncov == 0
+		replace uncov = 0 if old_uncov == 1
+		replace uncov = 1 if old_uncov == 0
  	}
 }
 if $monthlycps == 1 & $maycps == 0 {
-	if tm(1983m1) <= `date' & `date' <= tm(1993m12) {
-		replace uncov = 0 if uncov == 2
-		replace uncov = 1 if uncov == 1
+	if $earnerinfo == 1 & $basicfile == 0 {
+		if tm(1983m1) <= `date' & `date' <= tm(1983m12) {
+			replace uncov = 0 if old_uncov == 2
+			replace uncov = 1 if old_uncov == 1
+		}
 	}
-	if tm(1994m1) <= `date' & `date' <= tm(2018m5) {
-		replace unmem = 0 if peerncov == 2
-		replace unmem = 1 if peerncov == 1
+	if $earnerinfo == 1 & $basicfile == 1 {
+		if tm(1984m1) <= `date' & `date' <= tm(1993m12) {
+			replace uncov = 0 if old_uncov == 2
+			replace uncov = 1 if old_uncov == 1
+		}
+		if tm(1994m1) <= `date' & `date' <= tm(2018m5) {
+			replace uncov = 0 if peerncov == 2
+			replace uncov = 1 if peerncov == 1
+		}
 	}
 }
 lab var uncov "Covered by a union contract"
 lab def uncov 1 "Union covered" 0 "Not union covered"
 lab val uncov uncov
 notes uncov: Only available in 1977-1981 May, 1983-present ORG
+notes uncov: Not available on 1976-1983 basic monthly files
 notes uncov: Not available prior to 1977 or in 1982
 notes uncov: 1977-1981 Unicon: uncov
 notes uncov: 1983-1993 Unicon: uncov
@@ -224,6 +229,10 @@ notes uncov: 1994-present CPS: peerncov
 *******************************************************************************
 * Union member or covered
 *******************************************************************************
+gen byte union = .
+/* this code needs to be re-written to be consistent
+probably missing in basic monthly files 1976-1983
 gen byte union = 0 if unmem ~= . | uncov ~= .
 replace union = 1 if unmem == 1
 replace union = 1 if uncov == 1
+*/
