@@ -1,9 +1,10 @@
 local date = `1'
 
 
-**********************
-* Labor force status *
-**********************
+
+*******************************************************************************
+* Labor force status
+*******************************************************************************
 gen byte lfstat=.
 if tm(1976m1) <= `date' & `date' <= tm(1993m12) {
 	replace lfstat = 1 if 1 <= mlr & mlr <= 2
@@ -28,9 +29,10 @@ notes lfstat: 1976-1993 Unicon: derived from mlr
 notes lfstat: 1994-present CPS: derived from pemlr
 
 
-************
-* Employed *
-************
+
+*******************************************************************************
+* Employed
+*******************************************************************************
 gen byte emp = 0 if lfstat ~= .
 replace emp = 1 if lfstat == 1
 lab var emp "Employed"
@@ -40,9 +42,10 @@ notes emp: Derived from lfstat = 1
 notes emp: Universe: lfstat!=.
 
 
-**************
-* Unemployed *
-**************
+
+*******************************************************************************
+* Unemployed
+*******************************************************************************
 gen byte unemp = 0 if lfstat ~= .
 replace unemp = 1 if lfstat == 2
 lab var unemp "Unemployed"
@@ -52,9 +55,10 @@ notes unemp: Derived from lfstat = 2
 notes unemp: Universe: lfstat!=.
 
 
-**********************
-* Not in labor force *
-**********************
+
+*******************************************************************************
+* Not in labor force
+*******************************************************************************
 gen byte nilf = 0 if lfstat ~= .
 replace nilf = 1 if lfstat == 3
 lab var nilf "Not in labor force"
@@ -64,9 +68,10 @@ notes nilf: Derived from lfstat = 3
 notes nilf: Universe: lfstat!=.
 
 
-**********************************
-* Self-employed (unincorporated) *
-**********************************
+
+*******************************************************************************
+* Self-employed (unincorporated)
+*******************************************************************************
 gen byte selfemp=.
 if tm(1989m1) <= `date' & `date' <= tm(1993m12) {
 	replace selfemp = 0 if class >= 1 & class != .
@@ -86,9 +91,10 @@ notes selfemp: 1989-1993 Unicon: derived from class
 notes selfemp: Universe: Class of worker assigned (not necessarily employed)
 
 
-******************************
-* Incorporated self-employed *
-******************************
+
+*******************************************************************************
+* Incorporated self-employed
+*******************************************************************************
 gen byte selfinc=.
 if tm(1989m1) <= `date' & `date' <= tm(1993m12) {
 	replace selfemp = 0 if class >= 1 & class != .
@@ -108,9 +114,10 @@ notes selfinc: 1989-1993 Unicon: derived from class
 notes selfinc: Universe: Class of worker assigned (not necessarily employed)
 
 
-**************************************************
-* Self-employed (unincorporated or incorporated) *
-**************************************************
+
+*******************************************************************************
+* Self-employed (unincorporated or incorporated)
+*******************************************************************************
 gen byte selfany=.
 if $monthlycps == 0 & $maycps == 1 {
 	if tm(1973m1) <= `date' & `date' <= tm(1978m12) {
@@ -143,3 +150,40 @@ notes selfemp: Self-employed: unincorporated or incorporated
 notes selfemp: 1994-present CPS: derived from peio1cow
 notes selfinc: 1976-1993 Unicon: derived from class
 notes selfemp: Universe: Class of worker assigned (not necessarily employed)
+
+
+
+if 1994<=`year' & `year'<=2017 {
+replace unmem=0 if peernlab==2 /* asked only if in months 4 & 8 */
+replace unmem=1 if peernlab==1
+}
+
+
+*******************************************************************************
+* Union membership
+*******************************************************************************
+gen byte unmem = .
+if $monthlycps == 0 & $maycps == 1 {
+	if tm(1973m1) <= `date' & `date' <= tm(1981m12) {
+		replace unmem = 0 if unmem == 1
+		replace unmem = 1 if unmem == 0
+ 	}
+}
+if $monthlycps == 1 & $maycps == 0 {
+	if tm(1983m1) <= `date' & `date' <= tm(1993m12) {
+		replace unmem = 0 if unmem == 2
+		replace unmem = 1 if unmem == 1
+	}
+	if tm(1994m1) <= `date' & `date' <= tm(2018m5) {
+		replace unmem = 0 if peernlab == 2
+		replace unmem = 1 if peernlab == 1
+	}
+}
+lab var unmem "Union member"
+lab def unmem 1 "Union member" 0 "Not a union member"
+lab val unmem unmem
+notes unmem: Only available in 1973-1981 May, 1983-present ORG
+notes unmem: Not available in 1982
+notes unmem: 1973-1981 Unicon: unmem
+notes unmem: 1983-1993 Unicon: unmem
+notes unmem: 1994-present CPS: peernlab

@@ -7,7 +7,7 @@ keep
 	age female wbho
 	educ
 	lfstat emp unemp nilf
-	selfemp selfinc selfany
+	selfemp selfinc selfany unmem uncov union
 	weekpay paidhre otcrec otcamt	wage1 wage2 wage3 wage4
 ;
 #delimit cr;
