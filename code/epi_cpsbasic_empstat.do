@@ -179,7 +179,7 @@ if $monthlycps == 1 & $maycps == 0 {
 		replace unmem = 1 if peernlab == 1
 	}
 }
-lab var unmem "Union member"
+lab var unmem "Member of a union"
 lab def unmem 1 "Union member" 0 "Not a union member"
 lab val unmem unmem
 notes unmem: Only available in 1973-1981 May, 1983-present ORG
@@ -187,3 +187,43 @@ notes unmem: Not available in 1982
 notes unmem: 1973-1981 Unicon: unmem
 notes unmem: 1983-1993 Unicon: unmem
 notes unmem: 1994-present CPS: peernlab
+
+
+
+*******************************************************************************
+* Union coverage
+*******************************************************************************
+gen byte uncov = .
+if $monthlycps == 0 & $maycps == 1 {
+	if tm(1977m1) <= `date' & `date' <= tm(1981m12) {
+		replace uncov = 0 if uncov == 1
+		replace uncov = 1 if uncov == 0
+ 	}
+}
+if $monthlycps == 1 & $maycps == 0 {
+	if tm(1983m1) <= `date' & `date' <= tm(1993m12) {
+		replace uncov = 0 if uncov == 2
+		replace uncov = 1 if uncov == 1
+	}
+	if tm(1994m1) <= `date' & `date' <= tm(2018m5) {
+		replace unmem = 0 if peerncov == 2
+		replace unmem = 1 if peerncov == 1
+	}
+}
+lab var uncov "Covered by a union contract"
+lab def uncov 1 "Union covered" 0 "Not union covered"
+lab val uncov uncov
+notes uncov: Only available in 1977-1981 May, 1983-present ORG
+notes uncov: Not available prior to 1977 or in 1982
+notes uncov: 1977-1981 Unicon: uncov
+notes uncov: 1983-1993 Unicon: uncov
+notes uncov: 1994-present CPS: peerncov
+
+
+
+*******************************************************************************
+* Union member or covered
+*******************************************************************************
+gen byte union = 0 if unmem ~= . | uncov ~= .
+replace union = 1 if unmem == 1
+replace union = 1 if uncov == 1
