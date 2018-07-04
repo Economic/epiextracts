@@ -1,5 +1,5 @@
 ==============================================================================
-Sources & citations
+Citations & sources
 ==============================================================================
 If you use the EPI extracts for your research, please cite them as
 
@@ -7,7 +7,7 @@ If you use the EPI extracts for your research, please cite them as
 	Economic Policy Institute. 2018. Current Population Survey Extracts, |release|.
 
 Underlying code
-=============================================
+==============================================================================
 The EPI code is available on
 `github <https://github.com/Economic/epiextracts_basicorg>`_
 (currently a private repository). The current code draws heavily from other sources:
@@ -23,7 +23,8 @@ Raw data underlying the EPI extracts
 ====================================
 
 CPS Basic Monthly, 1976 - Present
----------------------------------
+-------------------------------------------------------------------------------
+
 +----------------+--------------------+
 | Years          | Data source        |
 +================+====================+
@@ -34,7 +35,8 @@ CPS Basic Monthly, 1976 - Present
 
 
 CPS May 1973 - 1981
----------------------------------
+-------------------------------------------------------------------------------
+
 +----------------+--------------------+
 | Years          | Data source        |
 +================+====================+
@@ -43,7 +45,8 @@ CPS May 1973 - 1981
 
 
 CPS ORG 1979 - Present
----------------------------------
+-------------------------------------------------------------------------------
+
 +----------------+--------------------+
 | Years          | Data source        |
 +================+====================+
@@ -55,9 +58,8 @@ CPS ORG 1979 - Present
 +----------------+--------------------+
 
 Documentation for source data
-====================================
-On maynard you can find documentation for the underlying source data as well
-as the original EPI extracts:
+===============================================================================
+On maynard you can find documentation for the underlying source data and the original EPI extracts:
 
 +-------------------------+---------------------------------------------------------+
 | Source data             | Documentation                                           |

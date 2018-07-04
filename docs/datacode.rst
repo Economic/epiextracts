@@ -1,13 +1,27 @@
-===================================
+===============================================================================
 Latest data & code
-===================================
+===============================================================================
+The latest version of the EPI CPS extracts is on maynard:
 
-The current version of the data is |release|.
++-------------------------+---------------------------------------------------+
+| Dataset                 | Location                                          |
++=========================+===================================================+
+| CPS-Basic, 1976-present | :file:`/data/cps/basic/epiextracts/`              |
++-------------------------+---------------------------------------------------+
+| CPS-ORG, 1979-present   | :file:`/data/cps/org/epiextracts/`                |
++-------------------------+---------------------------------------------------+
+| CPS-May, 1973-1981      | :file:`/data/cps/may/epiextracts/`                |
++-------------------------+---------------------------------------------------+
 
-The latest version of the EPI CPS extracts is on maynard.
+The code that produces these extracts is available at `Github <https://github.com/Economic/epiextracts_basicorg/>`_.
 
-* CPS-Basic, 1976-present: :file:`/data/cps/basic/epiextracts/`
-* CPS-ORG, 1979-present: :file:`/data/cps/org/epiextracts/`
-* CPS-May, 1973-1981: :file:`/data/cps/may/epiextracts/`
+Which version of the data am I using?
+===============================================================================
+The current version of the data is |release|. See the :ref:`changelog` for the latest updates.
 
-The code that produces these extracts is available at `Github <https://github.com/Economic/epiextracts_basicorg/releases/latest>`_.
+To determine which version of the data you have, use Stata to load any of the datasets into memory and then use the :code:`describe` or :code:`notes` commands:
+
+::
+
+	describe, short
+	notes _dta
