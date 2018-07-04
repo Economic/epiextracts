@@ -28,7 +28,7 @@ copyright = u'2018, Economic Policy Institute'
 author = u'Economic Policy Institute'
 
 # The short X.Y version
-version = u'Version 0.2.0'
+version = u'Version 0.3.0'
 # The full version, including alpha/beta/rc tags
 release = version
 

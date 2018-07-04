@@ -6,7 +6,7 @@ set trace off
 
 * Data Version
 * This version is saved on data
-global dataversion 0.2.0
+global dataversion 0.3.0
 
 * project directory structure
 * set your stata working directory to the project root containing master.do
