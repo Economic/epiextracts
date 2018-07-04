@@ -37,7 +37,7 @@ notes age: 1982-present range 0-80
 * Gender
 ********************************************************************************
 gen byte female = .
-if tm(1976m1) <= `date' & `date' <= tm(1993m12) {
+if tm(1973m1) <= `date' & `date' <= tm(1993m12) {
 	replace female = 0 if sex == 1
 	replace female = 1 if sex == 2
 }
