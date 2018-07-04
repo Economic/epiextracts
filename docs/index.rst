@@ -10,7 +10,6 @@ This is the documentation for the EPI CPS Extracts, |release|
 	datacode
 	variables/index
 	sources
-	contributions/index
 	issues
 	examples/index
 	test

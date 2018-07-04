@@ -2,9 +2,12 @@
 Latest data & code
 ===================================
 
-The production ready version of the EPI CPS extracts is on maynard.
+The current version of the data is |release|.
 
-* CPS-Basic: :file:`/data/cps/basic/epiextracts/`
-* CPS-ORG: :file:`/data/cps/org/epiextracts/`
+The latest version of the EPI CPS extracts is on maynard.
 
-The latest version of the data and code is also available to download at `Github <https://github.com/Economic/epiextracts_basicorg/releases/latest>`_. 
+* CPS-Basic, 1976-present: :file:`/data/cps/basic/epiextracts/`
+* CPS-ORG, 1979-present: :file:`/data/cps/org/epiextracts/`
+* CPS-May, 1973-1981: :file:`/data/cps/may/epiextracts/`
+
+The code that produces these extracts is available at `Github <https://github.com/Economic/epiextracts_basicorg/releases/latest>`_.

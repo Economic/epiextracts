@@ -1,17 +1,17 @@
-=======
-Sources
-=======
-If you use the EPI extracts for your research, you can cite them as
+==============================================================================
+Sources & citations
+==============================================================================
+If you use the EPI extracts for your research, please cite them as
 
+.. note::
 	Economic Policy Institute. 2018. Current Population Survey Extracts, |release|.
 
+Underlying code
+=============================================
 The EPI code is available on
 `github <https://github.com/Economic/epiextracts_basicorg>`_
-(currently a private repository). It draws heavily from other sources of code
-and raw data.
+(currently a private repository). The current code draws heavily from other sources:
 
-Other code incorporated into the EPI extracts
-=============================================
 * `EPI <https://www.epi.org/data/>`_:
   data library code	that processes raw CPS data, creates uniform extracts, and analyzes data
 * `CEPR <http://ceprdata.org/cps-uniform-data-extracts/cps-basic-programs/cps-basic-monthly-programs/>`_:
@@ -38,7 +38,7 @@ CPS May 1973 - 1981
 +----------------+--------------------+
 | Years          | Data source        |
 +================+====================+
-| 1973 - 1981   | Unicon CPS May     |
+| 1973 - 1981    | Unicon CPS May     |
 +----------------+--------------------+
 
 
