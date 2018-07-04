@@ -1,7 +1,7 @@
 ===============================================================================
 Latest data & code
 ===============================================================================
-The latest version of the EPI CPS extracts is on maynard:
+|release| of the EPI CPS extracts is on maynard:
 
 +-------------------------+---------------------------------------------------+
 | Dataset                 | Location                                          |
