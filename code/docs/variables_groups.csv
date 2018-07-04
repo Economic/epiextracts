@@ -28,6 +28,9 @@ selfinc,employment
 statecensus,geography
 statefips,geography
 unemp,employment
+uncov,employment
+union,employment
+unmem,employment
 wage1,income
 wage2,income
 wage3,income
