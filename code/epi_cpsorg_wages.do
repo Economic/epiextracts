@@ -1,8 +1,7 @@
 local date = `1'
 
 * does the current data contain earner information?
-local earnerinfo = `2'
-assert `earnerinfo' == 1 | `earnerinfo' == 0
+assert $earnerinfo == 1 | $earnerinfo == 0
 
 
 
@@ -10,7 +9,7 @@ assert `earnerinfo' == 1 | `earnerinfo' == 0
 * Weekly earnings
 ********************************************************************************
 gen weekpay = .
-if `earnerinfo' == 1 {
+if $earnerinfo == 1 {
 	if tm(1979m1) <= `date' & `date' <= tm(1988m12) {
 		* use computed weekly earnings
 		replace weekpay = ernwkc
@@ -48,7 +47,7 @@ notes weekpay: 1994-present, CPS: prernwa
 * Paid hourly
 ********************************************************************************
 gen paidhre = .
-if `earnerinfo' == 1 {
+if $earnerinfo == 1 {
 	if tm(1979m1) <= `date' & `date' <= tm(1993m12) {
 		replace paidhre = 0 if _ernpdh == 2
 		replace paidhre = 1 if _ernpdh == 1
@@ -72,7 +71,7 @@ notes paidhre: 1994-present, CPS: peernhry
 ********************************************************************************
 * it looks possible to extend the overtime definitions past hourly workers
 gen byte otcrec = .
-if `earnerinfo' == 1 {
+if $earnerinfo == 1 {
 	if tm(1994m1) <= `date' & `date' <= tm(2018m5) {
 		replace otcrec = 0 if paidhre == 1 & peernuot == 2
 		replace otcrec = 1 if paidhre == 1 & peernuot == 1
@@ -88,7 +87,7 @@ notes otcrec: 1994-present, CPS: derived from peernuot & paidhre
 * Weekly earnings from overtime, tips, commissions 1994-
 ********************************************************************************
 gen byte otcamt=.
-if `earnerinfo' == 1 {
+if $earnerinfo == 1 {
 	if tm(1994m1) <= `date' & `date' <= tm(2018m5) {
 		replace otcamt = peern/100 if paidhre == 1 & otcrec == 1
 	}
@@ -105,7 +104,7 @@ notes otcamt: 1994-present, CPS: derived from peern, otcrec
 * Hourly earnings if "paid by hour" (paidhre==1)
 ********************************************************************************
 gen wage1 = .
-if `earnerinfo' == 1 {
+if $earnerinfo == 1 {
 	if tm(1979m1) <= `date' & `date' <= tm(1993m12) {
 		* convert Unicon ernhr from pennies to dollars
 		replace wage1 = ernhr/100 if paidhre == 1
@@ -136,7 +135,7 @@ notes wage1: 1994-present, CPS: prernhly if paidhre=1
 * nonhourly workers (paidhre==0)
 ********************************************************************************
 gen wage2 = .
-if `earnerinfo' == 1 {
+if $earnerinfo == 1 {
 	if tm(1979m1) <= `date' & `date' <= tm(1993m12) {
 		replace wage2 = weekpay/ernush if paidhre == 0
 	}
@@ -180,7 +179,7 @@ notes wage3: Excludes nonhourly workers whose usual hours vary
 * hourly and nonhourly workers
 ********************************************************************************
 gen wage4 = .
-if `earnerinfo' == 1 {
+if $earnerinfo == 1 {
 	if tm(1994m1) <= `date' & `date' <= tm(2018m5) {
 		* for hourly workers
 		replace wage4 = wage1 if paidhre == 1

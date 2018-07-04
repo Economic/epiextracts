@@ -147,9 +147,17 @@ notes orgwgt: 1979-1993 Unicon: ernwgt
 * Basic monthly weight *
 ************************
 gen basicwgt = .
-if tm(1973m1) <= `date' & `date' <= tm(1993m12) {
-	replace basicwgt = wgt / 100
+if $monthlycps == 0 & $maycps == 1 {
+	if tm(1973m1) <= `date' & `date' <= tm(1981m12) {
+		replace basicwgt = wgtfnl / 100
+	}
 }
+if $monthlycps == 1 & $maycps == 0 {
+	if tm(1976m1) <= `date' & `date' <= tm(1993m12) {
+		replace basicwgt = wgt / 100
+	}
+}
+
 if tm(1994m1) <= `date' & `date' <= tm(2018m5) {
 	replace basicwgt = pwsswgt
 }
@@ -159,5 +167,6 @@ notes basicwgt: Use for most basic CPS tabulations
 notes basicwgt: Sum to civilian, non-institutional population in each month
 notes basicwgt: To obtain approximate US population with full year of data, /*
 */ divide basicwgt by 12
-notes basicwgt: 1994-present CPS: pwsswgt
+notes basicwgt: 1973-1981 Unicon May: wgtfnl
 notes basicwgt: 1976-1993 Unicon: wgt
+notes basicwgt: 1994-present CPS: pwsswgt
