@@ -3,3 +3,6 @@ This repository creates cleaned uniform extracts of the CPS basic monthly, outgo
 
 ## Documentation and data
 On the EPI network, visit http://maynard/
+
+## Running the code
+Running `master.do` from the project root
