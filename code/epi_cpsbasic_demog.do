@@ -124,7 +124,7 @@ if tm(1994m1) <= `date' & `date' <= tm(2018m5) {
 }
 lab var grade92 "Education level, detailed, post-1991"
 #delimit ;
-lab define educ92
+lab define grade92
 1  "Less than 1st grade"
 2  "1st-4th grade"
 3  "5th-6th grade"
@@ -147,6 +147,8 @@ lab val grade92 grade92
 notes grade92: Only available 1992-present
 notes grade92: 1992-1993 Unicon: grdatn
 notes grade92: 1994-present CPS: peeduca
+
+stop
 
 
 ********************************************************************************
