@@ -40,19 +40,13 @@ foreach var of varlist `analysisvarlist' {
 local analysisvarlist wbho age educ emp
 local othervars year basicwgt statefips
 
-local counter = 0
-forvalues year = 1973(1)2017 {
-  if 1973 >= `year' & `year' <= 1975 local filename epi_cpsmay_`year'.dta
-  if `year' >= 1976 local filename epi_cpsbasic_`year'.dta
-	local counter = `counter' + 1
-	unzipfile ${extracts}`filename'.zip, replace
-	if `counter' == 1 use `analysisvarlist' `othervars' using `filename', clear
-	else append using `filename', keep(`analysisvarlist' `othervars')
-	erase `filename'
-}
+append_extracts, begin(1973m1) end(1975m12) sample(may) version(local) keeponly(`analysisvarlist' `othervars')
+tempfile maydata
+save `maydata'
+append_extracts, begin(1976m1) end(2017m12) sample(basic) version(local) keeponly(`analysisvarlist' `othervars')
+append using `maydata'
 tempfile fulldata
 save `fulldata'
-
 foreach var of varlist `analysisvarlist' {
   * use globals because we will reference these in docwrite.do
   global variableshortdesc ${codedocs}descriptions/shortdesc/

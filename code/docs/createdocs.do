@@ -1,4 +1,4 @@
-do ${codedocs}detailed_analysis.do
+*do ${codedocs}detailed_analysis.do
 
 * variable-group definitions
 import delimited using ${codedocs}variables_groups.csv, clear varnames(1)

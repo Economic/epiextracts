@@ -438,6 +438,7 @@ foreach year of numlist `minyear'(1)`maxyear' {
 		global monthlycps = 0
 		global maycps = 1
 		global earnerinfo = 1
+		global basicfile = 0
 
 		* for May CPS, use month=5 (may)
 		local date = tm(`year'm5)
