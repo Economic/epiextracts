@@ -148,8 +148,6 @@ notes grade92: Only available 1992-present
 notes grade92: 1992-1993 Unicon: grdatn
 notes grade92: 1994-present CPS: peeduca
 
-stop
-
 
 ********************************************************************************
 * Education: educ
