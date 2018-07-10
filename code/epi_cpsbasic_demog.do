@@ -24,9 +24,9 @@ cap lab drop age
 lab def age 80 "80+"
 lab val age age
 lab var age "Age"
-notes age: Unicon, 1976-1993, age
-notes age: CPS, 1994-2012: peage
-notes age: CPS, 2013-present: prtage
+notes age: 1976-1993 Unicon: age
+notes age: 1994-2012 CPS: peage
+notes age: 2013-present CPS: prtage
 notes age: top-coded at 80 for consistency across years
 notes age: 1976-1981 range 14-80
 notes age: 1982-present range 0-80
@@ -57,56 +57,149 @@ notes female: 1976-1993 Unicon: sex
 notes female: 1994-present CPS: pesex
 
 
+********************************************************************************
+* Education: gradehi
+********************************************************************************
+gen gradehi = .
+if tm(1973m1) <= `date' & `date' <= tm(1988m12) {
+	* adjust grdhi to be consistent across 1973-1991
+	replace gradehi = grdhi - 1
+}
+if tm(1989m1) <= `date' & `date' <= tm(1991m12) {
+	replace gradehi = grdhi
+}
+lab var gradehi "Highest grade attended"
+#delimit ;
+lab define gradehi
+0 "None, 0, or K"
+1 "1st grade"
+2 "2nd grade"
+3 "3rd grade"
+4 "4th grade"
+5 "5th grade"
+6 "6th grade"
+7 "7th grade"
+8 "8th grade"
+9 "9th grade"
+10 "10th grade"
+11 "11th grade"
+12 "12th grade"
+13 "College: 13th grade"
+14 "College: 14th grade"
+15 "College: 15th grade"
+16 "College: 16th grade"
+16 "College: 17th grade"
+18 "College: 18th+ grade"
+;
+#delimit cr
+lab val gradehi gradehi
+notes gradehi: Only available 1973-1991
+notes gradehi: 1973-1991 Unicon: grdhi
+
 
 ********************************************************************************
-* Education *
+* Education: gradecom
+********************************************************************************
+gen gradecom = .
+if tm(1973m1) <= `date' & `date' <= tm(1991m12) {
+	replace gradecom = 1 if grdcom == 1
+	replace gradecom = 0 if grdcom == 2
+}
+lab var gradecom "Completed highest grade attended"
+lab define gradecom 0 "Not completed" 1 "Completed"
+lab val gradecom gradecom
+notes gradecom: Only available 1973-1991
+notes gradecom: 1973-1991 Unicon: grdcom
+
+
+********************************************************************************
+* Education: grade92
+********************************************************************************
+gen grade92 = .
+if tm(1992m1) <= `date' & `date' <= tm(1993m12) {
+	replace grade92 = grdatn - 30
+}
+if tm(1994m1) <= `date' & `date' <= tm(2018m5) {
+	replace grade92 = peeduca - 30
+}
+lab var grade92 "Education level, detailed, post-1991"
+#delimit ;
+lab define grade92
+1  "Less than 1st grade"
+2  "1st-4th grade"
+3  "5th-6th grade"
+4  "7th-8th grade"
+5  "9th grade"
+6  "10th grade"
+7  "11th grade"
+8  "12th grade-no diploma"
+9  "HS graduate, GED"
+10 "Some college but no degree"
+11 "Associate degree-occupational/vocational"
+12 "Associate degree-academic program"
+13 "Bachelor's degree"
+14 "Master's degree"
+15 "Professional school"
+16 "Doctorate"
+;
+#delimit cr;
+lab val grade92 grade92
+notes grade92: Only available 1992-present
+notes grade92: 1992-1993 Unicon: grdatn
+notes grade92: 1994-present CPS: peeduca
+
+
+********************************************************************************
+* Education: educ
 ********************************************************************************
 gen byte educ = .
-
-/* - need to adjust for Unicon data
-if tm(1979m1) <= `date' & `date' <= tm(1990m12) {
-	replace educ=1 if 1<=gradeat & gradeat<=11
-	replace educ=1 if gradeat==12 & gradecp==2 /* didn't complete 12th */
-	replace educ=2 if gradeat==12 & gradecp==1 /* completed 12th */
-	replace educ=3 if 13<=gradeat & gradeat<=15
-	replace educ=3 if gradeat==16 & gradecp==2 /* didn't complete college */
-	replace educ=4 if gradeat==16 & gradecp==1 /* completed college */
-	replace educ=4 if gradeat==17 /* "completed 4 or 5 years college" */
-	replace educ=5 if 18<=gradeat & gradeat~=.
+if tm(1973m1) <= `date' & `date' <= tm(1991m12) {
+	* none - 11th
+	replace educ = 1 if 0 <= gradehi & gradehi <= 11
+	* did not complete 12th
+	replace educ = 1 if gradehi == 12 & grdcom == 2
+	* did complete 12th
+	replace educ = 2 if gradehi == 12 & grdcom == 1
+	* college: 1-3 yrs
+	replace educ = 3 if gradehi >= 13 & gradehi <= 15
+	* did not complete college
+	replace educ = 3 if gradehi == 16 & grdcom == 2
+	* did complete college
+	replace educ = 4 if gradehi == 16 & grdcom == 1
+	* 4-5 years of college
+	replace educ = 4 if gradehi == 17
+	* more than 5 years of college
+	replace educ = 5 if gradehi == 18
 }
-
-if tm(1991m1) <= `date' & `date' <= tm(1991m12) {
-	replace educ=1 if 1<=adhga & adhga<=11
-	replace educ=1 if adhga==12 & adhgc==2 /* didn't complete 12th */
-	replace educ=2 if adhga==12 & adhgc==1 /* completed 12th */
-	replace educ=3 if 13<=adhga & adhga<=15
-	replace educ=3 if adhga==16 & adhgc==2 /* didn't complete college */
-	replace educ=4 if adhga==16 & adhgc==1 /* completed college */
-	replace educ=4 if adhga==17 /* "completed 4 or 5 years college" */
-	replace educ=5 if 18<=adhga & adhga~=.
+if tm(1992m12) <= `date' & `date' <= tm(1993m12) {
+	* LTHS
+	replace educ = 1 if 31 <= grdatn & grdatn <= 37
+	* HS; includes "no diploma"
+	replace educ = 2 if 38 <= grdatn & grdatn <= 39
+	* Some college; includes associate's degrees
+	replace educ = 3 if 40 <= grdatn & grdatn <= 42
+	* College
+	replace educ = 4 if grdatn == 43
+	* Advanced degree
+	replace educ = 5 if 44 <= grdatn & grdatn <= 46
 }
-
-if tm(1992m1) <= `date' & `date' <= tm(1993m12) {
-	replace educ=1 if 31<=grade92 & grade92<=37
-	replace educ=2 if 38<=grade92 & grade92<=39 /* includes "no diploma" */
-	replace educ=3 if 40<=grade92 & grade92<=42
-	replace educ=4 if grade92==43
-	replace educ=5 if 44<=grade92 & grade92<=46
-}
-*/
-
 if tm(1994m1) <= `date' & `date' <= tm(2018m5) {
-	replace educ=1 if 31<=peeduca & peeduca<=37
-	replace educ=2 if 38<=peeduca & peeduca<=39 /* includes "no diploma" */
-	replace educ=3 if 40<=peeduca & peeduca<=42
-	replace educ=4 if peeduca==43
-	replace educ=5 if 44<=peeduca & peeduca<=46
+	* LTHS
+	replace educ = 1 if 31 <= peeduca & peeduca <= 37
+	* HS; includes "no diploma"
+	replace educ = 2 if 38 <= peeduca & peeduca <= 39
+	* Some college; includes associate's degrees
+	replace educ = 3 if 40 <= peeduca & peeduca <= 42
+	* College
+	replace educ = 4 if peeduca == 43
+	* Advanced degree
+	replace educ = 5 if 44 <= peeduca & peeduca <= 46
 }
 lab var educ "Education level"
 #delimit ;
 lab define educ
-1 "LTHS"
-2 "HS"
+1 "Less than high school"
+2 "High school"
 3 "Some college"
 4 "College"
 5 "Advanced"
@@ -114,10 +207,9 @@ lab define educ
 #delimit cr
 lab val educ educ
 notes educ: Follows Jaeger (1997) classifications
-notes educ: CPS 1979-1990: derived from gradeat, gradecp
-notes educ: CPS 1991: derived from adhga
-notes educ: CPS 1992-1993: derived from grade92
-notes educ: CPS 1994-present: derived from peeduca
+notes educ: 1973-1991 Unicon: grdhi, grdcom
+notes educ: 1992-1993 Unicon: grdatn
+notes educ: 1994-present CPS: derived from peeduca
 
 
 
@@ -220,9 +312,9 @@ notes wbho: Major recoding of race variable in 2003
 notes wbho: From 2003, black includes all respondents listing black; other /*
 */ includes all respondents listing non-white or non-black races, except /*
 */ those also listing black
-notes wbho: 1973-1988m12 Unicon: race, spneth
-notes wbho: 1989m1-1993m12 Unicon: race, spneth
-notes wbho: 1994m1-2002m12 CPS: perace, prorigin
-notes wbho: 2003m1-2004m4 CPS: ptdtrace, prdthsp
+notes wbho: 1973-1988 Unicon: race, spneth
+notes wbho: 1989-1993 Unicon: race, spneth
+notes wbho: 1994-2002 CPS: perace, prorigin
+notes wbho: 2003-2004m4 CPS: ptdtrace, prdthsp
 notes wbho: 2004m5-2005m7 CPS: prdtrace, prdthsp
 notes wbho: 2005m8-present CPS: ptdtrace, prdthsp

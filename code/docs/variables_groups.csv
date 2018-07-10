@@ -7,6 +7,9 @@ division,geography
 educ,demographics
 emp,employment
 female,demographics
+grade92,demographics
+gradecom,demographics
+gradehi,demographics
 hrhhid,idweight
 hrhhid2,idweight
 hrsample,idweight

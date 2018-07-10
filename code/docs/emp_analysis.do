@@ -24,6 +24,7 @@ local color5 255 127 0
 line allepop primeepop year, ///
 legend(off) ///
 xlabel(1975(5)2015) ///
+ylabel(55(5)75 80 "80%", angle(0) gmin gmax) ///
 xtitle("") ytitle("") ///
 lcolor("`color1'" "`color2'") ///
 graphregion(color("252 252 252") margin(r=17)) plotregion(color("252 252 252")) ///
