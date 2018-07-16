@@ -49,5 +49,3 @@ line schenrl_1 schenrl_2 year, ///
 	text(`schenrl_3yvalue' `schenrl_3xvalue' "Ages 25-39", color("`color3'") placement(e)) ///
 	text(`schenrl_4yvalue' `schenrl_4xvalue' "Ages 40-54", color("`color4'") placement(e))
 	graph export ${variableimages}schenrl_titleimage.svg, replace
-
-stop
