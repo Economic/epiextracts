@@ -68,7 +68,8 @@ if $earnerinfo == 1 {
 lab var paidhre "Paid by hour"
 lab def paidhre 0 "Nonhourly worker" 1 "Hourly worker"
 lab val paidhre paidhre
-notes paidhre: Indicates BLS records respondent is paid by hour
+notes paidhre: Indicates respondent is paid by hour
+notes paidhre: Only available in 1973-1978 May and 1979-present ORG
 notes paidhre: 1973-1978 Unicon: hourpd
 notes paidhre: 1979-1993 Unicon: _ernpdh
 notes paidhre: 1994-present CPS: peernhry
