@@ -4,14 +4,30 @@ webdoc set stlog
 webdoc set _stlog
 
 keep if wage3 > 0 & wage3 ~= .
+keep if age >= 16 & age <= 64
 
-collapse (p50) wage3_ = wage3 [pw=orgwgt], by(year female) fast
+gen wgt = .
+replace wgt = basicwgt if year <= 1978
+replace wgt = orgwgt if year >= 1979
+
+collapse (p50) wage3_ = wage3 [pw=wgt], by(year female) fast
 * inflation-adjust wages
 preserve
 import delimited ${suppdata}cpiurs_allitems.csv, clear
 keep year avg
 rename avg cpiurs
 keep if cpiurs ~= .
+* for 1973-1977 use EPI's spliced CPI-X1 series
+* manually add these
+forvalues i = 1973(1)1977 {
+	moreobs 1
+	replace year = `i' if year == .
+}
+replace cpiurs = 73.0 if year == 1973
+replace cpiurs = 80.3 if year == 1974
+replace cpiurs = 86.9 if year == 1975
+replace cpiurs = 91.9 if year == 1976
+replace cpiurs = 97.7 if year == 1977
 tempfile cpiurs
 save `cpiurs'
 restore
@@ -43,11 +59,11 @@ ylabel(12(2)18 20 "$20", angle(0)) ///
 xtitle("") ytitle("") ///
 lcolor("`color4'" "`color2'") ///
 graphregion(color("252 252 252")) plotregion(color("252 252 252")) ///
-title("Median real wages by gender, 1979-2017 (in 2017$)", size(medium)) ///
+title("Median real wages for ages 16-64, by gender, 1973-2017 (in 2017$)", size(medium)) ///
 text(`wage3_0yvalue' `wage3_0xvalue' "Male", color("`color4'") placement(c)) ///
 text(`wage3_1yvalue' `wage3_1xvalue' "Female", color("`color2'") placement(c))
 graph export ${variableimages}wage3_titleimage.svg, replace
 
 /***
-some detailed notes for wage3
+The analysis above uses the CPS ORG for 1979-2017 and the CPS May for 1973-1978.
 ***/
