@@ -10,6 +10,7 @@ collapse (mean) primeepop allepop [pw=basicwgt], by(year) fast
 sum year
 local maxyear = r(max)
 foreach var of varlist primeepop allepop {
+	replace `var' = `var' * 100
 	sum `var' if year == `maxyear'
 	local `var'yvalue = r(mean)
 	local `var'xvalue = `maxyear' + 0.5
