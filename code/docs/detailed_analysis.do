@@ -62,12 +62,17 @@ foreach var of varlist `analysisvarlist' {
 }
 
 
-* CPS ORG analysis
+
+* CPS ORG/May analysis for wage3
 local analysisvarlist wage3
-local othervars year orgwgt female age
+local othervars year orgwgt female age basicwgt
 append_extracts, begin(1979m1) end(2017m12) sample(org) version(local) keeponly(`analysisvarlist' `othervars')
 tempfile orgdata
 save `orgdata'
+append_extracts, begin(1973m1) end(1978m12) sample(may) version(local) keeponly(`analysisvarlist' `othervars')
+append using `orgdata'
+tempfile fulldata
+save `fulldata'
 foreach var of varlist `analysisvarlist' {
   * use globals because we will reference these in docwrite.do
   global variableshortdesc ${codedocs}descriptions/shortdesc/
@@ -75,7 +80,7 @@ foreach var of varlist `analysisvarlist' {
   global variabledocs ${docs}variables/`group`var''/
   global variableimages ${variabledocs}images/
   global variablelevels ${variabledocs}levels/
-  use `orgdata', clear
+  use `fulldata', clear
   webdoc do ${codedocs}`var'_analysis.do, md raw nokeep
 	* if longdesc output is empty, delete
 	ashell du -k "${variablelongdesc}`var'_longdesc.md" | cut -f1
