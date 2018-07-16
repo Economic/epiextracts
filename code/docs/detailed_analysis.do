@@ -36,8 +36,9 @@ foreach var of varlist `analysisvarlist' {
 	if `r(o1)' == 0 erase "${variablelongdesc}`var'_longdesc.md"
 }
 
+
 * CPS Basic analysis - multi-year
-local analysisvarlist wbho age educ emp
+local analysisvarlist emp wbho age educ
 local othervars year basicwgt statefips
 
 append_extracts, begin(1973m1) end(1975m12) sample(may) version(local) keeponly(`analysisvarlist' `othervars')
@@ -62,9 +63,8 @@ foreach var of varlist `analysisvarlist' {
 }
 
 
-
-* CPS ORG/May analysis for wage3
-local analysisvarlist wage3
+* CPS ORG/May analysis for wage variables
+local analysisvarlist paidhre wage3
 local othervars year orgwgt female age basicwgt
 append_extracts, begin(1979m1) end(2017m12) sample(org) version(local) keeponly(`analysisvarlist' `othervars')
 tempfile orgdata
