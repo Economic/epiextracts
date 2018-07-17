@@ -12,7 +12,7 @@ forvalues i = 1 / `N' {
 
 
 * CPS Basic analysis - single-year
-local analysisvarlist cbsafips countyfips region division
+local analysisvarlist statefips statecensus cbsafips countyfips region division
 local othervars year basicwgt statefips age
 
 local year = 2017
