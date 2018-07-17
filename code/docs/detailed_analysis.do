@@ -38,7 +38,7 @@ foreach var of varlist `analysisvarlist' {
 
 
 * CPS Basic 76-present + May 73-75 analysis - multi-year
-local analysisvarlist lfstat unemp schenrl emp wbho age educ
+local analysisvarlist nilf lfstat unemp schenrl emp wbho age educ
 local othervars year basicwgt female
 
 append_extracts, begin(1973m1) end(1975m12) sample(may) version(local) keeponly(`analysisvarlist' `othervars')
