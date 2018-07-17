@@ -5,6 +5,7 @@ webdoc set _stlog
 
 gen byte lfpr = lfstat == 1 | lfstat == 2 if lfstat ~= .
 keep if age >= 25 & age <= 54
+keep if year >= 1976
 
 gcollapse (mean) lfpr_ = lfpr [pw=basicwgt], by(year female) fast
 foreach var of varlist lfpr_* {
