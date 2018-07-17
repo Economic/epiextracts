@@ -3,6 +3,9 @@ webdoc init ${variablelongdesc}emp_longdesc, replace
 webdoc set stlog
 webdoc set _stlog
 
+* keep only 1976+ for annual data to avoid seasonality issues
+keep if year >= 1976
+
 gen byte primeepop = emp == 1 if emp ~= . & (25 <= age & age <= 54)
 gen byte allepop = emp == 1 if emp ~= .
 
