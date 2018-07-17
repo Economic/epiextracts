@@ -6,7 +6,7 @@ webdoc set _stlog
 gen byte primeepop = emp == 1 if emp ~= . & (25 <= age & age <= 54)
 gen byte allepop = emp == 1 if emp ~= .
 
-collapse (mean) primeepop allepop [pw=basicwgt], by(year) fast
+gcollapse (mean) primeepop allepop [pw=basicwgt], by(year) fast
 sum year
 local maxyear = r(max)
 foreach var of varlist primeepop allepop {

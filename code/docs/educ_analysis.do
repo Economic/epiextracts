@@ -11,7 +11,7 @@ gen byte advanced = educ == 5 if educ ~= .
 
 keep if age >= 25 & age ~= .
 
-collapse (mean) lths hs some college advanced [pw=basicwgt], by(year) fast
+gcollapse (mean) lths hs some college advanced [pw=basicwgt], by(year) fast
 sum year
 local maxyear = r(max)
 foreach ed of varlist lths hs some college advanced {

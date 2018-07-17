@@ -11,7 +11,7 @@ replace agegroup = 4 if age >= 40 & age <= 54
 keep if agegroup ~= .
 keep if year >= 1984
 
-collapse (mean) schenrl_ = schenrl [pw=basicwgt], by(year agegroup) fast
+gcollapse (mean) schenrl_ = schenrl [pw=basicwgt], by(year agegroup) fast
 
 * make wide
 reshape wide schenrl_, i(year) j(agegroup)

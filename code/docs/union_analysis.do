@@ -8,7 +8,7 @@ keep if age >= 16 & selfany == 0
 gen wgt = orgwgt
 replace wgt = basicwgt if year < 1983
 
-collapse (mean) unmem union [pw=wgt], by(year) fast
+gcollapse (mean) unmem union [pw=wgt], by(year) fast
 foreach var of varlist unmem union {
 	replace `var' = `var' * 100
 	sum `var' if year == 1977

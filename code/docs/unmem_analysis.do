@@ -8,7 +8,7 @@ keep if age >= 16 & selfany == 0
 gen wgt = orgwgt
 replace wgt = basicwgt if year < 1983
 
-collapse (mean) unmem [pw=wgt], by(year female) fast
+gcollapse (mean) unmem [pw=wgt], by(year female) fast
 reshape wide unmem, i(year) j(female)
 foreach var of varlist unmem0 unmem1 {
 	replace `var' = `var' * 100

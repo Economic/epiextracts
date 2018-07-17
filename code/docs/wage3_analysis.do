@@ -10,7 +10,7 @@ gen wgt = .
 replace wgt = basicwgt if year <= 1978
 replace wgt = orgwgt if year >= 1979
 
-collapse (p50) wage3_ = wage3 [pw=wgt], by(year female) fast
+gcollapse (p50) wage3_ = wage3 [pw=wgt], by(year female) fast
 * inflation-adjust wages
 preserve
 import delimited ${suppdata}cpiurs_allitems.csv, clear
