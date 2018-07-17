@@ -30,7 +30,7 @@ local color5 255 127 0
 line nilf_0 nilf_1 year, ///
 legend(off) ///
 xlabel(1975(5)2015) ///
-ylabel(0(10)40 50 "50%", angle(0)) ///
+ylabel(0(10)40 50 "50%", angle(0) gmin gmax) ///
 xtitle("") ytitle("") ///
 lcolor("`color4'" "`color2'") ///
 graphregion(color("252 252 252")) plotregion(color("252 252 252")) ///
