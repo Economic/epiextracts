@@ -5,6 +5,9 @@ webdoc set _stlog
 
 keep if unemp == 1 | emp == 1
 
+* keep only 1976+ for annual data to avoid seasonality issues
+keep if year >= 1976
+
 gen byte black = unemp if wbho == 2
 gen byte nonblack = unemp if wbho ~= 2 & wbho ~= .
 
