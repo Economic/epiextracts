@@ -5,7 +5,7 @@ local date = `1'
 * Labor force status
 *******************************************************************************
 gen byte lfstat=.
-if tm(1976m1) <= `date' & `date' <= tm(1988m12) {
+if tm(1973m1) <= `date' & `date' <= tm(1988m12) {
 	replace lfstat = 1 if 1 <= mlr & mlr <= 2
 	replace lfstat = 2 if mlr == 3
 	replace lfstat = 3 if 4 <= mlr & mlr <= 7
