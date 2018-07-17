@@ -29,8 +29,8 @@ lab def lfstat
 ;
 #delimit cr
 lab val lfstat lfstat
-notes lfstat: 1976-1993 Unicon: derived from mlr
-notes lfstat: 1994-present CPS: derived from pemlr
+notes lfstat: 1973-1993 Unicon: mlr
+notes lfstat: 1994-present CPS: pemlr
 
 
 *******************************************************************************
