@@ -1,26 +1,34 @@
-local date = `1'
+*local date = `1'
 
+gen date = ym(year,month)
+format %tm date
+local date date
+
+gen indcode = .
+if tm(1973m1) <= `date' & `date' <= tm(1993m12)	replace indcode = ind70 /* unicon industry variable */
+if tm(1994m1) <= `date' & `date' <= tm(2018m5) replace indcode = peiO1icd /* census variable */
 
 **************************************
 * Industry variables for each period *
 **************************************
 
-/* 1976-1982: 1970 census industry codes */
+/* 1976-1982: 1970 census industry codes
+ind70 is already a variable */
 gen ind_70 = .
 replace ind_70 = indcode if tm(1979m1) <= `date' & `date' <= tm(1982m12) /* check on 1983*/
 
 /* 1983-1992: 1980 census industry codes */ /* check on 1983*/
-gen ind_80 = .
-replace ind_80 = indcode if tm(1983m1) <= `date' & `date' <= tm(1992m12)
+gen ind80 = .
+replace ind80 = indcode if tm(1983m1) <= `date' & `date' <= tm(1992m12)
 
 
 /* 1992-1999: 1990 census industry codes */
-gen ind_90 = .
-replace ind_90 = indcode if tm(1992m1) <= `date' & `date' <= tm(1999m12)
+gen ind90 = .
+replace ind90 = indcode if tm(1992m1) <= `date' & `date' <= tm(1999m12)
 
 /* 2000-present: 2000 census industry codes */
-gen ind_00 = .
-replace ind_00 = indcode if tm(2000m1) <= `date' & `date' <= tm(2018m5)
+gen ind00 = .
+replace ind00 = indcode if tm(2000m1) <= `date' & `date' <= tm(2018m5)
 
 
 ****************************************
@@ -35,9 +43,12 @@ gen mind_16 = .
 
 #delimit ;
 
-/* 1979-1982, sort of fact checked, a few suggested changes */
-/*note: Major ind codes are from appendix I.3 of Unicon, aggregated from appendix K.5*/
-/* Looks like it is only good post-may cps */
+/*
+Industry coding for:
+CPS Basic 1976-1982
+CPS ORG 1979-1982
+CPS May 1973-1982
+*/
 
 	if tm(1976m1) <= `date' & `date' <= tm(1982m12){
 	/* Agriculture, mining, forestry and fisheries */
@@ -114,9 +125,12 @@ gen mind_16 = .
 		(indcode >= 907 & indcode <= 947);
 };
 
-/* 1983-1991*/
-/*note: Major ind codes are from appendix I.3 of Unicon, aggregated from appendix K.2*/
-/* NEED TO assign mind_16 for indcode== 991 in 1983. Armed forces I think. We should drop them? */
+/*
+Industry coding for:
+CPS Basic 1983-1991
+CPS ORG 1983-1991
+CPS May 1983-1991
+*/
 
 if tm(1983m1) <= `date' & `date' <= tm(1991m12){
 	/* Agriculture, mining, forestry and fisheries*/
@@ -189,10 +203,16 @@ if tm(1983m1) <= `date' & `date' <= tm(1991m12){
 		(indcode >= 900 & indcode <= 932);
 };
 
-/* 1992-1999? 2002?*/
-/*note: Major ind codes are from appendix I.3 of Unicon, aggregated from appendix K.3*/
+/*
+I am not positive about these dates, but pretty sure (used unicon code book to determin dates)
 
-if tm(1992m1) <= `date' & `date' <= tm(1999m12){
+Industry coding for:
+CPS Basic 1993-2002
+CPS ORG 1993-2002
+CPS May 1993-2002
+*/
+
+if tm(1993m1) <= `date' & `date' <= tm(2002m12){
 	/* Agriculture, mining, forestry and fisheries */
 	replace mind_16 = 1 if	(
 		(indcode >= 10 & indcode <= 30) |
@@ -264,7 +284,7 @@ if tm(1992m1) <= `date' & `date' <= tm(1999m12){
 		(indcode >= 900 & indcode <= 932);
 };
 
-/* 2000-? or 2002-?*/
+/* 2000-? or 2002-? 2003? thru 2013?*/
 /*note: Major ind codes are from appendix I.2 of Unicon, aggregated from appendix K.1 and census website*/
 
 if tm(2000m1) <= `date' & `date' <= tm(2018m5){
@@ -324,7 +344,7 @@ if tm(2000m1) <= `date' & `date' <= tm(2018m5){
 	replace mind_16 = 13 if	(
 		(indcode >= 7970 & indcode <= 8180) |
 		(indcode >= 8270 & indcode <= 8290)
-	); 
+	);
 	/* Educational */
 	replace mind_16 = 14 if
 		(indcode >= 7860 & indcode <= 7890);
@@ -339,22 +359,22 @@ if tm(2000m1) <= `date' & `date' <= tm(2018m5){
 #delimit cr ;
 
 /* add labels */
-label define ind_lab 
-1 "Agriculture, mining, forestry and fisheries" 
-2 "Construction" 
-3 "Manufacturing, durable goods" 
-4 "Manufacturing, nondurable goods" 
-5 "Transportation" 
-6 "Communications and utilities" 
-7 "Wholesale trade" 
-8 "Retail trade" 
-9 "Finance, insurance and real estate. Business, auto, repair, and other professional services." 
-10 "Personal services, including private household" 
-11 "Entertainment and recreation" 
-12 "Hospital" 
-13 "Medical, except hospital" 
-14 "Educational" 
-15 "Social Services" 
+label define ind_lab
+1 "Agriculture, mining, forestry and fisheries"
+2 "Construction"
+3 "Manufacturing, durable goods"
+4 "Manufacturing, nondurable goods"
+5 "Transportation"
+6 "Communications and utilities"
+7 "Wholesale trade"
+8 "Retail trade"
+9 "Finance, insurance and real estate. Business, auto, repair, and other professional services."
+10 "Personal services, including private household"
+11 "Entertainment and recreation"
+12 "Hospital"
+13 "Medical, except hospital"
+14 "Educational"
+15 "Social Services"
 16 "Public administration"
 ;
 label value mind_16 ind_lab;
