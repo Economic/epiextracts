@@ -1,6 +1,2 @@
 # sphinx build folder
 _build
-
-# main variable pages will be generated
-variables/*.md
-!variables/index.rst

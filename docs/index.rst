@@ -8,9 +8,9 @@ This is the documentation for the EPI CPS Extracts, |release|
 	:caption: Contents:
 
 	datacode
+	changes
 	variables/index
 	sources
-	contributions/index
 	issues
 	examples/index
 	test

@@ -1,17 +1,17 @@
-=======
-Sources
-=======
-If you use the EPI extracts for your research, you can cite them as
+==============================================================================
+Citations & sources
+==============================================================================
+If you use the EPI extracts for your research, please cite them as
 
+.. note::
 	Economic Policy Institute. 2018. Current Population Survey Extracts, |release|.
 
+Underlying code
+==============================================================================
 The EPI code is available on
 `github <https://github.com/Economic/epiextracts_basicorg>`_
-(currently a private repository). It draws heavily from other sources of code
-and raw data.
+(currently a private repository). The current code draws heavily from other sources:
 
-Other code incorporated into the EPI extracts
-=============================================
 * `EPI <https://www.epi.org/data/>`_:
   data library code	that processes raw CPS data, creates uniform extracts, and analyzes data
 * `CEPR <http://ceprdata.org/cps-uniform-data-extracts/cps-basic-programs/cps-basic-monthly-programs/>`_:
@@ -22,37 +22,26 @@ Other code incorporated into the EPI extracts
 Raw data underlying the EPI extracts
 ====================================
 
-CPS Basic Monthly, 1976 - Present
----------------------------------
++-------------------------+----------------+--------------------+
+| Dataset                 | Years          | Source             |
++=========================+================+====================+
+| EPI CPS Basic Monthly   | 1976 - 1993    | Unicon CPS Basic   |
++-------------------------+----------------+--------------------+
+| EPI CPS Basic Monthly   | 1994 - Present | Census/BLS monthly |
++-------------------------+----------------+--------------------+
+| EPI CPS ORG             | 1979 - 1983    | Unicon CPS ORG     |
++-------------------------+----------------+--------------------+
+| EPI CPS ORG             | 1984 - 1993    | Unicon CPS Basic   |
++-------------------------+----------------+--------------------+
+| EPI CPS ORG             | 1994 - Present | Census/BLS monthly |
++-------------------------+----------------+--------------------+
+| EPI CPS May             | 1973 - 1981    | Unicon CPS May     |
++-------------------------+----------------+--------------------+
 
-+----------------+--------------------+
-| Years          | Data source        |
-+================+====================+
-| 1976 - 1993    | Unicon CPS Basic   |
-+----------------+--------------------+
-| 1994 - Present | Census/BLS monthly |
-+----------------+--------------------+
-
-
-CPS ORG/May 1973-Present
----------------------------------
-
-+----------------+--------------------+
-| Years          | Data source        |
-+================+====================+
-| 1973 - 1978    | Unicon CPS May     |
-+----------------+--------------------+
-| 1979 - 1982    | Unicon CPS ORG     |
-+----------------+--------------------+
-| 1983 - 1993    | Unicon CPS Basic   |
-+----------------+--------------------+
-| 1994 - Present | Census/BLS monthly |
-+----------------+--------------------+
 
 Documentation for source data
-====================================
-On maynard you can find documentation for the underlying source data as well
-as the original EPI extracts:
+===============================================================================
+On maynard you can find documentation for the underlying source data and the original EPI extracts:
 
 +-------------------------+---------------------------------------------------------+
 | Source data             | Documentation                                           |
@@ -64,4 +53,6 @@ as the original EPI extracts:
 | Unicon CPS Basic        | :file:`/data/cps/basic/unicon/codebooks/`               |
 +-------------------------+---------------------------------------------------------+
 | Unicon CPS ORG          | :file:`/data/cps/org/unicon/codebooks/`                 |
++-------------------------+---------------------------------------------------------+
+| Unicon CPS May          | :file:`/data/cps/may/unicon/codebooks/`                 |
 +-------------------------+---------------------------------------------------------+

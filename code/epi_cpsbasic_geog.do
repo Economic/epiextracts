@@ -1,18 +1,19 @@
 local date = `1'
 local stategeocodes `2'
 
-*********
-* State *
-*********
+
+
+********************************************************************************
+* State
+********************************************************************************
 gen byte statefips = .
 * some codes in 1976 do not match Unicon documentation
 * for now, ensure missing codes for 1976-1977
-if tm(1976m1) <= `date' & `date' <= tm(1977m12) {
+if tm(1973m1) <= `date' & `date' <= tm(1977m12) {
 	drop region
 	* even though all state (and other geographic) codes will be missing
 	* we want the missing values and the full value labels, so do the following merge
 	merge m:1 statefips using `stategeocodes', nogenerate keep(1)
-
 	* ridiculous hack to pull in value labels for statefips
 	* which are not merged above
 	drop statefips
@@ -67,10 +68,10 @@ lab var region "Census region (1-4)"
 notes region: derived from statefips
 
 
-**********
-* County *
-**********
 
+********************************************************************************
+* County
+********************************************************************************
 gen countyfips = .
 if tm(1995m9) <= `date' & `date' <= tm(2004m4) {
 	replace countyfips = geco
@@ -84,3 +85,18 @@ lab val countyfips countyfips
 notes countyfips: 1995m9-2004m4, CPS: geco
 notes countyfips: 2004m5-present, CPS: gtco
 notes countyfips: Not consistent over time
+
+
+
+********************************************************************************
+* CBSA
+********************************************************************************
+gen cbsafips = .
+if tm(2004m5) <= `date' & `date' <= tm(2018m5) {
+	replace cbsafips = gtcbsa
+}
+lab var cbsafips "Core Based Statistical Area - FIPS code"
+lab def cbsafips 0 "Not identified"
+lab val cbsafips cbsafips
+notes cbsafips: 2004m5-present, CPS: gtcbsa
+notes cbsafips: Not consistent over time

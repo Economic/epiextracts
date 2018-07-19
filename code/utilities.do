@@ -11,32 +11,83 @@ capture program drop append_extracts
 program define append_extracts
 syntax, begin(string) end(string) sample(string) [version(string)] [keeponly(string)]
 
+* determine sample
 local lowersample = lower("`sample'")
-
 if "`lowersample'" == "org" local samplename ORG
 else if "`lowersample'" == "basic" local samplename Basic
+else if "`lowersample'" == "swa" local samplename SWA
+else if "`lowersample'" == "may" local samplename May
 else {
-	di "Must specify Basic or ORG sample"
-	exit
+	di _n "You must specify Basic or ORG or SWA or May sample."
+	error 1
 }
 
+* determine version
 local dataversion = lower("`version'")
 if "`version'" == "" local dataversion "local"
-if "`dataversion'" ~= "production" & "`dataversion'" ~= "local" {
-	di "Version must be local or production"
-	exit
+if "`dataversion'" ~= "production" & "`dataversion'" ~= "local" & "`dataversion'" ~= "old" {
+	di _n "Version must be local, production, or old."
+	error 1
+}
+if ("`dataversion'" == "production" | "`dataversion'" == "local") & "`lowersample'" == "swa" {
+	di _n "Only the old version of the SWA extracts exists."
+	error 1
 }
 
+* determine path of version and sample
 if "`dataversion'" == "production" local inputpath /data/cps/`lowersample'/epiextracts/
-else local inputpath ${extracts}
+if "`dataversion'" == "old" & ("`lowersample'" == "org" | "`lowersample'" == "swa" | "`lowersample'" == "may") local inputpath /data/cps/org/epi/stata/
+if "`dataversion'" == "old" & "`lowersample'" == "basic" local inputpath /data/cps/basic/epi/stata/
+if "`dataversion'" == "local" local inputpath ${extracts}
 
-di "Using `dataversion' version of the extracts located in `inputpath'"
+di _n "Using `dataversion' version of the CPS `samplename' extracts located in `inputpath'" _n
 
 * deal with dates
 local begindate = tm(`begin')
 local enddate = tm(`end')
 local minyear = year(dofm(`begindate'))
 local maxyear = year(dofm(`enddate'))
+local minmonth = month(dofm(`begindate'))
+local maxmonth = month(dofm(`enddate'))
+* quarterdate list for EPI Basic
+local minquarterdate = yq(`minyear',quarter(dofm(`begindate')))
+local maxquarterdate = yq(`maxyear',quarter(dofm(`enddate')))
+
+* min month and max month check for old Basic
+if "`dataversion'" == "old" & "`lowersample'" == "basic" {
+	local invalidmonth = 0
+	if inlist(`minmonth',1,4,7,10) ~= 1 {
+		local invalidmonth = 1
+		di "Beginning month invalid."
+	}
+	if inlist(`maxmonth',3,6,9,12) ~= 1 {
+		local invalidmonth = 1
+		di "Ending month invalid."
+	}
+	if `invalidmonth' == 1 {
+		di _n "Mid-quarter samples are not available for the old EPI Basic, which is available quarterly."
+		di "For this dataset, select a month range comprising full quarters -- e.g., begin(2012m4) end(2015m9)."
+		error 1
+	}
+}
+
+* min month and max month check for old ORG/May
+if "`dataversion'" == "old" & ("`lowersample'" == "org" | "`lowersample'" == "swa" | "`lowersample'" == "may") {
+	local invalidmonth = 0
+	if `minmonth' ~= 1 {
+		local invalidmonth = 1
+		di "Beginning month invalid."
+	}
+	if `maxmonth' ~= 12 {
+		local invalidmonth = 1
+		di "Ending month invalid."
+	}
+	if `invalidmonth' == 1 {
+		di _n "Mid-year samples are not available for the old EPI SWA/ORG/May samples, which are available annually"
+		di "For these datasets, select month ranges comprising full years -- e.g., begin(2012m1) end(2015m12)"
+		error 1
+	}
+}
 
 * create list of months for each year to process
 foreach date of numlist `begindate'(1)`enddate' {
@@ -45,52 +96,96 @@ foreach date of numlist `begindate'(1)`enddate' {
   local monthlist`year' `monthlist`year'' `month'
 }
 
-foreach year of numlist `minyear'(1)`maxyear' {
-	local counter = 0
-	foreach month of numlist `monthlist`year'' {
-		local counter = `counter' + 1
+* keeponly varlists for datasets
+if "`keeponly'" ~= "" {
+	if "`dataversion'" == "old" & ("`lowersample'" == "org" | "`lowersample'" == "swa") {
+		local keeponlylist `keeponly' month mins orgwt
 	}
+	if "`dataversion'" == "old" & "`lowersample'" == "basic" {
+		local keeponlylist `keeponly' month mins *wgt*
+	}
+	if "`dataversion'" == "old" & "`lowersample'" == "may" {
+		local keeponlylist `keeponly' month finalwt
+	}
+	if "`dataversion'" == "production" | "`dataversion'" == "local" {
+		local keeponlylist `keeponly' year month mins *wgt*
+	}
+}
 
-	if `counter' == 12 {
-		local inputfile epi_cps`lowersample'_`year'.dta
+* process old EPI Basic (quarterly)
+if "`dataversion'" == "old" & "`lowersample'" == "basic" {
+	foreach quarterdate of numlist `minquarterdate'(1)`maxquarterdate' {
+		local year = year(dofq(`quarterdate'))
+		local shortyear = substr("`year'",3,2)
+		local quarter = quarter(dofq(`quarterdate'))
+		local inputfile cps`shortyear'q`quarter'.dta
 		unzipfile `inputpath'`inputfile'.zip, replace
-		if "`keeponly'" ~= "" use year month minsamp orgwgt `keeponly' using `inputfile', clear
-		else use `inputfile', clear
-		tempfile annualdata`year'
-		save `annualdata`year''
+		use `keeponlylist' using `inputfile', clear
+		gen year = `year'
+		tempfile quarterlydata`quarterdate'
+		save `quarterlydata`quarterdate''
 		erase `inputfile'
 	}
-
-	else {
-		foreach month of numlist `monthlist`year'' {
-			local inputfile epi_cps`lowersample'_`year'_`month'.dta
-			unzipfile `inputpath'`inputfile'.zip, replace
-			if "`keeponly'" ~= "" use year month minsamp orgwgt `keeponly' using `inputfile', clear
-			else use `inputfile', clear
-			tempfile monthlydata`month'
-			save `monthlydata`month''
-			erase `inputfile'
-		}
+	local counter = 0
+	foreach quarterdate of numlist `minquarterdate'(1)`maxquarterdate' {
+		local counter = `counter' + 1
+		if `counter' == 1 use `quarterlydata`quarterdate'', clear
+		else append using `quarterlydata`quarterdate''
+	}
+}
+* process all other datasets (annual, or monthly)
+else {
+	foreach year of numlist `minyear'(1)`maxyear' {
 		local counter = 0
 		foreach month of numlist `monthlist`year'' {
 			local counter = `counter' + 1
-			if `counter' == 1 use `monthlydata`month'', clear
-			else append using `monthlydata`month''
 		}
-		tempfile annualdata`year'
-		save `annualdata`year''
+		if `counter' == 12 {
+			if "`dataversion'" == "local" | "`dataversion'" == "production" local inputfile epi_cps`lowersample'_`year'.dta
+			local shortyear = substr("`year'",3,2)
+			if "`dataversion'" == "old" & "`lowersample'" == "org" {
+				local inputfile org`shortyear'c.dta
+			}
+			if "`dataversion'" == "old" & "`lowersample'" == "swa" {
+				local inputfile wage`shortyear'c.dta
+			}
+			if "`dataversion'" == "old" & "`lowersample'" == "may" {
+				local inputfile may`shortyear'c.dta
+			}
+			unzipfile `inputpath'`inputfile'.zip, replace
+			use `keeponlylist' using `inputfile', clear
+			if "`dataversion'" == "old" gen year = `year'
+			tempfile annualdata`year'
+			save `annualdata`year''
+			erase `inputfile'
+		}
+		* monthly files will be either production or local
+		else {
+			foreach month of numlist `monthlist`year'' {
+				local inputfile epi_cps`lowersample'_`year'_`month'.dta
+				unzipfile `inputpath'`inputfile'.zip, replace
+				use `keeponlylist' using `inputfile', clear
+				tempfile monthlydata`month'
+				save `monthlydata`month''
+				erase `inputfile'
+			}
+			local counter = 0
+			foreach month of numlist `monthlist`year'' {
+				local counter = `counter' + 1
+				if `counter' == 1 use `monthlydata`month'', clear
+				else append using `monthlydata`month''
+			}
+			tempfile annualdata`year'
+			save `annualdata`year''
+		}
 	}
-
+	local counter = 0
+	foreach year of numlist `minyear'(1)`maxyear' {
+		local counter = `counter' + 1
+		if `counter' == 1 use `annualdata`year'', clear
+		else append using `annualdata`year''
+	}
 }
-
-local counter = 0
-foreach year of numlist `minyear'(1)`maxyear' {
-	local counter = `counter' + 1
-	if `counter' == 1 use `annualdata`year'', clear
-	else append using `annualdata`year''
-}
-
-
 
 
 
@@ -291,6 +386,24 @@ capture program drop create_extracts
 program define create_extracts
 syntax, begin(string) end(string) [keeponly(string)]
 
+* deal with dates
+local begindate = tm(`begin')
+local enddate = tm(`end')
+local minyear = year(dofm(`begindate'))
+local maxyear = year(dofm(`enddate'))
+
+* create list of months for each year to process
+foreach date of numlist `begindate'(1)`enddate' {
+  local year = year(dofm(`date'))
+  local month = month(dofm(`date'))
+  local monthlist`year' `monthlist`year'' `month'
+}
+
+if `begindate' < tm(1973m1) {
+	di _n "Data is not available for" %tm `begindate'
+	error 1
+}
+
 * preliminary data
 import delimited using ${suppdata}state_geocodes.csv, clear varnames(1)
 labmask statefips, val(stateabb)
@@ -310,55 +423,88 @@ save `stategeocodes'
 
 * cpi
 
-* deal with dates
-local begindate = tm(`begin')
-local enddate = tm(`end')
-local minyear = year(dofm(`begindate'))
-local maxyear = year(dofm(`enddate'))
 
-* create list of months for each year to process
-foreach date of numlist `begindate'(1)`enddate' {
-  local year = year(dofm(`date'))
-  local month = month(dofm(`date'))
-  local monthlist`year' `monthlist`year'' `month'
-}
 
 * process all data
 foreach year of numlist `minyear'(1)`maxyear' {
+	* reset survey sample settings
+	global monthlycps = 0
+	global maycps = 0
+	global earnerinfo = 0
 
-/*
 	* first process annual may if necessary
-	if `year' < 1979 {
-		* unzip may
-		* use may
-		* run programs
+	if 1973 <= `year' & `year' <= 1981 {
+		* survey sample settings
+		global monthlycps = 0
+		global maycps = 1
+		global earnerinfo = 1
+		global basicfile = 0
+
+		* for May CPS, use month=5 (may)
+		local date = tm(`year'm5)
+
+		* input files
+		local inputpath ${uniconmay}
+		local inputfile unicon_may_`year'.dta
+
+		* load data
+		unzipfile `inputpath'`inputfile'.zip, replace
+		use `inputfile', clear
+
+		* run key basic/org programs
+		do ${code}epi_cpsbasic_sample.do `date'
+		do ${code}epi_cpsbasic_idwgt.do `date'
+		do ${code}epi_cpsbasic_geog.do `date' `stategeocodes'
+		do ${code}epi_cpsbasic_demog.do `date'
+		do ${code}epi_cpsbasic_empstat.do `date'
+		do ${code}epi_cpsorg_wages.do `date'
+		do ${code}epi_cpsbasic_keepord.do `date'
+
+		* clean up
+		erase `inputfile'
+
 		* save data
 		compress
 		notes drop _dta
+		notes _dta: EPI CPS May Extract, Version $dataversion
 		label data "EPI CPS May Extract, Version $dataversion"
-		saveold ${extracts}epi_cpsmay_`year'.dta, replace version(13)
-		zipfile epi_cpsmayc_`year'.dta, saving(epi_cpsmay_`year'.dta.zip, replace)
+		saveold epi_cpsmay_`year'.dta, replace version(13)
+		zipfile epi_cpsmay_`year'.dta, saving(epi_cpsmay_`year'.dta.zip, replace)
 		copy epi_cpsmay_`year'.dta.zip ${extracts}epi_cpsmay_`year'.dta.zip, replace
 		erase epi_cpsmay_`year'.dta
 		erase epi_cpsmay_`year'.dta.zip
-
 	}
-*/
+
 
 	* 1976 and later, process monthly basic and possibly monthly ORG
 	if `year' >= 1976 {
+		global monthlycps = 1
+		global maycps = 0
+		global earnerinfo = 0
+		global basicfile = 0
+
 		* start a counter to help determine if we have a full year of data
 		local counter = 0
 		foreach month of numlist `monthlist`year'' {
 			local counter = `counter' + 1
+
+			* indicator for using basic monthly file
+			global basicfile = 1
+
       * define current month
       local date = tm(`year'm`month')
+
 			* indicator for existence of ORG files
       if `date' >= tm(1979m1) local orgexists = 1
       else local orgexists = 0
+
       * indicator for ORG files being separate from basic files
-			if tm(1979m1) <= `date' & `date' <= tm(1981m12) local separateorg = 1
+			if tm(1979m1) <= `date' & `date' <= tm(1983m12) local separateorg = 1
 			else local separateorg = 0
+
+			* indicator if file contains earner info
+			if `date' >= tm(1982m1) global earnerinfo = 1
+			else global earnerinfo = 0
 
 			* file names of basic source data in stata format
 			if tm(1976m1) <= `date' & `date' <= tm(1993m12) {
@@ -369,13 +515,10 @@ foreach year of numlist `minyear'(1)`maxyear' {
 				local inputpath ${censusbasicstata}
 				local inputfile cps_`year'_`month'.dta
 			}
+
       * unzip and load source data into memory
 			unzipfile `inputpath'`inputfile'.zip, replace
 			use `inputfile', clear
-
-			* indicator if file contains earner info
-			if `date' >= tm(1982m1) local earnerinfo = 1
-			else local earnerinfo = 0
 
 			* run key basic/org programs
 			do ${code}epi_cpsbasic_sample.do `date'
@@ -383,11 +526,11 @@ foreach year of numlist `minyear'(1)`maxyear' {
 			do ${code}epi_cpsbasic_geog.do `date' `stategeocodes'
 			do ${code}epi_cpsbasic_demog.do `date'
 			do ${code}epi_cpsbasic_empstat.do `date'
-			do ${code}epi_cpsorg_wages.do `date' `earnerinfo'
+			do ${code}epi_cpsorg_wages.do `date'
 			do ${code}epi_cpsbasic_keepord.do `date'
 
       * limit sample to certain variables for debugging
-      if "`keeponly'" ~= "" keep year month minsamp orgwgt `keeponly'
+      if "`keeponly'" ~= "" keep year month minsamp basicwgt orgwgt `keeponly'
 
 			* save basic monthly extract
 			tempfile basic_month`month'
@@ -399,7 +542,7 @@ foreach year of numlist `minyear'(1)`maxyear' {
 				do ${code}epi_cpsorg_sample.do `date'
 
         * limit sample to certain variables for debugging
-        if "`keeponly'" ~= "" keep year month minsamp orgwgt `keeponly'
+        if "`keeponly'" ~= "" keep year month minsamp basicwgt orgwgt `keeponly'
 
         tempfile org_month`month'
         save `org_month`month''
@@ -410,6 +553,12 @@ foreach year of numlist `minyear'(1)`maxyear' {
 
 			* process separate 1979-1981 ORG
 			if `orgexists' == 1 & `separateorg' == 1 {
+				* indicator for using basic monthly file
+				global basicfile = 0
+
+				* indicator if file contains earner info
+				global earnerinfo = 1
+
 				* file names of ORG source data in stata format
 				local inputpath ${uniconorg}
 				local inputfile unicon_org_`year'_`month'.dta
@@ -417,16 +566,13 @@ foreach year of numlist `minyear'(1)`maxyear' {
 				unzipfile `inputpath'`inputfile'.zip, replace
 				use `inputfile', clear
 
-				* indicator if file contains earner info
-				local earnerinfo = 1
-
 				* run key basic/org programs
 				do ${code}epi_cpsbasic_sample.do `date'
 				do ${code}epi_cpsbasic_idwgt.do `date'
 				do ${code}epi_cpsbasic_geog.do `date' `stategeocodes'
 				do ${code}epi_cpsbasic_demog.do `date'
 				do ${code}epi_cpsbasic_empstat.do `date'
-				do ${code}epi_cpsorg_wages.do `date' `earnerinfo'
+				do ${code}epi_cpsorg_wages.do `date'
 				do ${code}epi_cpsbasic_keepord.do `date'
 
 				* keep org subsample
@@ -451,7 +597,11 @@ foreach year of numlist `minyear'(1)`maxyear' {
 				else append using `basic_month`month''
 			}
 			compress
+
+			* right here is probably where we should handle earnings & hours imputations
+
 			notes drop _dta
+			notes _dta: EPI CPS Basic Monthly Extract, Version $dataversion
 			label data "EPI CPS Basic Monthly Extract, Version $dataversion"
 			saveold epi_cpsbasic_`year'.dta, replace version(13)
 			zipfile epi_cpsbasic_`year'.dta, saving(epi_cpsbasic_`year'.dta.zip, replace)
@@ -466,7 +616,11 @@ foreach year of numlist `minyear'(1)`maxyear' {
 					else append using `org_month`month''
 				}
 				compress
+
+				* right here is probably where we should handle earnings & hours imputations
+
 				notes drop _dta
+				notes _dta: EPI CPS ORG Extract, Version $dataversion
 				label data "EPI CPS ORG Extract, Version $dataversion"
 				saveold epi_cpsorg_`year'.dta, replace version(13)
 				zipfile epi_cpsorg_`year'.dta, saving(epi_cpsorg_`year'.dta.zip, replace)
@@ -481,6 +635,7 @@ foreach year of numlist `minyear'(1)`maxyear' {
 				use `basic_month`month'', clear
 				compress
 				notes drop _dta
+				notes _dta: EPI CPS Basic Monthly Extract, Version $dataversion
 				label data "EPI CPS Basic Monthly Extract, Version $dataversion"
 				saveold epi_cpsbasic_`year'_`month'.dta, replace version(13)
 				zipfile epi_cpsbasic_`year'_`month'.dta, saving(epi_cpsbasic_`year'_`month'.dta.zip, replace)
@@ -493,6 +648,7 @@ foreach year of numlist `minyear'(1)`maxyear' {
 					use `org_month`month'', clear
 					compress
 					notes drop _dta
+					notes _dta: EPI CPS ORG Extract, Version $dataversion
 					label data "EPI CPS ORG Extract, Version $dataversion"
 					saveold epi_cpsorg_`year'_`month'.dta, replace version(13)
 					zipfile epi_cpsorg_`year'_`month'.dta, saving(epi_cpsorg_`year'_`month'.dta.zip, replace)

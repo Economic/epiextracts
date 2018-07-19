@@ -1,6 +1,7 @@
 local date = `1'
 
 
+
 ***************************
 * Calendar interview year *
 ***************************
@@ -24,13 +25,14 @@ lab var month "Month"
 notes month: Generated from file date
 
 
+
 *********************************
 * Linking variables to raw data *
 *********************************
 * Unicon linking variable is recnum
 * after investigation, using this instead of hhid, lineno, etc. because
 * I could not find a way to combine those into a unique combo in any given month
-if tm(1976m1) <= `date' & `date' <= tm(1993m12) {
+if tm(1973m1) <= `date' & `date' <= tm(1993m12) {
 	rename recnum unicon_recnum
 	duplicates report unicon_recnum
 	assert r(unique_value) == r(N)
@@ -81,6 +83,7 @@ notes unicon_recnum: 1976-1993: Unicon: recnum
 notes unicon_recnum: Used for joining EPI extracts to Unicon data
 
 
+
 ***************************
 * Consistent household id *
 ***************************
@@ -93,6 +96,7 @@ notes unicon_recnum: Used for joining EPI extracts to Unicon data
 * person id *
 *************
 * use pulineno
+
 
 
 *******************
@@ -138,21 +142,31 @@ notes orgwgt: 1994-present CPS: pworwgt
 notes orgwgt: 1979-1993 Unicon: ernwgt
 
 
+
 ************************
 * Basic monthly weight *
 ************************
 gen basicwgt = .
-if tm(1976m1) <= `date' & `date' <= tm(1993m12) {
-	replace basicwgt = wgt / 100
+if $monthlycps == 0 & $maycps == 1 {
+	if tm(1973m1) <= `date' & `date' <= tm(1981m12) {
+		replace basicwgt = wgtfnl / 100
+	}
 }
+if $monthlycps == 1 & $maycps == 0 {
+	if tm(1976m1) <= `date' & `date' <= tm(1993m12) {
+		replace basicwgt = wgt / 100
+	}
+}
+
 if tm(1994m1) <= `date' & `date' <= tm(2018m5) {
 	replace basicwgt = pwsswgt
 }
-replace basicwgt = . if basicwgt <= 0
+replace basicwgt = . if basicwgt < 0
 lab var basicwgt "Basic monthly weight"
 notes basicwgt: Use for most basic CPS tabulations
 notes basicwgt: Sum to civilian, non-institutional population in each month
 notes basicwgt: To obtain approximate US population with full year of data, /*
 */ divide basicwgt by 12
-notes basicwgt: 1994-present CPS: pwsswgt
+notes basicwgt: 1973-1981 Unicon May: wgtfnl
 notes basicwgt: 1976-1993 Unicon: wgt
+notes basicwgt: 1994-present CPS: pwsswgt

@@ -4,7 +4,7 @@ local date = `1'
 * BASIC SAMPLE RESTRICTION *
 ****************************
 * only include those with non-missing age
-if tm(1976m1) <= `date' & `date' <= tm(1993m12) {
+if tm(1973m1) <= `date' & `date' <= tm(1993m12) {
 	drop if age == .
 }
 * sanity check for civilian household records

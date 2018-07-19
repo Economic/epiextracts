@@ -1,8 +1,7 @@
 local date = `1'
 
 * does the current data contain earner information?
-local earnerinfo = `2'
-assert `earnerinfo' == 1 | `earnerinfo' == 0
+assert $earnerinfo == 1 | $earnerinfo == 0
 
 
 
@@ -10,7 +9,11 @@ assert `earnerinfo' == 1 | `earnerinfo' == 0
 * Weekly earnings
 ********************************************************************************
 gen weekpay = .
-if `earnerinfo' == 1 {
+if $earnerinfo == 1 {
+	if tm(1973m1) <= `date' & `date' <= tm(1978m12) {
+		* weekly earnings in May CPS
+		replace weekpay = wkusern
+	}
 	if tm(1979m1) <= `date' & `date' <= tm(1988m12) {
 		* use computed weekly earnings
 		replace weekpay = ernwkc
@@ -37,10 +40,10 @@ notes weekpay: For nonhourly and hourly workers
 notes weekpay: Includes overtime, tips, commissions
 notes weekpay: Top-code: 1979-88: 999; 1989-97: 1923; 1998-: 2884
 notes weekpay: Some records in 1986-1988 may have earnings 999-1932
-notes weekpay: 1979-1988, Unicon: ernwkc
-notes weekpay: 1986-1988, Unicon, ernwk4x for ernwkc > 999
-notes weekpay: 1989-1993, Unicon, ernwk
-notes weekpay: 1994-present, CPS: prernwa
+notes weekpay: 1979-1988 Unicon: ernwkc
+notes weekpay: 1986-1988 Unicon, ernwk4x for ernwkc > 999
+notes weekpay: 1989-1993 Unicon, ernwk
+notes weekpay: 1994-present CPS: prernwa
 
 
 
@@ -48,7 +51,11 @@ notes weekpay: 1994-present, CPS: prernwa
 * Paid hourly
 ********************************************************************************
 gen paidhre = .
-if `earnerinfo' == 1 {
+if $earnerinfo == 1 {
+	if tm(1973m1) <= `date' & `date' <= tm(1978m12) {
+		replace paidhre = 1 if hourpd == 0
+		replace paidhre = 0 if hourpd == 1
+	}
 	if tm(1979m1) <= `date' & `date' <= tm(1993m12) {
 		replace paidhre = 0 if _ernpdh == 2
 		replace paidhre = 1 if _ernpdh == 1
@@ -61,9 +68,11 @@ if `earnerinfo' == 1 {
 lab var paidhre "Paid by hour"
 lab def paidhre 0 "Nonhourly worker" 1 "Hourly worker"
 lab val paidhre paidhre
-notes paidhre: Indicates BLS records respondent is paid by hour
-notes paidhre: 1979-1993, Unicon: _ernpdh
-notes paidhre: 1994-present, CPS: peernhry
+notes paidhre: Indicates respondent is paid by hour
+notes paidhre: Only available in 1973-1978 May and 1979-present ORG
+notes paidhre: 1973-1978 Unicon: hourpd
+notes paidhre: 1979-1993 Unicon: _ernpdh
+notes paidhre: 1994-present CPS: peernhry
 
 
 
@@ -72,7 +81,7 @@ notes paidhre: 1994-present, CPS: peernhry
 ********************************************************************************
 * it looks possible to extend the overtime definitions past hourly workers
 gen byte otcrec = .
-if `earnerinfo' == 1 {
+if $earnerinfo == 1 {
 	if tm(1994m1) <= `date' & `date' <= tm(2018m5) {
 		replace otcrec = 0 if paidhre == 1 & peernuot == 2
 		replace otcrec = 1 if paidhre == 1 & peernuot == 1
@@ -80,7 +89,7 @@ if `earnerinfo' == 1 {
 }
 lab var otcrec "Usually receive overtime, tips, commissions"
 notes otcrec: Hourly workers only
-notes otcrec: 1994-present, CPS: derived from peernuot & paidhre
+notes otcrec: 1994-present CPS: derived from peernuot & paidhre
 
 
 
@@ -88,7 +97,7 @@ notes otcrec: 1994-present, CPS: derived from peernuot & paidhre
 * Weekly earnings from overtime, tips, commissions 1994-
 ********************************************************************************
 gen byte otcamt=.
-if `earnerinfo' == 1 {
+if $earnerinfo == 1 {
 	if tm(1994m1) <= `date' & `date' <= tm(2018m5) {
 		replace otcamt = peern/100 if paidhre == 1 & otcrec == 1
 	}
@@ -105,7 +114,10 @@ notes otcamt: 1994-present, CPS: derived from peern, otcrec
 * Hourly earnings if "paid by hour" (paidhre==1)
 ********************************************************************************
 gen wage1 = .
-if `earnerinfo' == 1 {
+if $earnerinfo == 1 {
+	if tm(1973m1) <= `date' & `date' <= tm(1978m12) {
+		replace wage1 = hourern/100 if paidhre == 1
+	}
 	if tm(1979m1) <= `date' & `date' <= tm(1993m12) {
 		* convert Unicon ernhr from pennies to dollars
 		replace wage1 = ernhr/100 if paidhre == 1
@@ -120,12 +132,12 @@ replace wage1 = . if wage1 < 0
 lab var wage1 "Hourly wage (if hourly worker)"
 notes wage1: Dollars per hour
 notes wage1: For hourly workers only; excludes overtime, tips, commissions
-notes wage1: Top-code 1979-84: 99.99
+notes wage1: Top-code 1973-84: 99.99
 notes wage1: Top-code 1985-2002, < 20 usual hours: 99.99
 notes wage1: Top-code 1985-2002, 20+ usual hours: 1923.07/(usual hours)
 notes wage1: Top-code 2003-present, < 29 usual hours: 99.99
-notes wage1: Top-code 1985-2002, 20+ usual hours: 2885.07/(usual hours)
-notes wage1: 1979-1993, Unicon: ernhr if paidhre=1
+notes wage1: Top-code 2003-present, 29+ usual hours: 2885.07/(usual hours)
+notes wage1: 1973-1993 Unicon: hourern,ernhr if paidhre=1
 notes wage1: 1994-present, CPS: prernhly if paidhre=1
 
 
@@ -136,7 +148,10 @@ notes wage1: 1994-present, CPS: prernhly if paidhre=1
 * nonhourly workers (paidhre==0)
 ********************************************************************************
 gen wage2 = .
-if `earnerinfo' == 1 {
+if $earnerinfo == 1 {
+	if tm(1973m1) <= `date' & `date' <= tm(1978m12) {
+		replace wage2 = weekpay/hours if paidhre == 0
+	}
 	if tm(1979m1) <= `date' & `date' <= tm(1993m12) {
 		replace wage2 = weekpay/ernush if paidhre == 0
 	}
@@ -180,7 +195,7 @@ notes wage3: Excludes nonhourly workers whose usual hours vary
 * hourly and nonhourly workers
 ********************************************************************************
 gen wage4 = .
-if `earnerinfo' == 1 {
+if $earnerinfo == 1 {
 	if tm(1994m1) <= `date' & `date' <= tm(2018m5) {
 		* for hourly workers
 		replace wage4 = wage1 if paidhre == 1

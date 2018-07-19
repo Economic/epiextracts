@@ -10,6 +10,7 @@ collapse (mean) primeepop allepop [pw=basicwgt], by(year) fast
 sum year
 local maxyear = r(max)
 foreach var of varlist primeepop allepop {
+	replace `var' = `var' * 100
 	sum `var' if year == `maxyear'
 	local `var'yvalue = r(mean)
 	local `var'xvalue = `maxyear' + 0.5
@@ -24,6 +25,7 @@ local color5 255 127 0
 line allepop primeepop year, ///
 legend(off) ///
 xlabel(1975(5)2015) ///
+ylabel(55(5)75 80 "80%", angle(0) gmin gmax) ///
 xtitle("") ytitle("") ///
 lcolor("`color1'" "`color2'") ///
 graphregion(color("252 252 252") margin(r=17)) plotregion(color("252 252 252")) ///
