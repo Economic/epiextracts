@@ -5,13 +5,9 @@
 local date = `1'
 
 gen indcode = .
-<<<<<<< HEAD
+
 if tm(1973m1) <= `date' & `date' <= tm(1993m12)	replace indcode = ind /* unicon industry variable */ /*1980- no ind70*/
 if tm(1994m1) <= `date' & `date' <= tm(2018m5) replace indcode = peiO1icd /* census variable */
-=======
-if tm(1973m1) <= `date' & `date' <= tm(1993m12)	replace indcode = ind /* unicon industry variable */
-if tm(1994m1) <= `date' & `date' <= tm(2018m5) replace indcode = peio1icd /* census variable */
->>>>>>> d62fe9b484707318697c50d195aca8b3256db50d
 
 **************************************
 * Industry variables for each period *
