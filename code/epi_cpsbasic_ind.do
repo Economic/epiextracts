@@ -1,12 +1,17 @@
-*local date = `1'
+*save file from unzip and load here
+*keep only one month
+*use date macro, not whatever I did
 
-gen date = ym(year,month)
-format %tm date
-local date date
+local date = `1'
 
 gen indcode = .
+<<<<<<< HEAD
 if tm(1973m1) <= `date' & `date' <= tm(1993m12)	replace indcode = ind /* unicon industry variable */ /*1980- no ind70*/
 if tm(1994m1) <= `date' & `date' <= tm(2018m5) replace indcode = peiO1icd /* census variable */
+=======
+if tm(1973m1) <= `date' & `date' <= tm(1993m12)	replace indcode = ind /* unicon industry variable */
+if tm(1994m1) <= `date' & `date' <= tm(2018m5) replace indcode = peio1icd /* census variable */
+>>>>>>> d62fe9b484707318697c50d195aca8b3256db50d
 
 **************************************
 * Industry variables for each period *
@@ -30,11 +35,6 @@ replace ind90 = indcode if tm(1992m1) <= `date' & `date' <= tm(1999m12)
 gen ind00 = .
 replace ind00 = indcode if tm(2000m1) <= `date' & `date' <= tm(2018m5)
 
-
-****************************************
-* Occupation variables for each period *
-****************************************
-
 **************************************
 * Consistent major industry variable *
 **************************************
@@ -50,7 +50,7 @@ CPS ORG 1979-1982
 CPS May 1973-1982
 */
 
-	if tm(1976m1) <= `date' & `date' <= tm(1982m12){
+	if tm(1976m1) <= `date' & `date' <= tm(1982m12){;
 	/* Agriculture, mining, forestry and fisheries */
 	replace mind16 = 1 if (
 		(indcode == 17) |
@@ -132,7 +132,7 @@ CPS ORG 1983-1991
 CPS May 1983-1991
 */
 
-if tm(1983m1) <= `date' & `date' <= tm(1991m12){
+if tm(1983m1) <= `date' & `date' <= tm(1991m12){;
 	/* Agriculture, mining, forestry and fisheries*/
 	replace mind16 = 1 if	(
 		(indcode >= 10 & indcode <= 21) |
@@ -212,7 +212,7 @@ CPS ORG 1993-2002
 CPS May 1993-2002
 */
 
-if tm(1993m1) <= `date' & `date' <= tm(2002m12){
+if tm(1993m1) <= `date' & `date' <= tm(2002m12){;
 	/* Agriculture, mining, forestry and fisheries */
 	replace mind16 = 1 if	(
 		(indcode >= 10 & indcode <= 30) |
@@ -282,12 +282,12 @@ if tm(1993m1) <= `date' & `date' <= tm(2002m12){
 	/* Public administration */
 	replace mind16 = 16 if
 		(indcode >= 900 & indcode <= 932);
-}
+};
 
 /* 2000-? or 2002-? 2003? thru 2013?*/
 /*note: Major ind codes are from appendix I.2 of Unicon, aggregated from appendix K.1 and census website*/
 
-if tm(2000m1) <= `date' & `date' <= tm(2018m5){
+if tm(2000m1) <= `date' & `date' <= tm(2018m5){;
 	/* Agriculture, mining, forestry and fisheries */
 	replace mind16 = 1 if	(
 		(indcode >= 0170 & indcode <= 0180) |
@@ -354,9 +354,7 @@ if tm(2000m1) <= `date' & `date' <= tm(2018m5){
 	/* Public administration */
 	replace mind16 = 16 if
 		(indcode >= 9370 & indcode <= 9590);
-}
-
-
+};
 
 /* add labels */
 label define ind_lab
@@ -400,8 +398,4 @@ replace mind16 = "Public_administration" if mind16 == "16"
 replace mind16 = "missing" if mind16 == "."
 */
 
-
-****************************************
-* Consistent major occupation variable *
-****************************************
 #delimit cr ;
