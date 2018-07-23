@@ -5,7 +5,7 @@ format %tm date
 local date date
 
 gen indcode = .
-if tm(1973m1) <= `date' & `date' <= tm(1993m12)	replace indcode = ind70 /* unicon industry variable */
+if tm(1973m1) <= `date' & `date' <= tm(1993m12)	replace indcode = ind /* unicon industry variable */ /*1980- no ind70*/
 if tm(1994m1) <= `date' & `date' <= tm(2018m5) replace indcode = peiO1icd /* census variable */
 
 **************************************
