@@ -10,7 +10,7 @@ gen wgt = .
 replace wgt = basicwgt if year <= 1978
 replace wgt = orgwgt if year >= 1979
 
-collapse (mean) paidhre_ = paidhre [pw=wgt], by(year female) fast
+gcollapse (mean) paidhre_ = paidhre [pw=wgt], by(year female) fast
 
 * make wide and graph
 reshape wide paidhre_, i(year) j(female)

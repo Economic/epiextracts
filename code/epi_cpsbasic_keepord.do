@@ -6,8 +6,8 @@ keep
 	statefips statecensus division region countyfips cbsafips
 	age female wbho
 	educ gradecom gradehi grade92
-	lfstat emp unemp nilf
-	selfemp selfinc selfany unmem uncov union
+	lfstat emp unemp nilf schenrl
+	selfemp selfinc selfany unmem uncov union samejob
 	weekpay paidhre otcrec otcamt	wage1 wage2 wage3 wage4
 ;
 #delimit cr;

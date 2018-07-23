@@ -1,15 +1,19 @@
 local date = `1'
 
 
-
 *******************************************************************************
 * Labor force status
 *******************************************************************************
 gen byte lfstat=.
-if tm(1976m1) <= `date' & `date' <= tm(1993m12) {
+if tm(1973m1) <= `date' & `date' <= tm(1988m12) {
 	replace lfstat = 1 if 1 <= mlr & mlr <= 2
 	replace lfstat = 2 if mlr == 3
 	replace lfstat = 3 if 4 <= mlr & mlr <= 7
+}
+if tm(1989m1) <= `date' & `date' <= tm(1993m12) {
+	replace lfstat = 1 if 1 <= mlr & mlr <= 2
+	replace lfstat = 2 if 3 <= mlr & mlr <= 4
+	replace lfstat = 3 if 5 <= mlr & mlr <= 7
 }
 if tm(1994m1) <= `date' & `date' <= tm(2018m5) {
 	replace lfstat = 1 if 1 <= pemlr & pemlr <= 2
@@ -25,9 +29,8 @@ lab def lfstat
 ;
 #delimit cr
 lab val lfstat lfstat
-notes lfstat: 1976-1993 Unicon: derived from mlr
-notes lfstat: 1994-present CPS: derived from pemlr
-
+notes lfstat: 1973-1993 Unicon: mlr
+notes lfstat: 1994-present CPS: pemlr
 
 
 *******************************************************************************
@@ -42,7 +45,6 @@ notes emp: Derived from lfstat = 1
 notes emp: Universe: lfstat!=.
 
 
-
 *******************************************************************************
 * Unemployed
 *******************************************************************************
@@ -55,7 +57,6 @@ notes unemp: Derived from lfstat = 2
 notes unemp: Universe: lfstat!=.
 
 
-
 *******************************************************************************
 * Not in labor force
 *******************************************************************************
@@ -66,7 +67,6 @@ lab def nilf 1 "NILF" 0 "Employed/unemployed"
 lab val nilf nilf
 notes nilf: Derived from lfstat = 3
 notes nilf: Universe: lfstat!=.
-
 
 
 *******************************************************************************
@@ -89,7 +89,6 @@ notes selfemp: 1994-present CPS: derived from peio1cow
 notes selfemp: 1994-present: For first job
 notes selfemp: 1989-1993 Unicon: derived from class
 notes selfemp: Universe: Class of worker assigned (not necessarily employed)
-
 
 
 *******************************************************************************
@@ -150,7 +149,6 @@ notes selfemp: Self-employed: unincorporated or incorporated
 notes selfemp: 1994-present CPS: derived from peio1cow
 notes selfinc: 1976-1993 Unicon: derived from class
 notes selfemp: Universe: Class of worker assigned (not necessarily employed)
-
 
 
 *******************************************************************************
@@ -227,7 +225,6 @@ notes uncov: 1983-1993 Unicon: uncov
 notes uncov: 1994-present CPS: peerncov
 
 
-
 *******************************************************************************
 * Union represented: member or covered
 *******************************************************************************
@@ -261,3 +258,39 @@ notes union: Only available in 1977-1981 May, 1983-present ORG
 notes union: Not available on 1976-1983 basic monthly files
 notes union: Not available prior to 1977 or in 1982
 notes union: Derived from unmem and uncov
+
+
+*******************************************************************************
+* Enrolled in high school or college last week
+*******************************************************************************
+gen byte schenrl = .
+if tm(1984m1) <= `date' & `date' <= tm(1993m12) {
+	replace schenrl = 0 if schenr == 2
+	replace schenrl = 1 if schenr == 1
+}
+if tm(1994m1) <= `date' & `date' <= tm(2018m5) {
+	replace schenrl = 0 if peschenr == 2
+	replace schenrl = 1 if peschenr == 1
+}
+lab var schenrl "Enrolled in high school or college last week"
+lab def schenrl 1 "Enrolled" 0 "Not enrolled"
+lab val schenrl schenrl
+notes schenrl: Available 1993-present
+notes schenrl: 1983-2012 universe: ages 16-24
+notes schenrl: 2013-present universe: ages 16-54
+notes schenrl: 1984-1993 Unicon: schenr
+notes schenrl: 1994-present CPS: peschenr
+
+*******************************************************************************
+* Same job as last month
+*******************************************************************************
+gen byte samejob = .
+if tm(1994m1) <= `date' & `date' <= tm(2018m5) {
+	replace samejob = 1 if puiodp1 == 1
+	replace samejob = 0 if puiodp1 == 2
+}
+lab var samejob "Same employer as last month, at main job"
+lab def samejob 1 "Same employer" 0 "Not the same employer"
+lab val samejob samejob
+notes samejob: Available 1994-present
+notes samejob: 1994-present CPS: puiodp1

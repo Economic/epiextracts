@@ -10,7 +10,7 @@ gen byte black = wbho == 2 if wbho ~= .
 gen byte hispanic = wbho == 3 if wbho ~= .
 gen byte other = wbho == 4 if wbho ~= .
 
-collapse (mean) white black hispanic other [pw=basicwgt], by(year) fast
+gcollapse (mean) white black hispanic other [pw=basicwgt], by(year) fast
 sum year
 local maxyear = r(max)
 foreach var of varlist white black hispanic other {

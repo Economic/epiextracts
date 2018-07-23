@@ -10,7 +10,7 @@ keep if year == `maxyear'
 keep if age >= 16 & age <= 64
 rename cbsafips cbsa2013
 
-collapse (count) n=year, by(cbsa2013)
+gcollapse (count) n=year, by(cbsa2013)
 
 local color1 123 50 148
 local color2 194 165 207
