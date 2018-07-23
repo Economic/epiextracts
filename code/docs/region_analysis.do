@@ -5,7 +5,7 @@ webdoc set _stlog
 
 sum year
 keep if year == r(max)
-egen tag = tag(statefips)
+gegen tag = tag(statefips)
 keep if tag == 1
 keep statefips region
 

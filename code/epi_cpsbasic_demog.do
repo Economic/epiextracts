@@ -88,7 +88,7 @@ lab define gradehi
 14 "College: 14th grade"
 15 "College: 15th grade"
 16 "College: 16th grade"
-16 "College: 17th grade"
+17 "College: 17th grade"
 18 "College: 18th+ grade"
 ;
 #delimit cr

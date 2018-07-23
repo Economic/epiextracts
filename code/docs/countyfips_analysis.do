@@ -13,7 +13,7 @@ tostring statefips, gen(state) format(%02.0f)
 tostring countyfips, gen(county) format(%03.0f)
 replace county = state + county
 destring county, replace
-collapse (count) n=year, by(county)
+gcollapse (count) n=year, by(county)
 
 local color1 123 50 148
 local color2 194 165 207
