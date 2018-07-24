@@ -38,8 +38,9 @@ lab var weekpay "Weekly pay"
 notes weekpay: Dollars per week
 notes weekpay: For nonhourly and hourly workers
 notes weekpay: Includes overtime, tips, commissions
-notes weekpay: Top-code: 1979-88: 999; 1989-97: 1923; 1998-: 2884
+notes weekpay: Top-code: 1973-85: 999; 1986-97: 1923; 1998-: 2884
 notes weekpay: Some records in 1986-1988 may have earnings 999-1932
+notes weekpay: 1973-1978 Unicon: wkusern
 notes weekpay: 1979-1988 Unicon: ernwkc
 notes weekpay: 1986-1988 Unicon, ernwk4x for ernwkc > 999
 notes weekpay: 1989-1993 Unicon, ernwk
