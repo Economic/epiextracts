@@ -34,8 +34,7 @@ if $earnerinfo == 1 {
 }
 replace weekpay = . if weekpay < 0
 lab var weekpay "Weekly pay"
-notes weekpay: Dollars per week
-notes weekpay: For nonhourly and hourly workers
+notes weekpay: Dollars per week for nonhourly and hourly workers
 notes weekpay: Includes overtime, tips, commissions
 notes weekpay: Top-code: 1973-85: 999; 1986-97: 1923; 1998-: 2884
 notes weekpay: Some records in 1986-1988 may have earnings 999-1932
