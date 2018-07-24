@@ -7,7 +7,8 @@ local date = `1'
 gen indcode = .
 
 if tm(1973m1) <= `date' & `date' <= tm(1993m12)	replace indcode = ind /* unicon industry variable */ /*1980- no ind70*/
-if tm(1994m1) <= `date' & `date' <= tm(2018m5) replace indcode = peiO1icd /* census variable */
+*if tm(1994m1) <= `date' & `date' <= tm(2018m5) replace indcode = peio1icd /* census variable */ /*THIS ISNT WORKING*/
+replace indcode = peio1icd if year >= 1994 & year != . /* need to fix this in the real industry coding */
 
 **************************************
 * Industry variables for each period *
@@ -351,7 +352,7 @@ if tm(2000m1) <= `date' & `date' <= tm(2018m5){;
 	replace mind16 = 16 if
 		(indcode >= 9370 & indcode <= 9590);
 };
-
+/*
 /* add labels */
 label define ind_lab
 1 "Agriculture, mining, forestry and fisheries"
@@ -372,7 +373,7 @@ label define ind_lab
 16 "Public administration"
 ;
 label value mind16 ind_lab;
-
+*/
 /*
 tostring mind16, replace
 replace mind16 = "Ag_for_fish_min" if mind16 == "1"
