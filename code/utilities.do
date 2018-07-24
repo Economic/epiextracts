@@ -640,11 +640,11 @@ foreach year of numlist `minyear'(1)`maxyear' {
 		foreach month of numlist `monthlist`year'' {
 			local counter = `counter' + 1
 
-			* indicator for using basic monthly file
-			global basicfile = 1
-
       * define current month
       local date = tm(`year'm`month')
+
+      * indicator for using basic monthly file
+      global basicfile = 1
 
 			* indicator for existence of ORG files
       if `date' >= tm(1979m1) local orgexists = 1
@@ -751,6 +751,9 @@ foreach year of numlist `minyear'(1)`maxyear' {
 			compress
 
 			* right here is probably where we should handle earnings & hours imputations
+      global basicfile = 1
+      do ${code}epi_cpsorg_topcode.do `date'
+      do ${code}epi_cpsorg_realwage.do `date'
 
 			notes drop _dta
 			notes _dta: EPI CPS Basic Monthly Extract, Version $dataversion
@@ -769,7 +772,10 @@ foreach year of numlist `minyear'(1)`maxyear' {
 				}
 				compress
 
-				* right here is probably where we should handle earnings & hours imputations
+        * right here is probably where we should handle earnings & hours imputations
+        global basicfile = 0
+        do ${code}epi_cpsorg_topcode.do `date'
+        do ${code}epi_cpsorg_realwage.do `date'
 
 				notes drop _dta
 				notes _dta: EPI CPS ORG Extract, Version $dataversion
