@@ -64,7 +64,7 @@ foreach var of varlist `analysisvarlist' {
 
 
 * CPS ORG/May analysis for wage variables
-local analysisvarlist paidhre wage3
+local analysisvarlist a_weekpay paidhre wage3
 local othervars year orgwgt female age basicwgt
 append_extracts, begin(1979m1) end(2017m12) sample(org) version(local) keeponly(`analysisvarlist' `othervars')
 tempfile orgdata
