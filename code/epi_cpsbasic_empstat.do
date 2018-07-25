@@ -85,9 +85,9 @@ lab var selfemp "Self-employed"
 lab def selfemp 1 "Self-employed" 0 "Not self-employed"
 lab val selfemp selfemp
 notes selfemp: Unincorporated self-employed only
-notes selfemp: 1994-present CPS: derived from peio1cow
+notes selfemp: 1994-present CPS: peio1cow
 notes selfemp: 1994-present: For first job
-notes selfemp: 1989-1993 Unicon: derived from class
+notes selfemp: 1989-1993 Unicon: class
 notes selfemp: Universe: Class of worker assigned (not necessarily employed)
 
 
@@ -107,7 +107,7 @@ lab var selfinc "Incorporated self-employed"
 lab def selfinc 1 "Self-employed (incorp)" 0 "Not self-employed (incorp)"
 lab val selfinc selfinc
 notes selfinc: Incorporated self-employed only
-notes selfinc: 1994-present CPS: derived from peio1cow
+notes selfinc: 1994-present CPS: peio1cow
 notes selfinc: 1994-present: For first job
 notes selfinc: 1989-1993 Unicon: derived from class
 notes selfinc: Universe: Class of worker assigned (not necessarily employed)
@@ -145,10 +145,12 @@ if $monthlycps == 1 & $maycps == 0 {
 lab var selfany "Self-employed (unincorporated or incorporated)"
 lab def selfany 1 "Self-employed (uninc or inc)" 0 "Not self-employed (uninc or inc)"
 lab val selfany selfany
-notes selfemp: Self-employed: unincorporated or incorporated
-notes selfemp: 1994-present CPS: derived from peio1cow
-notes selfinc: 1976-1993 Unicon: derived from class
-notes selfemp: Universe: Class of worker assigned (not necessarily employed)
+notes selfany: Self-employed: unincorporated or incorporated
+notes selfany: 1994-present: For first job only
+notes selfany: 1994-present CPS: peio1cow
+notes selfany: 1976-1993 Unicon Basic/ORG: class
+notes selfany: 1973-1981 Unicon May: class4
+notes selfany: Universe: Class of worker assigned (not necessarily employed)
 
 
 *******************************************************************************
@@ -180,7 +182,6 @@ notes unmem: Not available in 1982
 notes unmem: 1973-1981 Unicon: unmem
 notes unmem: 1983-1993 Unicon: unmem
 notes unmem: 1994-present CPS: peernlab
-
 
 
 *******************************************************************************
@@ -281,6 +282,7 @@ notes schenrl: 2013-present universe: ages 16-54
 notes schenrl: 1984-1993 Unicon: schenr
 notes schenrl: 1994-present CPS: peschenr
 
+
 *******************************************************************************
 * Same job as last month
 *******************************************************************************
@@ -294,3 +296,101 @@ lab def samejob 1 "Same employer" 0 "Not the same employer"
 lab val samejob samejob
 notes samejob: Available 1994-present
 notes samejob: 1994-present CPS: puiodp1
+
+
+*******************************************************************************
+* Public sector
+*******************************************************************************
+gen byte pubsec = .
+if $monthlycps == 0 & $maycps == 1 {
+	if tm(1973m1) <= `date' & `date' <= tm(1981m12) {
+		replace pubsec = 0 if class4 >= 1 & class4 ~= .
+		replace pubsec = 1 if class4 == 2
+	}
+}
+if $monthlycps == 1 & $maycps == 0 {
+	if tm(1976m1) <= `date' & `date' <= tm(1988m12) {
+		replace pubsec = 0 if class >= 1 & class ~= .
+		replace pubsec = 1 if class == 2
+	}
+}
+if tm(1989m1) <= `date' & `date' <= tm(1993m12) {
+	replace pubsec = 0 if class >= 1 & class ~= .
+	replace pubsec = 1 if 2 <= class & class <= 4
+}
+if tm(1994m1) <= `date' & `date' <= tm(2018m5) {
+	replace pubsec = 0 if peio1cow >= 1 & peio1cow ~= .
+	replace pubsec = 1 if 1 <= peio1cow & peio1cow <= 3
+}
+lab var pubsec "Public sector employee"
+lab def pubsec 1 "In public sector" 0 "Not in public sector"
+lab val pubsec pubsec
+notes pubsec: Different definitions/universes CPS Basic: 1976-1988, 1989-1993, 1994-present
+notes pubsec: Different definitions/universes CPS May: 1973-1981
+notes pubsec: 1994-present: For first job only
+notes pubsec: 1973-1981 Unicon May: class4
+notes pubsec: 1976-1993 Unicon Basic: class
+notes pubsec: 1994-present CPS: peio1cow
+
+
+*******************************************************************************
+* Public sector: local
+*******************************************************************************
+gen byte publoc = .
+if tm(1989m1) <= `date' & `date' <= tm(1993m12) {
+	replace publoc = 0 if class >= 1 & class ~= .
+	replace publoc = 1 if class == 4
+}
+if tm(1994m1) <= `date' & `date' <= tm(2018m5) {
+	replace publoc = 0 if peio1cow >= 1 & peio1cow ~= .
+	replace publoc = 1 if peio1cow == 3
+}
+lab var publoc "Local government employee"
+lab def publoc 1 "In local government" 0 "Not in local government"
+lab val publoc publoc
+notes publoc: Different definitions/universes in 1989-1993, 1994-present
+notes publoc: 1994-present: For first job only
+notes publoc: 1989-1993 Unicon: class
+notes publoc: 1994-present CPS: peio1cow
+
+
+*******************************************************************************
+* Public sector: state
+*******************************************************************************
+gen byte pubst = .
+if tm(1989m1) <= `date' & `date' <= tm(1993m12) {
+	replace pubst = 0 if class >= 1 & class ~= .
+	replace pubst = 1 if class == 3
+}
+if tm(1994m1) <= `date' & `date' <= tm(2018m5) {
+	replace pubst = 0 if peio1cow >= 1 & peio1cow ~= .
+	replace pubst = 1 if peio1cow == 2
+}
+lab var pubst "State government employee"
+lab def pubst 1 "In state government" 0 "Not in state government"
+lab val pubst pubst
+notes pubst: Different definitions/universes in 1989-1993, 1994-present
+notes pubst: 1994-present: For first job only
+notes pubst: 1989-1993 Unicon: class
+notes pubst: 1994-present CPS: peio1cow
+
+
+*******************************************************************************
+* Public sector: federal
+*******************************************************************************
+gen byte pubfed = .
+if tm(1989m1) <= `date' & `date' <= tm(1993m12) {
+	replace pubfed = 0 if class >= 1 & class ~= .
+	replace pubfed = 1 if class == 2
+}
+if tm(1994m1) <= `date' & `date' <= tm(2018m5) {
+	replace pubfed = 0 if peio1cow >= 1 & peio1cow ~= .
+	replace pubfed = 1 if peio1cow == 1
+}
+lab var pubfed "Federal government employee"
+lab def pubfed 1 "In federal government" 0 "Not in federal government"
+lab val pubfed pubfed
+notes pubfed: Different definitions/universes in 1989-1993, 1994-present
+notes pubfed: 1994-present: For first job only
+notes pubfed: 1989-1993 Unicon: class
+notes pubfed: 1994-present CPS: peio1cow

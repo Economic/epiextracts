@@ -8,6 +8,7 @@ keep
 	educ gradecom gradehi grade92
 	lfstat emp unemp nilf schenrl
 	selfemp selfinc selfany unmem uncov union samejob
+	pubsec pubst publoc pubfed
 	weekpay paidhre otcrec otcamt	wage1 wage2 wage3 wage4 weekpay_tc a_weekpay
 ;
 #delimit cr;

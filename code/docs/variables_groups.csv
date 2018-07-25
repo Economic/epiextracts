@@ -24,6 +24,10 @@ orgwgt,idweight
 otcamt,income
 otcrec,income
 paidhre,income
+pubfed,employment
+publoc, employment
+pubsec,employment
+pubst,employment
 pulineno,idweight
 region,geography
 samejob,employment
