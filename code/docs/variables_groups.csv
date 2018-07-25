@@ -17,6 +17,7 @@ hrsample,idweight
 hrsersuf,idweight
 huhhnum,idweight
 lfstat,employment
+lookdur,employment
 minsamp,idweight
 month,idweight
 nilf,employment
@@ -24,8 +25,9 @@ orgwgt,idweight
 otcamt,income
 otcrec,income
 paidhre,income
+prunedur,employment
 pubfed,employment
-publoc, employment
+publoc,employment
 pubsec,employment
 pubst,employment
 pulineno,idweight

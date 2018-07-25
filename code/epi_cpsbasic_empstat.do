@@ -89,6 +89,7 @@ notes selfemp: 1994-present CPS: peio1cow
 notes selfemp: 1994-present: For first job
 notes selfemp: 1989-1993 Unicon: class
 notes selfemp: Universe: Class of worker assigned (not necessarily employed)
+notes selfemp: Different definitions/universes: 1989-1993, 1994-present
 
 
 *******************************************************************************
@@ -96,8 +97,8 @@ notes selfemp: Universe: Class of worker assigned (not necessarily employed)
 *******************************************************************************
 gen byte selfinc=.
 if tm(1989m1) <= `date' & `date' <= tm(1993m12) {
-	replace selfemp = 0 if class >= 1 & class != .
-	replace selfemp = 1 if class == 5
+	replace selfinc = 0 if class >= 1 & class != .
+	replace selfinc = 1 if class == 5
 }
 if tm(1994m1) <= `date' & `date' <= tm(2018m5) {
 	replace selfinc = 0 if peio1cow >= 1 & peio1cow != .
@@ -111,6 +112,7 @@ notes selfinc: 1994-present CPS: peio1cow
 notes selfinc: 1994-present: For first job
 notes selfinc: 1989-1993 Unicon: derived from class
 notes selfinc: Universe: Class of worker assigned (not necessarily employed)
+notes selfinc: Different definitions/universes: 1989-1993, 1994-present
 
 
 
@@ -150,6 +152,8 @@ notes selfany: 1994-present: For first job only
 notes selfany: 1994-present CPS: peio1cow
 notes selfany: 1976-1993 Unicon Basic/ORG: class
 notes selfany: 1973-1981 Unicon May: class4
+notes selfany: Different definitions/universes CPS Basic: 1976-1988, 1989-1993, 1994-present
+notes selfany: Different definitions/universes CPS May: 1973-1981
 notes selfany: Universe: Class of worker assigned (not necessarily employed)
 
 
@@ -394,3 +398,34 @@ notes pubfed: Different definitions/universes in 1989-1993, 1994-present
 notes pubfed: 1994-present: For first job only
 notes pubfed: 1989-1993 Unicon: class
 notes pubfed: 1994-present CPS: peio1cow
+
+
+*******************************************************************************
+* Weeks unemployed, looking and layoff
+*******************************************************************************
+gen int unempdur = .
+lab var unempdur "Unemployment duration, in weeks"
+if tm(1994m1) <= `date' & `date' <= tm(2018m5) {
+	replace unempdur = prunedur if prunedur >= 0 & prunedur ~= .
+}
+notes unempdur: Only available since 1994
+notes unempdur: Top-code inconsistent across time
+notes unempdur: Top-code 1994-2011m3: 999; 2011m4-present: 119
+
+
+*******************************************************************************
+* Weeks unemployed, looking
+*******************************************************************************
+gen int lookdur = .
+if tm(1973m1) <= `date' & `date' <= tm(1993m12) {
+	replace lookdur = wksun if wksun >= 0 & wksun ~= .
+}
+if tm(1994m1) <= `date' & `date' <= tm(2018m5) {
+	replace lookdur = pelkdur if pelkdur >= 0 & pelkdur ~= .
+}
+lab var lookdur "Job seeking duration (weeks)"
+notes lookdur: Top-code inconsistent across time
+notes lookdur: Top-code 1976-1993: 99; 1994-2011m3: 999; 2011m4-present: 119
+notes lookdur: Definition/universe changes: 1973-1988, 1989-1993, 1994-present
+notes lookdur: 1973-1993 Unicon: wksun
+notes lookdur: 1993-present CPS: pelkdur
