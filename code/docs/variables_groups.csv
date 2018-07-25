@@ -25,7 +25,6 @@ orgwgt,idweight
 otcamt,income
 otcrec,income
 paidhre,income
-prunedur,employment
 pubfed,employment
 publoc,employment
 pubsec,employment
@@ -40,6 +39,7 @@ selfinc,employment
 statecensus,geography
 statefips,geography
 unemp,employment
+unempdur,employment
 uncov,employment
 union,employment
 unmem,employment
