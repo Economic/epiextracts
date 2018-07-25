@@ -752,8 +752,8 @@ foreach year of numlist `minyear'(1)`maxyear' {
 
 			* right here is probably where we should handle earnings & hours imputations
       global basicfile = 1
-      do ${code}epi_cpsorg_topcode.do `date'
-      do ${code}epi_cpsorg_realwage.do `date'
+      do ${code}epi_cpsorg_topcode.do `year'
+      do ${code}epi_cpsorg_realwage.do `year'
 
 			notes drop _dta
 			notes _dta: EPI CPS Basic Monthly Extract, Version $dataversion

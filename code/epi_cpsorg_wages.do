@@ -23,7 +23,6 @@ if $earnerinfo == 1 {
 		}
 	}
 	if tm(1989m1) <= `date' & `date' <= tm(1993m12) {
-		* use computed weekly earnings
 		replace weekpay = ernwk
 	}
 	if tm(1994m1) <= `date' & `date' <= tm(2018m5) {
@@ -80,6 +79,7 @@ if $earnerinfo == 1 {
 	if tm(1989m1) <= `date' & `date' <= tm(1993m12) {
 		replace a_weekpay = 0 if aernwk == 0 & weekpay > 0 & weekpay ~= .
 		replace a_weekpay = 1 if aernwk >= 1 & aernwk <= 8 & weekpay > 0 & weekpay ~= .
+		replace a_weekpay = 1 if ernwk ~= ernwkx 
 		assert a_weekpay ~= . if weekpay > 0 & weekpay ~= .
 	}
 	if tm(1995m9) <= `date' & `date' <= tm(2018m5) {
