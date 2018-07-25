@@ -1,1 +1,0 @@
-prunedur short description
