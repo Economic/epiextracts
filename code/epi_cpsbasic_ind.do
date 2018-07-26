@@ -1,14 +1,9 @@
-*save file from unzip and load here
-*keep only one month
-*use date macro, not whatever I did
-
 local date = `1'
 
 gen indcode = .
 
 if tm(1973m1) <= `date' & `date' <= tm(1993m12)	replace indcode = ind /* unicon industry variable */ /*1980- no ind70*/
-*if tm(1994m1) <= `date' & `date' <= tm(2018m5) replace indcode = peio1icd /* census variable */ /*THIS ISNT WORKING*/
-replace indcode = peio1icd if year >= 1994 & year != . /* need to fix this in the real industry coding */
+if tm(1994m1) <= `date' & `date' <= tm(2018m5) replace indcode = peio1icd /* census variable */
 
 **************************************
 * Industry variables for each period *
@@ -19,18 +14,18 @@ ind70 is already a variable */
 gen ind_70 = .
 replace ind_70 = indcode if tm(1979m1) <= `date' & `date' <= tm(1982m12) /* check on 1983*/
 
-/* 1983-1992: 1980 census industry codes */ /* check on 1983*/
+/* 1983-1991: 1980 census industry codes */ /* check on 1983*/
 gen ind80 = .
-replace ind80 = indcode if tm(1983m1) <= `date' & `date' <= tm(1992m12)
+replace ind80 = indcode if tm(1983m1) <= `date' & `date' <= tm(1991m12)
 
 
 /* 1992-1999: 1990 census industry codes */
 gen ind90 = .
-replace ind90 = indcode if tm(1992m1) <= `date' & `date' <= tm(1999m12)
+replace ind90 = indcode if tm(1992m1) <= `date' & `date' <= tm(2002m12)
 
 /* 2000-present: 2000 census industry codes */
 gen ind00 = .
-replace ind00 = indcode if tm(2000m1) <= `date' & `date' <= tm(2018m5)
+replace ind00 = indcode if tm(2003m1) <= `date' & `date' <= tm(2018m5)
 
 **************************************
 * Consistent major industry variable *
@@ -48,6 +43,8 @@ CPS May 1973-1982
 */
 
 	if tm(1976m1) <= `date' & `date' <= tm(1982m12){;
+	/* There are no "-1" or "military" observations during this period */
+
 	/* Agriculture, mining, forestry and fisheries */
 	replace mind16 = 1 if (
 		(indcode == 17) |
@@ -130,6 +127,12 @@ CPS May 1983-1991
 */
 
 if tm(1983m1) <= `date' & `date' <= tm(1991m12){;
+
+	replace mind16 = . if (
+		(indcode == -1) |
+		(indcode == 991) /*armed forces */
+	);
+
 	/* Agriculture, mining, forestry and fisheries*/
 	replace mind16 = 1 if	(
 		(indcode >= 10 & indcode <= 21) |
@@ -209,7 +212,13 @@ CPS ORG 1993-2002
 CPS May 1993-2002
 */
 
-if tm(1993m1) <= `date' & `date' <= tm(2002m12){;
+if tm(1992m1) <= `date' & `date' <= tm(2002m12){;
+
+	replace mind16 = . if (
+		(indcode == -1) |
+		(indcode == 991) /*armed forces */
+	);
+
 	/* Agriculture, mining, forestry and fisheries */
 	replace mind16 = 1 if	(
 		(indcode >= 10 & indcode <= 30) |
@@ -284,7 +293,13 @@ if tm(1993m1) <= `date' & `date' <= tm(2002m12){;
 /* 2000-? or 2002-? 2003? thru 2013?*/
 /*note: Major ind codes are from appendix I.2 of Unicon, aggregated from appendix K.1 and census website*/
 
-if tm(2000m1) <= `date' & `date' <= tm(2018m5){;
+if tm(2003m1) <= `date' & `date' <= tm(2018m5){;
+
+	replace mind16 = . if (
+		(indcode == -1) |
+		(indcode == 9890) /*armed forces */
+	);
+
 	/* Agriculture, mining, forestry and fisheries */
 	replace mind16 = 1 if	(
 		(indcode >= 0170 & indcode <= 0180) |
@@ -396,3 +411,5 @@ replace mind16 = "missing" if mind16 == "."
 */
 
 #delimit cr ;
+
+assert (mind16 > 0 & mind16 != .) if (indcode > 0 & indcode != . & indcode != 991 & indcode != 9890)
