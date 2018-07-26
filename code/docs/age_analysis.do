@@ -16,7 +16,7 @@ gen byte old = age >= 65 & age <= 80
 egen byte total = rowtotal(child young early mid late old)
 assert total == 1
 
-gcollapse (mean) child young early mid late old [pw=basicwgt], by(year) fast
+gcollapse (mean) child young early mid late old [pw=finalwgt], by(year) fast
 foreach var of varlist child young early mid late old {
 	replace `var' = `var' * 100
 	sum `var' if year == 1987
