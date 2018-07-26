@@ -34,7 +34,7 @@ line paidhre_0 paidhre_1 year if 1979 <= year & year <= 1993, lcolor("`color4'" 
 line paidhre_0 paidhre_1 year if 1994 <= year, lcolor("`color4'" "`color2'") ///
 legend(off) ///
 xlabel(1975(5)2015) ///
-ylabel(0(20)80 100 "100%", angle(0)) ///
+ylabel(0(20)80 100 "100%", angle(0) gmin gmax) ///
 xtitle("") ytitle("") ///
 lcolor("`color4'" "`color2'") ///
 graphregion(color("252 252 252")) plotregion(color("252 252 252")) ///

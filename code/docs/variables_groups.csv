@@ -1,12 +1,16 @@
 varname,group
+a_weekpay,income
 age,demographics
 basicwgt,idweight
 cbsafips,geography
+cmpwgt,idweight
 countyfips,geography
+discwork,employment
 division,geography
 educ,demographics
 emp,employment
 female,demographics
+finalwgt,idweight
 grade92,demographics
 gradecom,demographics
 gradehi,demographics
@@ -16,6 +20,7 @@ hrsample,idweight
 hrsersuf,idweight
 huhhnum,idweight
 lfstat,employment
+lookdur,employment
 minsamp,idweight
 month,idweight
 nilf,employment
@@ -23,6 +28,11 @@ orgwgt,idweight
 otcamt,income
 otcrec,income
 paidhre,income
+ptecon,employment
+pubfed,employment
+publoc,employment
+pubsec,employment
+pubst,employment
 pulineno,idweight
 region,geography
 samejob,employment
@@ -33,6 +43,7 @@ selfinc,employment
 statecensus,geography
 statefips,geography
 unemp,employment
+unempdur,employment
 uncov,employment
 union,employment
 unmem,employment
@@ -42,4 +53,5 @@ wage3,income
 wage4,income
 wbho,demographics
 weekpay,income
+weekpay_tc,income
 year,idweight
