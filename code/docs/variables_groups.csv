@@ -3,11 +3,14 @@ a_weekpay,income
 age,demographics
 basicwgt,idweight
 cbsafips,geography
+cmpwgt,idweight
 countyfips,geography
+discwork,employment
 division,geography
 educ,demographics
 emp,employment
 female,demographics
+finalwgt,idweight
 grade92,demographics
 gradecom,demographics
 gradehi,demographics

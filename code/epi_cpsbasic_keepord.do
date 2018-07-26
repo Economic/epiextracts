@@ -9,9 +9,9 @@ keep
 	lfstat emp unemp nilf schenrl samejob
 	selfemp selfinc selfany unmem uncov union
 	pubsec pubst publoc pubfed
-	unempdur lookdur
+	unempdur lookdur discwork
 	paidhre otcrec
 	weekpay weekpay_tc a_weekpay
-	otcamt wage1 wage2 wage3 wage4 
+	otcamt wage1 wage2 wage3 wage4
 ;
 #delimit cr;
