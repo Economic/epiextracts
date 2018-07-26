@@ -4,7 +4,6 @@ local date = `1'
 assert $earnerinfo == 1 | $earnerinfo == 0
 
 
-
 ********************************************************************************
 * Weekly earnings
 ********************************************************************************
@@ -24,7 +23,6 @@ if $earnerinfo == 1 {
 		}
 	}
 	if tm(1989m1) <= `date' & `date' <= tm(1993m12) {
-		* use computed weekly earnings
 		replace weekpay = ernwk
 	}
 	if tm(1994m1) <= `date' & `date' <= tm(2018m5) {
@@ -35,16 +33,67 @@ if $earnerinfo == 1 {
 }
 replace weekpay = . if weekpay < 0
 lab var weekpay "Weekly pay"
-notes weekpay: Dollars per week
-notes weekpay: For nonhourly and hourly workers
+notes weekpay: Dollars per week for nonhourly and hourly workers
 notes weekpay: Includes overtime, tips, commissions
-notes weekpay: Top-code: 1979-88: 999; 1989-97: 1923; 1998-: 2884
+notes weekpay: Top-code: 1973-85: 999; 1986-97: 1923; 1998-: 2884
 notes weekpay: Some records in 1986-1988 may have earnings 999-1932
+notes weekpay: 1973-1978 Unicon: wkusern
 notes weekpay: 1979-1988 Unicon: ernwkc
 notes weekpay: 1986-1988 Unicon, ernwk4x for ernwkc > 999
 notes weekpay: 1989-1993 Unicon, ernwk
 notes weekpay: 1994-present CPS: prernwa
 
+
+********************************************************************************
+* Weekly earnings top-coded
+********************************************************************************
+gen byte weekpay_tc = .
+if $earnerinfo == 1 {
+	replace weekpay_tc = 0 if weekpay >= 0 & weekpay ~= .
+	if tm(1973m1) <= `date' & `date' <= tm(1985m12) {
+		replace weekpay_tc = 1 if weekpay >= 999 & weekpay ~= .
+	}
+	if tm(1986m1) <= `date' & `date' <= tm(1997m12) {
+		replace weekpay_tc = 1 if weekpay >= 1923 & weekpay ~= .
+	}
+	if tm(1986m1) <= `date' & `date' <= tm(2018m5) {
+		replace weekpay_tc = 1 if weekpay >= 2884 & weekpay ~= .
+	}
+}
+lab var weekpay_tc "Weekly pay top-coded by BLS"
+lab def weekpay_tc 0 "Not top-coded" 1 "Top-coded"
+lab val weekpay_tc weekpay_tc
+notes weekpay_tc: Top-code for weekpay: 1973-85: 999; 1986-97: 1923; 1998-: 2884
+
+
+********************************************************************************
+* Weekly earnings allocated by BLS
+********************************************************************************
+gen byte a_weekpay = .
+if $earnerinfo == 1 {
+	if tm(1979m1) <= `date' & `date' <= tm(1988m12) {
+		replace a_weekpay = 0 if aernwk == . & weekpay > 0 & weekpay ~= .
+		replace a_weekpay = 1 if aernwk == 1 & weekpay > 0 & weekpay ~= .
+		assert a_weekpay ~= . if weekpay > 0 & weekpay ~= .
+	}
+	if tm(1989m1) <= `date' & `date' <= tm(1993m12) {
+		replace a_weekpay = 0 if aernwk == 0 & weekpay > 0 & weekpay ~= .
+		replace a_weekpay = 1 if aernwk >= 1 & aernwk <= 8 & weekpay > 0 & weekpay ~= .
+		replace a_weekpay = 1 if ernwk ~= ernwkx 
+		assert a_weekpay ~= . if weekpay > 0 & weekpay ~= .
+	}
+	if tm(1995m9) <= `date' & `date' <= tm(2018m5) {
+		replace a_weekpay = 0 if prwernal == 0 & weekpay > 0 & weekpay ~= .
+		replace a_weekpay = 1 if prwernal == 1 & weekpay > 0 & weekpay ~= .
+		assert a_weekpay ~= . if weekpay > 0 & weekpay ~= .
+	}
+}
+
+lab var a_weekpay "Weekly pay allocated by BLS"
+lab def a_weekpay 0 "Not allocated" 1 "Allocated"
+lab val a_weekpay a_weekpay
+notes a_weekpay: Allocation coding inconsistent across time
+notes a_weekpay: No allocation codes available during 1994m1-1995m8
 
 
 ********************************************************************************
@@ -75,7 +124,6 @@ notes paidhre: 1979-1993 Unicon: _ernpdh
 notes paidhre: 1994-present CPS: peernhry
 
 
-
 ********************************************************************************
 * Usually receive overtime, tips, commissions 1994-; hourly only
 ********************************************************************************
@@ -92,7 +140,6 @@ notes otcrec: Hourly workers only
 notes otcrec: 1994-present CPS: derived from peernuot & paidhre
 
 
-
 ********************************************************************************
 * Weekly earnings from overtime, tips, commissions 1994-
 ********************************************************************************
@@ -106,7 +153,6 @@ replace otcamt = . if otcamt < 0
 lab var otcamt "Weekly earnings overtime, tips, commissions"
 notes otcamt: Hourly workers only
 notes otcamt: 1994-present, CPS: derived from peern, otcrec
-
 
 
 ********************************************************************************
@@ -141,7 +187,6 @@ notes wage1: 1973-1993 Unicon: hourern,ernhr if paidhre=1
 notes wage1: 1994-present, CPS: prernhly if paidhre=1
 
 
-
 ********************************************************************************
 * wage2
 * Usual hourly earnings including overtime, tips, commissions
@@ -169,7 +214,6 @@ notes wage2: 1979-1993, Unicon: weekpay/ernush
 notes wage2: 1994-present, CPS: weekpay/pehrusl1
 
 
-
 ********************************************************************************
 * wage3
 * NBER-style wage variable usual hourly earnings
@@ -186,7 +230,6 @@ notes wage3: Includes overtime, tips, commissions for nonhourly
 notes wage3: Excludes overtime, tips, commissions for hourly
 notes wage3: No adjustments for top-coding, no trimming of outliers
 notes wage3: Excludes nonhourly workers whose usual hours vary
-
 
 
 ********************************************************************************

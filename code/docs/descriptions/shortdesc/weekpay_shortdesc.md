@@ -1,1 +1,1 @@
-weekpay needs a description
+Weekly earnings in dollars.
