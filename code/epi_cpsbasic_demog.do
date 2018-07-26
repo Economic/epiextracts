@@ -12,13 +12,12 @@ if tm(1976m1) <= `date' & `date' <= tm(1993m1) {
 if tm(1994m1) <= `date' & `date' <= tm(2012m4) {
 	gen int age = .
 	replace age = peage
-	replace age = . if peage < 0
 }
 if tm(2012m5) <= `date' & `date' <= tm(2018m5) {
 	gen int age = .
 	replace age = prtage
-	replace age = . if prtage < 0
 }
+replace age = . if age < 0
 recode age (80/max = 80)
 cap lab drop age
 lab def age 80 "80+"
