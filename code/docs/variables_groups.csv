@@ -47,10 +47,8 @@ unempdur,employment
 uncov,employment
 union,employment
 unmem,employment
-wage1,income
-wage2,income
-wage3,income
-wage4,income
+wage,income
+wage_otc,income
 wbho,demographics
 weekpay,income
 weekpay_tc,income

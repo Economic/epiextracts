@@ -11,7 +11,7 @@ keep
 	pubsec pubst publoc pubfed
 	unempdur lookdur discwork ptecon
 	paidhre otcrec
-	weekpay weekpay_tc a_weekpay
-	otcamt wage1 wage2 wage3 wage4
+	weekpay tc_weekpay a_weekpay
+	otcamt wage wageotc
 ;
 #delimit cr;
