@@ -170,7 +170,7 @@ if tm(1973m1) <= `date' & `date' <= tm(1991m12) {
 	* more than 5 years of college
 	replace educ = 5 if gradehi == 18
 }
-if tm(1992m12) <= `date' & `date' <= tm(1993m12) {
+if tm(1992m1) <= `date' & `date' <= tm(1993m12) {
 	* LTHS
 	replace educ = 1 if 31 <= grdatn & grdatn <= 37
 	* HS; includes "no diploma"
