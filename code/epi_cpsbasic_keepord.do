@@ -7,7 +7,8 @@ keep
 	age female wbho
 	educ gradecom gradehi grade92
 	lfstat emp unemp nilf schenrl samejob
-	selfemp selfinc selfany unmem uncov union
+	selfemp selfinc cow1 cow2
+	unmem uncov union
 	pubsec pubst publoc pubfed
 	unempdur lookdur discwork ptecon
 	paidhre otcrec

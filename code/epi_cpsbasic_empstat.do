@@ -72,30 +72,47 @@ notes nilf: Universe: lfstat!=.
 *******************************************************************************
 * Self-employed (unincorporated)
 *******************************************************************************
-gen byte selfemp=.
-if tm(1989m1) <= `date' & `date' <= tm(1993m12) {
-	replace selfemp = 0 if class >= 1 & class != .
-	replace selfemp = 1 if class == 6
+gen byte selfemp = .
+if $monthlycps == 0 & $maycps == 1 {
+	if tm(1973m1) <= `date' & `date' <= tm(1981m12) {
+		replace selfany = 0 if class4 >= 1 & class4 != .
+		replace selfany = 1 if class4 == 3
+	}
 }
-if tm(1994m1) <= `date' & `date' <= tm(2018m5) {
-	replace selfemp = 0 if peio1cow >= 1 & peio1cow != .
-	replace selfemp = 1 if peio1cow == 7
+if $monthlycps == 1 & $maycps == 0 {
+	if tm(1976m1) <= `date' & `date' <= tm(1978m12) {
+		replace selfany = 0 if class >= 1 & class != .
+		replace selfany = 1 if class == 3
+	}
+	if tm(1979m1) <= `date' & `date' <= tm(1988m12) {
+		replace selfany = 0 if class >= 1 & class != .
+		replace selfany = 1 if class == 3
+	}
+	if tm(1989m1) <= `date' & `date' <= tm(1993m12) {
+		replace selfany = 0 if class >= 1 & class != .
+		replace selfany = 1 if class == 6
+	}
+	if tm(1994m1) <= `date' & `date' <= tm(2018m5) {
+		replace selfany = 0 if peio1cow >= 1 & peio1cow != .
+		replace selfany = 1 if peio1cow == 7
+	}
 }
-lab var selfemp "Self-employed"
+lab var selfemp "Self-employed (unincorporated)"
 lab def selfemp 1 "Self-employed" 0 "Not self-employed"
 lab val selfemp selfemp
 notes selfemp: Unincorporated self-employed only
 notes selfemp: 1994-present CPS: peio1cow
 notes selfemp: 1994-present: For first job
-notes selfemp: 1989-1993 Unicon: class
+notes selfemp: 1976-1993 Unicon Basic: class
+notes selfemp: 1973-1981 Unicon May: class4
 notes selfemp: Universe: Class of worker assigned (not necessarily employed)
-notes selfemp: Different definitions/universes: 1989-1993, 1994-present
+notes selfemp: Different definitions/universes: 1973-1988, 1989-1993, 1994-present
 
 
 *******************************************************************************
 * Incorporated self-employed
 *******************************************************************************
-gen byte selfinc=.
+gen byte selfinc = .
 if tm(1989m1) <= `date' & `date' <= tm(1993m12) {
 	replace selfinc = 0 if class >= 1 & class != .
 	replace selfinc = 1 if class == 5
@@ -116,44 +133,55 @@ notes selfinc: Different definitions/universes: 1989-1993, 1994-present
 
 
 *******************************************************************************
-* Self-employed (unincorporated or incorporated)
+* Detailed class of worker, job 1
 *******************************************************************************
-gen byte selfany=.
-if $monthlycps == 0 & $maycps == 1 {
-	if tm(1973m1) <= `date' & `date' <= tm(1981m12) {
-		replace selfany = 0 if class4 >= 1 & class4 != .
-		replace selfany = 1 if class4 == 3
-	}
+gen byte cow1 = .
+if tm(1994m1) <= `date' & `date' <= tm(2018m5) {
+	replace cow1 = peio1cow
+	replace cow1 = . if peio1cow <= 0
 }
-if $monthlycps == 1 & $maycps == 0 {
-	if tm(1976m1) <= `date' & `date' <= tm(1978m12) {
-		replace selfany = 0 if class >= 1 & class != .
-		replace selfany = 1 if class == 3
-	}
-	if tm(1979m1) <= `date' & `date' <= tm(1988m12) {
-		replace selfany = 0 if class >= 1 & class != .
-		replace selfany = 1 if class == 3
-	}
-	if tm(1989m1) <= `date' & `date' <= tm(1993m12) {
-		replace selfany = 0 if class >= 1 & class != .
-		replace selfany = 1 if class == 5 | class == 6
-	}
-	if tm(1994m1) <= `date' & `date' <= tm(2018m5) {
-		replace selfany = 0 if peio1cow >= 1 & peio1cow != .
-		replace selfany = 1 if peio1cow == 6 | peio1cow == 7
-	}
+lab var cow1 "Class of Worker, 1st job"
+#delimit ;
+lab def cow1
+1 "Government - Federal"
+2 "Government - State"
+3 "Government - Local"
+4 "Private, for profit"
+5 "Private, nonprofit"
+6 "Self-employed, incorporated"
+7 "Self-employed, unincorporated"
+8 "Without pay"
+;
+#delimit cr
+lab val cow1 cow1
+notes cow1: Available 1994-present
+notes cow1: 1994-present CPS: peio1cow
+
+
+*******************************************************************************
+* Detailed class of worker, job 2
+*******************************************************************************
+gen byte cow2 = .
+if tm(1994m1) <= `date' & `date' <= tm(2018m5) {
+	replace cow2 = peio2cow
+	replace cow2 = . if peio2cow <= 0
 }
-lab var selfany "Self-employed (unincorporated or incorporated)"
-lab def selfany 1 "Self-employed (uninc or inc)" 0 "Not self-employed (uninc or inc)"
-lab val selfany selfany
-notes selfany: Self-employed: unincorporated or incorporated
-notes selfany: 1994-present: For first job only
-notes selfany: 1994-present CPS: peio1cow
-notes selfany: 1976-1993 Unicon Basic/ORG: class
-notes selfany: 1973-1981 Unicon May: class4
-notes selfany: Different definitions/universes CPS Basic: 1976-1988, 1989-1993, 1994-present
-notes selfany: Different definitions/universes CPS May: 1973-1981
-notes selfany: Universe: Class of worker assigned (not necessarily employed)
+lab var cow2 "Class of Worker, 2nd job"
+#delimit ;
+lab def cow2
+1 "Government - Federal"
+2 "Government - State"
+3 "Government - Local"
+4 "Private, for profit"
+5 "Private, nonprofit"
+6 "Self-employed, incorporated"
+7 "Self-employed, unincorporated"
+8 "Without pay"
+;
+#delimit cr
+lab val cow2 cow2
+notes cow2: Available 1994-present
+notes cow2: 1994-present CPS: peio2cow
 
 
 *******************************************************************************
