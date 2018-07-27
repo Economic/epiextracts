@@ -9,6 +9,19 @@ If you use the EPI extracts for your research, please cite them as
 	Economic Policy Institute. 2018. Current Population Survey Extracts, |release|.
 
 
+Version 0.3.3 -- 2018-07-27
+===============================================================================
+
+Added
+-------------------------------------------------------------------------------
+* renamed wage3 to wage
+* renamed wage4 to wageotc
+
+Fixed
+-------------------------------------------------------------------------------
+* educ missing values in 1992
+
+
 Version 0.3.2 -- 2018-07-26
 ===============================================================================
 
