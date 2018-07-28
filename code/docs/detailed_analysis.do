@@ -38,7 +38,7 @@ foreach var of varlist `analysisvarlist' {
 
 
 * CPS Basic 76-present + May 73-75 analysis - multi-year
-local analysisvarlist ptecon selfany selfemp selfinc pubsec pubst pubfed publoc nilf lfstat unemp schenrl emp wbho age educ
+local analysisvarlist ptecon selfemp selfinc pubsec pubst pubfed publoc nilf lfstat unemp schenrl emp wbho age educ
 local othervars year basicwgt finalwgt female
 
 append_extracts, begin(1973m1) end(1975m12) sample(may) version(local) keeponly(`analysisvarlist' `othervars')
@@ -90,7 +90,7 @@ foreach var of varlist `analysisvarlist' {
 
 * CPS ORG analysis for unions
 local analysisvarlist union unmem
-local othervars year age selfany female
+local othervars year age female selfemp
 append_extracts, begin(1983m1) end(2017m12) sample(org) version(local) keeponly(`analysisvarlist' `othervars')
 tempfile orgdata
 save `orgdata'

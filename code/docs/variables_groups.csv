@@ -5,6 +5,8 @@ basicwgt,idweight
 cbsafips,geography
 cmpwgt,idweight
 countyfips,geography
+cow1,employment
+cow2,employment
 discwork,employment
 division,geography
 educ,demographics
@@ -37,7 +39,6 @@ pulineno,idweight
 region,geography
 samejob,employment
 schenrl,employment
-selfany,employment
 selfemp,employment
 selfinc,employment
 statecensus,geography
