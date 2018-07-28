@@ -10,7 +10,7 @@ forvalues i = 1 / `N' {
 	local group`var': di group
 }
 
-
+/*
 * CPS Basic analysis - single-year
 local analysisvarlist statefips statecensus cbsafips countyfips region division
 local othervars year basicwgt statefips age
@@ -87,10 +87,10 @@ foreach var of varlist `analysisvarlist' {
 	if `r(o1)' == 0 erase "${variablelongdesc}`var'_longdesc.md"
 }
 
-
+*/
 * CPS ORG analysis for unions
 local analysisvarlist union unmem
-local othervars year age selfany female
+local othervars year age female selfemp
 append_extracts, begin(1983m1) end(2017m12) sample(org) version(local) keeponly(`analysisvarlist' `othervars')
 tempfile orgdata
 save `orgdata'
