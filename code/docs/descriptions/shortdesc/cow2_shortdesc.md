@@ -1,1 +1,1 @@
-Detailed class of worker, job 1, description
+Detailed class of worker, job 2, description
