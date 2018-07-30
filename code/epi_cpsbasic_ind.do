@@ -2,30 +2,47 @@ local date = `1'
 
 gen indcode = .
 
-if tm(1973m1) <= `date' & `date' <= tm(1993m12)	replace indcode = ind /* unicon industry variable */ /*1980- no ind70*/
+if tm(1973m1) <= `date' & `date' <= tm(1993m12)	replace indcode = ind /* unicon industry variable */
 if tm(1994m1) <= `date' & `date' <= tm(2018m5) replace indcode = peio1icd /* census variable */
 
 **************************************
 * Industry variables for each period *
 **************************************
 
-/* 1976-1982: 1970 census industry codes
-ind70 is already a variable */
-gen ind_70 = .
-replace ind_70 = indcode if tm(1979m1) <= `date' & `date' <= tm(1982m12) /* check on 1983*/
+/* 1973-1982: 1970 census industry codes*/
+/* ind70 is already a variable, so we rename it ind_70 */
+capture rename ind70 ind_70
+gen ind70 = .
+replace ind70 = indcode if tm(1979m1) <= `date' & `date' <= tm(1982m12)
+label var ind70 "1970 Census Industry Classification"
+notes ind70: Industry classification for 1973/76/79-1982
+notes ind70: 1976-1982 Unicon Basic: ind
+notes ind70: 1979-1982 Unicon ORG: ind
+notes ind70: 1973-1982 Unicon May: ind
 
-/* 1983-1991: 1980 census industry codes */ /* check on 1983*/
+/* 1983-1991: 1980 census industry codes */
 gen ind80 = .
 replace ind80 = indcode if tm(1983m1) <= `date' & `date' <= tm(1991m12)
+label var ind80 "1980 Census Industry Classification"
+notes ind80: Industry classification for 1983-1991
+notes ind80: 1983-1991 Unicon: ind
 
-
-/* 1992-1999: 1990 census industry codes */
+/* 1992-2002: 1990 census industry codes */
 gen ind90 = .
 replace ind90 = indcode if tm(1992m1) <= `date' & `date' <= tm(2002m12)
+label var ind90 "1990 Census Industry Classification"
+notes ind90: Industry classification for 1992-2002
+notes ind90: 1983-1993 Unicon: ind
+notes ind90: 1994-2002 Census: peio1icd
 
-/* 2000-present: 2000 census industry codes */
+/* 2003-present: 2000 census industry codes */
 gen ind00 = .
 replace ind00 = indcode if tm(2003m1) <= `date' & `date' <= tm(2018m5)
+label var ind00 "2000 Census Industry Classification"
+notes ind00: Industry classification for 2003-present
+notes ind00: 2003-present Census: peio1icd
+
+/* I don't think 2010 census industry recoding affects major industry */
 
 **************************************
 * Consistent major industry variable *
@@ -42,7 +59,7 @@ CPS ORG 1979-1982
 CPS May 1973-1982
 */
 
-	if tm(1976m1) <= `date' & `date' <= tm(1982m12){;
+	if tm(1973m1) <= `date' & `date' <= tm(1982m12){;
 	/* There are no "-1" or "military" observations during this period */
 
 	/* Agriculture, mining, forestry and fisheries */
@@ -204,12 +221,10 @@ if tm(1983m1) <= `date' & `date' <= tm(1991m12){;
 };
 
 /*
-I am not positive about these dates, but pretty sure (used unicon code book to determin dates)
-
 Industry coding for:
-CPS Basic 1993-2002
-CPS ORG 1993-2002
-CPS May 1993-2002
+CPS Basic 1992-2002
+CPS ORG 1992-2002
+CPS May 1992-2002
 */
 
 if tm(1992m1) <= `date' & `date' <= tm(2002m12){;
@@ -290,8 +305,8 @@ if tm(1992m1) <= `date' & `date' <= tm(2002m12){;
 		(indcode >= 900 & indcode <= 932);
 };
 
-/* 2000-? or 2002-? 2003? thru 2013?*/
-/*note: Major ind codes are from appendix I.2 of Unicon, aggregated from appendix K.1 and census website*/
+/* 2003-present */
+/* I don't think that 2010 census recoding affects major industry */
 
 if tm(2003m1) <= `date' & `date' <= tm(2018m5){;
 
@@ -367,7 +382,7 @@ if tm(2003m1) <= `date' & `date' <= tm(2018m5){;
 	replace mind16 = 16 if
 		(indcode >= 9370 & indcode <= 9590);
 };
-/*
+
 /* add labels */
 label define ind_lab
 1 "Agriculture, mining, forestry and fisheries"
@@ -388,28 +403,17 @@ label define ind_lab
 16 "Public administration"
 ;
 label value mind16 ind_lab;
-*/
-/*
-tostring mind16, replace
-replace mind16 = "Ag_for_fish_min" if mind16 == "1"
-replace mind16 = "Construction" if mind16 == "2"
-replace mind16 = "Manufacturing_durable" if mind16 == "3"
-replace mind16 = "Manufacturing_nondur" if mind16 == "4"
-replace mind16 = "Transportation" if mind16 == "5"
-replace mind16 = "Communications_util" if mind16 == "6"
-replace mind16 = "Wholesale_trade" if mind16 == "7"
-replace mind16 = "Retail_trade" if mind16 == "8"
-replace mind16 = "Fin_bus_rep_prof" if mind16 == "9"
-replace mind16 = "Personal_services_incl_house" if mind16 == "10"
-replace mind16 = "Entertainment_recreation" if mind16 == "11"
-replace mind16 = "Hospital" if mind16 == "12"
-replace mind16 = "Medical_except_hospital" if mind16 == "13"
-replace mind16 = "Educational" if mind16 == "14"
-replace mind16 = "Social_services" if mind16 == "15"
-replace mind16 = "Public_administration" if mind16 == "16"
-replace mind16 = "missing" if mind16 == "."
-*/
 
 #delimit cr ;
 
-assert (mind16 > 0 & mind16 != .) if (indcode > 0 & indcode != . & indcode != 991 & indcode != 9890)
+label var mind16 "Major industry (consistent)"
+notes mind16: Major industry classification, consistent for 1973/76/79-present
+notes mind16: range: 1-16
+notes mind16: May 1973-1982: ind70
+notes mind16: Basic 1976-1982: ind70
+notes mind16: ORG 1979-1982: ind70
+notes mind16: 1983-1991: ind80
+notes mind16: 1992-2002: ind90
+notes mind16: 2003-present: ind00
+
+assert (mind16 > 0 & mind16 != .) if (indcode > 0 & indcode != . & indcode != 991 & indcode != 9890) /* Assert major industry is assigned if industry isn't missing or "armed forces" */
