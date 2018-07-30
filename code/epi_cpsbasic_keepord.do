@@ -9,6 +9,7 @@ keep
 	lfstat emp unemp nilf schenrl samejob
 	selfemp selfinc selfany unmem uncov union
 	pubsec pubst publoc pubfed
+	mind16 ind70 ind80 ind90 ind00
 	unempdur lookdur discwork ptecon
 	paidhre otcrec
 	weekpay weekpay_tc a_weekpay
