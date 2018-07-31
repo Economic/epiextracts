@@ -7,12 +7,13 @@ keep
 	age female wbho
 	educ gradecom gradehi grade92
 	lfstat emp unemp nilf schenrl samejob
-	selfemp selfinc selfany unmem uncov union
+	selfemp selfinc cow1 cow2
+	unmem uncov union
 	pubsec pubst publoc pubfed
 	mind16 ind70 ind80 ind90 ind00
 	unempdur lookdur discwork ptecon
 	paidhre otcrec
-	weekpay weekpay_tc a_weekpay
-	otcamt wage1 wage2 wage3 wage4
+	weekpay tc_weekpay a_weekpay
+	otcamt wage wageotc
 ;
 #delimit cr;

@@ -3,7 +3,7 @@ webdoc init ${variablelongdesc}union_longdesc, replace
 webdoc set stlog
 webdoc set _stlog
 
-keep if age >= 16 & selfany == 0
+keep if age >= 16 & selfemp == 0
 
 gen wgt = orgwgt
 replace wgt = basicwgt if year < 1983
