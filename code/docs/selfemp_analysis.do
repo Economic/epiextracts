@@ -36,7 +36,7 @@ ylabel(0(5)20 25 "25%", angle(0) gmin gmax) ///
 xtitle("") ytitle("") ///
 lcolor("`color4'" "`color2'") ///
 graphregion(color("252 252 252")) plotregion(color("252 252 252")) ///
-title("Self-employed share of workforce, ages 16-64, by gender, 1976-2017", size(medium)) ///
+title("Self-employed share of workforce, ages 16-64, by gender, 1973-2017", size(medium)) ///
 text(`selfemp_0yvalue' `selfemp_0xvalue' "Male", color("`color4'") placement(c)) ///
 text(`selfemp_1yvalue' `selfemp_1xvalue' "Female", color("`color2'") placement(c))
 graph export ${variableimages}selfemp_titleimage.svg, replace
