@@ -21,8 +21,14 @@ hrhhid2,idweight
 hrsample,idweight
 hrsersuf,idweight
 huhhnum,idweight
+ind70,employment
+ind80,employment
+ind90,employment
+ind00,employment
+ind10,employment
 lfstat,employment
 lookdur,employment
+mind16,employment
 minsamp,idweight
 month,idweight
 nilf,employment

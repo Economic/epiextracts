@@ -10,7 +10,7 @@ keep
 	selfemp selfinc cow1 cow2
 	unmem uncov union
 	pubsec pubst publoc pubfed
-	mind16 ind70 ind80 ind90 ind00
+	mind16 ind70 ind80 ind90 ind00 ind10
 	unempdur lookdur discwork ptecon
 	paidhre otcrec
 	weekpay tc_weekpay a_weekpay

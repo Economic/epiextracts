@@ -8,6 +8,20 @@ If you use the EPI extracts for your research, please cite them as
 .. note::
 	Economic Policy Institute. 2018. Current Population Survey Extracts, |release|.
 
+Version 0.3.4 -- 2018-08-01
+===============================================================================
+
+Added
+-------------------------------------------------------------------------------
+* ind70, ind80, ind90, ind00, ind10: original industry codes
+* cow1, cow2: class of worker
+* mind16: harmonized major industry
+* selfemp extended to 1973
+
+Fixed
+-------------------------------------------------------------------------------
+* removed inconsistent selfany variable
+
 
 Version 0.3.3 -- 2018-07-27
 ===============================================================================
