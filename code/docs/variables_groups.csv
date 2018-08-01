@@ -31,7 +31,9 @@ lookdur,employment
 mind16,employment
 minsamp,idweight
 month,idweight
+multjobs,employment
 nilf,employment
+numjobs,employment
 orgwgt,idweight
 otcamt,income
 otcrec,income
