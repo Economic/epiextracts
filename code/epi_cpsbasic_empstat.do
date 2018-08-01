@@ -499,3 +499,38 @@ notes ptecon: Universe = those usually FT or usually PT
 notes ptecon: Definition/universe change 1989-1993, 1994-present
 notes ptecon: 1989-1993 Unicon: wkstat
 notes ptecon: 1994-present CPS: prwkstat
+
+
+*******************************************************************************
+* Multiple job holder
+*******************************************************************************
+gen byte multjobs = .
+if tm(1994m1) <= `date' & `date' <= tm(2018m5) {
+	replace multjobs = 0 if pemjot == 2
+	replace multjobs = 1 if pemjot == 1
+}
+lab var multjobs "Multiple job holder"
+lab def multjobs 1 "Has more than one job" 0 "Does not have more than one job"
+lab val multjobs multjobs
+notes multjobs: Only available 1994-present
+notes multjobs: Universe = employed or unemployed
+notes multjobs: 1994-present CPS: pemjot
+
+
+*******************************************************************************
+* Number of jobs
+*******************************************************************************
+gen byte numjobs = .
+if tm(1994m1) <= `date' & `date' <= tm(2018m5) {
+	replace numjobs = 1 if emp == 1
+	replace numjobs = 2 if pemjnum == 2
+	replace numjobs = 3 if pemjnum == 3
+	replace numjobs = 4 if pemjnum == 4
+}
+lab var numjobs "Number of jobs"
+lab def numjobs 1 "Employed with one job" 2 "Two jobs" 3 "Three jobs" 4 "Four or more jobs"
+lab val numjobs numjobs
+notes numjobs: Only available 1994-present
+notes numjobs: Universe = employed for one job, labor force for 2+ numjobs
+notes numjobs: Top-code: 4 = four or more jobs
+notes numjobs: 1994-present CPS: pemjnum
