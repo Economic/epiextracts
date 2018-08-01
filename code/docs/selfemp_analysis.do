@@ -31,7 +31,7 @@ line selfemp_0 selfemp_1 year if 1976 <= year & year <= 1988, lcolor("`color4'" 
 line selfemp_0 selfemp_1 year if 1989 <= year & year <= 1993, lcolor("`color4'" "`color2'") || ///
 line selfemp_0 selfemp_1 year if 1994 <= year, lcolor("`color4'" "`color2'") ///
 legend(off) ///
-xlabel(1990(5)2015) ///
+xlabel(1975(5)2015) ///
 ylabel(0(5)20 25 "25%", angle(0) gmin gmax) ///
 xtitle("") ytitle("") ///
 lcolor("`color4'" "`color2'") ///
