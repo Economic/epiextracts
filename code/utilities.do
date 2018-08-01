@@ -609,6 +609,7 @@ foreach year of numlist `minyear'(1)`maxyear' {
 		do ${code}epi_cpsbasic_geog.do `date' `stategeocodes'
 		do ${code}epi_cpsbasic_demog.do `date'
 		do ${code}epi_cpsbasic_empstat.do `date'
+    do ${code}epi_cpsbasic_ind.do `date'
 		do ${code}epi_cpsorg_wages.do `date'
 		do ${code}epi_cpsbasic_keepord.do `date'
 
@@ -678,6 +679,7 @@ foreach year of numlist `minyear'(1)`maxyear' {
 			do ${code}epi_cpsbasic_geog.do `date' `stategeocodes'
 			do ${code}epi_cpsbasic_demog.do `date'
 			do ${code}epi_cpsbasic_empstat.do `date'
+      do ${code}epi_cpsbasic_ind.do `date'
 			do ${code}epi_cpsorg_wages.do `date'
 			do ${code}epi_cpsbasic_keepord.do `date'
 
@@ -724,6 +726,7 @@ foreach year of numlist `minyear'(1)`maxyear' {
 				do ${code}epi_cpsbasic_geog.do `date' `stategeocodes'
 				do ${code}epi_cpsbasic_demog.do `date'
 				do ${code}epi_cpsbasic_empstat.do `date'
+        do ${code}epi_cpsbasic_ind.do `date'
 				do ${code}epi_cpsorg_wages.do `date'
 				do ${code}epi_cpsbasic_keepord.do `date'
 
