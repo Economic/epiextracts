@@ -16,5 +16,6 @@ keep
 	paidhre otcrec
 	weekpay tc_weekpay a_weekpay
 	otcamt wage wageotc
+	hoursumay hoursuorg hoursu1 hoursu2 hoursut hourslw1 hourslw2 hourslwt hoursvary
 ;
 #delimit cr;
