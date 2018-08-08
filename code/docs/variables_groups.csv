@@ -38,7 +38,7 @@ orgwgt,idweight
 otcamt,income
 otcrec,income
 paidhre,income
-ptecon,employment
+ptecon,hours
 pubfed,employment
 publoc,employment
 pubsec,employment
