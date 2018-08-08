@@ -195,7 +195,7 @@ notes wage1: 1994-present, CPS: prernhly if paidhre=1
 gen wage2 = .
 if $earnerinfo == 1 {
 	if tm(1973m1) <= `date' & `date' <= tm(1978m12) {
-		replace wage2 = weekpay/hours if paidhre == 0
+		replace wage2 = weekpay/wkhrswk if paidhre == 0
 	}
 	if tm(1979m1) <= `date' & `date' <= tm(1993m12) {
 		replace wage2 = weekpay/ernush if paidhre == 0
@@ -210,6 +210,7 @@ notes wage2: Dollars per hour
 notes wage2: For nonhourly workers only
 notes wage2: Includes overtime, tips, commissions
 notes wage2: Usual weekly earnings / usual weekly hours
+notes wage2: 1973-1978, Unicon: weekpay/wkhrswk
 notes wage2: 1979-1993, Unicon: weekpay/ernush
 notes wage2: 1994-present, CPS: weekpay/pehrusl1
 
