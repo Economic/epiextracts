@@ -41,7 +41,7 @@ else {
 	di _n "You must specify Basic or ORG or May sample."
 	error 1
 }
-di _n "Working on CPS `samplename' from `begin' to `end'..."
+di _n "Working on CPS `samplename' from `begin' to `end'..." _n
 
 foreach year of numlist `begin'(1)`end' {
 	* file paths
@@ -126,7 +126,7 @@ foreach year of numlist `begin'(1)`end' {
 				else local keeplist "_all"
 				cap drop month
 				gen int month = `month'
-				noi di "Loading CPS `samplename', `year'-`month': `keeplist'"
+				noi di "Processing CPS `samplename', `year'-`month': `keeplist'"
 				tempfile monthlydata`month'
 				save `monthlydata`month''
 				erase `inputfile'
@@ -148,7 +148,10 @@ foreach year of numlist `begin'(1)`end' {
 * append years of data together
 qui foreach year of numlist `begin'(1)`end' {
 	local counter = `counter' + 1
-	if `counter' == 1 use `annualdata`year'', clear
+	if `counter' == 1 {
+    use `annualdata`year'', clear
+  }
+  noi di "Loading CPS `samplename', `year'"
 	else append using `annualdata`year'', force
 }
 
