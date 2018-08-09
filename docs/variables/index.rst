@@ -9,5 +9,6 @@ The following variables are available in the EPI extracts of the CPS-Basic, CPS-
 	demographics/index.rst
 	employment/index.rst
 	geography/index.rst
+	hours/index.rst
 	idweight/index.rst
 	income/index.rst

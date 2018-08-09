@@ -35,7 +35,7 @@ replace weekpay = . if weekpay < 0
 lab var weekpay "Weekly pay"
 notes weekpay: Dollars per week for nonhourly and hourly workers
 notes weekpay: Includes overtime, tips, commissions
-notes weekpay: Top-code: 1973-85: 999; 1986-97: 1923; 1998-: 2884
+notes weekpay: Top-code: 1973-85: 999; 1986-97: 1923; 1998-: 2884.61
 notes weekpay: Some records in 1986-1988 may have earnings 999-1932
 notes weekpay: 1973-1978 Unicon: wkusern
 notes weekpay: 1979-1988 Unicon: ernwkc
@@ -57,13 +57,13 @@ if $earnerinfo == 1 {
 		replace tc_weekpay = 1 if weekpay >= 1923 & weekpay ~= .
 	}
 	if tm(1986m1) <= `date' & `date' <= tm(2018m5) {
-		replace tc_weekpay = 1 if weekpay >= 2884 & weekpay ~= .
+		replace tc_weekpay = 1 if weekpay >= 2884.61 & weekpay ~= .
 	}
 }
 lab var tc_weekpay "Weekly pay top-coded by BLS"
 lab def tc_weekpay 0 "Not top-coded" 1 "Top-coded"
 lab val tc_weekpay tc_weekpay
-notes tc_weekpay: Top-code for weekpay: 1973-85: 999; 1986-97: 1923; 1998-: 2884
+notes tc_weekpay: Top-code for weekpay: 1973-85: 999; 1986-97: 1923; 1998-: 2884.61
 
 
 ********************************************************************************
@@ -195,7 +195,7 @@ notes wage1: 1994-present, CPS: prernhly if paidhre=1
 gen wage2 = .
 if $earnerinfo == 1 {
 	if tm(1973m1) <= `date' & `date' <= tm(1978m12) {
-		replace wage2 = weekpay/hours if paidhre == 0
+		replace wage2 = weekpay/wkhrswk if paidhre == 0
 	}
 	if tm(1979m1) <= `date' & `date' <= tm(1993m12) {
 		replace wage2 = weekpay/ernush if paidhre == 0
@@ -210,6 +210,7 @@ notes wage2: Dollars per hour
 notes wage2: For nonhourly workers only
 notes wage2: Includes overtime, tips, commissions
 notes wage2: Usual weekly earnings / usual weekly hours
+notes wage2: 1973-1978, Unicon: weekpay/wkhrswk
 notes wage2: 1979-1993, Unicon: weekpay/ernush
 notes wage2: 1994-present, CPS: weekpay/pehrusl1
 

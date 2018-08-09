@@ -41,7 +41,7 @@ else {
 	di _n "You must specify Basic or ORG or May sample."
 	error 1
 }
-di _n "Working on CPS `samplename' from `begin' to `end'..."
+di _n "Working on CPS `samplename' from `begin' to `end'..." _n
 
 foreach year of numlist `begin'(1)`end' {
 	* file paths
@@ -126,7 +126,7 @@ foreach year of numlist `begin'(1)`end' {
 				else local keeplist "_all"
 				cap drop month
 				gen int month = `month'
-				noi di "Loading CPS `samplename', `year'-`month': `keeplist'"
+				noi di "Processing CPS `samplename', `year'-`month': `keeplist'"
 				tempfile monthlydata`month'
 				save `monthlydata`month''
 				erase `inputfile'
@@ -148,7 +148,10 @@ foreach year of numlist `begin'(1)`end' {
 * append years of data together
 qui foreach year of numlist `begin'(1)`end' {
 	local counter = `counter' + 1
-	if `counter' == 1 use `annualdata`year'', clear
+	if `counter' == 1 {
+    use `annualdata`year'', clear
+  }
+  noi di "Loading CPS `samplename', `year'"
 	else append using `annualdata`year'', force
 }
 
@@ -609,6 +612,7 @@ foreach year of numlist `minyear'(1)`maxyear' {
 		do ${code}epi_cpsbasic_geog.do `date' `stategeocodes'
 		do ${code}epi_cpsbasic_demog.do `date'
 		do ${code}epi_cpsbasic_empstat.do `date'
+    do ${code}epi_cpsbasic_hours.do `date'
     do ${code}epi_cpsbasic_ind.do `date'
 		do ${code}epi_cpsorg_wages.do `date'
 		do ${code}epi_cpsbasic_keepord.do `date'
@@ -679,6 +683,7 @@ foreach year of numlist `minyear'(1)`maxyear' {
 			do ${code}epi_cpsbasic_geog.do `date' `stategeocodes'
 			do ${code}epi_cpsbasic_demog.do `date'
 			do ${code}epi_cpsbasic_empstat.do `date'
+      do ${code}epi_cpsbasic_hours.do `date'
       do ${code}epi_cpsbasic_ind.do `date'
 			do ${code}epi_cpsorg_wages.do `date'
 			do ${code}epi_cpsbasic_keepord.do `date'
@@ -726,6 +731,7 @@ foreach year of numlist `minyear'(1)`maxyear' {
 				do ${code}epi_cpsbasic_geog.do `date' `stategeocodes'
 				do ${code}epi_cpsbasic_demog.do `date'
 				do ${code}epi_cpsbasic_empstat.do `date'
+        do ${code}epi_cpsbasic_hours.do `date'
         do ${code}epi_cpsbasic_ind.do `date'
 				do ${code}epi_cpsorg_wages.do `date'
 				do ${code}epi_cpsbasic_keepord.do `date'
