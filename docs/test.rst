@@ -36,3 +36,17 @@ some text, and then a warning and note
 
 .. note:: This is an important note that I put here
 	in order to note something.
+
+Code
+====
+.. toggle-header::
+	:header: Example 1 **Show/Hide Code**
+
+	Content for header
+
+.. content-tabs::
+
+    .. tab-container:: tab1
+        :title: Tab title one
+
+        Content for tab one

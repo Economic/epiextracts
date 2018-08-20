@@ -1,5 +1,3 @@
-local date = `1'
-
 * does the current data contain earner information?
 assert $earnerinfo == 1 | $earnerinfo == 0
 
@@ -9,23 +7,23 @@ assert $earnerinfo == 1 | $earnerinfo == 0
 ********************************************************************************
 gen weekpay = .
 if $earnerinfo == 1 {
-	if tm(1973m1) <= `date' & `date' <= tm(1978m12) {
+	if tm(1973m1) <= $date & $date <= tm(1978m12) {
 		* weekly earnings in May CPS
 		replace weekpay = wkusern
 	}
-	if tm(1979m1) <= `date' & `date' <= tm(1988m12) {
+	if tm(1979m1) <= $date & $date <= tm(1988m12) {
 		* use computed weekly earnings
 		replace weekpay = ernwkc
 
 		* there is a higher top-code available in 1986-1988
-		if tm(1986m1) <= `date' & `date' <= tm(1988m12) {
+		if tm(1986m1) <= $date & $date <= tm(1988m12) {
 			replace weekpay = ernwk4x if (weekpay >= 999 & weekpay != . & ernwk4x > 999 & ernwk4x != .)
 		}
 	}
-	if tm(1989m1) <= `date' & `date' <= tm(1993m12) {
+	if tm(1989m1) <= $date & $date <= tm(1993m12) {
 		replace weekpay = ernwk
 	}
-	if tm(1994m1) <= `date' & `date' <= tm(2018m5) {
+	if tm(1994m1) <= $date & $date <= tm(2018m5) {
 		* note that prernwa in Census ddf is in pennies (has implicit two decimal places) in the raw ascii files
 		* but NBER data dictionaries account for this, so it is in dollars in the raw Stata files
 		replace weekpay = prernwa
@@ -50,13 +48,13 @@ notes weekpay: 1994-present CPS: prernwa
 gen byte tc_weekpay = .
 if $earnerinfo == 1 {
 	replace tc_weekpay = 0 if weekpay >= 0 & weekpay ~= .
-	if tm(1973m1) <= `date' & `date' <= tm(1985m12) {
+	if tm(1973m1) <= $date & $date <= tm(1985m12) {
 		replace tc_weekpay = 1 if weekpay >= 999 & weekpay ~= .
 	}
-	if tm(1986m1) <= `date' & `date' <= tm(1997m12) {
+	if tm(1986m1) <= $date & $date <= tm(1997m12) {
 		replace tc_weekpay = 1 if weekpay >= 1923 & weekpay ~= .
 	}
-	if tm(1986m1) <= `date' & `date' <= tm(2018m5) {
+	if tm(1986m1) <= $date & $date <= tm(2018m5) {
 		replace tc_weekpay = 1 if weekpay >= 2884.61 & weekpay ~= .
 	}
 }
@@ -71,18 +69,18 @@ notes tc_weekpay: Top-code for weekpay: 1973-85: 999; 1986-97: 1923; 1998-: 2884
 ********************************************************************************
 gen byte a_weekpay = .
 if $earnerinfo == 1 {
-	if tm(1979m1) <= `date' & `date' <= tm(1988m12) {
+	if tm(1979m1) <= $date & $date <= tm(1988m12) {
 		replace a_weekpay = 0 if aernwk == . & weekpay > 0 & weekpay ~= .
 		replace a_weekpay = 1 if aernwk == 1 & weekpay > 0 & weekpay ~= .
 		assert a_weekpay ~= . if weekpay > 0 & weekpay ~= .
 	}
-	if tm(1989m1) <= `date' & `date' <= tm(1993m12) {
+	if tm(1989m1) <= $date & $date <= tm(1993m12) {
 		replace a_weekpay = 0 if aernwk == 0 & weekpay > 0 & weekpay ~= .
 		replace a_weekpay = 1 if aernwk >= 1 & aernwk <= 8 & weekpay > 0 & weekpay ~= .
 		replace a_weekpay = 1 if ernwk ~= ernwkx
 		assert a_weekpay ~= . if weekpay > 0 & weekpay ~= .
 	}
-	if tm(1995m9) <= `date' & `date' <= tm(2018m5) {
+	if tm(1995m9) <= $date & $date <= tm(2018m5) {
 		replace a_weekpay = 0 if prwernal == 0 & weekpay > 0 & weekpay ~= .
 		replace a_weekpay = 1 if prwernal == 1 & weekpay > 0 & weekpay ~= .
 		assert a_weekpay ~= . if weekpay > 0 & weekpay ~= .
@@ -101,15 +99,15 @@ notes a_weekpay: No allocation codes available during 1994m1-1995m8
 ********************************************************************************
 gen paidhre = .
 if $earnerinfo == 1 {
-	if tm(1973m1) <= `date' & `date' <= tm(1978m12) {
+	if tm(1973m1) <= $date & $date <= tm(1978m12) {
 		replace paidhre = 1 if hourpd == 0
 		replace paidhre = 0 if hourpd == 1
 	}
-	if tm(1979m1) <= `date' & `date' <= tm(1993m12) {
+	if tm(1979m1) <= $date & $date <= tm(1993m12) {
 		replace paidhre = 0 if _ernpdh == 2
 		replace paidhre = 1 if _ernpdh == 1
 	}
-	if tm(1994m1) <= `date' & `date' <= tm(2018m5) {
+	if tm(1994m1) <= $date & $date <= tm(2018m5) {
 		replace paidhre = 0 if peernhry == 2
 		replace paidhre = 1 if peernhry == 1
 	}
@@ -130,7 +128,7 @@ notes paidhre: 1994-present CPS: peernhry
 * it looks possible to extend the overtime definitions past hourly workers
 gen byte otcrec = .
 if $earnerinfo == 1 {
-	if tm(1994m1) <= `date' & `date' <= tm(2018m5) {
+	if tm(1994m1) <= $date & $date <= tm(2018m5) {
 		replace otcrec = 0 if paidhre == 1 & peernuot == 2
 		replace otcrec = 1 if paidhre == 1 & peernuot == 1
 	}
@@ -145,7 +143,7 @@ notes otcrec: 1994-present CPS: derived from peernuot & paidhre
 ********************************************************************************
 gen byte otcamt=.
 if $earnerinfo == 1 {
-	if tm(1994m1) <= `date' & `date' <= tm(2018m5) {
+	if tm(1994m1) <= $date & $date <= tm(2018m5) {
 		replace otcamt = peern/100 if paidhre == 1 & otcrec == 1
 	}
 }
@@ -161,14 +159,14 @@ notes otcamt: 1994-present, CPS: derived from peern, otcrec
 ********************************************************************************
 gen wage1 = .
 if $earnerinfo == 1 {
-	if tm(1973m1) <= `date' & `date' <= tm(1978m12) {
+	if tm(1973m1) <= $date & $date <= tm(1978m12) {
 		replace wage1 = hourern/100 if paidhre == 1
 	}
-	if tm(1979m1) <= `date' & `date' <= tm(1993m12) {
+	if tm(1979m1) <= $date & $date <= tm(1993m12) {
 		* convert Unicon ernhr from pennies to dollars
 		replace wage1 = ernhr/100 if paidhre == 1
 	}
-	if tm(1994m1) <= `date' & `date' <= tm(2018m5) {
+	if tm(1994m1) <= $date & $date <= tm(2018m5) {
 		* note that prernhly in Census ddf is in pennies (has implicit two decimal places) in the raw ascii files
 		* but NBER data dictionaries account for this, so it is in dollars in the raw Stata files
 		replace wage1 = prernhly if paidhre == 1
@@ -194,13 +192,13 @@ notes wage1: 1994-present, CPS: prernhly if paidhre=1
 ********************************************************************************
 gen wage2 = .
 if $earnerinfo == 1 {
-	if tm(1973m1) <= `date' & `date' <= tm(1978m12) {
+	if tm(1973m1) <= $date & $date <= tm(1978m12) {
 		replace wage2 = weekpay/wkhrswk if paidhre == 0
 	}
-	if tm(1979m1) <= `date' & `date' <= tm(1993m12) {
+	if tm(1979m1) <= $date & $date <= tm(1993m12) {
 		replace wage2 = weekpay/ernush if paidhre == 0
 	}
-	if tm(1994m1) <= `date' & `date' <= tm(2018m5) {
+	if tm(1994m1) <= $date & $date <= tm(2018m5) {
 		replace wage2 = weekpay/pehrusl1 if paidhre == 0
 	}
 }
@@ -240,7 +238,7 @@ notes wage: Excludes nonhourly workers whose usual hours vary
 ********************************************************************************
 gen wageotc = .
 if $earnerinfo == 1 {
-	if tm(1994m1) <= `date' & `date' <= tm(2018m5) {
+	if tm(1994m1) <= $date & $date <= tm(2018m5) {
 		* for hourly workers
 		replace wageotc = wage1 if paidhre == 1
 		replace wageotc = (weekpay/pehrusl1) if paidhre == 1 & wage1 < (weekpay/pehrusl1) & (weekpay/pehrusl1) ~= .

@@ -1,4 +1,4 @@
-do ${codedocs}detailed_analysis.do
+*do ${codedocs}detailed_analysis.do
 
 * variable-group definitions
 import delimited using ${codedocs}variables_groups.csv, clear varnames(1)
@@ -33,6 +33,10 @@ foreach var of varlist _all {
 	global variabledocs ${docs}variables/`group`var''/
 	global variableimages ${variabledocs}images/
 	global variablelevels ${variabledocs}levels/
+	global variablecode ${variabledocs}code/
+
+	* copy variable code to variablecode directory
+	if "`var'" == "age" copy ${codevars}generate_`var'.do ${variablecode}generate_`var'.do, replace
 
 	* determine if values will be displayed in documentation
 	* if so, create .csv file of value labels
@@ -51,7 +55,10 @@ foreach var of varlist _all {
 
 	* determine if there is a title image
 	capture confirm file ${variableimages}`var'_titleimage.svg
-	if _rc == 0 local image titleimage
+	if _rc == 0 {
+		local image titleimage
+		copy ${codedocs}`var'_analysis.do ${variablecode}`var'_analysis.do, replace
+	}
 	if _rc != 0 local image notitleimage
 
 	use `basedata', clear

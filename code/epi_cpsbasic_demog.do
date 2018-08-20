@@ -1,19 +1,15 @@
-local date = `1'
-
-
-
 ********************************************************************************
 * Age
 ********************************************************************************
-if tm(1976m1) <= `date' & `date' <= tm(1993m1) {
+if tm(1976m1) <= $date & $date <= tm(1993m1) {
 	* age already exists
 }
 
-if tm(1994m1) <= `date' & `date' <= tm(2012m4) {
+if tm(1994m1) <= $date & $date <= tm(2012m4) {
 	gen int age = .
 	replace age = peage
 }
-if tm(2012m5) <= `date' & `date' <= tm(2018m5) {
+if tm(2012m5) <= $date & $date <= tm(2018m5) {
 	gen int age = .
 	replace age = prtage
 }
@@ -36,11 +32,11 @@ notes age: 1982-present range 0-80
 * Gender
 ********************************************************************************
 gen byte female = .
-if tm(1973m1) <= `date' & `date' <= tm(1993m12) {
+if tm(1973m1) <= $date & $date <= tm(1993m12) {
 	replace female = 0 if sex == 1
 	replace female = 1 if sex == 2
 }
-if tm(1994m1) <= `date' & `date' <= tm(2018m5) {
+if tm(1994m1) <= $date & $date <= tm(2018m5) {
 	replace female = 0 if pesex == 1
 	replace female = 1 if pesex == 2
 }
@@ -60,11 +56,11 @@ notes female: 1994-present CPS: pesex
 * Education: gradehi
 ********************************************************************************
 gen gradehi = .
-if tm(1973m1) <= `date' & `date' <= tm(1988m12) {
+if tm(1973m1) <= $date & $date <= tm(1988m12) {
 	* adjust grdhi to be consistent across 1973-1991
 	replace gradehi = grdhi - 1
 }
-if tm(1989m1) <= `date' & `date' <= tm(1991m12) {
+if tm(1989m1) <= $date & $date <= tm(1991m12) {
 	replace gradehi = grdhi
 }
 lab var gradehi "Highest grade attended"
@@ -100,7 +96,7 @@ notes gradehi: 1973-1991 Unicon: grdhi
 * Education: gradecom
 ********************************************************************************
 gen gradecom = .
-if tm(1973m1) <= `date' & `date' <= tm(1991m12) {
+if tm(1973m1) <= $date & $date <= tm(1991m12) {
 	replace gradecom = 1 if grdcom == 1
 	replace gradecom = 0 if grdcom == 2
 }
@@ -115,10 +111,10 @@ notes gradecom: 1973-1991 Unicon: grdcom
 * Education: grade92
 ********************************************************************************
 gen grade92 = .
-if tm(1992m1) <= `date' & `date' <= tm(1993m12) {
+if tm(1992m1) <= $date & $date <= tm(1993m12) {
 	replace grade92 = grdatn - 30
 }
-if tm(1994m1) <= `date' & `date' <= tm(2018m5) {
+if tm(1994m1) <= $date & $date <= tm(2018m5) {
 	replace grade92 = peeduca - 30
 }
 lab var grade92 "Education level, detailed, post-1991"
@@ -152,7 +148,7 @@ notes grade92: 1994-present CPS: peeduca
 * Education: educ
 ********************************************************************************
 gen byte educ = .
-if tm(1973m1) <= `date' & `date' <= tm(1991m12) {
+if tm(1973m1) <= $date & $date <= tm(1991m12) {
 	* none - 11th
 	replace educ = 1 if 0 <= gradehi & gradehi <= 11
 	* did not complete 12th
@@ -170,7 +166,7 @@ if tm(1973m1) <= `date' & `date' <= tm(1991m12) {
 	* more than 5 years of college
 	replace educ = 5 if gradehi == 18
 }
-if tm(1992m1) <= `date' & `date' <= tm(1993m12) {
+if tm(1992m1) <= $date & $date <= tm(1993m12) {
 	* LTHS
 	replace educ = 1 if 31 <= grdatn & grdatn <= 37
 	* HS; includes "no diploma"
@@ -182,7 +178,7 @@ if tm(1992m1) <= `date' & `date' <= tm(1993m12) {
 	* Advanced degree
 	replace educ = 5 if 44 <= grdatn & grdatn <= 46
 }
-if tm(1994m1) <= `date' & `date' <= tm(2018m5) {
+if tm(1994m1) <= $date & $date <= tm(2018m5) {
 	* LTHS
 	replace educ = 1 if 31 <= peeduca & peeduca <= 37
 	* HS; includes "no diploma"
@@ -216,8 +212,8 @@ notes educ: 1994-present CPS: derived from peeduca
 * Race
 ********************************************************************************
 gen byte wbho = .
-if tm(1973m1) <= `date' & `date' <= tm(1988m12) {
-	if tm(1974m1) <= `date' & `date' <= tm(1988m12) {
+if tm(1973m1) <= $date & $date <= tm(1988m12) {
+	if tm(1974m1) <= $date & $date <= tm(1988m12) {
 		replace spneth = "" if spneth == "A"
 		destring spneth, replace
 	}
@@ -226,27 +222,27 @@ if tm(1973m1) <= `date' & `date' <= tm(1988m12) {
 	replace wbho = 4 if race == 3
 	replace wbho = 3 if (1 <= spneth & spneth <= 7)
 }
-if tm(1989m1) <= `date' & `date' <= tm(1993m12) {
+if tm(1989m1) <= $date & $date <= tm(1993m12) {
 	replace wbho = 1 if race == 1
 	replace wbho = 2 if race == 2
 	replace wbho = 4 if (3 <= race & race <= 5)
 	replace wbho = 3 if (1 <= spneth & spneth <= 7)
 }
-if tm(1994m1) <= `date' & `date' <= tm(1995m12) {
+if tm(1994m1) <= $date & $date <= tm(1995m12) {
 	replace wbho = 1 if perace == 1
 	replace wbho = 2 if perace == 2
 	replace wbho = 4 if (3 <= perace & perace <= 5)
 	replace wbho = 3 if (1 <= prorigin & prorigin <= 7)
 }
-if tm(1996m1) <= `date' & `date' <= tm(2002m12) {
+if tm(1996m1) <= $date & $date <= tm(2002m12) {
 	replace wbho = 1 if perace == 1
 	replace wbho = 2 if perace == 2
 	replace wbho = 4 if (3 <= perace & perace <= 4)
 	replace wbho = 3 if (1 <= prorigin & prorigin <= 7)
 }
-if tm(2003m1) <= `date' & `date' <= tm(2012m4) {
+if tm(2003m1) <= $date & $date <= tm(2012m4) {
 	* May 2004- June 2005: ptdtrace variable renamed to prdtrace
-	if tm(2004m5) <= `date' & `date' <= tm(2005m7) {
+	if tm(2004m5) <= $date & $date <= tm(2005m7) {
 		gen ptdtrace = prdtrace
 	}
 	replace wbho=1 if ptdtrace==1
@@ -263,7 +259,7 @@ if tm(2003m1) <= `date' & `date' <= tm(2012m4) {
 	*/ | ptdtrace==21 /* 4 or 5 races */
 	replace wbho=3 if (1<=prdthsp & prdthsp<=5) /* hispanic */
 }
-if tm(2012m5) <= `date' & `date' <= tm(2013m12) {
+if tm(2012m5) <= $date & $date <= tm(2013m12) {
 	replace wbho=1 if ptdtrace==1 /* white */
 	replace wbho=2 if ptdtrace==2 /* black */
 	replace wbho=2 if ptdtrace==6 /* black-white */ | ptdtrace==10 /*
@@ -280,7 +276,7 @@ if tm(2012m5) <= `date' & `date' <= tm(2013m12) {
 	*/ | ptdtrace==25 /* Other 3 races */ | ptdtrace==26 /* 4 and 5 races */
 	replace wbho=3 if (1<=prdthsp & prdthsp<=5) /* hispanic */
 }
-if tm(2014m1) <= `date' & `date' <= tm(2018m5) {
+if tm(2014m1) <= $date & $date <= tm(2018m5) {
 	replace wbho=1 if ptdtrace==1 /* white */
 	replace wbho=2 if ptdtrace==2 /* black */
 	replace wbho=2 if ptdtrace==6 /* black-white */ | ptdtrace==10 /*

@@ -370,7 +370,6 @@ else {
 local outputfile = subinstr("`2'",",","",1)
 
 label save `labelname' using `outputfile', `replace'
-mac li _all
 !sed -i.bak "s/label define `labelname' //g" `outputfile'
 !sed -i.bak "s/', modify//g" `outputfile'
 !sed -i.bak 's/\`//g' `outputfile'
@@ -575,10 +574,7 @@ foreach var of varlist statefips statecensus {
 keep statefips* statecensus* division* region*
 tempfile stategeocodes
 save `stategeocodes'
-
-* cpi
-
-
+global stategeocodes `stategeocodes'
 
 * process all data
 foreach year of numlist `minyear'(1)`maxyear' {
@@ -596,7 +592,7 @@ foreach year of numlist `minyear'(1)`maxyear' {
 		global basicfile = 0
 
 		* for May CPS, use month=5 (may)
-		local date = tm(`year'm5)
+		global date = tm(`year'm5)
 
 		* input files
 		local inputpath ${uniconmay}
@@ -607,15 +603,15 @@ foreach year of numlist `minyear'(1)`maxyear' {
 		use `inputfile', clear
 
 		* run key basic/org programs
-		do ${code}epi_cpsbasic_sample.do `date'
-		do ${code}epi_cpsbasic_idwgt.do `date'
-		do ${code}epi_cpsbasic_geog.do `date' `stategeocodes'
-		do ${code}epi_cpsbasic_demog.do `date'
-		do ${code}epi_cpsbasic_empstat.do `date'
-    do ${code}epi_cpsbasic_hours.do `date'
-    do ${code}epi_cpsbasic_ind.do `date'
-		do ${code}epi_cpsorg_wages.do `date'
-		do ${code}epi_cpsbasic_keepord.do `date'
+		do ${code}epi_cpsbasic_sample.do
+		do ${code}epi_cpsbasic_idwgt.do
+		do ${code}epi_cpsbasic_geog.do
+		do ${code}epi_cpsbasic_demog.do
+		do ${code}epi_cpsbasic_empstat.do
+    do ${code}epi_cpsbasic_hours.do
+    do ${code}epi_cpsbasic_ind.do
+		do ${code}epi_cpsorg_wages.do
+		do ${code}epi_cpsbasic_keepord.do
 
 		* clean up
 		erase `inputfile'
@@ -646,29 +642,29 @@ foreach year of numlist `minyear'(1)`maxyear' {
 			local counter = `counter' + 1
 
       * define current month
-      local date = tm(`year'm`month')
+      global date = tm(`year'm`month')
 
       * indicator for using basic monthly file
       global basicfile = 1
 
 			* indicator for existence of ORG files
-      if `date' >= tm(1979m1) local orgexists = 1
+      if `year' >= 1979 local orgexists = 1
       else local orgexists = 0
 
       * indicator for ORG files being separate from basic files
-			if tm(1979m1) <= `date' & `date' <= tm(1983m12) local separateorg = 1
+			if 1979 <= `year' & `year' <= 1983 local separateorg = 1
 			else local separateorg = 0
 
 			* indicator if file contains earner info
-			if `date' >= tm(1982m1) global earnerinfo = 1
+			if `year' >= 1982 global earnerinfo = 1
 			else global earnerinfo = 0
 
 			* file names of basic source data in stata format
-			if tm(1976m1) <= `date' & `date' <= tm(1993m12) {
+			if 1976 <= `year' & `year' <= 1993 {
 				local inputpath ${uniconbasic}
 				local inputfile unicon_basic_`year'_`month'.dta
 			}
-			if tm(1994m1) <= `date' {
+			if 1994 <= `year' {
 				local inputpath ${censusbasicstata}
 				local inputfile cps_`year'_`month'.dta
 			}
@@ -678,15 +674,15 @@ foreach year of numlist `minyear'(1)`maxyear' {
 			use `inputfile', clear
 
 			* run key basic/org programs
-			do ${code}epi_cpsbasic_sample.do `date'
-			do ${code}epi_cpsbasic_idwgt.do `date'
-			do ${code}epi_cpsbasic_geog.do `date' `stategeocodes'
-			do ${code}epi_cpsbasic_demog.do `date'
-			do ${code}epi_cpsbasic_empstat.do `date'
-      do ${code}epi_cpsbasic_hours.do `date'
-      do ${code}epi_cpsbasic_ind.do `date'
-			do ${code}epi_cpsorg_wages.do `date'
-			do ${code}epi_cpsbasic_keepord.do `date'
+			do ${code}epi_cpsbasic_sample.do
+			do ${code}epi_cpsbasic_idwgt.do
+			do ${code}epi_cpsbasic_geog.do
+			do ${code}epi_cpsbasic_demog.do
+			do ${code}epi_cpsbasic_empstat.do
+      do ${code}epi_cpsbasic_hours.do
+      do ${code}epi_cpsbasic_ind.do
+			do ${code}epi_cpsorg_wages.do
+			do ${code}epi_cpsbasic_keepord.do
 
       * limit sample to certain variables for debugging
       if "`keeponly'" ~= "" keep year month minsamp basicwgt orgwgt `keeponly'
@@ -698,7 +694,7 @@ foreach year of numlist `minyear'(1)`maxyear' {
 			* save separate org subsample
       if `orgexists' == 1 & `separateorg' == 0 {
 				* keep org subsample
-				do ${code}epi_cpsorg_sample.do `date'
+				do ${code}epi_cpsorg_sample.do
 
         * limit sample to certain variables for debugging
         if "`keeponly'" ~= "" keep year month minsamp basicwgt orgwgt `keeponly'
@@ -726,18 +722,18 @@ foreach year of numlist `minyear'(1)`maxyear' {
 				use `inputfile', clear
 
 				* run key basic/org programs
-				do ${code}epi_cpsbasic_sample.do `date'
-				do ${code}epi_cpsbasic_idwgt.do `date'
-				do ${code}epi_cpsbasic_geog.do `date' `stategeocodes'
-				do ${code}epi_cpsbasic_demog.do `date'
-				do ${code}epi_cpsbasic_empstat.do `date'
-        do ${code}epi_cpsbasic_hours.do `date'
-        do ${code}epi_cpsbasic_ind.do `date'
-				do ${code}epi_cpsorg_wages.do `date'
-				do ${code}epi_cpsbasic_keepord.do `date'
+				do ${code}epi_cpsbasic_sample.do
+				do ${code}epi_cpsbasic_idwgt.do
+				do ${code}epi_cpsbasic_geog.do
+				do ${code}epi_cpsbasic_demog.do
+				do ${code}epi_cpsbasic_empstat.do
+        do ${code}epi_cpsbasic_hours.do
+        do ${code}epi_cpsbasic_ind.do
+				do ${code}epi_cpsorg_wages.do
+				do ${code}epi_cpsbasic_keepord.do
 
 				* keep org subsample
-				do ${code}epi_cpsorg_sample.do `date'
+				do ${code}epi_cpsorg_sample.do
 
 				* limit sample to certain variables for debugging
 				if "`keeponly'" ~= "" keep year month minsamp orgwgt `keeponly'
@@ -783,8 +779,8 @@ foreach year of numlist `minyear'(1)`maxyear' {
 
         * right here is probably where we should handle earnings & hours imputations
         global basicfile = 0
-        do ${code}epi_cpsorg_topcode.do `date'
-        do ${code}epi_cpsorg_realwage.do `date'
+        do ${code}epi_cpsorg_topcode.do `year'
+        do ${code}epi_cpsorg_realwage.do `year'
 
 				notes drop _dta
 				notes _dta: EPI CPS ORG Extract, Version $dataversion

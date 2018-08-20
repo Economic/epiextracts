@@ -26,6 +26,7 @@ global code code/
 global extracts extracts/
 global suppdata suppdata/
 global codedocs ${code}docs/
+global codevars ${code}variables/
 global dictionaries ${code}dictionaries/
 * path names for docs
 global docs docs/

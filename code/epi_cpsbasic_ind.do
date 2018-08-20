@@ -1,9 +1,7 @@
-local date = `1'
-
 gen int indcode = .
 
-if tm(1973m1) <= `date' & `date' <= tm(1993m12)	replace indcode = ind /* unicon industry variable */
-if tm(1994m1) <= `date' & `date' <= tm(2018m5) replace indcode = peio1icd /* census variable */
+if tm(1973m1) <= $date & $date <= tm(1993m12)	replace indcode = ind /* unicon industry variable */
+if tm(1994m1) <= $date & $date <= tm(2018m5) replace indcode = peio1icd /* census variable */
 
 **************************************
 * Industry variables for each period *
@@ -12,21 +10,21 @@ if tm(1994m1) <= `date' & `date' <= tm(2018m5) replace indcode = peio1icd /* cen
 /* ind70 is already a variable, so we rename it ind_70 */
 capture rename ind70 ind_70
 gen ind70 = .
-replace ind70 = indcode if tm(1973m1) <= `date' & `date' <= tm(1982m12)
+replace ind70 = indcode if tm(1973m1) <= $date & $date <= tm(1982m12)
 label var ind70 "1970 Census Industry Classification"
 notes ind70: Industry classification for 1973-1982
 notes ind70: 1973-1982 Unicon: ind
 
 /* 1983-1991: 1980 census industry codes */
 gen ind80 = .
-replace ind80 = indcode if tm(1983m1) <= `date' & `date' <= tm(1991m12)
+replace ind80 = indcode if tm(1983m1) <= $date & $date <= tm(1991m12)
 label var ind80 "1980 Census Industry Classification"
 notes ind80: Industry classification for 1983-1991
 notes ind80: 1983-1991 Unicon: ind
 
 /* 1992-2002: 1990 census industry codes */
 gen ind90 = .
-replace ind90 = indcode if tm(1992m1) <= `date' & `date' <= tm(2002m12)
+replace ind90 = indcode if tm(1992m1) <= $date & $date <= tm(2002m12)
 label var ind90 "1990 Census Industry Classification"
 notes ind90: Industry classification for 1992-2002
 notes ind90: 1992-1993 Unicon: ind
@@ -34,14 +32,14 @@ notes ind90: 1994-2002 CPS: peio1icd
 
 /* 2003-2012m4: 2000 census industry codes */
 gen ind00 = .
-replace ind00 = indcode if tm(2003m1) <= `date' & `date' <= tm(2012m4)
+replace ind00 = indcode if tm(2003m1) <= $date & $date <= tm(2012m4)
 label var ind00 "2000 Census Industry Classification"
 notes ind00: Industry classification for 2003-2012m4
 notes ind00: 2003-2012m4 CPS: peio1icd
 
 /* 2012m5-present: 2010 census industry codes */
 gen ind10 = .
-replace ind10 = indcode if tm(2012m5) <= `date' & `date' <= tm(2018m5)
+replace ind10 = indcode if tm(2012m5) <= $date & $date <= tm(2018m5)
 label var ind10 "2010 Census Industry Classification"
 notes ind10: Industry classification for 2012m5-present
 notes ind10: 2012m5-present CPS: peio1icd
@@ -61,7 +59,7 @@ CPS ORG 1979-1982
 CPS May 1973-1982
 */
 
-if tm(1973m1) <= `date' & `date' <= tm(1982m12){;
+if tm(1973m1) <= $date & $date <= tm(1982m12){;
 	/* There are no "-1" or "military" observations during this period */
 
 	/* Agriculture, mining, forestry and fisheries */
@@ -144,7 +142,7 @@ CPS Basic 1983-1991
 CPS ORG 1983-1991
 */
 
-if tm(1983m1) <= `date' & `date' <= tm(1991m12){;
+if tm(1983m1) <= $date & $date <= tm(1991m12){;
 	/* armed forces & NIU */
 	replace mind16 = . if (
 		(indcode == -1) |
@@ -226,7 +224,7 @@ CPS Basic 1992-2002
 CPS ORG 1992-2002
 */
 
-if tm(1992m1) <= `date' & `date' <= tm(2002m12){;
+if tm(1992m1) <= $date & $date <= tm(2002m12){;
 
 	replace mind16 = . if (
 		(indcode == -1) |
@@ -307,7 +305,7 @@ if tm(1992m1) <= `date' & `date' <= tm(2002m12){;
 /* 2003-present */
 /* I don't think that 2010 census recoding affects major industry */
 
-if tm(2003m1) <= `date' & `date' <= tm(2018m5){;
+if tm(2003m1) <= $date & $date <= tm(2018m5){;
 
 	replace mind16 = . if (
 		(indcode == -1) |

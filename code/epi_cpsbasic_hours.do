@@ -1,15 +1,12 @@
-local date = `1'
-
-
 *******************************************************************************
 * Part-time for economic reasons
 *******************************************************************************
 gen byte ptecon = .
-if tm(1989m1) <= `date' & `date' <= tm(1993m12) {
+if tm(1989m1) <= $date & $date <= tm(1993m12) {
 	replace ptecon = 0 if 2 <= wkstat & wkstat <= 5
 	replace ptecon = 1 if wkstat == 3 | wkstat == 5
 }
-if tm(1994m1) <= `date' & `date' <= tm(2018m5) {
+if tm(1994m1) <= $date & $date <= tm(2018m5) {
 	replace ptecon = 0 if 2 <= prwkstat & prwkstat <= 10
 	replace ptecon = 1 if prwkstat == 3 | prwkstat == 6
 }
@@ -28,7 +25,7 @@ notes ptecon: 1994-present CPS: prwkstat
 *******************************************************************************
 gen byte hoursumay = .
 if $monthlycps == 0 & $maycps == 1 {
-	if tm(1973m1) <= `date' & `date' <= tm(1981m12) {
+	if tm(1973m1) <= $date & $date <= tm(1981m12) {
 		replace hoursumay = wkhrswk
 	}
 }
@@ -45,10 +42,10 @@ notes hoursumay: 1973-1981 Unicon: wkhrswk
 *******************************************************************************
 gen int hoursuorg = .
 if $earnerinfo == 1 {
-	if tm(1979m1) <= `date' & `date' <= tm(1993m12) {
+	if tm(1979m1) <= $date & $date <= tm(1993m12) {
 		replace hoursuorg = ernush
 	}
-	if tm(1994m1) <= `date' & `date' <= tm(2018m5) {
+	if tm(1994m1) <= $date & $date <= tm(2018m5) {
 		replace hoursuorg = peernhro
 	}
 }
@@ -64,7 +61,7 @@ notes hoursuorg: 1994-present CPS: peernhro
 * Usual hours worked per week, primary job
 *******************************************************************************
 gen int hoursu1 = .
-if tm(1994m1) <= `date' & `date' <= tm(2018m5) {
+if tm(1994m1) <= $date & $date <= tm(2018m5) {
 	replace hoursu1 = pehrusl1
 }
 replace hoursu1 = . if hoursu1 < 0
@@ -79,7 +76,7 @@ notes hoursu1: 1994-present CPS: pehrusl1
 * Usual hours worked per week, other jobs
 *******************************************************************************
 gen int hoursu2 = .
-if tm(1994m1) <= `date' & `date' <= tm(2018m5) {
+if tm(1994m1) <= $date & $date <= tm(2018m5) {
 	replace hoursu2 = pehrusl2
 }
 replace hoursu2 = . if hoursu2 < 0
@@ -94,7 +91,7 @@ notes hoursu2: 1994-present CPS: pehrusl2
 * Usual hours worked per week, all jobs
 *******************************************************************************
 gen int hoursut = .
-if tm(1994m1) <= `date' & `date' <= tm(2018m5) {
+if tm(1994m1) <= $date & $date <= tm(2018m5) {
 	replace hoursut = pehruslt
 }
 replace hoursut = . if hoursut < 0
@@ -109,7 +106,7 @@ notes hoursut: 1994-present CPS: pehruslt
 * Hours worked last week, primary job
 *******************************************************************************
 gen int hourslw1 = .
-if tm(1994m1) <= `date' & `date' <= tm(2018m5) {
+if tm(1994m1) <= $date & $date <= tm(2018m5) {
 	replace hourslw1 = pehract1
 }
 replace hourslw1 = . if hourslw1 < 0
@@ -124,7 +121,7 @@ notes hourslw1: 1994-present CPS: pehract1
 * Hours worked last week, other jobs
 *******************************************************************************
 gen int hourslw2 = .
-if tm(1994m1) <= `date' & `date' <= tm(2018m5) {
+if tm(1994m1) <= $date & $date <= tm(2018m5) {
 	replace hourslw2 = pehract2
 }
 replace hourslw2 = . if hourslw2 < 0
@@ -139,10 +136,10 @@ notes hourslw2: 1994-present CPS: pehract2
 * Hours worked last week, all jobs
 *******************************************************************************
 gen int hourslwt = .
-if tm(1973m1) <= `date' & `date' <= tm(1993m12) {
+if tm(1973m1) <= $date & $date <= tm(1993m12) {
 	replace hourslwt = hours
 }
-if tm(1994m1) <= `date' & `date' <= tm(2018m5) {
+if tm(1994m1) <= $date & $date <= tm(2018m5) {
 	replace hourslwt = pehractt
 }
 replace hourslwt = . if hourslwt < 0
@@ -159,7 +156,7 @@ notes hourslwt: 1994-present CPS: pehractt
 * Hours vary, primary job
 *******************************************************************************
 gen byte hoursvary = .
-if tm(1994m1) <= `date' & `date' <= tm(2018m5) {
+if tm(1994m1) <= $date & $date <= tm(2018m5) {
 	replace hoursvary = 1 if pehrusl1 == -4
 }
 lab var hoursvary "Usual hours vary, main job"
