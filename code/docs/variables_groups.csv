@@ -43,6 +43,7 @@ month,idweight
 multjobs,employment
 nilf,employment
 numjobs,employment
+occcode,employment
 orgwgt,idweight
 otcamt,income
 otcrec,income
