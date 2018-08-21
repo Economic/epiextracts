@@ -64,6 +64,7 @@ tc_weekpay,income
 unemp,employment
 unempdur,employment
 uncov,employment
+unicon_recnum,idweight
 union,employment
 unmem,employment
 wage,income
