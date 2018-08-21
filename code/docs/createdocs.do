@@ -20,7 +20,7 @@ save `basedata'
 erase epi_cpsbasic_2017.dta
 
 use `basedata', clear
-foreach var of varlist /*_all*/ wageotc {
+foreach var of varlist _all {
 
 	if "`group`var''" == "" {
 		di _n "No group assigned to `var'"
