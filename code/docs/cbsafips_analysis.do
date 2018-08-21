@@ -1,8 +1,3 @@
-webdoc init ${variablelongdesc}cbsafips_longdesc, replace
-* some webdoc options to deal with formatting
-webdoc set stlog
-webdoc set _stlog
-
 sum year
 local maxyear = r(max)
 keep if year == `maxyear'

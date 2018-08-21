@@ -1,8 +1,3 @@
-webdoc init ${variablelongdesc}schenrl_longdesc, replace
-* some webdoc options to deal with formatting
-webdoc set stlog
-webdoc set _stlog
-
 gen byte agegroup = 1 if age >= 16 & age <= 21
 replace agegroup = 2 if age >= 22 & age <= 24
 replace agegroup = 3 if age >= 25 & age <= 39

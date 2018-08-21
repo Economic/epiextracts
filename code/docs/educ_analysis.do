@@ -1,8 +1,3 @@
-webdoc init ${variablelongdesc}educ_longdesc, replace
-* some webdoc options to deal with formatting
-webdoc set stlog
-webdoc set _stlog
-
 gen byte lths = educ == 1 if educ ~= .
 gen byte hs = educ == 2 if educ ~= .
 gen byte some = educ == 3 if educ ~= .

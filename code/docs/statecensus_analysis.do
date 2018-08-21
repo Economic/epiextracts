@@ -1,8 +1,3 @@
-webdoc init ${variablelongdesc}statecensus_longdesc, replace
-* some webdoc options to deal with formatting
-webdoc set stlog
-webdoc set _stlog
-
 sum year
 keep if year == r(max)
 gegen tag = tag(statefips)

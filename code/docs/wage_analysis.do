@@ -1,8 +1,3 @@
-webdoc init ${variablelongdesc}wage_longdesc, replace
-* some webdoc options to deal with formatting
-webdoc set stlog
-webdoc set _stlog
-
 keep if wage > 0 & wage ~= .
 keep if age >= 16 & age <= 64
 
@@ -52,6 +47,8 @@ local color3 77 175 74
 local color4 152 78 163
 local color5 255 127 0
 
+local dollar=char(36)
+
 line wage_0 wage_1 year, ///
 legend(off) ///
 xlabel(1975(5)2015) ///
@@ -59,9 +56,10 @@ ylabel(12(2)18 20 "$20", angle(0)) ///
 xtitle("") ytitle("") ///
 lcolor("`color4'" "`color2'") ///
 graphregion(color("252 252 252")) plotregion(color("252 252 252")) ///
-title("Median real wages for ages 16-64, by gender, 1973-2017 (in 2017$)", size(medium)) ///
+title("Median real wages for ages 16-64, by gender, 1973-2017 (in 2017`dollar')", size(medium)) ///
 text(`wage_0yvalue' `wage_0xvalue' "Male", color("`color4'") placement(c)) ///
 text(`wage_1yvalue' `wage_1xvalue' "Female", color("`color2'") placement(c))
+
 graph export ${variableimages}wage_titleimage.svg, replace
 
 /***

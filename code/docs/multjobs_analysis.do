@@ -1,8 +1,3 @@
-webdoc init ${variablelongdesc}multjobs_longdesc, replace
-* some webdoc options to deal with formatting
-webdoc set stlog
-webdoc set _stlog
-
 keep if multjobs ~= .
 keep if age >= 16 & age ~= .
 

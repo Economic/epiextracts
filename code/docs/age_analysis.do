@@ -1,8 +1,3 @@
-webdoc init ${variablelongdesc}age_longdesc, replace
-* some webdoc options to deal with formatting
-webdoc set stlog
-webdoc set _stlog
-
 * restrict to sample when ages 0+ are available
 keep if year >= 1982
 

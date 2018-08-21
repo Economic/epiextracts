@@ -1,8 +1,3 @@
-webdoc init ${variablelongdesc}lfstat_longdesc, replace
-* some webdoc options to deal with formatting
-webdoc set stlog
-webdoc set _stlog
-
 gen byte lfpr = lfstat == 1 | lfstat == 2 if lfstat ~= .
 keep if age >= 25 & age <= 54
 keep if year >= 1976

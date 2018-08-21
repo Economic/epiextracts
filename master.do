@@ -15,7 +15,7 @@ set trace off
 * DATA VERSION
 *******************************************************************************
 * The version is saved in the dataset labels and notes
-global dataversion 0.3.4
+global dataversion 0.3.5
 
 
 *******************************************************************************
@@ -26,6 +26,7 @@ global code code/
 global extracts extracts/
 global suppdata suppdata/
 global codedocs ${code}docs/
+global codevars ${code}variables/
 global dictionaries ${code}dictionaries/
 * path names for docs
 global docs docs/

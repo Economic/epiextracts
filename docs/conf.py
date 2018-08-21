@@ -28,7 +28,7 @@ copyright = u'2018, Economic Policy Institute'
 author = u'Economic Policy Institute'
 
 # The short X.Y version
-version = u'Version 0.3.4'
+version = u'Version 0.3.5'
 # The full version, including alpha/beta/rc tags
 release = version
 
@@ -43,6 +43,7 @@ release = version
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
+'sphinxcontrib.contentui'
 ]
 
 # Add any paths that contain templates here, relative to this directory.

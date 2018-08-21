@@ -8,6 +8,31 @@ If you use the EPI extracts for your research, please cite them as
 .. note::
 	Economic Policy Institute. 2018. Current Population Survey Extracts, |release|.
 
+
+Version 0.3.5 -- 2018-08-21
+===============================================================================
+
+Added
+-------------------------------------------------------------------------------
+* multjobs, numjobs: multiple job indicators
+* occcode: original Census occupation code
+* hoursumay: usual hours worked per week in May supplement
+* hoursuorg: usual hours worked per week in ORG
+* hoursu1, hoursu2, hoursut: usual hours on primary, other, all jobs
+* hourslw1, hourslw2, hourslwt: last week hours on primary, other, all jobs
+* hoursvary: hours vary indicator
+* unicon_recnum: link to Unicon source data for 1973-1993
+
+Changed
+-------------------------------------------------------------------------------
+* restricted ORG sample to ages 16 and over
+* hourly earnings in May CPS for non-hourly workers now uses usual hours worked
+
+Fixed
+-------------------------------------------------------------------------------
+* change weekly earnings top-code from $2884 to $2884.61 in 1998+ data
+
+
 Version 0.3.4 -- 2018-08-01
 ===============================================================================
 

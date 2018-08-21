@@ -19,6 +19,29 @@ local color7 166 219 160
 local color8 90 174 97
 local color9 27 120 55
 
-maptile division, geo(state) geoid(statefips) cutpoints(division) fcolor(""`color1'" "`color2'" "`color3'" "`color4'" "`color5'" "`color6'" "`color7'" "`color8'" "`color9'"") twopt(graphregion(color("252 252 252")) plotregion(color("252 252 252")) legend(size(small) order(2 3 4 5 6 7 8 9) lab(2 "`: label (division) 1'") lab(3 "`: label (division) 2'") lab(4 "`: label (division) 3'") lab(5 "`: label (division) 4'") lab(6 "`: label (division) 5'") lab(7 "`: label (division) 6'") lab(8 "`: label (division) 7'") lab(9 "`: label (division) 8'") lab(10 "`: label (division) 9'")))
+forvalues i = 1 / 9 {
+  local divisionname`i': label division `i'
+}
+
+maptile division, geo(state) geoid(statefips) ///
+cutpoints(division) ///
+fcolor(""`color1'" "`color2'" "`color3'" "`color4'" "`color5'" "`color6'" "`color7'" "`color8'" "`color9'"") ///
+twopt( ///
+  graphregion(color("252 252 252")) ///
+  plotregion(color("252 252 252")) ///
+  legend( ///
+    size(small) ///
+    order(2 3 4 5 6 7 8 9) ///
+    lab(2 "`divisionname1'") ///
+    lab(3 "`divisionname2'") ///
+    lab(4 "`divisionname3'") ///
+    lab(5 "`divisionname4'") ///
+    lab(6 "`divisionname5'") ///
+    lab(7 "`divisionname6'") ///
+    lab(8 "`divisionname7'") ///
+    lab(9 "`divisionname8'") ///
+    lab(10 "`divisionname9'") ///
+  ) ///
+)
 
 graph export ${variableimages}division_titleimage.svg, replace

@@ -1,8 +1,3 @@
-webdoc init ${variablelongdesc}unmem_longdesc, replace
-* some webdoc options to deal with formatting
-webdoc set stlog
-webdoc set _stlog
-
 keep if age >= 16 & selfemp == 0
 
 gen wgt = orgwgt
