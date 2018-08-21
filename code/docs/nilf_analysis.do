@@ -1,8 +1,3 @@
-webdoc init ${variablelongdesc}nilf_longdesc, replace
-* some webdoc options to deal with formatting
-webdoc set stlog
-webdoc set _stlog
-
 keep if age >= 25 & age <= 54
 keep if year >= 1976
 

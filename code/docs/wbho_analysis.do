@@ -1,8 +1,3 @@
-webdoc init ${variablelongdesc}wbho_longdesc, replace
-* some webdoc options to deal with formatting
-webdoc set stlog
-webdoc set _stlog
-
 keep if age >= 16 & age ~= .
 
 gen byte white = wbho == 1 if wbho ~= .

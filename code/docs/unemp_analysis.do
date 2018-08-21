@@ -1,8 +1,3 @@
-webdoc init ${variablelongdesc}unemp_longdesc, replace
-* some webdoc options to deal with formatting
-webdoc set stlog
-webdoc set _stlog
-
 keep if unemp == 1 | emp == 1
 
 * keep only 1976+ for annual data to avoid seasonality issues

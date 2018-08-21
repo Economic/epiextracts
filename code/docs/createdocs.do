@@ -1,4 +1,4 @@
-*do ${codedocs}detailed_analysis.do
+do ${codedocs}detailed_analysis.do
 
 * variable-group definitions
 import delimited using ${codedocs}variables_groups.csv, clear varnames(1)
@@ -20,7 +20,7 @@ save `basedata'
 erase epi_cpsbasic_2017.dta
 
 use `basedata', clear
-foreach var of varlist _all {
+foreach var of varlist /*_all*/ wageotc {
 
 	if "`group`var''" == "" {
 		di _n "No group assigned to `var'"

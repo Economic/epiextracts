@@ -1,8 +1,3 @@
-webdoc init ${variablelongdesc}wageotc_longdesc, replace
-* some webdoc options to deal with formatting
-webdoc set stlog
-webdoc set _stlog
-
 keep if age >= 16 & age <= 64
 recode wage (0 = .)
 recode wageotc (0 = .)
@@ -53,6 +48,8 @@ local color3 77 175 74
 local color4 152 78 163
 local color5 255 127 0
 
+local dollar=char(36)
+
 line wage wageotc year, ///
 legend(off) ///
 xlabel(1975(5)2015) ///
@@ -60,7 +57,7 @@ ylabel(12(2)18 20 "$20", angle(0) gmin gmax) ///
 xtitle("") ytitle("") ///
 lcolor("`color4'" "`color2'") ///
 graphregion(color("252 252 252")) plotregion(color("252 252 252")) ///
-title("Median real wages for ages 16-64, 1973-2017 (in 2017$)", size(medium)) ///
+title("Median real wages for ages 16-64, 1973-2017 (in 2017`dollar')", size(medium)) ///
 text(`wageyvalue' `wagexvalue' "wage", color("`color4'") placement(c)) ///
 text(`wageotcyvalue' `wageotcxvalue' "wageotc", color("`color2'") placement(c))
 graph export ${variableimages}wageotc_titleimage.svg, replace

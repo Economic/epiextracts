@@ -1,8 +1,3 @@
-webdoc init ${variablelongdesc}pubsec_longdesc, replace
-* some webdoc options to deal with formatting
-webdoc set stlog
-webdoc set _stlog
-
 keep if pubsec ~= .
 keep if age >= 16 & age <= 64
 keep if emp == 1

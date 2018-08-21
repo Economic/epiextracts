@@ -1,8 +1,3 @@
-webdoc init ${variablelongdesc}a_weekpay_longdesc, replace
-* some webdoc options to deal with formatting
-webdoc set stlog
-webdoc set _stlog
-
 keep if a_weekpay ~= .
 keep if age >= 16 & age <= 64
 keep if year >= 1979
