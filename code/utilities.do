@@ -603,7 +603,11 @@ foreach year of numlist `minyear'(1)`maxyear' {
 		use `inputfile', clear
 
 		* run key basic/org programs
-		do ${code}epi_cpsbasic_sample.do
+		do ${code}sample_cpsbasic.do
+    do ${code}generate_variables.do
+    do ${code}keep_variables.do
+
+    /*
 		do ${code}epi_cpsbasic_idwgt.do
 		do ${code}epi_cpsbasic_geog.do
 		do ${code}epi_cpsbasic_demog.do
@@ -612,6 +616,7 @@ foreach year of numlist `minyear'(1)`maxyear' {
     do ${code}epi_cpsbasic_ind.do
 		do ${code}epi_cpsorg_wages.do
 		do ${code}epi_cpsbasic_keepord.do
+    */
 
 		* clean up
 		erase `inputfile'
@@ -673,16 +678,10 @@ foreach year of numlist `minyear'(1)`maxyear' {
 			unzipfile `inputpath'`inputfile'.zip, replace
 			use `inputfile', clear
 
-			* run key basic/org programs
-			do ${code}epi_cpsbasic_sample.do
-			do ${code}epi_cpsbasic_idwgt.do
-			do ${code}epi_cpsbasic_geog.do
-			do ${code}epi_cpsbasic_demog.do
-			do ${code}epi_cpsbasic_empstat.do
-      do ${code}epi_cpsbasic_hours.do
-      do ${code}epi_cpsbasic_ind.do
-			do ${code}epi_cpsorg_wages.do
-			do ${code}epi_cpsbasic_keepord.do
+      * run key basic/org programs
+  		do ${code}sample_cpsbasic.do
+      do ${code}generate_variables.do
+      do ${code}keep_variables.do
 
       * limit sample to certain variables for debugging
       if "`keeponly'" ~= "" keep year month minsamp basicwgt orgwgt `keeponly'
@@ -694,7 +693,7 @@ foreach year of numlist `minyear'(1)`maxyear' {
 			* save separate org subsample
       if `orgexists' == 1 & `separateorg' == 0 {
 				* keep org subsample
-				do ${code}epi_cpsorg_sample.do
+				do ${code}sample_cpsorg.do
 
         * limit sample to certain variables for debugging
         if "`keeponly'" ~= "" keep year month minsamp basicwgt orgwgt `keeponly'
@@ -721,19 +720,13 @@ foreach year of numlist `minyear'(1)`maxyear' {
 				unzipfile `inputpath'`inputfile'.zip, replace
 				use `inputfile', clear
 
-				* run key basic/org programs
-				do ${code}epi_cpsbasic_sample.do
-				do ${code}epi_cpsbasic_idwgt.do
-				do ${code}epi_cpsbasic_geog.do
-				do ${code}epi_cpsbasic_demog.do
-				do ${code}epi_cpsbasic_empstat.do
-        do ${code}epi_cpsbasic_hours.do
-        do ${code}epi_cpsbasic_ind.do
-				do ${code}epi_cpsorg_wages.do
-				do ${code}epi_cpsbasic_keepord.do
+        * run key basic/org programs
+    		do ${code}sample_cpsbasic.do
+        do ${code}generate_variables.do
+        do ${code}keep_variables.do
 
 				* keep org subsample
-				do ${code}epi_cpsorg_sample.do
+				do ${code}sample_cpsorg.do
 
 				* limit sample to certain variables for debugging
 				if "`keeponly'" ~= "" keep year month minsamp orgwgt `keeponly'

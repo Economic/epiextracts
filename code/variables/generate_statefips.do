@@ -1,5 +1,5 @@
 ********************************************************************************
-* State
+* statefips
 ********************************************************************************
 gen byte statefips = .
 * some codes in 1976 do not match Unicon documentation
@@ -51,47 +51,3 @@ if tm(1994m1) <= $date & $date <= tm(2018m5) {
 lab var statefips "State - FIPS code"
 notes statefips: 1978-1993, derived from Unicon state census code: state
 notes statefips: 1994-present, CPS: gestfips
-
-lab var statecensus "State - Census code"
-notes statecensus: 1978-1993, Unicon: state
-notes statecensus: 1994-present, derived from CPS state FIPS code: gestfips
-
-lab var division "Census division (1-9)"
-notes division: derived from statefips
-
-lab var region "Census region (1-4)"
-notes region: derived from statefips
-
-
-
-********************************************************************************
-* County
-********************************************************************************
-gen countyfips = .
-if tm(1995m9) <= $date & $date <= tm(2004m4) {
-	replace countyfips = geco
-}
-if tm(2004m5) <= $date & $date <= tm(2018m5) {
-	replace countyfips = gtco
-}
-lab var countyfips "County - FIPS code"
-lab def countyfips 0 "Not identified"
-lab val countyfips countyfips
-notes countyfips: 1995m9-2004m4, CPS: geco
-notes countyfips: 2004m5-present, CPS: gtco
-notes countyfips: Not consistent over time
-
-
-
-********************************************************************************
-* CBSA
-********************************************************************************
-gen cbsafips = .
-if tm(2004m5) <= $date & $date <= tm(2018m5) {
-	replace cbsafips = gtcbsa
-}
-lab var cbsafips "Core Based Statistical Area - FIPS code"
-lab def cbsafips 0 "Not identified"
-lab val cbsafips cbsafips
-notes cbsafips: 2004m5-present, CPS: gtcbsa
-notes cbsafips: Not consistent over time
