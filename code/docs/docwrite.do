@@ -43,7 +43,6 @@ webdoc put    :header: Variable creation (**show/hide code**)
 webdoc put
 webdoc put    .. literalinclude:: code/generate_`1'.do
 webdoc put
-webdoc put    See this code on Github
 if "`4'" == "titleimage" {
 	webdoc put .. toggle-header::
 	webdoc put    :header: Figure above (**show/hide code**)
