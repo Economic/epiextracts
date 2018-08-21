@@ -36,7 +36,7 @@ foreach var of varlist _all {
 	global variablecode ${variabledocs}code/
 
 	* copy variable code to variablecode directory
-	if "`var'" == "age" copy ${codevars}generate_`var'.do ${variablecode}generate_`var'.do, replace
+	copy ${codevars}generate_`var'.do ${variablecode}generate_`var'.do, replace
 
 	* determine if values will be displayed in documentation
 	* if so, create .csv file of value labels

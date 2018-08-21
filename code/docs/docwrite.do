@@ -36,24 +36,23 @@ if "`3'" == "details" {
 	webdoc append ${variablelongdesc}`1'_longdesc.md
 }
 
-if "`1'" == "age" {
-	webdoc put ## Code
-	webdoc put ```eval_rst
+webdoc put ## Code
+webdoc put ```eval_rst
+webdoc put .. toggle-header::
+webdoc put    :header: Variable creation (**show/hide code**)
+webdoc put
+webdoc put    .. literalinclude:: code/generate_`1'.do
+webdoc put
+webdoc put    See this code on Github
+if "`4'" == "titleimage" {
 	webdoc put .. toggle-header::
-	webdoc put    :header: Variable creation (**show/hide code**)
+	webdoc put    :header: Figure above (**show/hide code**)
 	webdoc put
-	webdoc put    .. literalinclude:: code/generate_`1'.do
-	webdoc put
-	webdoc put    See this code on Github
-	if "`4'" == "titleimage" {
-		webdoc put .. toggle-header::
-		webdoc put    :header: Figure above (**show/hide code**)
-		webdoc put
-		webdoc put    .. literalinclude:: code/`1'_analysis.do
-	}
-	webdoc put
-	webdoc put ```
+	webdoc put    .. literalinclude:: code/`1'_analysis.do
 }
+webdoc put
+webdoc put ```
+
 
 
 
