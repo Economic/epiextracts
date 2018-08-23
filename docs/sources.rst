@@ -1,16 +1,15 @@
 ==============================================================================
 Citations & sources
 ==============================================================================
-If you use the EPI extracts for your research, please cite them as
+If you use the EPI extracts for your research, please cite the data in your references:
 
 .. note::
-	Economic Policy Institute. 2018. Current Population Survey Extracts, |release|.
+	Economic Policy Institute. |year|. Current Population Survey Extracts, |release|.
 
 Underlying code
 ==============================================================================
-The EPI code is available on
-`github <https://github.com/Economic/epiextracts_basicorg>`_
-(currently a private repository). The current code draws heavily from other sources:
+The code that creates the EPI extracts and documentation is available on
+`Github <https://github.com/Economic/epiextracts_basicorg>`_. The current code draws heavily from other sources:
 
 * `EPI <https://www.epi.org/data/>`_:
   data library code	that processes raw CPS data, creates uniform extracts, and analyzes data

@@ -6,7 +6,7 @@ Changelog
 If you use the EPI extracts for your research, please cite them as
 
 .. note::
-	Economic Policy Institute. 2018. Current Population Survey Extracts, |release|.
+	Economic Policy Institute. |year|. Current Population Survey Extracts, |release|.
 
 
 Version 0.3.5 -- 2018-08-21
