@@ -2,7 +2,7 @@
 * pulineno
 ********************************************************************************
 if tm(1973m1) <= $date & $date <= tm(1993m12) {
-	gen byte pulineno = .
+	gen byte pulineno = lineno
 }
 if tm(1994m1) <= $date & $date <= tm(2018m5) {
 	* use already existing pulineno
