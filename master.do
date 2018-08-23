@@ -1,7 +1,14 @@
 * FILE: master.do
-* DESC: master do-file to create EPI CPS Basic and ORG extracts
-* run this to set up directory structure and load programs into memory
-* run this do file in the project root containing master.do
+* DESC: master do-file for EPI CPS Basic/ORG/May extracts and documentation.
+* It only sets up the directory structure & loads programs into memory.
+* It is designed to be run from the project root containing this do-file.
+*
+* See the example function calls at the bottom of this do-file to create
+* the extracts or documentation.
+*
+* Documentation on the extracts and how to use the data and code are
+* available on the EPI network at
+* http://maynard/epiextracts_docs/
 
 *******************************************************************************
 * PRELIMINARIES
@@ -44,8 +51,12 @@ global uniconmay /data/cps/may/unicon/
 * LOAD KEY PROGRAMS INTO MEMORY
 *******************************************************************************
 * this just loads programs into memory
-do ${code}utilities.do
+adopath + ${code}ado
 
+
+*******************************************************************************
+* EXAMPLE FUNCTIONS
+*******************************************************************************
 * process the raw data and convert it to Stata format
 * this is only necessary for additional months of data
 *process_rawbasic, begin(2018m1) end(2018m5)
