@@ -11,4 +11,5 @@ This is the documentation for the EPI CPS Extracts, |release|
 	changes
 	variables/index
 	sources
+	faq
 	issues

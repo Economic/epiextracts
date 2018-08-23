@@ -16,12 +16,3 @@ Latest data & code
 The code that produces these extracts is available at `Github <https://github.com/Economic/epiextracts_basicorg/>`_.
 
 See the :ref:`changelog` for the latest updates to the data.
-
-Which version of the data am I using?
-===============================================================================
-To determine which version of the data you have, use Stata to load any of the datasets into memory and then use the :code:`describe` or :code:`notes` commands:
-
-::
-
-	describe, short
-	notes _dta
