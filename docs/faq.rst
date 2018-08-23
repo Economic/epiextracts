@@ -13,5 +13,23 @@ and then use the :code:`describe` or :code:`notes` commands:
 	describe, short
 	notes _dta
 
-If you want to include the version information concisely in a log file or other
-output you can refer to the data note local macro :code:`_dta[note1]`.
+If you want to refer to the version information in a log file or other
+output you can use Stata's data note local macro :code:`_dta[note1]`.
+
+
+What sample restrictions are used in the EPI extracts?
+===============================================================================
+The EPI CPS Basic monthly and May extracts are restricted to those with non-missing, positive ages. The EPI CPS ORG extracts are restricted to those ages 16 and above with a positive earner sample weight (:doc:`orgwgt <variables/idweight/orgwgt>`) and in the outgoing rotation months (:doc:`minsamp <variables/idweight/minsamp>`).
+
+.. toggle-header::
+	:header: Basic/May sample restriction (**show/hide code**)
+
+	.. literalinclude:: misc/sample_cpsbasic.do
+
+
+.. toggle-header::
+	:header: ORG sample restriction (**show/hide code**)
+
+	.. literalinclude:: misc/sample_cpsorg.do
+
+As a result the sample of individuals in the EPI extracts is sometimes smaller than what is in the raw, underlying CPS data, which can include nonresponding households and, in the case of the underlying ORG data, individuals below the age of 16.
