@@ -32,6 +32,9 @@ version = u'Version 0.3.5'
 # The full version, including alpha/beta/rc tags
 release = version
 
+year = 2018
+rst_epilog = '.. |year| replace:: %d' % year
+
 
 # -- General configuration ---------------------------------------------------
 
