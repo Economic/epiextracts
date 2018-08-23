@@ -1,4 +1,4 @@
-Identification & weights
+Education
 ===================================
 
 .. toctree::

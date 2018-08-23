@@ -19,7 +19,7 @@ output you can use Stata's data note local macro :code:`_dta[note1]`.
 
 What sample restrictions are used in the EPI extracts?
 ===============================================================================
-The EPI CPS Basic monthly and May extracts are restricted to those with non-missing, positive ages. The EPI CPS ORG extracts are restricted to those ages 16 and above with a positive earner sample weight (:doc:`orgwgt <variables/idweight/orgwgt>`) and in the outgoing rotation months (:doc:`minsamp <variables/idweight/minsamp>`).
+The EPI CPS Basic monthly and May extracts are restricted to those with non-missing, positive ages. The EPI CPS ORG extracts are restricted to those ages 16 and above with a positive earner sample weight (:doc:`orgwgt <variables/weights/orgwgt>`) and in the outgoing rotation months (:doc:`minsamp <variables/id/minsamp>`).
 
 .. toggle-header::
 	:header: Basic/May sample restriction (**show/hide code**)

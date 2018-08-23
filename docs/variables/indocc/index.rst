@@ -1,4 +1,4 @@
-Employment status
+Industry & Occupation
 ===================================
 
 .. toctree::
