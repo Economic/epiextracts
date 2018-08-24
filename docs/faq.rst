@@ -33,3 +33,23 @@ The EPI CPS Basic monthly and May extracts are restricted to those with non-miss
 	.. literalinclude:: misc/sample_cpsorg.do
 
 As a result the sample of individuals in the EPI extracts is sometimes smaller than what is in the raw, underlying CPS data, which can include nonresponding households and, in the case of the underlying ORG data, individuals below the age of 16.
+
+
+How do I match the EPI CPS extracts to other sources of CPS extracts?
+==============================================================================
+For years 1984-present, the following variables uniquely identify observations
+in the EPI CPS extracts:
+
+::
+
+	year month statefips hrhhid hrhhid2 hrsersuf hrsample huhhnum pulineno
+
+These variables are present in the raw data available from
+`Census <https://thedataweb.rm.census.gov/ftp/cps_ftp.html>`_,
+`NBER <http://www.nber.org/data/cps_basic.html>`_, or
+`IPUMS <https://cps.ipums.org/cps/>`_.
+
+For years prior to 1994, EPI CPS extracts are based on Unicon source data.
+For these years the EPI variable
+:doc:`unicon_recnum <variables/id/unicon_recnum>`
+uniquely identifies observationsand will match to Unicon's recnum variable.
