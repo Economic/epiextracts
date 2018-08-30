@@ -15,9 +15,9 @@ local maxyear = year(dofm(`enddate'))
 
 * create list of months for each year to process
 foreach date of numlist `begindate'(1)`enddate' {
-  local year = year(dofm(`date'))
-  local month = month(dofm(`date'))
-  local monthlist`year' `monthlist`year'' `month'
+	local year = year(dofm(`date'))
+	local month = month(dofm(`date'))
+	local monthlist`year' `monthlist`year'' `month'
 }
 
 if `begindate' < tm(1973m1) {
@@ -71,8 +71,8 @@ foreach year of numlist `minyear'(1)`maxyear' {
 
 		* run key basic/org programs
 		do ${code}sample_cpsbasic.do
-    do ${code}generate_variables.do
-    do ${code}keep_variables.do
+		do ${code}generate_variables.do
+		do ${code}keep_variables.do
 
 		* clean up
 		erase `inputfile'
@@ -102,17 +102,17 @@ foreach year of numlist `minyear'(1)`maxyear' {
 		foreach month of numlist `monthlist`year'' {
 			local counter = `counter' + 1
 
-      * define current month
-      global date = tm(`year'm`month')
+			* define current month
+			global date = tm(`year'm`month')
 
-      * indicator for using basic monthly file
-      global basicfile = 1
+			* indicator for using basic monthly file
+			global basicfile = 1
 
 			* indicator for existence of ORG files
-      if `year' >= 1979 local orgexists = 1
-      else local orgexists = 0
+			if `year' >= 1979 local orgexists = 1
+			else local orgexists = 0
 
-      * indicator for ORG files being separate from basic files
+			* indicator for ORG files being separate from basic files
 			if 1979 <= `year' & `year' <= 1983 local separateorg = 1
 			else local separateorg = 0
 
@@ -130,33 +130,33 @@ foreach year of numlist `minyear'(1)`maxyear' {
 				local inputfile cps_`year'_`month'.dta
 			}
 
-      * unzip and load source data into memory
+			* unzip and load source data into memory
 			unzipfile `inputpath'`inputfile'.zip, replace
 			use `inputfile', clear
 
-      * run key basic/org programs
-  		do ${code}sample_cpsbasic.do
-      do ${code}generate_variables.do
-      do ${code}keep_variables.do
+			* run key basic/org programs
+			do ${code}sample_cpsbasic.do
+			do ${code}generate_variables.do
+			do ${code}keep_variables.do
 
-      * limit sample to certain variables for debugging
-      if "`keeponly'" ~= "" keep year month minsamp basicwgt orgwgt `keeponly'
+			* limit sample to certain variables for debugging
+			if "`keeponly'" ~= "" keep year month minsamp basicwgt orgwgt `keeponly'
 
 			* save basic monthly extract
 			tempfile basic_month`month'
 			save `basic_month`month''
 
 			* save separate org subsample
-      if `orgexists' == 1 & `separateorg' == 0 {
+			if `orgexists' == 1 & `separateorg' == 0 {
 				* keep org subsample
 				do ${code}sample_cpsorg.do
 
-        * limit sample to certain variables for debugging
-        if "`keeponly'" ~= "" keep year month minsamp basicwgt orgwgt `keeponly'
+				* limit sample to certain variables for debugging
+				if "`keeponly'" ~= "" keep year month minsamp basicwgt orgwgt `keeponly'
 
-        tempfile org_month`month'
-        save `org_month`month''
-      }
+				tempfile org_month`month'
+				save `org_month`month''
+			}
 
 			* clean up basic monthly input file
 			erase `inputfile'
@@ -176,10 +176,10 @@ foreach year of numlist `minyear'(1)`maxyear' {
 				unzipfile `inputpath'`inputfile'.zip, replace
 				use `inputfile', clear
 
-        * run key basic/org programs
-    		do ${code}sample_cpsbasic.do
-        do ${code}generate_variables.do
-        do ${code}keep_variables.do
+				* run key basic/org programs
+				do ${code}sample_cpsbasic.do
+				do ${code}generate_variables.do
+				do ${code}keep_variables.do
 
 				* keep org subsample
 				do ${code}sample_cpsorg.do
@@ -205,9 +205,9 @@ foreach year of numlist `minyear'(1)`maxyear' {
 			compress
 
 			* right here is probably where we should handle earnings & hours imputations
-      global basicfile = 1
-      do ${code}epi_cpsorg_topcode.do `year'
-      do ${code}epi_cpsorg_realwage.do `year'
+			global basicfile = 1
+			do ${code}epi_cpsorg_topcode.do `year'
+			do ${code}epi_cpsorg_realwage.do `year'
 
 			notes drop _dta
 			notes _dta: EPI CPS Basic Monthly Extract, Version $dataversion
@@ -226,10 +226,10 @@ foreach year of numlist `minyear'(1)`maxyear' {
 				}
 				compress
 
-        * right here is probably where we should handle earnings & hours imputations
-        global basicfile = 0
-        do ${code}epi_cpsorg_topcode.do `year'
-        do ${code}epi_cpsorg_realwage.do `year'
+				* right here is probably where we should handle earnings & hours imputations
+				global basicfile = 0
+				do ${code}epi_cpsorg_topcode.do `year'
+				do ${code}epi_cpsorg_realwage.do `year'
 
 				notes drop _dta
 				notes _dta: EPI CPS ORG Extract, Version $dataversion
@@ -269,10 +269,8 @@ foreach year of numlist `minyear'(1)`maxyear' {
 					erase epi_cpsorg_`year'_`month'.dta.zip
 				}
 
-
 			}
 		}
-
 
 	}
 }

@@ -68,7 +68,7 @@ foreach year of numlist `begin'(1)`end' {
 			else local keeplist "_all"
 			cap drop year
 			gen int year = `year'
-			noi di "Loading CPS `samplename', `year': `keeplist'"
+			noi di "Processing CPS `samplename', `year': `keeplist'"
 			tempfile annualdata`year'
 			save `annualdata`year''
 			erase `inputfile'
@@ -123,10 +123,8 @@ foreach year of numlist `begin'(1)`end' {
 * append years of data together
 qui foreach year of numlist `begin'(1)`end' {
 	local counter = `counter' + 1
-	if `counter' == 1 {
-    use `annualdata`year'', clear
-  }
-  noi di "Loading CPS `samplename', `year'"
+	noi di "Loading CPS `samplename', `year'"
+	if `counter' == 1 use `annualdata`year'', clear
 	else append using `annualdata`year'', force
 }
 
