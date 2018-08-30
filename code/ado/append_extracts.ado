@@ -116,16 +116,26 @@ if "`dataversion'" == "old" & "`lowersample'" == "basic" {
 		local shortyear = substr("`year'",3,2)
 		local quarter = quarter(dofq(`quarterdate'))
 		local inputfile cps`shortyear'q`quarter'.dta
-		unzipfile `inputpath'`inputfile'.zip, replace
-		use `keeponlylist' using `inputfile', clear
-		gen year = `year'
-		tempfile quarterlydata`quarterdate'
-		save `quarterlydata`quarterdate''
-		erase `inputfile'
+
+		qui {
+			unzipfile `inputpath'`inputfile'.zip, replace
+			use `inputfile', clear
+			if "`keeponly'" ~= "" {
+				keepifexist `keeponlylist'
+				local keeplist "`r(keeplist)'"
+			}
+			else local keeplist "_all"
+			gen int year = `year'
+			noi di "Processing `dataversion' CPS `samplename', " %tq `quarterdate' ": `keeplist'"
+			tempfile quarterlydata`quarterdate'
+			save `quarterlydata`quarterdate''
+			erase `inputfile'
+		}
 	}
 	local counter = 0
-	foreach quarterdate of numlist `minquarterdate'(1)`maxquarterdate' {
+	qui foreach quarterdate of numlist `minquarterdate'(1)`maxquarterdate' {
 		local counter = `counter' + 1
+		noi di "Loading `dataversion' CPS `samplename', " %tq `quarterdate'
 		if `counter' == 1 use `quarterlydata`quarterdate'', clear
 		else append using `quarterlydata`quarterdate''
 	}
@@ -149,36 +159,56 @@ else {
 			if "`dataversion'" == "old" & "`lowersample'" == "may" {
 				local inputfile may`shortyear'c.dta
 			}
-			unzipfile `inputpath'`inputfile'.zip, replace
-			use `keeponlylist' using `inputfile', clear
-			if "`dataversion'" == "old" gen year = `year'
-			tempfile annualdata`year'
-			save `annualdata`year''
-			erase `inputfile'
+
+			qui {
+				unzipfile `inputpath'`inputfile'.zip, replace
+				use `inputfile', clear
+				if "`keeponly'" ~= "" {
+					keepifexist `keeponlylist'
+					local keeplist "`r(keeplist)'"
+				}
+				else local keeplist "_all"
+				if "`dataversion'" == "old" gen int year = `year'
+				noi di "Processing `dataversion' CPS `samplename', `year': `keeplist'"
+				tempfile annualdata`year'
+				save `annualdata`year''
+				erase `inputfile'
+			}
 		}
 		* monthly files will be either production or local
 		else {
 			foreach month of numlist `monthlist`year'' {
 				local inputfile epi_cps`lowersample'_`year'_`month'.dta
-				unzipfile `inputpath'`inputfile'.zip, replace
-				use `keeponlylist' using `inputfile', clear
-				tempfile monthlydata`month'
-				save `monthlydata`month''
-				erase `inputfile'
+				qui {
+					unzipfile `inputpath'`inputfile'.zip, replace
+					use `inputfile', clear
+					if "`keeponly'" ~= "" {
+						keepifexist `keeponlylist'
+						local keeplist "`r(keeplist)'"
+					}
+					else local keeplist "_all"
+					noi di "Processing `dataversion' CPS `samplename', `year'm`month': `keeplist'"
+					tempfile monthlydata`month'
+					save `monthlydata`month''
+					erase `inputfile'
+				}
 			}
 			local counter = 0
-			foreach month of numlist `monthlist`year'' {
-				local counter = `counter' + 1
-				if `counter' == 1 use `monthlydata`month'', clear
-				else append using `monthlydata`month''
+			qui {
+				foreach month of numlist `monthlist`year'' {
+					local counter = `counter' + 1
+					if `counter' == 1 use `monthlydata`month'', clear
+					else append using `monthlydata`month''
+				}
+				tempfile annualdata`year'
+				save `annualdata`year''
 			}
-			tempfile annualdata`year'
-			save `annualdata`year''
 		}
 	}
 	local counter = 0
-	foreach year of numlist `minyear'(1)`maxyear' {
+	qui foreach year of numlist `minyear'(1)`maxyear' {
 		local counter = `counter' + 1
+		noi di "Loading `dataversion' CPS `samplename', `year'"
 		if `counter' == 1 use `annualdata`year'', clear
 		else append using `annualdata`year''
 	}
