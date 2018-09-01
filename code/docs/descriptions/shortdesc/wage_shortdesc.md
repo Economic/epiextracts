@@ -1,1 +1,1 @@
-wage3 needs a description
+wage needs a description

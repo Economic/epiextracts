@@ -16,8 +16,8 @@ keep
 	hoursumay hoursuorg hoursu1 hoursu2 hoursut hourslw1 hourslw2 hourslwt hoursvary
 	ind70 ind80 ind90 ind00 ind10 mind16
 	occcode
-	weekpay tc_weekpay a_weekpay
+	weekpay_noadj tc_weekpay a_weekpay
 	paidhre otcrec
-	otcamt wage wageotc
+	otcamt wage_noadj wageotc_noadj
 ;
 #delimit cr;

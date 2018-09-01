@@ -1,1 +1,0 @@
-*gen realwage3 = .
