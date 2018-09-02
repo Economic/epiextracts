@@ -52,4 +52,4 @@ These variables are present in the raw data available from
 For years prior to 1994, EPI CPS extracts are based on Unicon source data.
 For these years the EPI variable
 :doc:`unicon_recnum <variables/id/unicon_recnum>`
-uniquely identifies observationsand will match to Unicon's recnum variable.
+uniquely identifies observations and will match to Unicon's recnum variable.

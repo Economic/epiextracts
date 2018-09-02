@@ -9,7 +9,7 @@ if tm(1994m1) <= $date & $date <= tm(2018m5) {
 	replace hourslwt = pehractt
 }
 replace hourslwt = . if hourslwt < 0
-lab var hourslwt "Hours worked last week, main job"
+lab var hourslwt "Hours worked last week, total"
 notes hourslwt: Universe/definition changes 1973-1988, 1989-1993, 1994-present
 notes hourslwt: Top-coding inconsistent across time
 notes hourslwt: Top-code 1973-1993: 99

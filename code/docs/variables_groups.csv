@@ -69,7 +69,10 @@ unicon_recnum,id
 union,employment
 unmem,employment
 wage,income
+wage_noadj,income
 wageotc,income
+wageotc_noadj,income
 wbho,demographics
 weekpay,income
+weekpay_noadj,income
 year,id

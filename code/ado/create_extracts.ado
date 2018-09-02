@@ -74,6 +74,9 @@ foreach year of numlist `minyear'(1)`maxyear' {
 		do ${code}generate_variables.do
 		do ${code}keep_variables.do
 
+		* adjust wage variables (top-codes, hours, extreme values)
+		do ${code}adjust_wages.do
+		
 		* clean up
 		erase `inputfile'
 
@@ -204,10 +207,10 @@ foreach year of numlist `minyear'(1)`maxyear' {
 			}
 			compress
 
-			* right here is probably where we should handle earnings & hours imputations
-			global basicfile = 1
-			do ${code}epi_cpsorg_topcode.do `year'
-			do ${code}epi_cpsorg_realwage.do `year'
+			* adjust wage variables (top-codes, hours, extreme values)
+			if `year' >= 1982 global earnerinfo = 1
+			else global earnerinfo = 0
+			do ${code}adjust_wages.do
 
 			notes drop _dta
 			notes _dta: EPI CPS Basic Monthly Extract, Version $dataversion
@@ -226,10 +229,9 @@ foreach year of numlist `minyear'(1)`maxyear' {
 				}
 				compress
 
-				* right here is probably where we should handle earnings & hours imputations
-				global basicfile = 0
-				do ${code}epi_cpsorg_topcode.do `year'
-				do ${code}epi_cpsorg_realwage.do `year'
+				* adjust wage variables (top-codes, hours, extreme values)
+				global earnerinfo = 1
+				do ${code}adjust_wages.do
 
 				notes drop _dta
 				notes _dta: EPI CPS ORG Extract, Version $dataversion

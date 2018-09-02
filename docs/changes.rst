@@ -9,6 +9,28 @@ If you use the EPI extracts for your research, please cite them as
 	Economic Policy Institute. |year|. Current Population Survey Extracts, |release|.
 
 
+Version 0.4.0 -- 2018-09-02
+===============================================================================
+
+Added
+-------------------------------------------------------------------------------
+* Implemented top-code adjustments for weekpay (and wage, wageotc)
+	All top-coded values of weekpay replaced with gender-specific imputed mean above the top-code, assuming Pareto distribution of weekpay above 80th percentile. wage and wageotc incorporate top-code adjusted weekpay.
+
+* wage_noadj, wageotc_noadj, weekpay_noadj: non-adjusted wage values
+
+
+Changed
+-------------------------------------------------------------------------------
+* hrhhid, pulineno: extended back to 1973
+* wage, wageotc, weekpay now include imputed means of weekpay above top-code
+
+Fixed
+-------------------------------------------------------------------------------
+* weekly earnings top-code in 1986-1988 corrected, now $999
+
+
+
 Version 0.3.5 -- 2018-08-21
 ===============================================================================
 

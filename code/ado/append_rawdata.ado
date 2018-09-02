@@ -100,7 +100,7 @@ foreach year of numlist `begin'(1)`end' {
 				}
 				else local keeplist "_all"
 				cap drop month
-				gen int month = `month'
+				gen byte month = `month'
 				noi di "Processing CPS `samplename', `year'-`month': `keeplist'"
 				tempfile monthlydata`month'
 				save `monthlydata`month''
