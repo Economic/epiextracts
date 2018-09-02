@@ -13,7 +13,7 @@ if $earnerinfo == 1 {
 
 		* there is a higher top-code available in 1986-1988
 		if tm(1986m1) <= $date & $date <= tm(1988m12) {
-			replace weekpay_noadj = ernwk4x if (weekpay >= 999 & weekpay != . & ernwk4x > 999 & ernwk4x != .)
+			replace weekpay_noadj = ernwk4x if (weekpay_noadj >= 999 & weekpay_noadj != . & ernwk4x > 999 & ernwk4x != .)
 		}
 	}
 	if tm(1989m1) <= $date & $date <= tm(1993m12) {
@@ -25,6 +25,15 @@ if $earnerinfo == 1 {
 		replace weekpay_noadj = prernwa
 	}
 }
+
+
+if $monthlycps == 0 & $maycps == 1 & tm(1980m1) <= $date & $date <= tm(1980m12) {
+	* there seems to be something wrong with ernwk and ernwkc in 1980 may data
+	* moving to missing for now
+	replace weekpay_noadj = .
+}
+
+
 replace weekpay_noadj = . if weekpay_noadj < 0
 lab var weekpay_noadj "Weekly pay"
 notes weekpay_noadj: Dollars per week for nonhourly and hourly workers

@@ -12,7 +12,7 @@ if $earnerinfo == 1 {
 		replace wageotc_noadj = wage1 + (otcamt/peernhro) if paidhre == 1 & otcrec == 1 & 0 < otcamt & otcamt ~= . & 0 < peernhro & peernhro <= 99
 
 		* for nonhourly
-		replace wageotc_noadj = wage_noadj if paidhre==0
+		replace wageotc_noadj = wage_noadj if paidhre == 0
 	}
 }
 replace wageotc_noadj = . if wageotc_noadj < 0

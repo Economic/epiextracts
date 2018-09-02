@@ -6,7 +6,15 @@
 ********************************************************************************
 
 * for now, identical wageotc and wageotc_noadj
-gen wageotc = wageotc_noadj
+gen wageotc = .
+if $earnerinfo == 1 {
+	if tm(1994m1) <= $date & $date <= tm(2018m5) {
+		* for hourly workers
+		replace wageotc = wageotc_noadj if paidhre == 1
+		* for nonhourly
+		replace wageotc = wage if paidhre == 0
+	}
+}
 
 lab var wageotc "Hourly wage (adjusted) - OTC consistent"
 notes wageotc: Dollars per hour, for hourly and nonhourly workers
