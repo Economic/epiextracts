@@ -27,6 +27,8 @@ if $earnerinfo == 1 {
 	replace wage = wage2_adjusted if paidhre == 0
 }
 
+drop wage2_adjusted
+
 lab var wage "Hourly wage (adjusted)"
 notes wage: Dollars per hour, for hourly and nonhourly workers
 notes wage: Approximates NBER's recommended wage variable
