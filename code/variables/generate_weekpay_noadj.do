@@ -38,7 +38,7 @@ replace weekpay_noadj = . if weekpay_noadj < 0
 lab var weekpay_noadj "Weekly pay"
 notes weekpay_noadj: Dollars per week for nonhourly and hourly workers
 notes weekpay_noadj: Includes overtime, tips, commissions
-notes weekpay_noadj: Top-code: 1973-85: 999; 1986-97: 1923; 1998-: 2884.61
+notes weekpay_noadj: Top-code: 1973-88: 999; 1989-97: 1923; 1998-: 2884.61
 notes weekpay_noadj: Some records in 1986-1988 may have earnings 999-1932
 notes weekpay_noadj: 1973-1978 Unicon: wkusern
 notes weekpay_noadj: 1979-1988 Unicon: ernwkc

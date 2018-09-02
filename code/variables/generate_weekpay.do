@@ -6,10 +6,10 @@ gen weekpay = .
 
 if $earnerinfo == 1 {
 	* determine top-code thresholds
-	if tm(1973m1) <= $date & $date <= tm(1985m12) {
+	if tm(1973m1) <= $date & $date <= tm(1988m12) {
 		local topcodeval 999
 	}
-	if tm(1986m1) <= $date & $date <= tm(1997m12) {
+	if tm(1989m1) <= $date & $date <= tm(1997m12) {
 		local topcodeval 1923
 	}
 	if tm(1998m1) <= $date & $date <= tm(2018m5) {
@@ -36,7 +36,7 @@ if $earnerinfo == 1 {
 
 		replace weekpay = weekpay_male if female == 0
 		replace weekpay = weekpay_female if female == 1
-		
+
 		drop weekpay_male weekpay_female
 	}
 }
@@ -46,5 +46,5 @@ notes weekpay: Dollars per week for nonhourly and hourly workers
 notes weekpay: Includes overtime, tips, commissions
 notes weekpay: Original top-code values replaced with Pareto-distribution implied mean above top-code
 notes weekpay: Separate imputations for men and women
-notes weekpay: Original top-code: 1973-85: 999; 1986-97: 1923; 1998-: 2884.61
+notes weekpay: Original top-code: 1973-88: 999; 1986-97: 1923; 1998-: 2884.61
 notes weekpay: Derived from weekpay_noadj and tc_weekpay
