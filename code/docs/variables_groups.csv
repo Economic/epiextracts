@@ -1,4 +1,5 @@
 varname,group
+a_earnhour,income
 a_weekpay,income
 age,demographics
 basicwgt,weights
@@ -9,6 +10,7 @@ cow1,employment
 cow2,employment
 discwork,employment
 division,geography
+earnhour,income
 educ,education
 emp,employment
 female,demographics

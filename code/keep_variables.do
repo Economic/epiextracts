@@ -17,6 +17,7 @@ keep
 	ind70 ind80 ind90 ind00 ind10 mind16
 	occcode
 	weekpay_noadj tc_weekpay a_weekpay
+	earnhour a_earnhour
 	paidhre otcrec
 	otcamt wage_noadj wageotc_noadj
 ;
