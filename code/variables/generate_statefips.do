@@ -36,7 +36,7 @@ if tm(1978m1) <= $date & $date <= tm(1993m12) {
 	drop statecensus
 	rename statecensus_alt statecensus
 }
-if tm(1994m1) <= $date & $date <= tm(2018m5) {
+if tm(1994m1) <= $date {
 	replace statefips = gestfips
 	merge m:1 statefips using $stategeocodes, assert(3) nogenerate
 	if $date <= tm(2013m12) assert statecensus == gestcen

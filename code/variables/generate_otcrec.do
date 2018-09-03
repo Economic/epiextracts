@@ -4,7 +4,7 @@
 * it looks possible to extend the overtime definitions past hourly workers
 gen byte otcrec = .
 if $earnerinfo == 1 {
-	if tm(1994m1) <= $date & $date <= tm(2018m5) {
+	if tm(1994m1) <= $date  {
 		replace otcrec = 0 if paidhre == 1 & peernuot == 2
 		replace otcrec = 1 if paidhre == 1 & peernuot == 1
 	}

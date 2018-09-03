@@ -12,7 +12,7 @@ if tm(1989m1) <= $date & $date <= tm(1993m12) {
 	replace lfstat = 2 if 3 <= mlr & mlr <= 4
 	replace lfstat = 3 if 5 <= mlr & mlr <= 7
 }
-if tm(1994m1) <= $date & $date <= tm(2018m5) {
+if tm(1994m1) <= $date {
 	replace lfstat = 1 if 1 <= pemlr & pemlr <= 2
 	replace lfstat = 2 if 3 <= pemlr & pemlr <= 4
 	replace lfstat = 3 if 5 <= pemlr & pemlr <= 7

@@ -6,7 +6,7 @@ if $earnerinfo == 1 {
 	if tm(1979m1) <= $date & $date <= tm(1993m12) {
 		replace hoursuorg = ernush
 	}
-	if tm(1994m1) <= $date & $date <= tm(2018m5) {
+	if tm(1994m1) <= $date {
 		replace hoursuorg = peernhro
 	}
 }

@@ -2,7 +2,7 @@
 * Number of jobs
 *******************************************************************************
 gen byte numjobs = .
-if tm(1994m1) <= $date & $date <= tm(2018m5) {
+if tm(1994m1) <= $date {
 	replace numjobs = 1 if emp == 1
 	replace numjobs = 2 if pemjnum == 2
 	replace numjobs = 3 if pemjnum == 3

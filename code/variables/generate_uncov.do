@@ -22,7 +22,7 @@ if $monthlycps == 1 & $maycps == 0 {
 			replace uncov = 0 if old_uncov == 2
 			replace uncov = 1 if old_uncov == 1
 		}
-		if tm(1994m1) <= $date & $date <= tm(2018m5) {
+		if tm(1994m1) <= $date {
 			replace uncov = 0 if peerncov == 2
 			replace uncov = 1 if peerncov == 1
 		}

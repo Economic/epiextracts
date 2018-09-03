@@ -11,7 +11,7 @@ if $earnerinfo == 1 {
 		replace paidhre = 0 if _ernpdh == 2
 		replace paidhre = 1 if _ernpdh == 1
 	}
-	if tm(1994m1) <= $date & $date <= tm(2018m5) {
+	if tm(1994m1) <= $date {
 		replace paidhre = 0 if peernhry == 2
 		replace paidhre = 1 if peernhry == 1
 	}

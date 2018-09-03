@@ -2,7 +2,7 @@
 * Composite basic monthly weight
 ********************************************************************************
 gen cmpwgt = .
-if tm(1998m1) <= $date & $date <= tm(2018m5) {
+if tm(1998m1) <= $date {
 	replace cmpwgt = pwcmpwgt
 }
 replace cmpwgt = . if cmpwgt < 0

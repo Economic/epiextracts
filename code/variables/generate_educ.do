@@ -32,7 +32,7 @@ if tm(1992m1) <= $date & $date <= tm(1993m12) {
 	* Advanced degree
 	replace educ = 5 if 44 <= grdatn & grdatn <= 46
 }
-if tm(1994m1) <= $date & $date <= tm(2018m5) {
+if tm(1994m1) <= $date {
 	* LTHS
 	replace educ = 1 if 31 <= peeduca & peeduca <= 37
 	* HS; includes "no diploma"

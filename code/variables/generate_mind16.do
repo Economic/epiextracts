@@ -258,7 +258,7 @@ if tm(1992m1) <= $date & $date <= tm(2002m12){;
 /* 2003-present */
 /* I don't think that 2010 census recoding affects major industry */
 
-if tm(2003m1) <= $date & $date <= tm(2018m5){;
+if tm(2003m1) <= $date {;
 
 	replace mind16 = . if (
 		(indcode == -1) |

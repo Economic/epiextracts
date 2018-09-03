@@ -66,7 +66,7 @@ if tm(2012m5) <= $date & $date <= tm(2013m12) {
 	*/ | ptdtrace==25 /* Other 3 races */ | ptdtrace==26 /* 4 and 5 races */
 	replace wbho=3 if (1<=prdthsp & prdthsp<=5) /* hispanic */
 }
-if tm(2014m1) <= $date & $date <= tm(2018m5) {
+if tm(2014m1) <= $date {
 	replace wbho=1 if ptdtrace==1 /* white */
 	replace wbho=2 if ptdtrace==2 /* black */
 	replace wbho=2 if ptdtrace==6 /* black-white */ | ptdtrace==10 /*

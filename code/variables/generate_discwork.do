@@ -6,7 +6,7 @@ if tm(1989m1) <= $date & $date <= tm(1993m12) {
 	replace discwork = 0
 	replace discwork = 1 if dscwk == 1
 }
-if tm(1994m1) <= $date & $date <= tm(2018m5) {
+if tm(1994m1) <= $date {
 	replace discwork = 0
 	replace discwork = 1 if 1 <= prdisc & prdisc <= 2
 }

@@ -2,7 +2,7 @@
 * Multiple job holder
 *******************************************************************************
 gen byte multjobs = .
-if tm(1994m1) <= $date & $date <= tm(2018m5) {
+if tm(1994m1) <= $date {
 	replace multjobs = 0 if pemjot == 2
 	replace multjobs = 1 if pemjot == 1
 }
