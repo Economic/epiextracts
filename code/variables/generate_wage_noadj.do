@@ -16,7 +16,7 @@ if $earnerinfo == 1 {
 	if tm(1979m1) <= $date & $date <= tm(1993m12) {
 		replace wage2 = weekpay_noadj/hoursuorg if paidhre == 0
 	}
-	if tm(1994m1) <= $date & $date <= tm(2018m5) {
+	if tm(1994m1) <= $date {
 		replace wage2 = weekpay_noadj/hoursu1 if paidhre == 0
 	}
 }
