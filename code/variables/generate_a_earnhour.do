@@ -11,7 +11,6 @@ if $earnerinfo == 1 {
 		assert a_earnhour ~= . if earnhour > 0 & earnhour ~= .
 	}
 	if tm(1989m1) <= $date & $date <= tm(1993m12) {
-		assert
 		replace a_earnhour = 0 if earnhour > 0 & earnhour ~= .
 		replace a_earnhour = 1 if aernhr >= 1 & aernhr <= 8 & earnhour > 0 & earnhour ~= .
 		replace a_earnhour = 1 if ernhr ~= ernhrx & earnhour > 0 & earnhour ~= .

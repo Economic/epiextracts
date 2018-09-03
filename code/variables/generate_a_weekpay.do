@@ -9,7 +9,6 @@ if $earnerinfo == 1 {
 		assert a_weekpay ~= . if weekpay > 0 & weekpay ~= .
 	}
 	if tm(1989m1) <= $date & $date <= tm(1993m12) {
-		assert
 		replace a_weekpay = 0 if weekpay > 0 & weekpay ~= .
 		replace a_weekpay = 1 if aernwk >= 1 & aernwk <= 8 & weekpay > 0 & weekpay ~= .
 		replace a_weekpay = 1 if ernwk ~= ernwkx & weekpay > 0 & weekpay ~= .
