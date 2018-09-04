@@ -34,8 +34,9 @@ The EPI CPS Basic monthly and May extracts are restricted to those with non-miss
 
 As a result the sample of individuals in the EPI extracts is sometimes smaller than what is in the raw, underlying CPS data, which can include nonresponding households and, in the case of the underlying ORG data, individuals below the age of 16.
 
+.. _merging-to-other-data:
 
-How do I match the EPI CPS extracts to other sources of CPS extracts?
+How do I merge the EPI CPS extracts to other sources of CPS extracts?
 ==============================================================================
 For years 1984-present, the following variables uniquely identify observations
 in the EPI CPS extracts:
