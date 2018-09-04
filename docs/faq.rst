@@ -53,3 +53,28 @@ For years prior to 1994, EPI CPS extracts are based on Unicon source data.
 For these years the EPI variable
 :doc:`unicon_recnum <variables/id/unicon_recnum>`
 uniquely identifies observations and will match to Unicon's recnum variable.
+
+
+Which sample weight variable should I use?
+==============================================================================
+Coming soon!
+
+
+Which wage variable should I use?
+==============================================================================
+Coming soon!
+
+
+How do you adjust the wage variables for top-coding?
+==============================================================================
+Coming soon!
+
+.. toggle-header::
+	:header: function to impute mean above the topcode (**show/hide code**)
+
+	.. literalinclude:: misc/topcode_impute.ado
+
+.. toggle-header::
+	:header: specific adjustment for weekly earnings (**show/hide code**)
+
+	.. literalinclude:: misc/generate_weekpay.do
