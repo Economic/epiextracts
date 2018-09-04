@@ -23,7 +23,7 @@ if $earnerinfo == 1 {
 	}
 }
 
-lab var a_earnhour "Weekly pay allocated by BLS"
+lab var a_earnhour "Hourly earnings allocated by BLS"
 lab def a_earnhour 0 "Not allocated" 1 "Allocated"
 lab val a_earnhour a_earnhour
 notes a_earnhour: Allocation coding inconsistent across time
