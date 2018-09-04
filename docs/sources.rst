@@ -13,8 +13,8 @@ The code that creates the EPI extracts and documentation is available on
 
 The current code and documentation draws heavily from other sources:
 
-* `CEPR <http://ceprdata.org/cps-uniform-data-extracts/cps-basic-programs/cps-basic-monthly-programs/>`_: useful scripts for processing raw data and uniform coding of several variables
-* `EPI <https://www.epi.org/data/>`_: extensive data library code	that processes raw CPS data, creates uniform extracts, and analyzes data
+* `CEPR <http://ceprdata.org/cps-uniform-data-extracts/cps-basic-programs/cps-basic-monthly-programs/>`_: extensive scripts for processing raw data and uniform coding of several variables
+* `EPI <https://www.epi.org/data/>`_: useful data library code	that processes raw CPS data, creates uniform extracts, and analyzes data
 * `IPUMS <https://cps.ipums.org/cps/>`_: clear variable-specific web pages provide a model for how variables should be documented
 * `NBER <http://www.nber.org/data/cps_basic_progs.html>`_: helpful scripts for transforming BLS/Census flat files into Stata data,	as well as the resourceful NBER MORG data files
 
