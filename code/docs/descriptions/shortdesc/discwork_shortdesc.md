@@ -1,1 +1,0 @@
-Discouraged worker description

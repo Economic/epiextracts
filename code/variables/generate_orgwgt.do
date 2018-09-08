@@ -10,7 +10,7 @@ if tm(1979m1) <= $date & $date <= tm(1993m12) {
 		replace orgwgt = ernwgt / 100
 	}
 }
-if tm(1994m1) <= $date & $date <= tm(2018m5) {
+if tm(1994m1) <= $date {
 	replace orgwgt = pworwgt
 }
 replace orgwgt = . if orgwgt <= 0

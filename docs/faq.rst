@@ -34,8 +34,9 @@ The EPI CPS Basic monthly and May extracts are restricted to those with non-miss
 
 As a result the sample of individuals in the EPI extracts is sometimes smaller than what is in the raw, underlying CPS data, which can include nonresponding households and, in the case of the underlying ORG data, individuals below the age of 16.
 
+.. _merging-to-other-data:
 
-How do I match the EPI CPS extracts to other sources of CPS extracts?
+How do I merge the EPI CPS extracts to other sources of CPS extracts?
 ==============================================================================
 For years 1984-present, the following variables uniquely identify observations
 in the EPI CPS extracts:
@@ -53,3 +54,28 @@ For years prior to 1994, EPI CPS extracts are based on Unicon source data.
 For these years the EPI variable
 :doc:`unicon_recnum <variables/id/unicon_recnum>`
 uniquely identifies observations and will match to Unicon's recnum variable.
+
+
+Which sample weight variable should I use?
+==============================================================================
+Coming soon!
+
+
+Which wage variable should I use?
+==============================================================================
+Coming soon!
+
+
+How do you adjust the wage variables for top-coding?
+==============================================================================
+Coming soon!
+
+.. toggle-header::
+	:header: function to impute mean above the topcode (**show/hide code**)
+
+	.. literalinclude:: misc/topcode_impute.ado
+
+.. toggle-header::
+	:header: specific adjustment for weekly earnings (**show/hide code**)
+
+	.. literalinclude:: misc/generate_weekpay.do

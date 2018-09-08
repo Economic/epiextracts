@@ -5,7 +5,7 @@ gen grade92 = .
 if tm(1992m1) <= $date & $date <= tm(1993m12) {
 	replace grade92 = grdatn - 30
 }
-if tm(1994m1) <= $date & $date <= tm(2018m5) {
+if tm(1994m1) <= $date {
 	replace grade92 = peeduca - 30
 }
 lab var grade92 "Education level, detailed, post-1991"

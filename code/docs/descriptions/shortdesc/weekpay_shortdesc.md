@@ -1,1 +1,0 @@
-Weekly earnings in dollars.

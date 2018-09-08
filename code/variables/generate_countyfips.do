@@ -5,7 +5,7 @@ gen countyfips = .
 if tm(1995m9) <= $date & $date <= tm(2004m4) {
 	replace countyfips = geco
 }
-if tm(2004m5) <= $date & $date <= tm(2018m5) {
+if tm(2004m5) <= $date {
 	replace countyfips = gtco
 }
 lab var countyfips "County - FIPS code"

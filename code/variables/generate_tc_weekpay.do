@@ -10,7 +10,7 @@ if $earnerinfo == 1 {
 	if tm(1989m1) <= $date & $date <= tm(1997m12) {
 		replace tc_weekpay = 1 if weekpay >= 1923 & weekpay ~= .
 	}
-	if tm(1998m1) <= $date & $date <= tm(2018m5) {
+	if tm(1998m1) <= $date {
 		* going to use 2884.60 instead of actual topcode of 2884.61 to avoid precision issues
 		replace tc_weekpay = 1 if weekpay >= 2884.60 & weekpay ~= .
 	}

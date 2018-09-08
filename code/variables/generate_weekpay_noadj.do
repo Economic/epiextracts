@@ -19,7 +19,7 @@ if $earnerinfo == 1 {
 	if tm(1989m1) <= $date & $date <= tm(1993m12) {
 		replace weekpay_noadj = ernwk
 	}
-	if tm(1994m1) <= $date & $date <= tm(2018m5) {
+	if tm(1994m1) <= $date {
 		* note that prernwa in Census ddf is in pennies (has implicit two decimal places) in the raw ascii files
 		* but NBER data dictionaries account for this, so it is in dollars in the raw Stata files
 		replace weekpay_noadj = prernwa

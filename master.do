@@ -59,11 +59,11 @@ adopath + ${code}ado
 *******************************************************************************
 * process the raw data and convert it to Stata format
 * this is only necessary for additional months of data
-*process_rawbasic, begin(2018m1) end(2018m5)
+*process_rawbasic, begin(1994m1) end(2018m7)
 
 * create EPI's extracts from the processed raw data
 * creates both basic monthly and ORG subsample
-*create_extracts, begin(1973m1) end(2018m5)
+*create_extracts, begin(1973m1) end(2018m7)
 
 * create documentation
 *do ${codedocs}createdocs.do

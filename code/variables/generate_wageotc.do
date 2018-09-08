@@ -8,7 +8,7 @@
 * for now, identical wageotc and wageotc_noadj
 gen wageotc = .
 if $earnerinfo == 1 {
-	if tm(1994m1) <= $date & $date <= tm(2018m5) {
+	if tm(1994m1) <= $date {
 		* for hourly workers
 		replace wageotc = wageotc_noadj if paidhre == 1
 		* for nonhourly

@@ -2,7 +2,7 @@
 * CBSA
 ********************************************************************************
 gen cbsafips = .
-if tm(2004m5) <= $date & $date <= tm(2018m5) {
+if tm(2004m5) <= $date {
 	replace cbsafips = gtcbsa
 }
 lab var cbsafips "Core Based Statistical Area - FIPS code"

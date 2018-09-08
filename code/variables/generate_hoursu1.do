@@ -2,7 +2,7 @@
 * Usual hours worked per week, primary job
 *******************************************************************************
 gen int hoursu1 = .
-if tm(1994m1) <= $date & $date <= tm(2018m5) {
+if tm(1994m1) <= $date {
 	replace hoursu1 = pehrusl1
 }
 replace hoursu1 = . if hoursu1 < 0

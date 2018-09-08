@@ -1,0 +1,1 @@
+indicates whether or not the respondent is self-employed and unincorporated. See also :doc:`selfinc <selfinc>`.

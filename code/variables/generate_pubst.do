@@ -6,7 +6,7 @@ if tm(1989m1) <= $date & $date <= tm(1993m12) {
 	replace pubst = 0 if class >= 1 & class ~= .
 	replace pubst = 1 if class == 3
 }
-if tm(1994m1) <= $date & $date <= tm(2018m5) {
+if tm(1994m1) <= $date {
 	replace pubst = 0 if peio1cow >= 1 & peio1cow ~= .
 	replace pubst = 1 if peio1cow == 2
 }

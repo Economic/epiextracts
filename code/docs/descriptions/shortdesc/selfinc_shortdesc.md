@@ -1,1 +1,0 @@
-Incorporated self-employment status

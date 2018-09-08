@@ -5,11 +5,11 @@
 ********************************************************************************
 gen wageotc_noadj = .
 if $earnerinfo == 1 {
-	if tm(1994m1) <= $date & $date <= tm(2018m5) {
+	if tm(1994m1) <= $date {
 		* for hourly workers
-		replace wageotc_noadj = wage1 if paidhre == 1
-		replace wageotc_noadj = (weekpay_noadj/pehrusl1) if paidhre == 1 & wage1 < (weekpay_noadj/pehrusl1) & (weekpay/pehrusl1) ~= .
-		replace wageotc_noadj = wage1 + (otcamt/peernhro) if paidhre == 1 & otcrec == 1 & 0 < otcamt & otcamt ~= . & 0 < peernhro & peernhro <= 99
+		replace wageotc_noadj = earnhour if paidhre == 1
+		replace wageotc_noadj = (weekpay_noadj/pehrusl1) if paidhre == 1 & earnhour < (weekpay_noadj/pehrusl1) & (weekpay/pehrusl1) ~= .
+		replace wageotc_noadj = earnhour + (otcamt/peernhro) if paidhre == 1 & otcrec == 1 & 0 < otcamt & otcamt ~= . & 0 < peernhro & peernhro <= 99
 
 		* for nonhourly
 		replace wageotc_noadj = wage_noadj if paidhre == 0

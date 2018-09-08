@@ -2,7 +2,7 @@
 * Same job as last month
 *******************************************************************************
 gen byte samejob = .
-if tm(1994m1) <= $date & $date <= tm(2018m5) {
+if tm(1994m1) <= $date {
 	replace samejob = 1 if puiodp1 == 1
 	replace samejob = 0 if puiodp1 == 2
 }

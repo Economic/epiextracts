@@ -5,7 +5,7 @@ gen int lookdur = .
 if tm(1973m1) <= $date & $date <= tm(1993m12) {
 	replace lookdur = wksun if wksun >= 0 & wksun ~= .
 }
-if tm(1994m1) <= $date & $date <= tm(2018m5) {
+if tm(1994m1) <= $date {
 	replace lookdur = pelkdur if pelkdur >= 0 & pelkdur ~= .
 }
 lab var lookdur "Job seeking duration (weeks)"

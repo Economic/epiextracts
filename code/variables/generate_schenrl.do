@@ -6,7 +6,7 @@ if tm(1984m1) <= $date & $date <= tm(1993m12) {
 	replace schenrl = 0 if schenr == 2
 	replace schenrl = 1 if schenr == 1
 }
-if tm(1994m1) <= $date & $date <= tm(2018m5) {
+if tm(1994m1) <= $date {
 	replace schenrl = 0 if peschenr == 2
 	replace schenrl = 1 if peschenr == 1
 }

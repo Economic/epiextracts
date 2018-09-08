@@ -12,7 +12,7 @@ if $earnerinfo == 1 {
 	if tm(1989m1) <= $date & $date <= tm(1997m12) {
 		local topcodeval 1923
 	}
-	if tm(1998m1) <= $date & $date <= tm(2018m5) {
+	if tm(1998m1) <= $date {
 		* going to use 2884.60 instead of actual topcode of 2884.61 to avoid precision issues
 		local topcodeval 2884.60
 	}
@@ -22,6 +22,7 @@ if $earnerinfo == 1 {
 	if $monthlycps == 0 & $maycps == 1 local weightvar basicwgt
 
 
+	* Do top-code adjustment
 	* there seems to be something wrong with ernwk and ernwkc in 1980 may data
 	* coding weekpay in these data as missing for now
 	if $monthlycps == 0 & $maycps == 1 & tm(1980m1) <= $date & $date <= tm(1980m12) {

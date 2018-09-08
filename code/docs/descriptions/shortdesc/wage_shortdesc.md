@@ -1,1 +1,0 @@
-wage needs a description

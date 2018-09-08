@@ -6,17 +6,17 @@ If you use the EPI extracts for your research, please cite the data in your refe
 .. note::
 	Economic Policy Institute. |year|. Current Population Survey Extracts, |release|.
 
-Underlying code
+Underlying code and documentation
 ==============================================================================
 The code that creates the EPI extracts and documentation is available on
-`Github <https://github.com/Economic/epiextracts_basicorg>`_. The current code draws heavily from other sources:
+`Github <https://github.com/Economic/epiextracts_basicorg>`_.
 
-* `EPI <https://www.epi.org/data/>`_:
-  data library code	that processes raw CPS data, creates uniform extracts, and analyzes data
-* `CEPR <http://ceprdata.org/cps-uniform-data-extracts/cps-basic-programs/cps-basic-monthly-programs/>`_:
-  scripts for processing raw data and uniform coding of several variables
-* `NBER <http://www.nber.org/data/cps_basic_progs.html>`_:
-  scripts for transforming BLS/Census flat files into Stata data
+The current code and documentation draws heavily from other sources:
+
+* `CEPR <http://ceprdata.org/cps-uniform-data-extracts/cps-basic-programs/cps-basic-monthly-programs/>`_: extensive scripts for processing raw data and uniform coding of several variables
+* `EPI <https://www.epi.org/data/>`_: useful data library code	that processes raw CPS data, creates uniform extracts, and analyzes data
+* `IPUMS <https://cps.ipums.org/cps/>`_: clear variable-specific web pages provide a model for how variables should be documented
+* `NBER <http://www.nber.org/data/cps_basic_progs.html>`_: helpful scripts for transforming BLS/Census flat files into Stata data,	as well as the resourceful NBER MORG data files
 
 Raw data underlying the EPI extracts
 ====================================

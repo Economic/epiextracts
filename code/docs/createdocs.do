@@ -31,6 +31,7 @@ foreach var of varlist _all {
 	* use globals because we will reference these in docwrite.do
 	global variableshortdesc ${codedocs}descriptions/shortdesc/
 	global variablelongdesc ${codedocs}descriptions/longdesc/
+	global variableavailability ${codedocs}descriptions/availability/
 	global variabledocs ${docs}variables/`group`var''/
 	global variableimages ${variabledocs}images/
 	global variablelevels ${variabledocs}levels/
