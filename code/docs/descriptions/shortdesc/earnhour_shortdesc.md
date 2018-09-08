@@ -1,1 +1,0 @@
-earnhour needs a description

@@ -1,1 +1,0 @@
-Major industry recode description

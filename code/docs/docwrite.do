@@ -20,7 +20,14 @@ if "`4'" == "titleimage" {
 }
 
 webdoc put ## Description
-webdoc append ${variableshortdesc}`1'_shortdesc.md
+webdoc put ```eval_rst
+webdoc append ${variableshortdesc}`1'_shortdesc.rst
+webdoc put ```
+
+webdoc put ## Availability
+webdoc put ```eval_rst
+webdoc append ${variableavailability}`1'_availability.rst
+webdoc put ```
 
 * conditionally, list value labels
 if "`2'" == "displayvalues" {

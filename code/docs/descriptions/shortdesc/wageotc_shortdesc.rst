@@ -1,0 +1,1 @@
+wageotc is the hourly wage in dollars per hour for workers paid hourly or nonhourly, including payments for overtime, tips, and commissions. In contrast to :doc:`wageotc_noadj <wageotc_noadj>`, wageotc includes imputed values for respondents with top-coded weekly earnings or weekly hours that vary.
