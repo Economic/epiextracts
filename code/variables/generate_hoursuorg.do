@@ -14,5 +14,5 @@ replace hoursuorg = . if hoursuorg < 0
 lab var hoursuorg "Usual hours worked per week at this rate/job (earner study)"
 lab def hoursuorg 99 "99+"
 lab val hoursuorg hoursuorg
-notes hoursuorg: Only available for earner study (ORG + May)
+notes hoursuorg: Only available for the ORG sample
 notes hoursuorg: 1994-present CPS: peernhro
