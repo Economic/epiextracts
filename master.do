@@ -51,7 +51,7 @@ global uniconmay /data/cps/may/unicon/
 * LOAD KEY PROGRAMS INTO MEMORY
 *******************************************************************************
 * this just loads programs into memory
-adopath + ${code}ado
+adopath ++ ${code}ado
 
 
 *******************************************************************************
