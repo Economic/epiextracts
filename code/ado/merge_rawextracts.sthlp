@@ -69,6 +69,15 @@ This command clears any existing data in memory.
 The variables specified in {cmd:keepvarextracts(varlist)} or {cmd:keepvarraw(varlist)}
 must exist in every selected time period in the EPI extracts or raw data, respectively.
 
+{pstd}
+When the raw data is merged to the EPI extracts, all observations from the EPI extracts
+are kept and matched to the raw data. Some observations from the raw data are dropped to match the universe of the
+EPI extracts, which depends on the sample:
+
+	Basic monthly sample: age of respondent must be nonnegative and nonmissing
+
+	ORG sample: outgoing rotation month, earnings weight must be positive, ages 16+
+
 {marker examples}{...}
 {title:Examples}
 
