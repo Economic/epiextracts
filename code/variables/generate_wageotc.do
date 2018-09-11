@@ -5,7 +5,10 @@
 * adjusted for top-coding, hours vary imputations, and trimmed of extreme values
 ********************************************************************************
 
-* for now, identical wageotc and wageotc_noadj
+capture confirm variable wageotc, exact
+if _rc == 0 {
+	drop wageotc
+}
 gen wageotc = .
 if $earnerinfo == 1 {
 	if tm(1994m1) <= $date {

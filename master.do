@@ -22,7 +22,7 @@ set trace off
 * DATA VERSION
 *******************************************************************************
 * The version is saved in the dataset labels and notes
-global dataversion 0.4.0
+global dataversion 0.4.1
 
 
 *******************************************************************************
@@ -51,7 +51,7 @@ global uniconmay /data/cps/may/unicon/
 * LOAD KEY PROGRAMS INTO MEMORY
 *******************************************************************************
 * this just loads programs into memory
-adopath + ${code}ado
+adopath ++ ${code}ado
 
 
 *******************************************************************************

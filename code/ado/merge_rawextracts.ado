@@ -21,7 +21,7 @@ else {
 
 * determine version
 local dataversion = lower("`version'")
-if "`version'" == "" local dataversion "local"
+if "`version'" == "" local dataversion "production"
 if "`dataversion'" ~= "production" & "`dataversion'" ~= "local" {
 	di _n "Version must be local or production"
 	error 1

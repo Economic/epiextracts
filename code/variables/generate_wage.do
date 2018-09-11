@@ -21,6 +21,10 @@ if $earnerinfo == 1 {
 }
 
 * now create adjusted wage variable
+capture confirm variable wage, exact
+if _rc == 0 {
+	drop wage
+}
 gen wage = .
 if $earnerinfo == 1 {
 	replace wage = wage_noadj if paidhre == 1

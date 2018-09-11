@@ -19,7 +19,7 @@ foreach x in `anything' {
 }
 
 if "`keeplist'" == "" {
-	noi di "Warning: none of those variables existed. All variables dropped."
+	noi di "Warning: none of those variables existed."
 	error 1
 }
 else {
