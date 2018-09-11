@@ -2,6 +2,10 @@
 * Weekly earnings (top-code adjusted)
 ********************************************************************************
 
+capture confirm variable weekpay, exact
+if _rc == 0 {
+	drop weekpay
+}
 gen weekpay = .
 
 if $earnerinfo == 1 {

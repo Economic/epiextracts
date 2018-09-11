@@ -13,6 +13,12 @@ local enddate = tm(`end')
 local minyear = year(dofm(`begindate'))
 local maxyear = year(dofm(`enddate'))
 
+* check order of dates
+if `begindate' > `enddate' {
+	di _n "Choose an ending date after the beginning date"
+	error 1
+}
+
 * create list of months for each year to process
 foreach date of numlist `begindate'(1)`enddate' {
 	local year = year(dofm(`date'))
@@ -76,7 +82,7 @@ foreach year of numlist `minyear'(1)`maxyear' {
 
 		* adjust wage variables (top-codes, hours, extreme values)
 		do ${code}adjust_wages.do
-		
+
 		* clean up
 		erase `inputfile'
 
@@ -243,10 +249,40 @@ foreach year of numlist `minyear'(1)`maxyear' {
 				erase epi_cpsorg_`year'.dta.zip
 			}
 		}
-		* otherwise save individual months
+
+		* otherwise deal with partial year
 		else {
+			local prevyear = `year' - 1
+			local monthcount = 0
 			foreach month of numlist `monthlist`year'' {
-				use `basic_month`month'', clear
+				local monthcount = `monthcount' + 1
+			}
+			local beginmonth = `monthcount' + 1
+
+			* create full calendar year of basic to adjust wages
+			append_extracts, begin(`prevyear'm`beginmonth') end(`prevyear'm12) sample(basic) version(local)
+			foreach month of numlist `monthlist`year'' {
+				append using `basic_month`month''
+			}
+			global earnerinfo = 1
+			do ${code}adjust_wages.do
+			tempfile basicadjusted
+			save `basicadjusted'
+
+			* create full calendar year of ORG to adjust wages
+			append_extracts, begin(`prevyear'm`beginmonth') end(`prevyear'm12) sample(org) version(local)
+			foreach month of numlist `monthlist`year'' {
+				append using `org_month`month''
+			}
+			global earnerinfo = 1
+			do ${code}adjust_wages.do
+			tempfile orgadjusted
+			save `orgadjusted'
+
+			* process individual months
+			foreach month of numlist `monthlist`year'' {
+				* process basic
+				use if month == `month' & year == `year' using `basicadjusted', clear
 				compress
 				notes drop _dta
 				notes _dta: EPI CPS Basic Monthly Extract, Version $dataversion
@@ -257,9 +293,9 @@ foreach year of numlist `minyear'(1)`maxyear' {
 				erase epi_cpsbasic_`year'_`month'.dta
 				erase epi_cpsbasic_`year'_`month'.dta.zip
 
-				* ORG, if exists
+				* process ORG, if exists
 				if `orgexists' == 1 {
-					use `org_month`month'', clear
+					use if month == `month' & year == `year' using `orgadjusted', clear
 					compress
 					notes drop _dta
 					notes _dta: EPI CPS ORG Extract, Version $dataversion
