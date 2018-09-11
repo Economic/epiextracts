@@ -82,4 +82,4 @@ EPI extracts, which depends on the sample:
 {title:Examples}
 
     {hline}
-{phang2}{cmd:. merge_rawextracts, begin(1994m1) end(1995m12) sample(org) version(production) keepvarraw(peernlab) keepvarextracts(age selfemp lfstat orgwgt)}
+{phang2}{cmd:. merge_rawextracts, begin(1994m1) end(1995m12) sample(org) keepvarraw(peernlab) keepvarextracts(age selfemp lfstat orgwgt)}
