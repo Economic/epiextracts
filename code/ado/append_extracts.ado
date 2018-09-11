@@ -140,6 +140,7 @@ if "`dataversion'" == "old" & "`lowersample'" == "basic" {
 		else append using `quarterlydata`quarterdate''
 	}
 }
+
 * process all other datasets (annual, or monthly)
 else {
 	foreach year of numlist `minyear'(1)`maxyear' {
@@ -177,22 +178,47 @@ else {
 		}
 		* monthly files will be either production or local
 		else {
-			foreach month of numlist `monthlist`year'' {
-				local inputfile epi_cps`lowersample'_`year'_`month'.dta
+			* determine whether annual files exist
+			capture confirm file `inputpath'epi_cps`lowersample'_`year'.dta.zip
+			* if annual exists, use appropriate months from that file
+			if _rc == 0 {
+				local inputfile epi_cps`lowersample'_`year'.dta
 				qui {
 					unzipfile `inputpath'`inputfile'.zip, replace
-					use `inputfile', clear
-					if "`keeponly'" ~= "" {
-						keepifexist `keeponlylist'
-						local keeplist "`r(keeplist)'"
+					foreach month of numlist `monthlist`year'' {
+						use if month == `month' using `inputfile', clear
+						if "`keeponly'" ~= "" {
+							keepifexist `keeponlylist'
+							local keeplist "`r(keeplist)'"
+						}
+						else local keeplist "_all"
+						noi di "Processing `dataversion' CPS `samplename', `year'm`month': `keeplist'"
+						tempfile monthlydata`month'
+						save `monthlydata`month''
 					}
-					else local keeplist "_all"
-					noi di "Processing `dataversion' CPS `samplename', `year'm`month': `keeplist'"
-					tempfile monthlydata`month'
-					save `monthlydata`month''
-					erase `inputfile'
+				}
+				erase `inputfile'
+			}
+			* if annual does not exist, try monthly files
+			else {
+				foreach month of numlist `monthlist`year'' {
+					local inputfile epi_cps`lowersample'_`year'_`month'.dta
+					qui {
+						unzipfile `inputpath'`inputfile'.zip, replace
+						use `inputfile', clear
+						if "`keeponly'" ~= "" {
+							keepifexist `keeponlylist'
+							local keeplist "`r(keeplist)'"
+						}
+						else local keeplist "_all"
+						noi di "Processing `dataversion' CPS `samplename', `year'm`month': `keeplist'"
+						tempfile monthlydata`month'
+						save `monthlydata`month''
+						erase `inputfile'
+					}
 				}
 			}
+			* combine monthly files into annual file
 			local counter = 0
 			qui {
 				foreach month of numlist `monthlist`year'' {
@@ -205,6 +231,7 @@ else {
 			}
 		}
 	}
+	* combine all files
 	local counter = 0
 	qui foreach year of numlist `minyear'(1)`maxyear' {
 		local counter = `counter' + 1
