@@ -9,6 +9,20 @@ If you use the EPI extracts for your research, please cite them as
 	Economic Policy Institute. |year|. Current Population Survey Extracts, |release|.
 
 
+Version 0.4.1 -- 2018-09-11
+===============================================================================
+
+Added
+-------------------------------------------------------------------------------
+* July 2018 extracts
+* June 2018 extracts
+* earnhour, a_earnhour: hourly earnings per hour for hourly workers
+
+Changed
+-------------------------------------------------------------------------------
+* minsamp: extended back to 1973
+
+
 Version 0.4.0 -- 2018-09-02
 ===============================================================================
 
