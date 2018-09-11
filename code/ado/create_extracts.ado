@@ -216,6 +216,7 @@ foreach year of numlist `minyear'(1)`maxyear' {
 			* adjust wage variables (top-codes, hours, extreme values)
 			if `year' >= 1982 global earnerinfo = 1
 			else global earnerinfo = 0
+			global basicfile = 1
 			do ${code}adjust_wages.do
 
 			notes drop _dta
@@ -237,6 +238,7 @@ foreach year of numlist `minyear'(1)`maxyear' {
 
 				* adjust wage variables (top-codes, hours, extreme values)
 				global earnerinfo = 1
+				global basicfile = 0
 				do ${code}adjust_wages.do
 
 				notes drop _dta
@@ -265,6 +267,7 @@ foreach year of numlist `minyear'(1)`maxyear' {
 				append using `basic_month`month''
 			}
 			global earnerinfo = 1
+			global basicfile = 1
 			do ${code}adjust_wages.do
 			tempfile basicadjusted
 			save `basicadjusted'
@@ -275,6 +278,7 @@ foreach year of numlist `minyear'(1)`maxyear' {
 				append using `org_month`month''
 			}
 			global earnerinfo = 1
+			global basicfile = 0
 			do ${code}adjust_wages.do
 			tempfile orgadjusted
 			save `orgadjusted'

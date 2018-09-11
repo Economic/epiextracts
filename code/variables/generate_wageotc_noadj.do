@@ -8,7 +8,7 @@ if $earnerinfo == 1 {
 	if tm(1994m1) <= $date {
 		* for hourly workers
 		replace wageotc_noadj = earnhour if paidhre == 1
-		replace wageotc_noadj = (weekpay_noadj/pehrusl1) if paidhre == 1 & earnhour < (weekpay_noadj/pehrusl1) & (weekpay/pehrusl1) ~= .
+		replace wageotc_noadj = (weekpay_noadj/hoursu1) if paidhre == 1 & earnhour < (weekpay_noadj/hoursu1) & (weekpay/hoursu1) ~= .
 		replace wageotc_noadj = earnhour + (otcamt/peernhro) if paidhre == 1 & otcrec == 1 & 0 < otcamt & otcamt ~= . & 0 < peernhro & peernhro <= 99
 
 		* for nonhourly
@@ -22,4 +22,4 @@ notes wageotc_noadj: Includes overtime, tips, commissions for nonhourly and hour
 notes wageotc_noadj: Covers only hourly workers who report hourly rate of pay
 notes wageotc_noadj: No adjustments for top-coding, no trimming of outliers
 notes wageotc_noadj: Excludes nonhourly workers whose usual hours vary
-notes wageotc_noadj: 1994-present, CPS: derived from wage_noadj, weekpay_noadj, phersul1, otcamt, otrec, peernhro
+notes wageotc_noadj: 1994-present, CPS: derived from wage_noadj, weekpay_noadj, hoursu1, otcamt, otrec, peernhro
