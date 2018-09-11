@@ -18,6 +18,10 @@ deploysas:
 
 deployado:
 	cp code/ado/append_rawdata.ado /usr/local/ado/
+	cp code/ado/append_rawdata.sthlp /usr/local/ado/
 	cp code/ado/append_extracts.ado /usr/local/ado/
+	cp code/ado/append_extracts.sthlp /usr/local/ado/
 	cp code/ado/merge_rawextracts.ado /usr/local/ado/
+	cp code/ado/merge_rawextracts.sthlp /usr/local/ado/
 	cp code/ado/keepifexist.ado /usr/local/ado/
+	cp code/ado/keepifexist.sthlp /usr/local/ado/
