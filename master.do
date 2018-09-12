@@ -35,8 +35,14 @@ global suppdata suppdata/
 global codedocs ${code}docs/
 global codevars ${code}variables/
 global dictionaries ${code}dictionaries/
+
+* determine temporary directory using tmpdir command (from ssc)
+tmpdir
+global tmp `r(tmpdir)'
+
 * path names for docs
 global docs docs/
+
 * CPS raw data directories  - only necessary for converting raw to Stata format
 * Census data that needs to be converted to Stata
 global censusbasicraw /data/cps/basic/census/raw/

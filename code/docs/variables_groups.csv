@@ -4,6 +4,8 @@ a_weekpay,income
 age,demographics
 basicwgt,weights
 cbsafips,geography
+citistat,demographics
+citizen,demographics
 cmpwgt,weights
 countyfips,geography
 cow1,employment
@@ -21,11 +23,13 @@ gradehi,education
 hoursumay,hours
 hoursuorg,hours
 hoursu1,hours
+hoursu1i,hours
 hoursu2,hours
 hoursut,hours
 hourslw1,hours
 hourslw2,hours
 hourslwt,hours
+hoursuint,hours
 hoursvary,hours
 hrhhid,id
 hrhhid2,id
@@ -39,6 +43,8 @@ ind00,indocc
 ind10,indocc
 lfstat,employment
 lookdur,employment
+manuf,indocc
+married,demographics
 mind16,indocc
 minsamp,id
 month,id

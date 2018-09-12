@@ -16,6 +16,8 @@ if $earnerinfo == 1 {
 	}
 	if tm(1994m1) <= $date {
 		replace wage2 = weekpay/hoursu1 if paidhre == 0
+		* use imputed hours for hours vary respondents
+		replace wage2 = weekpay/hoursu1i if paidhre == 0 & hoursvary == 1
 	}
 	replace wage2_adjusted = . if wage2_adjusted < 0
 }
