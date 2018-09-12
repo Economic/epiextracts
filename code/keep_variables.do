@@ -5,7 +5,7 @@ keep
 	finalwgt cmpwgt basicwgt orgwgt
 	statefips statecensus division region countyfips cbsafips
 	age female wbho citistat citizen married
-	gradecom gradehi grade92 educ
+	gradecom gradehi gradeatn educ
 	lfstat emp unemp nilf schenrl samejob
 	selfemp selfinc cow1 cow2
 	multjobs numjobs

@@ -1,16 +1,16 @@
 ********************************************************************************
-* Education: grade92
+* Education: gradeatn
 ********************************************************************************
-gen grade92 = .
+gen gradeatn = .
 if tm(1992m1) <= $date & $date <= tm(1993m12) {
-	replace grade92 = grdatn - 30
+	replace gradeatn = grdatn - 30
 }
 if tm(1994m1) <= $date {
-	replace grade92 = peeduca - 30
+	replace gradeatn = peeduca - 30
 }
-lab var grade92 "Education level, detailed, post-1991"
+lab var gradeatn "Education level attained, detailed, post-1991"
 #delimit ;
-lab define grade92
+lab define gradeatn
 1  "Less than 1st grade"
 2  "1st-4th grade"
 3  "5th-6th grade"
@@ -29,7 +29,7 @@ lab define grade92
 16 "Doctorate"
 ;
 #delimit cr;
-lab val grade92 grade92
-notes grade92: Only available 1992-present
-notes grade92: 1992-1993 Unicon: grdatn
-notes grade92: 1994-present CPS: peeduca
+lab val gradeatn gradeatn
+notes gradeatn: Only available 1992-present
+notes gradeatn: 1992-1993 Unicon: grdatn
+notes gradeatn: 1994-present CPS: peeduca
