@@ -13,7 +13,7 @@ if tm(1994m1) <= $date {
 		gen age`i' = age^`i'
 	}
 
-	local indepvars age age2 age3 age4 age5 i.grade92 i.wbho i.citistat i.married i.statefips i.union i.pubsec i.mind16
+	local indepvars age age2 age3 age4 age5 i.educ i.wbho i.citistat i.married i.statefips i.union i.pubsec i.mind16
 
 	gen orgsample = orgwgt > 0 & orgwgt ~= . & age >= 16 & age ~= . & (minsamp == 4 | minsamp == 8)
 
