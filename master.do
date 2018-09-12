@@ -36,10 +36,6 @@ global codedocs ${code}docs/
 global codevars ${code}variables/
 global dictionaries ${code}dictionaries/
 
-* determine temporary directory using tmpdir command (from ssc)
-tmpdir
-global tmp `r(tmpdir)'
-
 * path names for docs
 global docs docs/
 
