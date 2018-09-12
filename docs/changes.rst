@@ -9,6 +9,29 @@ If you use the EPI extracts for your research, please cite them as
 	Economic Policy Institute. |year|. Current Population Survey Extracts, |release|.
 
 
+Version 0.4.2 -- 2018-09-12
+===============================================================================
+
+Added
+-------------------------------------------------------------------------------
+* Implemented hours imputation for wage and wageotc for non-hourly workers whose hours vary
+	For non-hourly workers whose hours vary during 1994-present, wage and wageotc
+	use demographic/industry-predicted hours when calculating weekly earnings divided
+	by hours worked. Depending on the year, this is roughly 2-3% of positive wage earners.
+
+* hoursu1i: imputed hours worked for ORG sample, used in wage and wageotc
+* hoursuint: intervalled usual weekly hours worked
+* manuf: manufacturing indicator
+* citizen: US citizenship indicator
+* cititsat: detailed citizenship/foreign born status
+* married: marital status
+* gradeatn: detailed 1992+ educational attainment (replaces grade92)
+
+Changed
+-------------------------------------------------------------------------------
+* grade92: renamed to gradeatn
+
+
 Version 0.4.1 -- 2018-09-11
 ===============================================================================
 

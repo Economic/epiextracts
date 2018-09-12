@@ -22,7 +22,7 @@ set trace off
 * DATA VERSION
 *******************************************************************************
 * The version is saved in the dataset labels and notes
-global dataversion 0.4.1
+global dataversion 0.4.2
 
 
 *******************************************************************************
@@ -35,10 +35,6 @@ global suppdata suppdata/
 global codedocs ${code}docs/
 global codevars ${code}variables/
 global dictionaries ${code}dictionaries/
-
-* determine temporary directory using tmpdir command (from ssc)
-tmpdir
-global tmp `r(tmpdir)'
 
 * path names for docs
 global docs docs/
