@@ -22,7 +22,7 @@ if $earnerinfo == 1 {
 	replace wage2_adjusted = . if wage2_adjusted < 0
 }
 
-* now create adjusted wage variable
+* now create top-code-adjusted and hours-adjusted wage variable
 capture confirm variable wage, exact
 if _rc == 0 {
 	drop wage
@@ -32,8 +32,14 @@ if $earnerinfo == 1 {
 	replace wage = wage_noadj if paidhre == 1
 	replace wage = wage2_adjusted if paidhre == 0
 }
-
 drop wage2_adjusted
+
+* trim wage values according to extreme values
+merge m:1 year using $extremewages, assert(2 3) keepusing(wage_lower wage_upper)
+keep if _merge == 3
+replace wage = . if wage < wage_lower
+replace wage = . if wage > wage_upper
+drop _merge wage_lower wage_upper
 
 lab var wage "Hourly wage (adjusted)"
 notes wage: Dollars per hour, for hourly and nonhourly workers
