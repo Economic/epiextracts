@@ -9,12 +9,23 @@ If you use the EPI extracts for your research, please cite them as
 	Economic Policy Institute. |year|. Current Population Survey Extracts, |release|.
 
 
+Version 0.4.3 -- 2018-09-13
+===============================================================================
+
+Added
+-------------------------------------------------------------------------------
+* Trimming of extreme wage values
+	wage and wageotc set to missing if under 50 cents/hour or over $100/hour in 1989$.
+
+* veteran: veteran status
+
+
 Version 0.4.2 -- 2018-09-12
 ===============================================================================
 
 Added
 -------------------------------------------------------------------------------
-* Implemented hours imputation for wage and wageotc for non-hourly workers whose hours vary
+* Hours imputation for wage and wageotc for non-hourly workers whose hours vary.
 	For non-hourly workers whose hours vary during 1994-present, wage and wageotc
 	use demographic/industry-predicted hours when calculating weekly earnings divided
 	by hours worked. Depending on the year, this is roughly 2-3% of positive wage earners.
@@ -51,7 +62,7 @@ Version 0.4.0 -- 2018-09-02
 
 Added
 -------------------------------------------------------------------------------
-* Implemented top-code adjustments for weekpay (and wage, wageotc)
+* Top-code adjustments for weekpay (and wage, wageotc).
 	All top-coded values of weekpay replaced with gender-specific imputed mean above the top-code, assuming Pareto distribution of weekpay above 80th percentile. wage and wageotc incorporate top-code adjusted weekpay.
 
 * wage_noadj, wageotc_noadj, weekpay_noadj: non-adjusted wage values

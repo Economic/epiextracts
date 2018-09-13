@@ -76,6 +76,7 @@ uncov,employment
 unicon_recnum,id
 union,employment
 unmem,employment
+veteran,demographics
 wage,income
 wage_noadj,income
 wageotc,income

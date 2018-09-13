@@ -32,6 +32,33 @@ if `begindate' < tm(1973m1) {
 }
 
 * preliminary data
+* cpi levels and extreme wage values
+import delimited using ${suppdata}cpiurs_extended.csv, clear varnames(1)
+keep if year >= 1973
+* for now extend to 2018 using last year's change
+moreobs 1
+replace year = 2018 if year == .
+tsset year
+replace cpiurs_extended = (L.cpiurs_extended/L2.cpiurs_extended) * L.cpiurs_extended if year == 2018
+replace cpiurs_extended = round(cpiurs_extended,0.1)
+sum cpiurs_extended if year == 1989
+scalar cpibase = r(mean)
+gen wage_lower = 0.50 * cpiurs_extended / cpibase
+gen wage_upper = 100 * cpiurs_extended / cpibase
+replace wage_lower = round(wage_lower,0.01)
+replace wage_upper = round(wage_upper,0.01)
+keep year cpiurs_extended wage_lower wage_upper
+compress
+format %4.1f cpiurs_extended
+format %4.2f wage_lower
+format %4.2f wage_upper
+tempfile extremewages
+save `extremewages'
+global extremewages `extremewages'
+* add table to documentation folder
+export delimited using ${docs}misc/extremewages.csv, replace datafmt novarnames
+
+* state codes
 import delimited using ${suppdata}state_geocodes.csv, clear varnames(1)
 labmask statefips, val(stateabb)
 labmask statecensus, val(stateabb)
