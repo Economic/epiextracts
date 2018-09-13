@@ -1,6 +1,6 @@
-all: deploydata createdocs deploydocs
+all: deploydata createdocs deploydocs deployado
 
-.PHONY: all deploydata createdocs deploydocs deploysas deployado
+.PHONY: all deploydata createdocs deploydocs deploysas
 
 deploydata:
 	rsync -avh --chmod=0444 extracts/epi_cpsbasic*.dta.zip maynard:/data/cps/basic/epiextracts/
