@@ -1,4 +1,4 @@
-all: deploydata createdocs deploydocs deployado
+all: deploydata createdocs deploydocs
 
 .PHONY: all deploydata createdocs deploydocs deploysas
 
