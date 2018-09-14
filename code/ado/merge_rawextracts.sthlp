@@ -28,8 +28,8 @@
 {synoptline}
 {syntab:Main}
 {synopt:{opt sample(str)}}select the sample: Basic, May, or ORG{p_end}
-{synopt:{opt keepvarextracts(varlist)}}limit extracts to selected variables{p_end}
-{synopt:{opt keepvarraw(varlist)}}limit raw data to selected variables{p_end}
+{synopt:{opt keepextracts(varlist)}}limit extracts to selected variables{p_end}
+{synopt:{opt keepraw(varlist)}}limit raw data to selected variables{p_end}
 {synoptline}
 
 {marker description}{...}
@@ -49,11 +49,11 @@ and the raw CPS data.
 Basic, May, or ORG (not case-sensitive).
 
 {phang}
-{opt keepvarextracts(varlist)}}
+{opt keepextracts(varlist)}}
 selects the variables from the EPI CPS extracts.
 
 {phang}
-{opt keepvarextracts(varlist)}}
+{opt keepextracts(varlist)}}
 selects the variables from the raw CPS data.
 From 1994-present, these are the raw Census data.
 Prior to 1994, these are the Unicon data.
@@ -66,7 +66,7 @@ Prior to 1994, these are the Unicon data.
 This command clears any existing data in memory.
 
 {pstd}
-The variables specified in {cmd:keepvarextracts(varlist)} or {cmd:keepvarraw(varlist)}
+The variables specified in {cmd:keepextracts(varlist)} or {cmd:keepraw(varlist)}
 must exist in every selected time period in the EPI extracts or raw data, respectively.
 
 {pstd}
@@ -82,4 +82,4 @@ EPI extracts, which depends on the sample:
 {title:Examples}
 
     {hline}
-{phang2}{cmd:. merge_rawextracts, begin(1994m1) end(1995m12) sample(org) keepvarraw(peernlab) keepvarextracts(age selfemp lfstat orgwgt)}
+{phang2}{cmd:. merge_rawextracts, begin(1994m1) end(1995m12) sample(org) keepraw(peernlab) keepextracts(age selfemp lfstat orgwgt)}

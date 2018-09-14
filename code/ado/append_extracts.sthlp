@@ -28,7 +28,7 @@ and {it:samplename} is either Basic, May, or ORG.
 {synopthdr}
 {synoptline}
 {syntab:Main}
-{synopt:{opt keeponly(varlist)}}limit the data to a selection of variables{p_end}
+{synopt:{opt keep(varlist)}}limit the data to a selection of variables{p_end}
 {synopt:{opt version(str)}}select the production or old version of the EPI extracts{p_end}
 {synoptline}
 
@@ -44,11 +44,11 @@ and {it:samplename} is either Basic, May, or ORG.
 {dlgtab:Main}
 
 {phang}
-{opt keeponly(varlist)} restricts the data loaded to those variables specified.
+{opt keep(varlist)} restricts the data loaded to those variables specified.
 In addition to those variables, some other useful variables
 (like year, month, and certain weights)
 are also kept in memory.
-The default is {cmd: keeponly(_all)}.
+The default is {cmd: keep(_all)}.
 
 {phang}
 {opt version(str)} selects the version of the extracts:
@@ -73,7 +73,7 @@ This command clears any existing data in memory.
 {phang2}{cmd:. append_extracts, begin(2016m1) end(2017m12) sample(basic)}
 
 {pstd}Load certain variables from the 1990m7-2018m6 EPI CPS ORG{p_end}
-{phang2}{cmd:. append_extracts, begin(1990m7) end(2018m6) sample(org) keeponly(age lfstat union)}
+{phang2}{cmd:. append_extracts, begin(1990m7) end(2018m6) sample(org) keep(age lfstat union)}
 
 {pstd}Load certain variables from the 2000-2017 old EPI CPS SWA sample of the ORG {p_end}
-{phang2}{cmd:. append_extracts, begin(2000m1) end(2017m12) sample(swa) version(old) keeponly(*race* wage*)}
+{phang2}{cmd:. append_extracts, begin(2000m1) end(2017m12) sample(swa) version(old) keep(*race* wage*)}

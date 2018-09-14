@@ -7,7 +7,7 @@
 *************************************************************************
 capture program drop merge_rawextracts
 program define merge_rawextracts
-syntax, begin(string) end(string) sample(string) [version(string)] keepvarraw(string) keepvarextracts(string)
+syntax, begin(string) end(string) sample(string) [version(string)] keepraw(string) keepextracts(string)
 
 * determine sample
 local lowersample = lower("`sample'")
@@ -61,7 +61,7 @@ qui if "`lowersample'" == "may" {
 		* load extracts
 		noi di "Processing `year' EPI CPS `samplename'"
 		unzipfile `inputpathextracts'`inputfileextracts'.zip, replace
-		use unicon_recnum year month `keepvarextracts' using `inputfileextracts', clear
+		use unicon_recnum year month `keepextracts' using `inputfileextracts', clear
 		erase `inputfileextracts'
 		tempfile extracts`year'
 		save `extracts`year''
@@ -69,12 +69,12 @@ qui if "`lowersample'" == "may" {
 		* load raw
 		noi di "Processing raw CPS `samplename' `year'"
 		unzipfile `inputpathraw'`inputfileraw'.zip, replace
-		use recnum age `keepvarraw' using `inputfileraw', clear
+		use recnum age `keepraw' using `inputfileraw', clear
 		erase `inputfileraw'
 		* extracts sample restriction
 		drop if age == .
 		assert age >= 0
-		keep recnum `keepvarraw'
+		keep recnum `keepraw'
 		rename recnum unicon_recnum
 
 		* merge data
@@ -174,14 +174,14 @@ qui if "`lowersample'" == "basic" | "`lowersample'" == "org" {
 				tempfile extracts`year'
 				save `extracts`year''
 			}
-			use year month `mergeidvars' `keepvarextracts' if month == `month' using `extracts`year'', clear
+			use year month `mergeidvars' `keepextracts' if month == `month' using `extracts`year'', clear
 			tempfile extractsm`date'
 			save `extractsm`date''
 
 			* load raw
 			noi di "Processing raw CPS `samplename' `year'm`month'"
 			unzipfile `inputpathraw'`inputfileraw'.zip, replace
-			use `rawpullvars' `keepvarraw' using `inputfileraw', clear
+			use `rawpullvars' `keepraw' using `inputfileraw', clear
 			erase `inputfileraw'
 			capture gen age = peage
 			capture gen age = prtage
@@ -201,7 +201,7 @@ qui if "`lowersample'" == "basic" | "`lowersample'" == "org" {
 				keep if age >= 16 & age ~= .
 			}
 			* keep only desired variables
-			keep `mergeidvars' `keepvarraw'
+			keep `mergeidvars' `keepraw'
 
 			* merge data
 			noi di "Merging raw and extracts `year'm`month'" _n
