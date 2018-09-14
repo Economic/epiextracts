@@ -1,1 +1,1 @@
-emp is indicates whether or not the respondent is employed.
+emp indicates whether or not the respondent is employed.

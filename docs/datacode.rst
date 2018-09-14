@@ -17,6 +17,8 @@ Where are the data & code?
 | CPS-May, 1973-1981      | :file:`/data/cps/may/epiextracts/`                |
 +-------------------------+---------------------------------------------------+
 
+The SAS versions of these datasets are on the epi06 SAS server at :file:`\\fdata0\\epiextracts\\cps\\`.
+
 The code that produces these extracts is available at `Github <https://github.com/Economic/epiextracts_basicorg/>`_.
 
 See the :ref:`changelog` for the latest updates to the data.
@@ -25,9 +27,10 @@ See the :ref:`changelog` for the latest updates to the data.
 How do I use the EPI extracts?
 ===============================================================================
 Feel free to just use the datasets in the above directories just as you would
-any data! Alternatively, if you're on maynard using Stata, we have written some
-helpful functions to access the EPI extracts.
+any data!
 
+Alternatively, if you're using Stata on maynard, we have written some
+helpful functions to access the EPI extracts.
 If you simply want to load certain years or variables of the EPI CPS extracts into memory, try the Stata command :code:`append_extracts`:
 
 .. code::
