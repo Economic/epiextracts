@@ -28,7 +28,7 @@ and {it:samplename} is either Basic, May, or ORG.
 {synopthdr}
 {synoptline}
 {syntab:Main}
-{synopt:{opt keeponly(varlist)}}limit the data to a selection of variables{p_end}
+{synopt:{opt keep(varlist)}}limit the data to a selection of variables{p_end}
 {synoptline}
 
 {marker description}{...}
@@ -45,9 +45,9 @@ Prior to 1994, these are the Unicon extracts.
 {dlgtab:Main}
 
 {phang}
-{opt keeponly(varlist)} restricts the data loaded to those variables specified.
+{opt keep(varlist)} restricts the data loaded to those variables specified.
 In addition to those variables, the variables year and month are created.
-The default is {opt keeponly(_all)}. At least one of the specified variables must
+The default is {opt keep(_all)}. At least one of the specified variables must
 exist in each year of data.
 
 {marker remarks}{...}
@@ -68,4 +68,4 @@ rotation months with positive earnings weights.
 {phang2}{cmd:. append_rawdata, begin(2017) end(2017) sample(basic)}
 
 {pstd}Load certain variables from the 2010-2013 raw CPS ORG data{p_end}
-{phang2}{cmd:. append_rawdata, begin(2010) end(2013) sample(org) keeponly(peage prtage)}
+{phang2}{cmd:. append_rawdata, begin(2010) end(2013) sample(org) keep(peage prtage)}

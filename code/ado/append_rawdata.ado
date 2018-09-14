@@ -5,7 +5,7 @@
 *************************************************************************
 capture program drop append_rawdata
 program define append_rawdata
-syntax, begin(integer) end(integer) sample(string) [keeponly(string)]
+syntax, begin(integer) end(integer) sample(string) [keep(string)]
 
 * determine sample
 local lowersample = lower("`sample'")
@@ -46,10 +46,10 @@ foreach year of numlist `begin'(1)`end' {
 
 	* create keep statement for ORG subsamples
 	if "`lowersample'" == "org" {
-		if `year' >= 1979 & `year' <= 1993 local keeponlyorg keep if (mis == 4 | mis == 8) & ernwgt > 0 & ernwgt ~= .
-		if `year' >= 1994 local keeponlyorg keep if (hrmis == 4 | hrmis == 8) & pworwgt > 0 & pworwgt ~= .
+		if `year' >= 1979 & `year' <= 1993 local keeporg keep if (mis == 4 | mis == 8) & ernwgt > 0 & ernwgt ~= .
+		if `year' >= 1994 local keeporg keep if (hrmis == 4 | hrmis == 8) & pworwgt > 0 & pworwgt ~= .
 	}
-	else local keeponlyorg ""
+	else local keeporg ""
 
 	* Load each annual file
 	if `annualsample' == 1 {
@@ -61,8 +61,8 @@ foreach year of numlist `begin'(1)`end' {
 		qui {
 			unzipfile `inputpath'`inputfile'.zip, replace
 			use `inputfile', clear
-			if "`keeponly'" ~= "" {
-				keepifexist `keeponly'
+			if "`keep'" ~= "" {
+				keepifexist `keep'
 				local keeplist "`r(keeplist)'"
 			}
 			else local keeplist "_all"
@@ -92,10 +92,10 @@ foreach year of numlist `begin'(1)`end' {
 				unzipfile `inputpath'`inputfile'.zip, replace
 				use `inputfile', clear
 				if "`lowersample'" == "org" {
-					`keeponlyorg'
+					`keeporg'
 				}
-				if "`keeponly'" ~= "" {
-					keepifexist `keeponly'
+				if "`keep'" ~= "" {
+					keepifexist `keep'
 					local keeplist "`r(keeplist)'"
 				}
 				else local keeplist "_all"

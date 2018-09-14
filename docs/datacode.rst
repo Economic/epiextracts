@@ -39,7 +39,7 @@ If you simply want to load certain years or variables of the EPI CPS extracts in
 		append_extracts, begin(2016m1) end(2017m12) sample(basic)
 
 		* Load certain variables from the 1990m7-2018m6 EPI CPS ORG
-		append_extracts, begin(1990m7) end(2018m6) sample(org) keeponly(age lfstat union)
+		append_extracts, begin(1990m7) end(2018m6) sample(org) keep(age lfstat union)
 
 
 If you'd like to investigate certain variables in the raw CPS data and merge them to
@@ -47,7 +47,7 @@ the EPI extracts, try the command :code:`merge_rawextracts`:
 
 .. code::
 
-	merge_rawextracts, begin(1994m1) end(1995m12) sample(org) keepvarraw(peernlab) keepvarextracts(age selfemp lfstat orgwgt)
+	merge_rawextracts, begin(1994m1) end(1995m12) sample(org) keepraw(peernlab) keepextracts(age selfemp lfstat orgwgt)
 
 
 See :code:`help append_extracts` or :code:`help merge_rawextracts` for more details.

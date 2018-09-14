@@ -6,7 +6,7 @@
 *************************************************************************
 capture program drop append_extracts
 program define append_extracts
-syntax, begin(string) end(string) sample(string) [version(string)] [keeponly(string)]
+syntax, begin(string) end(string) sample(string) [version(string)] [keep(string)]
 
 * determine sample
 local lowersample = lower("`sample'")
@@ -93,19 +93,19 @@ foreach date of numlist `begindate'(1)`enddate' {
   local monthlist`year' `monthlist`year'' `month'
 }
 
-* keeponly varlists for datasets
-if "`keeponly'" ~= "" {
+* keep varlists for datasets
+if "`keep'" ~= "" {
 	if "`dataversion'" == "old" & ("`lowersample'" == "org" | "`lowersample'" == "swa") {
-		local keeponlylist `keeponly' month mins orgwt
+		local keeplist `keep' month mins orgwt
 	}
 	if "`dataversion'" == "old" & "`lowersample'" == "basic" {
-		local keeponlylist `keeponly' month mins *wgt*
+		local keeplist `keep' month mins *wgt*
 	}
 	if "`dataversion'" == "old" & "`lowersample'" == "may" {
-		local keeponlylist `keeponly' month finalwt
+		local keeplist `keep' month finalwt
 	}
 	if "`dataversion'" == "production" | "`dataversion'" == "local" {
-		local keeponlylist `keeponly' year month mins *wgt*
+		local keeplist `keep' year month mins *wgt*
 	}
 }
 
@@ -120,8 +120,8 @@ if "`dataversion'" == "old" & "`lowersample'" == "basic" {
 		qui {
 			unzipfile `inputpath'`inputfile'.zip, replace
 			use `inputfile', clear
-			if "`keeponly'" ~= "" {
-				keepifexist `keeponlylist'
+			if "`keep'" ~= "" {
+				keepifexist `keeplist'
 				local keeplist "`r(keeplist)'"
 			}
 			else local keeplist "_all"
@@ -164,13 +164,13 @@ else {
 			qui {
 				unzipfile `inputpath'`inputfile'.zip, replace
 				use `inputfile', clear
-				if "`keeponly'" ~= "" {
-					keepifexist `keeponlylist'
+				if "`keep'" ~= "" {
+					keepifexist `keeplist'
 					local keeplist "`r(keeplist)'"
 				}
 				else local keeplist "_all"
 				if "`dataversion'" == "old" gen int year = `year'
-				noi di "Processing `dataversion' CPS `samplename', `year': `keeplist'"
+				noi di "Processing `dataversion' CPS `samplename', `year'm1-`year'm12: `keeplist'"
 				tempfile annualdata`year'
 				save `annualdata`year''
 				erase `inputfile'
@@ -187,8 +187,8 @@ else {
 					unzipfile `inputpath'`inputfile'.zip, replace
 					foreach month of numlist `monthlist`year'' {
 						use if month == `month' using `inputfile', clear
-						if "`keeponly'" ~= "" {
-							keepifexist `keeponlylist'
+						if "`keep'" ~= "" {
+							keepifexist `keeplist'
 							local keeplist "`r(keeplist)'"
 						}
 						else local keeplist "_all"
@@ -206,8 +206,8 @@ else {
 					qui {
 						unzipfile `inputpath'`inputfile'.zip, replace
 						use `inputfile', clear
-						if "`keeponly'" ~= "" {
-							keepifexist `keeponlylist'
+						if "`keep'" ~= "" {
+							keepifexist `keeplist'
 							local keeplist "`r(keeplist)'"
 						}
 						else local keeplist "_all"
@@ -235,7 +235,12 @@ else {
 	local counter = 0
 	qui foreach year of numlist `minyear'(1)`maxyear' {
 		local counter = `counter' + 1
-		noi di "Loading `dataversion' CPS `samplename', `year'"
+		local commalist: di subinstr("`monthlist`year''"," ",",",.)
+		local minmonth = min(`commalist')
+		local maxmonth = max(`commalist')
+		if `counter' == 1 local linebreak _n
+		else local linebreak
+		noi di `linebreak' "Loading `dataversion' CPS `samplename', `year'm`minmonth'-`year'm`maxmonth'"
 		if `counter' == 1 use `annualdata`year'', clear
 		else append using `annualdata`year''
 	}

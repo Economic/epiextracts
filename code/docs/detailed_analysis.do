@@ -41,10 +41,10 @@ foreach var of varlist `analysisvarlist' {
 local analysisvarlist multjob ptecon selfemp selfinc pubsec pubst pubfed publoc nilf lfstat unemp schenrl emp wbho age educ
 local othervars year basicwgt finalwgt female
 
-append_extracts, begin(1973m1) end(1975m12) sample(may) version(local) keeponly(`analysisvarlist' `othervars')
+append_extracts, begin(1973m1) end(1975m12) sample(may) version(local) keep(`analysisvarlist' `othervars')
 tempfile maydata
 save `maydata'
-append_extracts, begin(1976m1) end(2017m12) sample(basic) version(local) keeponly(`analysisvarlist' `othervars')
+append_extracts, begin(1976m1) end(2017m12) sample(basic) version(local) keep(`analysisvarlist' `othervars')
 append using `maydata'
 tempfile fulldata
 save `fulldata'
@@ -66,10 +66,10 @@ foreach var of varlist `analysisvarlist' {
 * CPS ORG/May analysis for wage variables
 local analysisvarlist a_earnhour a_weekpay paidhre wage wageotc wage_noadj
 local othervars year orgwgt female age basicwgt
-append_extracts, begin(1979m1) end(2017m12) sample(org) version(local) keeponly(`analysisvarlist' `othervars')
+append_extracts, begin(1979m1) end(2017m12) sample(org) version(local) keep(`analysisvarlist' `othervars')
 tempfile orgdata
 save `orgdata'
-append_extracts, begin(1973m1) end(1978m12) sample(may) version(local) keeponly(`analysisvarlist' `othervars')
+append_extracts, begin(1973m1) end(1978m12) sample(may) version(local) keep(`analysisvarlist' `othervars')
 append using `orgdata'
 tempfile fulldata
 save `fulldata'
@@ -91,11 +91,11 @@ foreach var of varlist `analysisvarlist' {
 * CPS ORG analysis for unions
 local analysisvarlist union unmem
 local othervars year age female selfemp
-append_extracts, begin(1983m1) end(2017m12) sample(org) version(local) keeponly(`analysisvarlist' `othervars')
+append_extracts, begin(1983m1) end(2017m12) sample(org) version(local) keep(`analysisvarlist' `othervars')
 tempfile orgdata
 save `orgdata'
 
-append_extracts, begin(1973m1) end(1981m12) sample(may) version(local) keeponly(`analysisvarlist' `othervars')
+append_extracts, begin(1973m1) end(1981m12) sample(may) version(local) keep(`analysisvarlist' `othervars')
 append using `orgdata'
 tempfile fulldata
 save `fulldata'
