@@ -34,6 +34,44 @@ The EPI CPS Basic monthly and May extracts are restricted to those with non-miss
 
 As a result the sample of individuals in the EPI extracts is sometimes smaller than what is in the raw, underlying CPS data, which can include nonresponding households and, in the case of the underlying ORG data, individuals below the age of 16.
 
+Which sample weight variable should I use?
+==============================================================================
+Coming soon!
+
+
+Which wage variable should I use?
+==============================================================================
+Coming soon!
+
+.. csv-table::
+	:header: " ", "wage", "wageotc", "wage_noadj", "wageotc_noadj"
+	:widths: 20, 10, 10, 10, 10
+
+	"Availability", "All years", "1994 - present", "All years", "1994 - present"
+	"OTC for hourly workers", "No", "Yes", "No", "Yes"
+	"Top-code imputations", "Yes", "Yes", "No", "No"
+	"Hours vary imputations", "Yes", "Yes", "No", "No"
+	"Trimming", "Yes", "Yes", "No", "No"
+	"BLS imputations", "Yes", "Yes", "Yes", "Yes"
+
+
+
+See the :doc:`wage methodology <wagemethodology>` for more details.
+
+If you want to use a wage variable without any weekly or hourly earnings imputations by EPI or BLS,
+you can incorporate the allocation flags :doc:`a_weekpay <variables/income/a_weekpay>` and :doc:`a_earnhour <variables/income/a_earnhour>`:
+
+::
+
+	* Stata code to restrict hourly wages to data not allocated by BLS
+	* Be aware that the allocation indicators are not consistent over time.
+	* In particular, there is no allocation information at all during Jan 1994 - August 1995.
+
+	gen wage_noimpute = wage_noadj
+	replace wage_noimpute = . if paidhre == 1 & a_earnhour == 1
+	replace wage_noimpute = . if paidhre == 0 & a_weekpay == 1
+
+
 .. _merging-to-other-data:
 
 How do I merge the EPI CPS extracts to other sources of CPS extracts?
@@ -54,42 +92,3 @@ For years prior to 1994, EPI CPS extracts are based on Unicon source data.
 For these years the EPI variable
 :doc:`unicon_recnum <variables/id/unicon_recnum>`
 uniquely identifies observations and will match to Unicon's recnum variable.
-
-
-Which sample weight variable should I use?
-==============================================================================
-Coming soon!
-
-
-Which wage variable should I use?
-==============================================================================
-Coming soon!
-
-
-How do you adjust the wage variables for top-coding?
-==============================================================================
-Coming soon!
-
-.. toggle-header::
-	:header: function to impute mean above the topcode (**show/hide code**)
-
-	.. literalinclude:: misc/topcode_impute.ado
-
-.. toggle-header::
-	:header: specific adjustment for weekly earnings (**show/hide code**)
-
-	.. literalinclude:: misc/generate_weekpay.do
-
-How do you trim the hourly wage variables?
-==============================================================================
-The hourly wage variables :doc:`wage <variables/income/wage>` and :doc:`wageotc <variables/income/wageotc>` are trimmed of outliers.
-Specifically, these hourly wage values are set to missing if they are above 50 cents per hour or $100 per hour in 1989 dollars.
-
-For hourly wage variables that do not have this modification, see :doc:`wage_noadj <variables/income/wage_noadj>` and :doc:`wageotc_noadj <variables/income/wageotc_noadj>`
-
-.. toggle-header::
-	:header: Hourly wage limits (**show/hide table**)
-
-	.. csv-table::
-		:header: "Year","CPI-U-RS, extended","Lower limit ($)","Upper limit ($)"
-		:file: misc/extremewages.csv
