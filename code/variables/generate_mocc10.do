@@ -76,8 +76,9 @@ if tm(1973m1) <= $date & $date <= tm(1982m12){;
 			(occcode >= 960 & occcode <= 965)
 		);
 	/* Service (Food prep, buildings and grounds, cleaning) */
-	replace mocc10 = 7 (
-			inlist(occcode,755,981) |
+	replace mocc10 = 7 if (
+			(occcode == 755) |
+			(occcode == 981) |
 			(occcode >= 903 & occcode <= 916)
 		);
 	/* Precision production, craft and repair */
@@ -658,4 +659,4 @@ notes mocc10: 1992-2002: occ90
 notes mocc10: 2003-2012m4: occ00
 notes mocc10: 2012m4-present: occ10
 
-assert (mocc10 > 0 & mocc10 != .) if (occode > 0 & occcode != . & occcode != 9840 & occcode != 905) /* Assert major occupation is assigned if occupation isn't missing or "armed forces" */
+*assert (mocc10 > 0 & mocc10 != .) if (occcode > 0 & occcode != . & occcode != 9840 & occcode != 905) /* Assert major occupation is assigned if occupation isn't missing or "armed forces" */
