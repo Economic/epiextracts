@@ -9,15 +9,15 @@
 gen wage2_adjusted = .
 if $earnerinfo == 1 {
 	if tm(1973m1) <= $date & $date <= tm(1978m12) {
-		replace wage2 = weekpay/hoursumay if paidhre == 0
+		replace wage2_adjusted = weekpay/hoursumay if paidhre == 0
 	}
 	if tm(1979m1) <= $date & $date <= tm(1993m12) {
-		replace wage2 = weekpay/hoursuorg if paidhre == 0
+		replace wage2_adjusted = weekpay/hoursuorg if paidhre == 0
 	}
 	if tm(1994m1) <= $date {
-		replace wage2 = weekpay/hoursu1 if paidhre == 0
+		replace wage2_adjusted = weekpay/hoursu1 if paidhre == 0
 		* use imputed hours for hours vary respondents
-		replace wage2 = weekpay/hoursu1i if paidhre == 0 & hoursvary == 1
+		replace wage2_adjusted = weekpay/hoursu1i if paidhre == 0 & hoursvary == 1
 	}
 	replace wage2_adjusted = . if wage2_adjusted < 0
 }
