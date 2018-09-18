@@ -1,4 +1,6 @@
-all: deploydata createdocs deploydocs
+all: deploydata createdocs deploywebdocs
+
+LATEST=2018m7
 
 .PHONY: all deploydata createdocs deploydocs convertsas deploysas
 
@@ -10,8 +12,16 @@ deploydata:
 createdocs:
 	cd docs && $(MAKE) clean html
 
-deploydocs:
+deploywebdocs:
 	rsync -rvh docs/_build/html/ maynard:/var/www/html/epiextracts_docs/ --delete
+
+deploywebdata:
+	zip -j epi_cpsorg_1979_$(LATEST).zip extracts/epi_cpsorg_*.dta.zip
+	zip -j epi_cpsbasic_2000_$(LATEST).zip extracts/epi_cpsbasic_20*.dta.zip
+	zip -j epi_cpsbasic_1976_1999.zip extracts/epi_cpsbasic_19*.dta.zip
+	zip -j epi_cpsmay_1973_1981.zip extracts/epi_cpsmay_*.dta.zip
+	rsync -rvh epi_cps*.zip maynard:/var/www/html/epiextracts_docs/
+	rm epi_cps*.zip
 
 convertsas:
 	Rscript code/dtaextracts_to_sas7bdat.R
