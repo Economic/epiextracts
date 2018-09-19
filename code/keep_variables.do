@@ -4,7 +4,7 @@ keep
 	hrhhid hrhhid2 hrsample hrsersuf huhhnum pulineno unicon_recnum
 	finalwgt cmpwgt basicwgt orgwgt
 	statefips statecensus division region countyfips cbsafips
-	age female wbho citistat citizen married
+	age female wbho citistat citizen married veteran
 	gradecom gradehi gradeatn educ
 	lfstat emp unemp nilf schenrl samejob
 	selfemp selfinc cow1 cow2
