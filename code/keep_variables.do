@@ -15,7 +15,7 @@ keep
 	ptecon
 	hoursumay hoursuorg hoursu1 hoursu2 hoursut hourslw1 hourslw2 hourslwt
 	hoursvary hoursuint
-	ind70 ind80 ind90 ind00 ind10 mind16 manuf
+	ind70 ind80 ind90 ind02 ind07 ind12 mind16 manuf
 	occcode
 	weekpay_noadj tc_weekpay a_weekpay
 	earnhour a_earnhour
