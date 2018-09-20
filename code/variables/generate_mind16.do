@@ -361,7 +361,8 @@ notes mind16: Major industry classification, consistent for 1973-present
 notes mind16: 1973-1982: ind70
 notes mind16: 1983-1991: ind80
 notes mind16: 1992-2002: ind90
-notes mind16: 2003-2012m4: ind00
-notes mind16: 2012m5-present: ind10
+notes mind16: 2003-2008: ind02
+notes mind16: 2009-2013: ind07
+notes mind16: 2014-present: ind12
 
 assert (mind16 > 0 & mind16 != .) if (indcode > 0 & indcode != . & indcode != 991 & indcode != 9890) /* Assert major industry is assigned if industry isn't missing or "armed forces" */
