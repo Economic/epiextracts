@@ -51,7 +51,7 @@ foreach var of varlist _all {
 	}
 
 	* determine if there is and detailed documentation
-	capture confirm file ${variablelongdesc}`var'_longdesc.md
+	capture confirm file ${variablelongdesc}`var'_longdesc.rst
 	if _rc == 0 local detailed details
 	if _rc != 0 local detailed nodetails
 
@@ -64,5 +64,5 @@ foreach var of varlist _all {
 	if _rc != 0 local image notitleimage
 
 	use `basedata', clear
-	webdoc do ${codedocs}docwrite.do `var' `dvalues' `detailed' `image', md raw nokeep
+	webdoc do ${codedocs}docwrite.do `var' `dvalues' `detailed' `image', raw nokeep init(${variabledocs}`var'.rst) replace
 }
