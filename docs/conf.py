@@ -22,15 +22,18 @@ project = u'EPI CPS extracts'
 copyright = u'2018, Economic Policy Institute'
 author = u'Economic Policy Institute'
 
-today = u'2018-09-20'
-
-# The short X.Y version
 version = u'Version 0.4.4'
+today = u'2018-09-20'
+rst_epilog = """
+.. |year| replace:: 2018
+.. |latestdata| replace:: 2018m8
+"""
 # The full version, including alpha/beta/rc tags
 release = version
 
-year = 2018
-rst_epilog = '.. |year| replace:: %d' % year
+
+
+
 
 
 # -- General configuration ---------------------------------------------------
