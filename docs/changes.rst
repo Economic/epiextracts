@@ -9,6 +9,19 @@ If you use the EPI extracts for your research, please cite them as
 	Economic Policy Institute. |year|. Current Population Survey Extracts, |release|.
 
 
+Version 0.4.4 -- 2018-09-20
+===============================================================================
+
+Added
+--------------------------------------------------------------------------------
+* August 2018 extracts: all data from 2018 updated.
+* ind02, ind07, ind12: 2002, 2007, 2012 Census industry codes
+
+Changed
+--------------------------------------------------------------------------------
+* :ind00, ind10: removed these in place of ind02, ind07, ind12
+
+
 Version 0.4.3 -- 2018-09-13
 ===============================================================================
 

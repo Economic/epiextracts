@@ -27,10 +27,10 @@ project = u'EPI CPS extracts'
 copyright = u'2018, Economic Policy Institute'
 author = u'Economic Policy Institute'
 
-today = u'2018-09-13'
+today = u'2018-09-20'
 
 # The short X.Y version
-version = u'Version 0.4.3'
+version = u'Version 0.4.4'
 # The full version, including alpha/beta/rc tags
 release = version
 
