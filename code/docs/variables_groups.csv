@@ -39,8 +39,9 @@ huhhnum,id
 ind70,indocc
 ind80,indocc
 ind90,indocc
-ind00,indocc
-ind10,indocc
+ind02,indocc
+ind07,indocc
+ind12,indocc
 lfstat,employment
 lookdur,employment
 manuf,indocc

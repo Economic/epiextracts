@@ -16,21 +16,16 @@ import os
 # import sys
 # sys.path.insert(0, os.path.abspath('.'))
 
-# At top on conf.py (with other import statements)
-import recommonmark
-from recommonmark.transform import AutoStructify
-
-
 # -- Project information -----------------------------------------------------
 
 project = u'EPI CPS extracts'
 copyright = u'2018, Economic Policy Institute'
 author = u'Economic Policy Institute'
 
-today = u'2018-09-13'
+today = u'2018-09-20'
 
 # The short X.Y version
-version = u'Version 0.4.3'
+version = u'Version 0.4.4'
 # The full version, including alpha/beta/rc tags
 release = version
 
@@ -178,18 +173,3 @@ texinfo_documents = [
      author, 'Economic Policy Institute', 'One line description of project.',
      'Miscellaneous'),
 ]
-
-# recommonmark information
-
-from recommonmark.parser import CommonMarkParser
-source_parsers = {
-    '.md': CommonMarkParser,
-}
-source_suffix = ['.rst', '.md']
-
-# At the bottom of conf.py
-def setup(app):
-    app.add_config_value('recommonmark_config', {
-            'auto_toc_tree_section': 'Contents',
-            }, True)
-    app.add_transform(AutoStructify)

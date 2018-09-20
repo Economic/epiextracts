@@ -8,13 +8,27 @@ To determine which version of the data you have,
 use Stata to load any of the datasets into memory
 and then use the :code:`describe` or :code:`notes` commands:
 
-::
+.. toggle-header::
+	:header: Access the data version in Stata (**show/hide code**)
 
-	describe, short
-	notes _dta
+	::
+
+		use epi_cpsorg_2017.dta, clear
+		describe, short
+		notes _dta
 
 If you want to refer to the version information in a log file or other
-output you can use Stata's data note local macro :code:`_dta[note1]`.
+output it may be helpful to use Stata's data note local macro :code:`_dta[note1]`.
+
+Alternatively, R's haven package allows you to read the data and access the data notes:
+
+.. toggle-header::
+	:header: Access the data version in R (**show/hide code**)
+
+	.. code-block:: R
+
+		library(haven)
+		attr(read_dta("epi_cpsorg_2017.dta"),"label")
 
 
 What sample restrictions are used in the EPI extracts?
@@ -59,17 +73,20 @@ Coming soon!
 See the :doc:`wage methodology <wagemethodology>` for more details.
 
 If you want to use a wage variable without any weekly or hourly earnings imputations by EPI or BLS,
-you can incorporate the allocation flags :doc:`a_weekpay <variables/income/a_weekpay>` and :doc:`a_earnhour <variables/income/a_earnhour>`:
+you can incorporate the allocation flags :doc:`a_weekpay <variables/income/a_weekpay>` and :doc:`a_earnhour <variables/income/a_earnhour>`.
 
-::
+.. toggle-header::
+	:header: Exclude BLS-allocated wages (**show/hide code**)
 
-	* Stata code to restrict hourly wages to data not allocated by BLS
-	* Be aware that the allocation indicators are not consistent over time.
-	* In particular, there is no allocation information at all during Jan 1994 - August 1995.
+	::
 
-	gen wage_noimpute = wage_noadj
-	replace wage_noimpute = . if paidhre == 1 & a_earnhour == 1
-	replace wage_noimpute = . if paidhre == 0 & a_weekpay == 1
+		* Stata code to restrict hourly wages to data not allocated by BLS
+		* Be aware that the allocation indicators are not consistent over time.
+		* In particular, there is no allocation information at all during Jan 1994 - August 1995.
+
+		gen wage_noimpute = wage_noadj
+		replace wage_noimpute = . if paidhre == 1 & a_earnhour == 1
+		replace wage_noimpute = . if paidhre == 0 & a_weekpay == 1
 
 
 .. _merging-to-other-data:
