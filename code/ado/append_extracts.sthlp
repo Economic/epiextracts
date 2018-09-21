@@ -23,14 +23,15 @@
 {pstd}where {it:datestring} is a monthly date of the form 1990m1, 2008m8, etc.,
 and {it:samplename} is either Basic, May, or ORG.
 
-{synoptset 20 tabbed}{...}
+{synoptset 25 tabbed}{...}
 {marker table_options}{...}
 {synopthdr}
 {synoptline}
 {syntab:Main}
 {synopt:{opt keep(varlist)}}limit the data to a selection of variables{p_end}
-{synopt:{opt version(str)}}select the production or old version of the EPI extracts{p_end}
+{synopt:{opt sourcedir(filepath)}}designate the source directory for the EPI extracts{p_end}
 {synoptline}
+
 
 {marker description}{...}
 {title:Description}
@@ -51,13 +52,7 @@ are also kept in memory.
 The default is {cmd: keep(_all)}.
 
 {phang}
-{opt version(str)} selects the version of the extracts:
-{cmd:version(production)} or {cmd:version(old)}.
-By default, the production version of the EPI CPS extracts is used: this is the
-newest stable version of the EPI CPS extracts.
-Alternatively, one may select the old version of the EPI extracts.
-When selecting {cmd:version(old)}, the SWA sample of the old is additionally
-available: {cmd:sample(swa)}.
+{opt sourcedir(filepath)} is the directory from which the extracts will be loaded into memory. The default is the default directories on EPI's server maynard.
 
 {marker remarks}{...}
 {title:Remarks}
@@ -70,10 +65,7 @@ This command clears any existing data in memory.
 
     {hline}
 {pstd}Load all of the 2016-2017 EPI CPS Basic monthly extracts{p_end}
-{phang2}{cmd:. append_extracts, begin(2016m1) end(2017m12) sample(basic)}
+{phang2}{cmd:. append_extracts, begin(2016m1) end(2017m12) sample(basic) sourcedir(/data/cps/basic/epi/)}
 
 {pstd}Load certain variables from the 1990m7-2018m6 EPI CPS ORG{p_end}
-{phang2}{cmd:. append_extracts, begin(1990m7) end(2018m6) sample(org) keep(age lfstat union)}
-
-{pstd}Load certain variables from the 2000-2017 old EPI CPS SWA sample of the ORG {p_end}
-{phang2}{cmd:. append_extracts, begin(2000m1) end(2017m12) sample(swa) version(old) keep(*race* wage*)}
+{phang2}{cmd:. append_extracts, begin(1990m7) end(2018m6) sample(org) keep(age lfstat union) sourcedir(/data/cps/org/epi/)}
