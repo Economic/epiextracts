@@ -28,8 +28,8 @@ if "`dataversion'" ~= "production" & "`dataversion'" ~= "local" {
 }
 
 * determine path of extracts version and sample
-if "`dataversion'" == "production" local inputpathextracts /data/cps/`lowersample'/epiextracts/
-if "`dataversion'" == "local" local inputpathextracts ${extracts}
+if "`dataversion'" == "production" local inputpathextracts /data/cps/`lowersample'/epi/
+if "`dataversion'" == "local" local inputpathextracts extracts/
 
 
 di _n "Using `dataversion' version of the EPI CPS `samplename' extracts located in `inputpathextracts'" _n
