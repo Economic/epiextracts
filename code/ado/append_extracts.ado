@@ -32,10 +32,10 @@ if ("`dataversion'" == "production" | "`dataversion'" == "local") & "`lowersampl
 }
 
 * determine path of version and sample
-if "`dataversion'" == "production" local inputpath /data/cps/`lowersample'/epiextracts/
-if "`dataversion'" == "old" & ("`lowersample'" == "org" | "`lowersample'" == "swa" | "`lowersample'" == "may") local inputpath /data/cps/org/epi/stata/
-if "`dataversion'" == "old" & "`lowersample'" == "basic" local inputpath /data/cps/basic/epi/stata/
-if "`dataversion'" == "local" local inputpath ${extracts}
+if "`dataversion'" == "production" local inputpath /data/cps/`lowersample'/epi/
+if "`dataversion'" == "old" & ("`lowersample'" == "org" | "`lowersample'" == "swa" | "`lowersample'" == "may") local inputpath /data/cps/org/epiold/stata/
+if "`dataversion'" == "old" & "`lowersample'" == "basic" local inputpath /data/cps/basic/epiold/stata/
+if "`dataversion'" == "local" local inputpath extracts/
 
 di _n "Using `dataversion' version of the CPS `samplename' extracts located in `inputpath'" _n
 
@@ -233,9 +233,11 @@ else {
 	}
 	* combine all files
 	local counter = 0
-	qui foreach year of numlist `minyear'(1)`maxyear' {
+	 foreach year of numlist `minyear'(1)`maxyear' {
 		local counter = `counter' + 1
 		local commalist: di subinstr("`monthlist`year''"," ",",",.)
+		local commalist `commalist',.
+		di "`commalist'"
 		local minmonth = min(`commalist')
 		local maxmonth = max(`commalist')
 		if `counter' == 1 local linebreak _n

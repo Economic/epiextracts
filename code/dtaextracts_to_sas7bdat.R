@@ -44,7 +44,7 @@ myfunction <- function(x) {
   sasfilename <- paste0(filename,".sas7bdat")
   finalfilename <- paste0(sasfilename,".zip")
   rawdest <- file.path(origpath,origfilename)
-  finaldest <- file.path("/data/cps",datasource,"epiextracts/sas",finalfilename)
+  finaldest <- file.path("/data/cps",datasource,"epi/sas",finalfilename)
 
   #system(paste("pigz -dc",rawdest,">",dtafilename))
   system(paste("unzip",rawdest))
