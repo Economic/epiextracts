@@ -274,7 +274,7 @@ lab def occ10
 4420 "Ushers, lobby attendants, and ticket takers"
 4430 "Miscellaneous entertainment attendants and related workers"
 4460 "Funeral service workers"
-4465 "Morticians, undertakers, and funeral directors (2011 "forward)"
+4465 "Morticians, undertakers, and funeral directors (2011 forward)"
 4500 "Barbers"
 4510 "Hairdressers, hairstylists, and cosmetologists"
 4520 "Miscellaneous personal appearance workers"

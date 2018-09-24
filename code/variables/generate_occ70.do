@@ -459,7 +459,7 @@ lab def occ70
 983 "Launderers, private household"
 984 "Private household cleaners and servants"
 986 "Private household workers--allocated"
-991 "Unemployed- last worked 195 " or earlier"
+991 "Unemployed- last worked 1959 or earlier"
 994 "Not reported"
 999 "No occupation"
 ;
