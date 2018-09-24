@@ -148,7 +148,6 @@ if "`dataversion'" == "old" & "`lowersample'" == "basic" {
 			unzipfile `inputpath'`inputfile'.zip, replace
 			use `inputfile', clear
 			if "`keep'" ~= "" {
-				noi di "This is my keeplist!" " `initkeeplist'"
 				keepifexist `initkeeplist'
 				local keeplist "`r(keeplist)'"
 			}
