@@ -123,16 +123,16 @@ foreach date of numlist `begindate'(1)`enddate' {
 * keep varlists for datasets
 if "`keep'" ~= "" {
 	if "`dataversion'" == "old" & ("`lowersample'" == "org" | "`lowersample'" == "swa") {
-		local keeplist `keep' month mins orgwt
+		local initkeeplist `keep' month mins orgwt
 	}
 	if "`dataversion'" == "old" & "`lowersample'" == "basic" {
-		local keeplist `keep' month mins *wgt*
+		local initkeeplist `keep' month mins *wgt*
 	}
 	if "`dataversion'" == "old" & "`lowersample'" == "may" {
-		local keeplist `keep' month finalwt
+		local initkeeplist `keep' month finalwt
 	}
 	if "`dataversion'" == "production" | "`dataversion'" == "local" {
-		local keeplist `keep' year month mins *wgt*
+		local initkeeplist `keep' year month mins *wgt*
 	}
 }
 
@@ -148,7 +148,8 @@ if "`dataversion'" == "old" & "`lowersample'" == "basic" {
 			unzipfile `inputpath'`inputfile'.zip, replace
 			use `inputfile', clear
 			if "`keep'" ~= "" {
-				keepifexist `keeplist'
+				noi di "This is my keeplist!" " `initkeeplist'"
+				keepifexist `initkeeplist'
 				local keeplist "`r(keeplist)'"
 			}
 			else local keeplist "_all"
@@ -192,7 +193,7 @@ else {
 				unzipfile `inputpath'`inputfile'.zip, replace
 				use `inputfile', clear
 				if "`keep'" ~= "" {
-					keepifexist `keeplist'
+					keepifexist `initkeeplist'
 					local keeplist "`r(keeplist)'"
 				}
 				else local keeplist "_all"
@@ -215,7 +216,7 @@ else {
 					foreach month of numlist `monthlist`year'' {
 						use if month == `month' using `inputfile', clear
 						if "`keep'" ~= "" {
-							keepifexist `keeplist'
+							keepifexist `initkeeplist'
 							local keeplist "`r(keeplist)'"
 						}
 						else local keeplist "_all"
@@ -234,7 +235,7 @@ else {
 						unzipfile `inputpath'`inputfile'.zip, replace
 						use `inputfile', clear
 						if "`keep'" ~= "" {
-							keepifexist `keeplist'
+							keepifexist `initkeeplist'
 							local keeplist "`r(keeplist)'"
 						}
 						else local keeplist "_all"
