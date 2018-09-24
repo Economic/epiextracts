@@ -3,12 +3,7 @@ Feedback
 ========================================
 
 The best place for feedback or questions
-is the Github repository where we host all code:
-
-	https://github.com/Economic/epiextracts_basicorg
-
-That link will only work if you have access to EPI's
-private Github account -- for access, ask Eric or Ben.
+is the `Github repository <https://github.com/Economic/epiextracts_basicorg/issues>`_ where we host all code.
 
 There you can browse all the code and also ask questions and notify us of
 problems. On the repository page, select
