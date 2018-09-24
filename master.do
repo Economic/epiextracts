@@ -9,6 +9,18 @@
 * Documentation on the extracts and how to use the data and code are
 * available on the EPI network at
 * http://maynard/epiextracts_docs/
+*
+* In order for the code to run, you will need some user-written Stata programs:
+*
+* ssc install webdoc, replace
+* ssc install ashell, replace
+* ssc install moreobs, replace
+* ssc install maptile, replace
+* ssc install spmap, replace
+* maptile_install using "http://files.michaelstepner.com/geo_statehex.zip"
+* maptile_install using "http://files.michaelstepner.com/geo_cbsa2013.zip"
+* maptile_install using "http://files.michaelstepner.com/geo_state.zip"
+
 
 *******************************************************************************
 * PRELIMINARIES
@@ -65,7 +77,7 @@ adopath ++ ${code}ado
 
 * create EPI's extracts from the processed raw data
 * creates both basic monthly and ORG subsample
-*create_extracts, begin(1973m1) end(2018m7)
+*create_extracts, begin(1973m1) end(2018m8)
 
 * create documentation
 *do ${codedocs}createdocs.do
