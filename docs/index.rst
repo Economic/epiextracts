@@ -27,12 +27,8 @@ The latest EPI CPS extracts are available in Stata format:
 	  - :raw-html:`<a class="reference download internal" href="epi_cpsorg_1979_2018.zip" download=""><code class="xref download docutils literal notranslate"><span class="pre">` epi_cpsorg_1979_2018.zip :raw-html:`</span></code></a>`
 	  - |version|, updated |today|
 	* - CPS Basic monthly
-	  - 2000 - |latestdata|
-	  - :raw-html:`<a class="reference download internal" href="epi_cpsbasic_2000_2018.zip" download=""><code class="xref download docutils literal notranslate"><span class="pre">` epi_cpsbasic_2000_2018.zip :raw-html:`</span></code></a>`
-	  - |version|, updated |today|
-	* - CPS Basic monthly
-	  - 1976 - 1999
-	  - :raw-html:`<a class="reference download internal" href="epi_cpsbasic_1976_1999.zip" download=""><code class="xref download docutils literal notranslate"><span class="pre">` epi_cpsbasic_1976_1999.zip :raw-html:`</span></code></a>`
+	  - 1976 - |latestdata|
+	  - :raw-html:`<a class="reference download internal" href="epi_cpsbasic_2000_2018.zip" download=""><code class="xref download docutils literal notranslate"><span class="pre">` epi_cpsbasic_2000_2018.zip :raw-html:`</span></code></a>` :raw-html:`<br/> <a class="reference download internal" href="epi_cpsbasic_1976_1999.zip" download=""><code class="xref download docutils literal notranslate"><span class="pre">` epi_cpsbasic_1976_1999.zip :raw-html:`</span></code></a>`
 	  - |version|, updated |today|
 	* - CPS May
 	  - 1973 - 1981
