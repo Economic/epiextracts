@@ -6,7 +6,7 @@
 *************************************************************************
 capture program drop append_extracts
 program define append_extracts
-syntax, begin(string) end(string) sample(string) [version(string)] [keep(string)]
+syntax, begin(string) end(string) sample(string) [keep(string) version(string) sourcedir(string)]
 
 * determine sample
 local lowersample = lower("`sample'")
@@ -15,7 +15,7 @@ else if "`lowersample'" == "basic" local samplename Basic
 else if "`lowersample'" == "swa" local samplename SWA
 else if "`lowersample'" == "may" local samplename May
 else {
-	di _n "You must specify Basic or ORG or SWA or May sample."
+	di _n "You must specify Basic or ORG or May sample."
 	error 1
 }
 
@@ -27,17 +27,44 @@ if "`dataversion'" ~= "production" & "`dataversion'" ~= "local" & "`dataversion'
 	error 1
 }
 if ("`dataversion'" == "production" | "`dataversion'" == "local") & "`lowersample'" == "swa" {
-	di _n "Only the old version of the SWA extracts exists."
+	di _n "Only the old version of the EPI SWA extracts exists."
 	error 1
 }
 
-* determine path of version and sample
-if "`dataversion'" == "production" local inputpath /data/cps/`lowersample'/epiextracts/
-if "`dataversion'" == "old" & ("`lowersample'" == "org" | "`lowersample'" == "swa" | "`lowersample'" == "may") local inputpath /data/cps/org/epi/stata/
-if "`dataversion'" == "old" & "`lowersample'" == "basic" local inputpath /data/cps/basic/epi/stata/
-if "`dataversion'" == "local" local inputpath ${extracts}
+* determine input path of version and sample
+if "`sourcedir'" ~= "" & "`version'" ~= "" {
+	di _n "Do not specify both sourcedir() and version()."
+	error 1
+}
+if "`sourcedir'" ~= "" & "`version'" == "" {
+	* add final slash to input path if it does not exist
+	if substr("`sourcedir'",-1,.) ~= "/" & substr("`sourcedir'",-1,.) ~= "\" {
+		local inputpath `sourcedir'/
+	}
+	else local inputpath `sourcedir'
+}
+if "`sourcedir'" == "" {
+	if "`dataversion'" == "production" local inputpath /data/cps/`lowersample'/epi/
+	if "`dataversion'" == "old" & ("`lowersample'" == "org" | "`lowersample'" == "swa" | "`lowersample'" == "may") local inputpath /data/cps/org/epiold/stata/
+	if "`dataversion'" == "old" & "`lowersample'" == "basic" local inputpath /data/cps/basic/epiold/stata/
+	if "`dataversion'" == "local" local inputpath extracts/
+}
 
-di _n "Using `dataversion' version of the CPS `samplename' extracts located in `inputpath'" _n
+* check inputpath
+capture confirm file `inputpath'
+if _rc ~= 0 {
+	di _n "Current data source directory is invalid. Please specify valid sourcedir()."
+	error 1
+}
+
+* announce version being used
+if "`version'" ~= "" {
+	di _n "Using `dataversion' version of the EPI CPS `samplename' extracts located in `inputpath'" _n
+}
+else {
+	di _n "Using EPI CPS `samplename' extracts located in `inputpath'" _n
+}
+
 
 * deal with dates
 local begindate = tm(`begin')
@@ -233,9 +260,10 @@ else {
 	}
 	* combine all files
 	local counter = 0
-	qui foreach year of numlist `minyear'(1)`maxyear' {
+	qui	foreach year of numlist `minyear'(1)`maxyear' {
 		local counter = `counter' + 1
 		local commalist: di subinstr("`monthlist`year''"," ",",",.)
+		local commalist `commalist',.
 		local minmonth = min(`commalist')
 		local maxmonth = max(`commalist')
 		if `counter' == 1 local linebreak _n

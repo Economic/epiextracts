@@ -10,11 +10,11 @@ Where are the data & code?
 +-------------------------+---------------------------------------------------+
 | Dataset                 | Location                                          |
 +=========================+===================================================+
-| CPS-Basic, 1976-present | :file:`/data/cps/basic/epiextracts/`              |
+| CPS-Basic, 1976-present | :file:`/data/cps/basic/epi/`                      |
 +-------------------------+---------------------------------------------------+
-| CPS-ORG, 1979-present   | :file:`/data/cps/org/epiextracts/`                |
+| CPS-ORG, 1979-present   | :file:`/data/cps/org/epi/`                        |
 +-------------------------+---------------------------------------------------+
-| CPS-May, 1973-1981      | :file:`/data/cps/may/epiextracts/`                |
+| CPS-May, 1973-1981      | :file:`/data/cps/may/epi/`                        |
 +-------------------------+---------------------------------------------------+
 
 The SAS versions of these datasets are on the epi06 SAS server at :file:`\\fdata0\\epiextracts\\cps\\`.
