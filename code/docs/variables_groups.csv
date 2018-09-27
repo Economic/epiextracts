@@ -50,11 +50,16 @@ married,demographics
 metstat,geography
 mind16,indocc
 minsamp,id
+mocc10,indocc
 month,id
 multjobs,employment
 nilf,employment
 numjobs,employment
-occcode,indocc
+occ70,indocc
+occ80,indocc
+occ90,indocc
+occ00,indocc
+occ10,indocc
 orgwgt,weights
 otcamt,income
 otcrec,income
