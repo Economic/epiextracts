@@ -22,8 +22,8 @@ project = u'EPI CPS extracts'
 copyright = u'2018, Economic Policy Institute'
 author = u'Economic Policy Institute'
 
-version = u'Version 0.4.4'
-today = u'2018-09-20'
+version = u'Version 0.5.0'
+today = u'2018-09-27'
 rst_epilog = """
 .. |year| replace:: 2018
 .. |latestdata| replace:: 2018m8
