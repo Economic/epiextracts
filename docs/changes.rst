@@ -9,6 +9,17 @@ If you use the EPI extracts for your research, please cite them as
 	Economic Policy Institute. |year|. Current Population Survey Extracts, |release|.
 
 
+
+Version 0.5.0 -- 2018-09-27
+===============================================================================
+
+Added
+--------------------------------------------------------------------------------
+* cbsasize: CBSA population size
+* metstat: metropolitan area indicator
+* mocc10: major occupation code (consistent)
+* occ70, occ80, occ90, occ00, occ10: detailed occupation codes
+
 Version 0.4.4 -- 2018-09-20
 ===============================================================================
 

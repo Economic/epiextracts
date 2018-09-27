@@ -3,7 +3,7 @@ keep
 	year month minsamp
 	hrhhid hrhhid2 hrsample hrsersuf huhhnum pulineno unicon_recnum
 	finalwgt cmpwgt basicwgt orgwgt
-	statefips statecensus division region countyfips cbsafips
+	statefips statecensus division region countyfips cbsafips metstat cbsasize
 	age female wbho citistat citizen married veteran
 	gradecom gradehi gradeatn educ
 	lfstat emp unemp nilf schenrl samejob

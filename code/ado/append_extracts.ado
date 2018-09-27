@@ -123,16 +123,16 @@ foreach date of numlist `begindate'(1)`enddate' {
 * keep varlists for datasets
 if "`keep'" ~= "" {
 	if "`dataversion'" == "old" & ("`lowersample'" == "org" | "`lowersample'" == "swa") {
-		local keeplist `keep' month mins orgwt
+		local initkeeplist `keep' month mins orgwt
 	}
 	if "`dataversion'" == "old" & "`lowersample'" == "basic" {
-		local keeplist `keep' month mins *wgt*
+		local initkeeplist `keep' month mins *wgt*
 	}
 	if "`dataversion'" == "old" & "`lowersample'" == "may" {
-		local keeplist `keep' month finalwt
+		local initkeeplist `keep' month finalwt
 	}
 	if "`dataversion'" == "production" | "`dataversion'" == "local" {
-		local keeplist `keep' year month mins *wgt*
+		local initkeeplist `keep' year month mins *wgt*
 	}
 }
 
@@ -148,12 +148,12 @@ if "`dataversion'" == "old" & "`lowersample'" == "basic" {
 			unzipfile `inputpath'`inputfile'.zip, replace
 			use `inputfile', clear
 			if "`keep'" ~= "" {
-				keepifexist `keeplist'
+				keepifexist `initkeeplist'
 				local keeplist "`r(keeplist)'"
 			}
 			else local keeplist "_all"
 			gen int year = `year'
-			noi di "Processing `dataversion' CPS `samplename', " %tq `quarterdate' ": `keeplist'"
+			noi di "Processing CPS `samplename', " %tq `quarterdate' ": `keeplist'"
 			tempfile quarterlydata`quarterdate'
 			save `quarterlydata`quarterdate''
 			erase `inputfile'
@@ -162,7 +162,7 @@ if "`dataversion'" == "old" & "`lowersample'" == "basic" {
 	local counter = 0
 	qui foreach quarterdate of numlist `minquarterdate'(1)`maxquarterdate' {
 		local counter = `counter' + 1
-		noi di "Loading `dataversion' CPS `samplename', " %tq `quarterdate'
+		noi di "Loading CPS `samplename', " %tq `quarterdate'
 		if `counter' == 1 use `quarterlydata`quarterdate'', clear
 		else append using `quarterlydata`quarterdate''
 	}
@@ -192,12 +192,12 @@ else {
 				unzipfile `inputpath'`inputfile'.zip, replace
 				use `inputfile', clear
 				if "`keep'" ~= "" {
-					keepifexist `keeplist'
+					keepifexist `initkeeplist'
 					local keeplist "`r(keeplist)'"
 				}
 				else local keeplist "_all"
 				if "`dataversion'" == "old" gen int year = `year'
-				noi di "Processing `dataversion' CPS `samplename', `year'm1-`year'm12: `keeplist'"
+				noi di "Processing CPS `samplename', `year'm1-`year'm12: `keeplist'"
 				tempfile annualdata`year'
 				save `annualdata`year''
 				erase `inputfile'
@@ -215,11 +215,11 @@ else {
 					foreach month of numlist `monthlist`year'' {
 						use if month == `month' using `inputfile', clear
 						if "`keep'" ~= "" {
-							keepifexist `keeplist'
+							keepifexist `initkeeplist'
 							local keeplist "`r(keeplist)'"
 						}
 						else local keeplist "_all"
-						noi di "Processing `dataversion' CPS `samplename', `year'm`month': `keeplist'"
+						noi di "Processing CPS `samplename', `year'm`month': `keeplist'"
 						tempfile monthlydata`month'
 						save `monthlydata`month''
 					}
@@ -234,11 +234,11 @@ else {
 						unzipfile `inputpath'`inputfile'.zip, replace
 						use `inputfile', clear
 						if "`keep'" ~= "" {
-							keepifexist `keeplist'
+							keepifexist `initkeeplist'
 							local keeplist "`r(keeplist)'"
 						}
 						else local keeplist "_all"
-						noi di "Processing `dataversion' CPS `samplename', `year'm`month': `keeplist'"
+						noi di "Processing CPS `samplename', `year'm`month': `keeplist'"
 						tempfile monthlydata`month'
 						save `monthlydata`month''
 						erase `inputfile'
@@ -268,7 +268,7 @@ else {
 		local maxmonth = max(`commalist')
 		if `counter' == 1 local linebreak _n
 		else local linebreak
-		noi di `linebreak' "Loading `dataversion' CPS `samplename', `year'm`minmonth'-`year'm`maxmonth'"
+		noi di `linebreak' "Loading CPS `samplename', `year'm`minmonth'-`year'm`maxmonth'"
 		if `counter' == 1 use `annualdata`year'', clear
 		else append using `annualdata`year''
 	}

@@ -6,7 +6,7 @@ Which version of the data am I using?
 ===============================================================================
 To determine which version of the data you have,
 use Stata to load any of the datasets into memory
-and then use the :code:`describe` or :code:`notes` commands:
+and then use the :code:`describe` or :code:`notes` commands. Or you save this information in a local macro using Stata's :code:`_dta[note1]` characteristic:
 
 .. toggle-header::
 	:header: Access the data version in Stata (**show/hide code**)
@@ -14,11 +14,13 @@ and then use the :code:`describe` or :code:`notes` commands:
 	::
 
 		use epi_cpsorg_2017.dta, clear
+
 		describe, short
+
 		notes _dta
 
-If you want to refer to the version information in a log file or other
-output it may be helpful to use Stata's data note local macro :code:`_dta[note1]`.
+		local dataversion: char _dta[note1]
+		di "`dataversion'"
 
 Alternatively, R's haven package allows you to read the data and access the data notes:
 
@@ -28,8 +30,8 @@ Alternatively, R's haven package allows you to read the data and access the data
 	.. code-block:: R
 
 		library(haven)
-		attr(read_dta("epi_cpsorg_2017.dta"),"label")
-
+		dataversion <- attr(read_dta("epi_cpsorg_2017.dta"),"label")
+		dataversion
 
 What sample restrictions are used in the EPI extracts?
 ===============================================================================

@@ -4,6 +4,7 @@ a_weekpay,income
 age,demographics
 basicwgt,weights
 cbsafips,geography
+cbsasize,geography
 citistat,demographics
 citizen,demographics
 cmpwgt,weights
@@ -46,6 +47,7 @@ lfstat,employment
 lookdur,employment
 manuf,indocc
 married,demographics
+metstat,geography
 mind16,indocc
 minsamp,id
 mocc10,indocc
