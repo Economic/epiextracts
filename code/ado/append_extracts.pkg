@@ -1,0 +1,13 @@
+v 3
+
+d append_extracts: Load EPI extracts into memory
+d
+d Author: Economic Policy Institute
+d Support: https://microdata.epi.org
+d
+d append_extracts loads selected EPI extracts and variables into memory.
+d
+d Distribution-Date: 20180911
+d
+
+f append_extracts.ado
