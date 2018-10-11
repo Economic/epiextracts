@@ -7,7 +7,7 @@ d Support: https://microdata.epi.org
 d
 d append_extracts loads selected EPI extracts and variables into memory.
 d
-d Distribution-Date: 20180911
+d Distribution-Date: 20181011
 d
 
 f append_extracts.ado
