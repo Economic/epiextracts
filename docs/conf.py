@@ -12,7 +12,7 @@
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
-import os
+# import os
 # import sys
 # sys.path.insert(0, os.path.abspath('.'))
 
@@ -30,10 +30,6 @@ rst_epilog = """
 """
 # The full version, including alpha/beta/rc tags
 release = version
-
-
-
-
 
 
 # -- General configuration ---------------------------------------------------
@@ -80,15 +76,7 @@ highlight_language = 'stata'
 
 
 # -- Options for HTML output -------------------------------------------------
-on_rtd = os.environ.get('READTHEDOCS', None) == 'True'
-if not on_rtd:
-    import sphinx_rtd_theme
-    html_theme = 'sphinx_rtd_theme'
-    html_theme_path = [sphinx_rtd_theme.get_html_theme_path()]
-
-html_sidebars = {
-    '**':  ['globaltoc.html'],
-}
+html_theme = 'sphinx_rtd_theme'
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
@@ -176,3 +164,8 @@ texinfo_documents = [
      author, 'Economic Policy Institute', 'One line description of project.',
      'Miscellaneous'),
 ]
+
+
+# add extra css
+def setup(app):
+	app.add_stylesheet('my_theme.css')
