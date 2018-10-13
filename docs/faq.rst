@@ -15,10 +15,13 @@ and then use the :code:`describe` or :code:`notes` commands. Or you save this in
 
 		use epi_cpsorg_2017.dta, clear
 
+		* describe the data
 		describe, short
 
+		* list the data notes
 		notes _dta
 
+		* save the data notes in a local macro
 		local dataversion: char _dta[note1]
 		di "`dataversion'"
 

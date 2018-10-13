@@ -30,7 +30,7 @@ Added
 
 Changed
 --------------------------------------------------------------------------------
-* :ind00, ind10: removed these in place of ind02, ind07, ind12
+* ind00, ind10: removed these in place of ind02, ind07, ind12
 
 
 Version 0.4.3 -- 2018-09-13

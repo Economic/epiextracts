@@ -1,3 +1,0 @@
-* `epi_cpsbasic_1976.dta.zip <file:////data/cps/basic/epiextracts/epi_cpsbasic_1976.dta.zip>`_
-* `epi_cpsbasic_1977.dta.zip <file:////data/cps/basic/epiextracts/epi_cpsbasic_1977.dta.zip>`_
-* `epi_cpsbasic_1978.dta.zip <file:////data/cps/basic/epiextracts/epi_cpsbasic_1978.dta.zip>`_

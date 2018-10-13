@@ -1,0 +1,3 @@
+v 3
+d Economic Policy Institute CPS extracts (https://microdata.epi.org)
+p append_extracts append_extracts - Load EPI extracts into memory
