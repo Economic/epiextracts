@@ -11,7 +11,7 @@ createdocs:
 	cd docs && $(MAKE) clean html
 
 deploywebdocs:
-	aws s3 sync docs/_build/html/ s3://microdata.epi.org/ --delete
+	aws s3 sync docs/_build/html/ s3://microdata.epi.org/
 
 deploywebcode:
 	cp code/ado/append_extracts.ado packages/stata/
