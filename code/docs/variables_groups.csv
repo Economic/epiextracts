@@ -64,6 +64,7 @@ orgwgt,weights
 otcamt,income
 otcrec,income
 paidhre,income
+proxy,id
 ptecon,hours
 pubfed,employment
 publoc,employment
@@ -89,6 +90,7 @@ wage,income
 wage_noadj,income
 wageotc,income
 wageotc_noadj,income
+wbhao,demographics
 wbho,demographics
 weekpay,income
 weekpay_noadj,income

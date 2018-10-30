@@ -9,6 +9,20 @@ If you use the EPI extracts for your research, please cite them as
 	Economic Policy Institute. |year|. Current Population Survey Extracts, |release|.
 
 
+Version 0.5.2 -- 2018-10-30
+===============================================================================
+
+Added
+--------------------------------------------------------------------------------
+* proxy: proxy/self response indicator
+* wbhao: five-category race/ethnicity, incl Asian
+
+
+Changed
+--------------------------------------------------------------------------------
+* hoursuorg: now includes usual hours for nonhourly workers
+
+
 Version 0.5.1 -- 2018-10-15
 ===============================================================================
 
