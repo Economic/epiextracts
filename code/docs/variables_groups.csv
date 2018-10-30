@@ -64,6 +64,7 @@ orgwgt,weights
 otcamt,income
 otcrec,income
 paidhre,income
+proxy,id
 ptecon,hours
 pubfed,employment
 publoc,employment
