@@ -83,7 +83,7 @@ if tm(2014m1) <= $date {
 	*/ | ptdtrace==25 /* Other 3 races */ | ptdtrace==26 /* 4 and 5 races */
 	replace wbho=3 if (1<=prdthsp & prdthsp<=8) /* hispanic */
 }
-lab var wbho "Race"
+lab var wbho "Race/ethnicity"
 #delimit ;
 lab define wbho
 1 "White"

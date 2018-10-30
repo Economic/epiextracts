@@ -9,7 +9,7 @@ foreach var in
   hhid personid proxy
   finalwgt cmpwgt basicwgt orgwgt
   statefips statecensus division region countyfips cbsafips metstat cbsasize
-  age female wbho citistat citizen married veteran
+  age female wbho wbhao citistat citizen married veteran
   gradecom gradehi gradeatn educ
   lfstat emp unemp nilf schenrl samejob
   selfemp selfinc cow1 cow2
