@@ -103,8 +103,44 @@ qui if "`lowersample'" == "basic" | "`lowersample'" == "org" {
 		local monthlist`year' `monthlist`year'' `month'
 	}
 	forvalues year = `minyear'/`maxyear' {
-		* extract filename
-		local inputfileextracts epi_cps`lowersample'_`year'.dta
+
+
+		capture confirm file `inputpathextracts'epi_cps`lowersample'_`year'.dta.zip
+		* if annual file exists, unzip it, save as temp
+		if _rc == 0 {
+			local inputfile epi_cps`lowersample'_`year'.dta
+			unzipfile `inputpathextracts'`inputfile'.zip, replace
+			use `inputfile', clear
+			erase `inputfile'
+			tempfile extracts`year'
+			save `extracts`year''
+		}
+		* else, try monthly files
+		else {
+			foreach month of numlist `monthlist`year'' {
+				capture confirm file `inputpathextracts'epi_cps`lowersample'_`year'_`month'.dta.zip
+				if _rc == 0 {
+					local inputfile epi_cps`lowersample'_`year'_`month'.dta
+					unzipfile `inputpathextracts'`inputfile'.zip, replace
+					use `inputfile', clear
+					erase `inputfile'
+					tempfile monthlydata`month'
+					save `monthlydata`month''
+				}
+				else {
+					noi di "Data missing: `inputpathextracts'epi_cps`lowersample'_`year'_`month'.dta.zip"
+					error _rc
+				}
+			}
+			local counter = 0
+			foreach month of numlist `monthlist`year'' {
+				local counter = `counter' + 1
+				if `counter' == 1 use `monthlydata`month'', clear
+				else append using `monthlydata`month''
+			}
+			tempfile extracts`year'
+			save `extracts`year''
+		}
 
 		* begin month counter
 		local counter = 0
@@ -167,13 +203,6 @@ qui if "`lowersample'" == "basic" | "`lowersample'" == "org" {
 
 			* load extracts
 			noi di "Processing EPI CPS `samplename' `year'm`month'"
-			if `counter' == 1 {
-				unzipfile `inputpathextracts'`inputfileextracts'.zip, replace
-				use `inputfileextracts', clear
-				erase `inputfileextracts'
-				tempfile extracts`year'
-				save `extracts`year''
-			}
 			use year month `mergeidvars' `keepextracts' if month == `month' using `extracts`year'', clear
 			tempfile extractsm`date'
 			save `extractsm`date''
