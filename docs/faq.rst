@@ -55,6 +55,7 @@ As a result the sample of individuals in the EPI extracts is sometimes smaller t
 
 	.. literalinclude:: misc/sample_cpsorg.do
 
+
 Which sample weight variable should I use?
 ==============================================================================
 There are four sample weights available in the CPS extracts:
@@ -72,6 +73,7 @@ While there is not always a single correct answer regarding which weight you sho
 	* For many outcomes in the CPS Basic or May data, use :doc:`basicwgt <variables/weights/basicwgt>` to analyze the population ages 16 and over.
 	* If your analysis involves uses the ORG data, such as earnings information, use :doc:`orgwgt <variables/weights/orgwgt>`.
 	* :doc:`finalwgt <variables/weights/finalwgt>` is the only weight defined for individuals under the age of 16.
+
 
 Which wage variable should I use?
 ==============================================================================
