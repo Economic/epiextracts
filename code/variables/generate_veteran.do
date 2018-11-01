@@ -21,6 +21,7 @@ if $earnerinfo == 1 {
 lab var veteran "Veteran status"
 lab def veteran 0 "Not a veteran" 1 "Veteran"
 lab val veteran veteran
+notes veteran: universe restricted to men before 1989
 notes veteran: Significant question change in 2005m8
 notes veteran: 1973-1993 Unicon: vet
 notes veteran: 1994-2005m7 CPS: peafwhen
