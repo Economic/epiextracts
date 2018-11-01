@@ -50,3 +50,11 @@ Use the :code:`read_dta()` function from R's haven package:
 .. code-block:: R
 
 	mydata = haven::read_dta(unzip("/data/cps/epi_cpsbasic_2017.dta.zip"))
+
+
+4. Cite the data
+===============================================================================
+If you use the EPI extracts for your research, please cite the data in your references:
+
+.. note::
+	Economic Policy Institute. |year|. Current Population Survey Extracts, |release|.
