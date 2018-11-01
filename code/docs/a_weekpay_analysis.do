@@ -17,7 +17,7 @@ line a_weekpay year if year >= 1989 & year <= 1993, lcolor("`color4'") || ///
 line a_weekpay year if year >= 1995, lcolor("`color4'") ///
 legend(off) ///
 xlabel(1980(5)2015) ///
-ylabel(0(10)40 50 "50%", angle(0)) ///
+ylabel(0(10)40 50 "50%", angle(0) gmin gmax) ///
 xtitle("") ytitle("") ///
 lcolor("`color4'") ///
 graphregion(color("252 252 252")) plotregion(color("252 252 252")) ///
