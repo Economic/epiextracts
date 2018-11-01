@@ -7,7 +7,7 @@ How to use the EPI extracts
 
 1. Download the data
 ===============================================================================
-|release| of the EPI CPS extracts is available to download :doc:`here <basicuse>`.
+|release| of the EPI CPS extracts is available to download :doc:`here <index>`.
 
 2. Unzip and move the files
 ===============================================================================
