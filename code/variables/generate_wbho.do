@@ -40,23 +40,7 @@ if tm(2003m1) <= $date & $date <= tm(2012m4) {
 	*/ | ptdtrace==18 /* W-A-HP */ | ptdtrace==20 /* 2 or 3 races */ /*
 	*/ | ptdtrace==21 /* 4 or 5 races */
 }
-if tm(2012m5) <= $date & $date <= tm(2013m12) {
-	replace wbho=1 if ptdtrace==1 /* white */
-	replace wbho=2 if ptdtrace==2 /* black */
-	replace wbho=2 if ptdtrace==6 /* black-white */ | ptdtrace==10 /*
-	*/ /* black-AI */ | ptdtrace==11 /* black-asian */ | ptdtrace==12 /*
-	*/ /* black-HP */ | ptdtrace==16 /* W-B-AI */ | ptdtrace==17 /* W-B-A */ /*
-	*/ | ptdtrace==18 /* W-B-HP */ | ptdtrace==22 /* B-AI-A */ /*
-	*/ | ptdtrace==23 /* W-B-AI-A */
-	replace wbho=4 if (3<=ptdtrace & ptdtrace<=5)
-	replace wbho=4 if ptdtrace==7 /* white-AI */ | ptdtrace==8 /*
-	*/ /* white-asian */ | ptdtrace==9 /* white-hawaiian */ | ptdtrace==13 /*
-	*/ /* AI-asian */ | ptdtrace==14 /* AI-HP */ | ptdtrace==15 /* Asian-HP */ /*
-	*/ | ptdtrace==19 /* W-AI-A */ | ptdtrace==20 /* W-AI-HP */ /*
-	*/ | ptdtrace==21 /* W-A-HP */ | ptdtrace==24 /* W-AI-A-HP */ /*
-	*/ | ptdtrace==25 /* Other 3 races */ | ptdtrace==26 /* 4 and 5 races */
-}
-if tm(2014m1) <= $date {
+if tm(2012m5) <= $date {
 	replace wbho=1 if ptdtrace==1 /* white */
 	replace wbho=2 if ptdtrace==2 /* black */
 	replace wbho=2 if ptdtrace==6 /* black-white */ | ptdtrace==10 /*
