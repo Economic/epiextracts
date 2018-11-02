@@ -3,32 +3,24 @@
 ********************************************************************************
 gen byte wbho = .
 if tm(1973m1) <= $date & $date <= tm(1988m12) {
-	if tm(1974m1) <= $date & $date <= tm(1988m12) {
-		replace spneth = "" if spneth == "A"
-		destring spneth, replace
-	}
 	replace wbho = 1 if race == 1
 	replace wbho = 2 if race == 2
 	replace wbho = 4 if race == 3
-	replace wbho = 3 if (1 <= spneth & spneth <= 7)
 }
 if tm(1989m1) <= $date & $date <= tm(1993m12) {
 	replace wbho = 1 if race == 1
 	replace wbho = 2 if race == 2
 	replace wbho = 4 if (3 <= race & race <= 5)
-	replace wbho = 3 if (1 <= spneth & spneth <= 7)
 }
 if tm(1994m1) <= $date & $date <= tm(1995m12) {
 	replace wbho = 1 if perace == 1
 	replace wbho = 2 if perace == 2
 	replace wbho = 4 if (3 <= perace & perace <= 5)
-	replace wbho = 3 if (1 <= prorigin & prorigin <= 7)
 }
 if tm(1996m1) <= $date & $date <= tm(2002m12) {
 	replace wbho = 1 if perace == 1
 	replace wbho = 2 if perace == 2
 	replace wbho = 4 if (3 <= perace & perace <= 4)
-	replace wbho = 3 if (1 <= prorigin & prorigin <= 7)
 }
 if tm(2003m1) <= $date & $date <= tm(2012m4) {
 	* May 2004- June 2005: ptdtrace variable renamed to prdtrace
@@ -47,7 +39,6 @@ if tm(2003m1) <= $date & $date <= tm(2012m4) {
 	*/ /* AI-asian */ | ptdtrace==14 /* Asian-HP */ | ptdtrace==17 /* W-AI-A */ /*
 	*/ | ptdtrace==18 /* W-A-HP */ | ptdtrace==20 /* 2 or 3 races */ /*
 	*/ | ptdtrace==21 /* 4 or 5 races */
-	replace wbho=3 if (1<=prdthsp & prdthsp<=5) /* hispanic */
 }
 if tm(2012m5) <= $date & $date <= tm(2013m12) {
 	replace wbho=1 if ptdtrace==1 /* white */
@@ -64,7 +55,6 @@ if tm(2012m5) <= $date & $date <= tm(2013m12) {
 	*/ | ptdtrace==19 /* W-AI-A */ | ptdtrace==20 /* W-AI-HP */ /*
 	*/ | ptdtrace==21 /* W-A-HP */ | ptdtrace==24 /* W-AI-A-HP */ /*
 	*/ | ptdtrace==25 /* Other 3 races */ | ptdtrace==26 /* 4 and 5 races */
-	replace wbho=3 if (1<=prdthsp & prdthsp<=5) /* hispanic */
 }
 if tm(2014m1) <= $date {
 	replace wbho=1 if ptdtrace==1 /* white */
@@ -81,8 +71,10 @@ if tm(2014m1) <= $date {
 	*/ | ptdtrace==19 /* W-AI-A */ | ptdtrace==20 /* W-AI-HP */ /*
 	*/ | ptdtrace==21 /* W-A-HP */ | ptdtrace==24 /* W-AI-A-HP */ /*
 	*/ | ptdtrace==25 /* Other 3 races */ | ptdtrace==26 /* 4 and 5 races */
-	replace wbho=3 if (1<=prdthsp & prdthsp<=8) /* hispanic */
 }
+* Hispanic ethnicity
+replace wbho = 3 if hispanic == 1
+
 lab var wbho "Race/ethnicity"
 #delimit ;
 lab define wbho
@@ -93,13 +85,12 @@ lab define wbho
 #delimit cr
 lab val wbho wbho
 notes wbho: Racial and ethnic categories are mutually exclusive
+notes wbho: Definition breaks in 1989, 1996, 2003, 2012m5, 2014
 notes wbho: Major recoding of race variable in 2003
 notes wbho: From 2003, black includes all respondents listing black; other /*
 */ includes all respondents listing non-white or non-black races, except /*
 */ those also listing black
-notes wbho: 1973-1988 Unicon: race, spneth
-notes wbho: 1989-1993 Unicon: race, spneth
-notes wbho: 1994-2002 CPS: perace, prorigin
-notes wbho: 2003-2004m4 CPS: ptdtrace, prdthsp
-notes wbho: 2004m5-2005m7 CPS: prdtrace, prdthsp
-notes wbho: 2005m8-present CPS: ptdtrace, prdthsp
+notes wbho: 1973-present: Hispanic definition from variable hispanic
+notes wbho: 1973-1993 Unicon: race
+notes wbho: 1994-2002 CPS: perace
+notes wbho: 2003-present CPS: ptdtrace
