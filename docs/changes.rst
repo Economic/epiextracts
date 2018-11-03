@@ -9,6 +9,23 @@ If you use the EPI extracts for your research, please cite them as
 	Economic Policy Institute. |year|. Current Population Survey Extracts, |release|.
 
 
+
+Version 0.5.3 -- 2018-11-05
+===============================================================================
+
+Added
+--------------------------------------------------------------------------------
+* hispanic: Hispanic status
+* raceorig: original race code on file
+* wbhaom: White, Black, Hispanic, Asian, Other, Multiple
+* wbhaom: White, Black, Hispanic, Other, Multiple
+* wbonly: White only, Black only, Other
+
+Fixed
+--------------------------------------------------------------------------------
+* wbhao: corrected missing Hispanic status in some months of 2012m5-2014
+
+
 Version 0.5.2 -- 2018-10-30
 ===============================================================================
 
@@ -16,7 +33,6 @@ Added
 --------------------------------------------------------------------------------
 * proxy: proxy/self response indicator
 * wbhao: five-category race/ethnicity, incl Asian
-
 
 Changed
 --------------------------------------------------------------------------------
