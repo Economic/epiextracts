@@ -17,6 +17,7 @@ if tm(1994m1) <= $date & $date <= tm(1995m12) {
 	replace raceorig = 1 if perace == 1 /* White */
 	replace raceorig = 2 if perace == 2 /* Black */
 	replace raceorig = 3 if perace == 3 /* Amer Indian/Alaskan Native */
+	replace raceorig = 4 if perace == 4 /* Asian/Pacific Islander */
 	replace raceorig = 0 if perace == 5 /* Other */
 }
 if tm(1996m1) <= $date & $date <= tm(2002m12) {
@@ -78,8 +79,8 @@ if tm(2012m5) <= $date {
 	replace raceorig = 26 if ptdtrace == 20 /* W-AI-HP */
 	replace raceorig = 27 if ptdtrace == 22 /* B-AI-A */
 	replace raceorig = 28 if ptdtrace == 24 /* W-AI-A-HP */
-	replace raceorig = 30 if ptdtrace == 20 /* Other 2 or 3 races */
-	replace raceorig = 31 if ptdtrace == 21 /* Other 4 or 5 races */
+	replace raceorig = 30 if ptdtrace == 25 /* Other 2 or 3 races */
+	replace raceorig = 31 if ptdtrace == 26 /* Other 4 or 5 races */
 }
 lab var raceorig "Race, minimally recoded, detailed"
 #delimit ;
