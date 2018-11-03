@@ -8,12 +8,16 @@ if tm(1989m1) <= $date & $date <= tm(1993m12) {
 	replace wbhao = 2 if race == 2
 	replace wbhao = 4 if race == 4
 	replace wbhao = 5 if race == 3 | race == 5
+	* Hispanic ethnicity
+	replace wbhao = 3 if hispanic == 1
 }
 if tm(1994m1) <= $date & $date <= tm(2002m12) {
 	replace wbhao = 1 if perace == 1
 	replace wbhao = 2 if perace == 2
 	replace wbhao = 4 if perace == 4
 	replace wbhao = 5 if perace == 3 | perace == 5
+	* Hispanic ethnicity
+	replace wbhao = 3 if hispanic == 1
 }
 if tm(2003m1) <= $date & $date <= tm(2012m4) {
 	* May 2004- July 2005: ptdtrace variable renamed to ptdtrace
@@ -33,6 +37,8 @@ if tm(2003m1) <= $date & $date <= tm(2012m4) {
 	*/ | ptdtrace==18 /* W-A-HP */
 	replace wbhao=5 if ptdtrace==3 /* AI only */ | ptdtrace==7 /* white-AI */ /*
 	*/ | ptdtrace==20 /* 2 or 3 races */ | ptdtrace==21 /* 4 or 5 races */
+	* Hispanic ethnicity
+	replace wbhao = 3 if hispanic == 1
 }
 if tm(2012m5) <= $date {
 	replace wbhao=1 if ptdtrace==1 /* white only */
@@ -49,10 +55,9 @@ if tm(2012m5) <= $date {
 	*/ | ptdtrace==21 /* W-A-HP */ | ptdtrace==24 /* W-AI-A-HP */
 	replace wbhao=5 if ptdtrace==3 /* AI only */ | ptdtrace==7 /* white-AI */ /*
 	*/ | ptdtrace==25 /* Other 3 races */ | ptdtrace==26 /* Other 4 and 5 races */
+	* Hispanic ethnicity
+	replace wbhao = 3 if hispanic == 1
 }
-
-* Hispanic ethnicity
-replace wbhao = 3 if hispanic == 1
 
 lab var wbhao "Race/ethnicity, including Asian"
 #delimit ;

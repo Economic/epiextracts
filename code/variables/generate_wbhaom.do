@@ -14,6 +14,8 @@ if tm(2003m1) <= $date & $date <= tm(2012m4) {
 	replace wbhaom = 4 if ptdtrace == 4 | ptdtrace == 5 /* Asian or HP */
 	replace wbhaom = 5 if ptdtrace == 3 /* AI only */
 	replace wbhaom = 6 if 6 <= ptdtrace & ptdtrace <= 21 /*multiple*/
+	* Hispanic ethnicity
+	replace wbhaom = 3 if hispanic == 1
 }
 if tm(2012m5) <= $date {
 	replace wbhaom = 1 if ptdtrace == 1
@@ -21,10 +23,11 @@ if tm(2012m5) <= $date {
 	replace wbhaom = 4 if ptdtrace == 4 | ptdtrace==5 /* Asian or HP */
 	replace wbhaom = 5 if ptdtrace == 3 /* AI only */
 	replace wbhaom = 6 if 6 <= ptdtrace & ptdtrace <= 26 /*multiple*/
+	* Hispanic ethnicity
+	replace wbhaom = 3 if hispanic == 1
 }
 
-* Hispanic ethnicity
-replace wbhaom = 3 if hispanic == 1
+
 
 lab var wbhaom "Race/ethnicity, including Asian and multiple"
 #delimit ;
