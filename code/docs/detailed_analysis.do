@@ -12,7 +12,7 @@ forvalues i = 1 / `N' {
 
 
 * CPS Basic analysis - single-year
-local analysisvarlist statefips statecensus cbsafips countyfips region division
+local analysisvarlist wbhaom wbhom statefips statecensus cbsafips countyfips region division
 local othervars year basicwgt statefips age
 
 local year = 2017
@@ -38,7 +38,7 @@ foreach var of varlist `analysisvarlist' {
 
 
 * CPS Basic 76-present + May 73-75 analysis - multi-year
-local analysisvarlist veteran multjob ptecon selfemp selfinc pubsec pubst pubfed publoc nilf lfstat unemp schenrl emp wbho wbhao age educ
+local analysisvarlist veteran multjob ptecon selfemp selfinc pubsec pubst pubfed publoc nilf lfstat unemp schenrl emp wbho wbhao wbonly age educ
 local othervars year basicwgt finalwgt female
 
 append_extracts, begin(1973m1) end(1975m12) sample(may) version(local) keep(`analysisvarlist' `othervars')
