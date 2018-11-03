@@ -72,6 +72,7 @@ publoc,employment
 pubsec,employment
 pubst,employment
 pulineno,id
+raceorig,demographics
 region,geography
 samejob,employment
 schenrl,education
@@ -92,7 +93,10 @@ wage_noadj,income
 wageotc,income
 wageotc_noadj,income
 wbhao,demographics
+wbhaom,demographics
 wbho,demographics
+wbhom,demographics
+wbonly,demographics
 weekpay,income
 weekpay_noadj,income
 year,id
