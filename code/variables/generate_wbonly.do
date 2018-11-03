@@ -6,7 +6,7 @@ gen byte wbonly = .
 if tm(1973m1) <= $date & $date <= tm(1988m12) {
 	replace wbonly = 1 if race == 1 /* White */
 	replace wbonly = 2 if race == 2 /* Black */
-	replace wbonly = 0 if race == 3 /* Other */
+	replace wbonly = 3 if race == 3 /* Other */
 }
 if tm(1989m1) <= $date & $date <= tm(1993m12) {
 	replace wbonly = 1 if race == 1 /* White */
