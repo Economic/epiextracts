@@ -6,15 +6,12 @@ from the raw data.
 (1) Write a variable generation do-file that uses the raw source data.
 Example: code/variables/generate_wbhom.do
 
-(2) Merge the extracts and raw data for the appropriate months and keep all
-necessary variables. Use the merge_rawextracts function to make this easy.
-Save this data.
+(2) Loop through the data month-by-month:
+		(a) merge the extracts and raw data, keeping all necessary variables
+		(b) run the variable generatinon do-file
+		(c) save the data
 
-(3) Loop through this data by month, calling the variable generation do-file.
-Save each month of processed data.
-
-(4) Append all the processed data together and analyze the results. Usually
-crosstabs of frequencies and shares give a good sense of where any problems are.
+(3) Append all the processed data together and analyze the results. Usually crosstabs of frequencies and shares give a good sense of where any problems are.
 
 ******************************************************************************/
 
@@ -23,36 +20,29 @@ crosstabs of frequencies and shares give a good sense of where any problems are.
 *******************************************************************************
 * Example based on code/variables/generate_wbhom.do
 *******************************************************************************
-* Load and save the data
-merge_rawextracts, begin(2003m1) end(2004m4) keepraw(ptdtrace) keepextracts(hispanic basicwgt) sample(basic) version(local)
-tempfile 20032004
-save `20032004'
-
-merge_rawextracts, begin(2004m5) end(2005m7) keepraw(prdtrace) keepextracts(hispanic basicwgt) sample(basic) version(local)
-gen ptdtrace = prdtrace
-tempfile 20042005
-save `20042005'
-
-merge_rawextracts, begin(2005m8) end(2018m9) keepraw(ptdtrace) keepextracts(hispanic basicwgt) sample(basic) version(local)
-append using `20032004'
-append using `20042005'
-
-save /tmp/allthedata, replace
-
-
 * Process the data month-by-month
 * define beginning and end dates
 local begdate = tm(2003m1)
 local enddate = tm(2018m9)
 
 foreach d of numlist `begdate'/`enddate'{
-	* define appropriate year and month of data
+	* define year and month of data
 	local year = year(dofm(`d'))
 	local month = month(dofm(`d'))
 
-	* load data
-	di _n(2) "Processing" %tm `d' "..."
-	use /tmp/allthedata if year == `year' & month == `month', clear
+	* load appropriate data depending on date
+	* note that we need to do this conditionally on the date because we
+	* need to keep certain variables associated with certain dates.
+	if tm(2003m1) <= `d' & `d' <= tm(2004m4) {
+		merge_rawextracts, begin(`year'm`month') end(`year'm`month') keepraw(ptdtrace) keepextracts(hispanic basicwgt) sample(basic) version(local)
+	}
+	if tm(2004m5) <= `d' & `d' <= tm(2005m7) {
+		merge_rawextracts, begin(`year'm`month') end(`year'm`month') keepraw(prdtrace) keepextracts(hispanic basicwgt) sample(basic) version(local)
+		gen ptdtrace = prdtrace
+	}
+	if tm(2005m8) <= `d' & `d' <= tm(2018m9) {
+		merge_rawextracts, begin(`year'm`month') end(`year'm`month') keepraw(ptdtrace) keepextracts(hispanic basicwgt) sample(basic) version(local)
+	}
 
 	* run variable generation code
 	global date = `d'
