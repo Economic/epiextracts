@@ -1,9 +1,31 @@
 # EPI uniform extracts of the Current Population Survey
 This repository creates cleaned uniform extracts of the CPS basic monthly, outgoing rotation group, and May supplement files.
 
-The data and documentation are available [here](https://microdata.epi.org/).
+## Get the data and documentation
+You probably just want the data and documentation available [here](https://microdata.epi.org/).
 
-## Create extracts from scratch
-Running `master.do` from the project root loads into memory global macros for the directory structure and the Stata programs used to generate the data and documenation.
+## Deployment
+1. Stata processes the raw data, generates the cleaned datasets, and creates most of the .rst files used in the documentation. Run `master.do` from the project root to load into memory global macros for the directory structure as well as the Stata programs used to generate the data and documentation.
 
-Examples of running the Stata programs are at the bottom of `master.do`.
+2. Sphinx processes the .rst files to create the documentation website.
+
+3. A Makefile deploys the data, code, and documentation to public and internal EPI servers.
+
+### Convert raw source data into Stata datasets
+For 1994-present, use the `process_rawbasic` program to convert the BLS/Census raw data into Stata files. For example,
+
+```stata
+process_rawbasic, begin(1994m1) end(2018m10)
+```
+
+For 1973-1993, the CPS extracts rely on data from Unicon already saved as Stata .dta files.
+
+### Create EPI CPS extracts from Stata source files
+Use the `create_extracts` program to create the May/ORG/Basic extracts. For example,
+
+```stata
+create_extracts, begin(1973m1) end(2018m10)
+```
+
+### Create the documentation
+Run `code/docs/createdocs.do` to create the data-specific .rst files used in the documentation. Then use sphinx to generate the website.
