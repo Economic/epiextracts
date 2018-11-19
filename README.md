@@ -28,4 +28,4 @@ create_extracts, begin(1973m1) end(2018m10)
 ```
 
 ### Create the documentation
-Use sphinx.
+Run `code/docs/createdocs.do` to create the data-specific .rst files used in the documentation. Then use sphinx to generate the website.
