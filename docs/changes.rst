@@ -26,7 +26,7 @@ Added
 * hispanic: Hispanic status
 * raceorig: original race code on file
 * wbhaom: White, Black, Hispanic, Asian, Other, Multiple
-* wbhaom: White, Black, Hispanic, Other, Multiple
+* wbhom: White, Black, Hispanic, Other, Multiple
 * wbonly: White only, Black only, Other
 
 Fixed
