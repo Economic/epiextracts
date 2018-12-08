@@ -40,29 +40,7 @@ foreach var of varlist _all {
 	* copy variable code to variablecode directory
 	copy ${codevars}generate_`var'.do ${variablecode}generate_`var'.do, replace
 
-	* determine if values will be displayed in documentation
-	* if so, create .csv file of value labels
+	* create variable page
 	use `basedata', clear
-	local labelname: value label `var'
-	if "`labelname'" == "" local dvalues nodisplayvalues
-	if "`labelname'" != "" {
-		local dvalues displayvalues
-		valuelabel2csv using ${variablelevels}`var'.csv, label(`labelname') replace
-	}
-
-	* determine if there is and detailed documentation
-	capture confirm file ${variablelongdesc}`var'_longdesc.rst
-	if _rc == 0 local detailed details
-	if _rc != 0 local detailed nodetails
-
-	* determine if there is a title image
-	capture confirm file ${variableimages}`var'_titleimage.svg
-	if _rc == 0 {
-		local image titleimage
-		copy ${codedocs}`var'_analysis.do ${variablecode}`var'_analysis.do, replace
-	}
-	if _rc != 0 local image notitleimage
-
-	use `basedata', clear
-	webdoc do ${codedocs}docwrite.do `var' `dvalues' `detailed' `image', raw nokeep init(${variabledocs}`var'.rst) replace
+	webdoc do ${codedocs}docwrite.do `var', raw nokeep init(${variabledocs}`var'.rst) replace
 }

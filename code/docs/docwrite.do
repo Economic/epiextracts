@@ -16,7 +16,8 @@ webdoc put =====================================================================
 webdoc put
 
 * Title image
-if "`4'" == "titleimage" {
+capture confirm file ${variableimages}`1'_titleimage.svg
+if _rc == 0 {
 	webdoc put .. image:: images/`1'_titleimage.svg
 	webdoc put
 }
@@ -34,7 +35,10 @@ webdoc append ${variableavailability}`1'_availability.rst
 webdoc put
 
 * Value labels
-if "`2'" == "displayvalues" {
+local labelname: value label `1'
+if "`labelname'" != "" {
+	valuelabel2csv using ${variablelevels}`1'.csv, label(`labelname') replace
+
 	webdoc put Values
 	webdoc put ================================================================================
 	webdoc put .. csv-table::
@@ -43,7 +47,8 @@ if "`2'" == "displayvalues" {
 }
 
 * Detailed comments
-if "`3'" == "details" {
+capture confirm file ${variablelongdesc}`1'_longdesc.rst
+if _rc == 0 {
 	webdoc put Detailed comments
 	webdoc put ================================================================================
 	webdoc append ${variablelongdesc}`1'_longdesc.rst
@@ -60,7 +65,8 @@ webdoc put    .. literalinclude:: code/generate_`1'.do
 webdoc put
 
 * Code for detailed analysis
-if "`4'" == "titleimage" {
+capture confirm file ${variableimages}`1'_titleimage.svg
+if _rc == 0 {
 	webdoc put .. toggle-header::
 	webdoc put    :header: Figure above (**show/hide code**)
 	webdoc put
