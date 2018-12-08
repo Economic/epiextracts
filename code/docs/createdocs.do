@@ -14,11 +14,9 @@ forvalues i = 1 / `N' {
 }
 
 * load data for a given year to gather all variables
-unzipfile ${extracts}epi_cpsbasic_2017.dta.zip, replace
-use epi_cpsbasic_2017.dta, clear
+append_extracts, begin(2017m1) end(2017m12) sample(basic) version(local)
 tempfile basedata
 save `basedata'
-erase epi_cpsbasic_2017.dta
 
 use `basedata', clear
 foreach var of varlist _all {
