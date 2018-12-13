@@ -10,6 +10,14 @@ If you use the EPI extracts for your research, please cite them as
 
 
 
+Version 0.5.5 -- 2018-12-13
+===============================================================================
+
+Added
+--------------------------------------------------------------------------------
+* November 2018 extracts: all data from 2018 updated.
+
+
 Version 0.5.4 -- 2018-11-19
 ===============================================================================
 
@@ -26,7 +34,7 @@ Added
 * hispanic: Hispanic status
 * raceorig: original race code on file
 * wbhaom: White, Black, Hispanic, Asian, Other, Multiple
-* wbhaom: White, Black, Hispanic, Other, Multiple
+* wbhom: White, Black, Hispanic, Other, Multiple
 * wbonly: White only, Black only, Other
 
 Fixed

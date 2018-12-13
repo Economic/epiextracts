@@ -7,7 +7,7 @@ You probably just want the data and documentation available [here](https://micro
 ## Deployment
 1. Stata processes the raw data, generates the cleaned datasets, and creates most of the .rst files used in the documentation. Run `master.do` from the project root to load into memory global macros for the directory structure as well as the Stata programs used to generate the data and documentation.
 
-2. Sphinx processes the .rst files to create the documentation website.
+2. [Sphinx](http://www.sphinx-doc.org/en/stable/) processes the .rst files to create the documentation website.
 
 3. A Makefile deploys the data, code, and documentation to public and internal EPI servers.
 

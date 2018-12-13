@@ -1,5 +1,3 @@
-* ORG sample: 1979 - 1993, 1995m9 - present
-
 .. warning::
 	This variable is not consistent over time, with definition changes in January 1989 and September 1995.
 
