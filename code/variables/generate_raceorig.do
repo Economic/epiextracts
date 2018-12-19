@@ -11,6 +11,7 @@ if tm(1989m1) <= $date & $date <= tm(1993m12) {
 	replace raceorig = 1 if race == 1 /* White */
 	replace raceorig = 2 if race == 2 /* Black */
 	replace raceorig = 3 if race == 3 /* Amer Indian/Alaskan Native */
+	replace raceorig = 4 if race == 4 /* Asian/Pacific Islander */
 	replace raceorig = 0 if race == 5 /* Other */
 }
 if tm(1994m1) <= $date & $date <= tm(1995m12) {
@@ -89,29 +90,30 @@ lab define raceorig
 1 "White"
 2 "Black"
 3 "American Indian/Alaskan Native only"
-4 "Asian only"
-5 "Hawaiian/Pacific Islander only"
-6 "White-Black"
-7 "White-AI"
-8 "White-Asian"
-9 "White-HP"
-10 "Black-AI"
-11 "Black-Asian"
-12 "Black-HP"
-13 "AI-Asian"
-15 "Asian-HP"
-16 "W-B-AI"
-17 "W-B-A"
-19 "W-AI-A"
-21 "W-A-HP"
+4 "Asian/Pacific Islander"
+5 "Asian only"
+6 "Hawaiian/Pacific Islander only"
+10 "White-Black"
+11 "White-AI"
+12 "White-Asian"
+13 "White-HP"
+14 "Black-AI"
+15 "Black-Asian"
+16 "Black-HP"
+17 "AI-Asian"
+18 "Asian-HP"
+19 "W-B-AI"
+20 "W-B-A"
+21 "W-AI-A"
+22 "W-A-HP"
 23 "W-B-AI-A"
-14 "AI-HP"
-18 "W-B-HP"
-20 "W-AI-HP"
-22 "B-AI-A"
-24 "W-AI-A-HP"
-20 "Other 2 or 3 races"
-21 "Other 4 or 5 races"
+24 "AI-HP"
+25 "W-B-HP"
+26 "W-AI-HP"
+27 "B-AI-A"
+28 "W-AI-A-HP"
+30 "Other 2 or 3 races"
+31 "Other 4 or 5 races"
 ;
 #delimit cr
 lab val raceorig raceorig
