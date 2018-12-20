@@ -79,11 +79,19 @@ if `month' == 12 local monthname dec
 
 di "Running process_censusbasic, `year'm`month'"
 
-******************************************
-*** NEED TO ADD CODE TO PROCESS REWEIGHTS
-******************************************
-* add it here, go month by month
-
+* process revised 2000 Census based weights if necessary
+if `year' >= 2000 & `year' <= 2002 {
+	if `month' < 10 local month2d 0`month'
+	else local month2d `month'
+	tempfile rwdat
+	!unzip -p ${censusbasicraw}rw`shortyear'.zip rw`shortyear'`month2d'.dat > `rwdat'
+	clear
+	do ${reweights}rw`shortyear'`month2d'.do `rwdat' ${reweights}rw`shortyear'`month2d'.dct
+	tostring occurnum, replace format(%2.0f)
+	tostring qstnum, replace format(%5.0f)
+	tempfile rwdta
+	save `rwdta'
+}
 
 * determine dictionary/NBER do-file to use
 * January 2017 - present date
@@ -134,6 +142,11 @@ clear
 do ${dictionaries}`nberprogname'.do `inputfilename' ${dictionaries}`nberprogname'.dct
 
 * include code here for certain months to add reweights
+if `year' >= 2000 & `year' <= 2002 {
+	merge 1:1 qstnum hryear4 hrmonth occurnum using `rwdta', assert(2 3)
+	keep if _merge == 3
+	drop _merge
+}
 
 * save, compress, clean up
 compress
