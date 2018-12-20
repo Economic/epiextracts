@@ -10,6 +10,25 @@ If you use the EPI extracts for your research, please cite them as
 
 
 
+Version 0.5.6 -- 2018-12-20
+===============================================================================
+
+Added
+--------------------------------------------------------------------------------
+* dind03: Census recode of detailed industry, primary job
+* mind03: Census recode of major industry, primary job
+* docc03: Census recode of detailed occupation, primary job
+* mocc03: Census recode of major occupation, primary job
+
+Changed
+-------------------------------------------------------------------------------
+* orgwgt, basicwgt, finalwgt now use Census 2000-based weights for the 2000-2002 period
+
+Fixed
+--------------------------------------------------------------------------------
+* raceorig: corrected variable labels
+
+
 Version 0.5.5 -- 2018-12-13
 ===============================================================================
 
