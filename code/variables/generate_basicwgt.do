@@ -9,6 +9,10 @@ if tm(1973m1) <= $date & $date <= tm(1997m12) {
 }
 if tm(1998m1) <= $date {
 	replace basicwgt = cmpwgt
+	* use Census 2000-based weights for 2000-2002
+	if tm(2000m1) <= $date & $date <= tm(2002m12) {
+		replace basicwgt = nwcmpwgt
+	}
 }
 
 * age restrictions
