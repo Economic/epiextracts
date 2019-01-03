@@ -21,10 +21,10 @@ if tm(1973m1) <= $date & $date <= tm(1991m12) {
 	replace educ = 5 if gradehi == 18
 }
 if tm(1992m1) <= $date & $date <= tm(1993m12) {
-	* LTHS
-	replace educ = 1 if 31 <= grdatn & grdatn <= 37
-	* HS; includes "no diploma"
-	replace educ = 2 if 38 <= grdatn & grdatn <= 39
+	* LTHS; includes "12th grade, no diploma"
+	replace educ = 1 if 31 <= grdatn & grdatn <= 38
+	* HS
+	replace educ = 2 if grdatn == 39
 	* Some college; includes associate's degrees
 	replace educ = 3 if 40 <= grdatn & grdatn <= 42
 	* College
@@ -33,10 +33,10 @@ if tm(1992m1) <= $date & $date <= tm(1993m12) {
 	replace educ = 5 if 44 <= grdatn & grdatn <= 46
 }
 if tm(1994m1) <= $date {
-	* LTHS
-	replace educ = 1 if 31 <= peeduca & peeduca <= 37
-	* HS; includes "no diploma"
-	replace educ = 2 if 38 <= peeduca & peeduca <= 39
+	* LTHS; includes "12th grade, no diploma"
+	replace educ = 1 if 31 <= peeduca & peeduca <= 38
+	* HS
+	replace educ = 2 if peeduca == 39
 	* Some college; includes associate's degrees
 	replace educ = 3 if 40 <= peeduca & peeduca <= 42
 	* College
@@ -55,7 +55,6 @@ lab define educ
 ;
 #delimit cr
 lab val educ educ
-notes educ: Follows Jaeger (1997) classifications
 notes educ: 1973-1991 Unicon: grdhi, grdcom
 notes educ: 1992-1993 Unicon: grdatn
 notes educ: 1994-present CPS: derived from peeduca
