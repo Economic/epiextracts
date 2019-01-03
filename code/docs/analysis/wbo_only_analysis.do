@@ -1,8 +1,8 @@
 keep if age >= 16 & age ~= .
 
-gen byte white = wbonly == 1 if wbonly ~= .
-gen byte black = wbonly == 2 if wbonly ~= .
-gen byte other = wbonly == 3 if wbonly ~= .
+gen byte white = wbo_only == 1 if wbo_only ~= .
+gen byte black = wbo_only == 2 if wbo_only ~= .
+gen byte other = wbo_only == 3 if wbo_only ~= .
 
 gcollapse (mean) white black other [pw=basicwgt], by(year) fast
 sum year
@@ -30,7 +30,7 @@ title("Share of population by race/ethnicity, ages 16 and over, 1973-2017", size
 text(`whiteyvalue' `whitexvalue' "White", color("`color1'") placement(e)) ///
 text(`blackyvalue' `blackxvalue' "Black", color("`color2'") placement(e)) ///
 text(`otheryvalue' `otherxvalue' "Other", color("`color3'") placement(e))
-graph export ${variableimages}wbonly_titleimage.svg, replace
+graph export ${variableimages}wbo_only_titleimage.svg, replace
 
 /***
 Significant race/ethnicity coding changes occur in 1989, 1996, 2003, and 2012.
