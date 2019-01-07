@@ -5,7 +5,7 @@ gen byte wbho_only = .
 if tm(1973m1) <= $date & $date <= tm(1988m12) {
 	replace wbho_only = 1 if race == 1 /* White */
 	replace wbho_only = 2 if race == 2 /* Black */
-	replace wbho_only = 4 if race == 4 /* Other */
+	replace wbho_only = 4 if race == 3 /* Other */
   * Hispanic ethnicity
 	replace wbho = 3 if hispanic == 1
 }
