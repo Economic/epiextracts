@@ -50,7 +50,7 @@ if tm(2012m5) <= $date {
 	replace wbho_only = 3 if hispanic == 1
 }
 
-lab var wbho_only "Race: white only, black only, other"
+lab var wbho_only "Race: white only, black only, hispanic, other"
 #delimit ;
 lab define wbho_only
 1 "White only"
