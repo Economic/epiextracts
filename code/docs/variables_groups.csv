@@ -101,6 +101,7 @@ wbhao,demographics,1989 - present,,,1989 - present
 wbhaom,demographics,2003 - present,,,2003 - present
 wbho,demographics,All years,,All years,All years
 wbhom,demographics,2003 - present,,,2003 - present
+wbho_only,demographics,All years,,All years,All years
 wbo_only,demographics,All years,,All years,All years
 weekpay,income,,All years,,All years
 weekpay_noadj,income,,All years,,All years
