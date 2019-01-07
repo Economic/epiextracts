@@ -24,12 +24,12 @@ legend(off) ///
 xlabel(1975(5)2015) ///
 ylabel(0(20)60 80 "80%", angle(0) gmin gmax) ///
 xtitle("") ytitle("") ///
-lcolor("`color1'" "`color2'" "`color3'") ///
+lcolor("`color1'" "`color2'" "`color4'") ///
 graphregion(color("252 252 252") margin(r=17)) plotregion(color("252 252 252")) ///
 title("Share of population by race/ethnicity, ages 16 and over, 1973-2017", size(medium)) ///
 text(`whiteyvalue' `whitexvalue' "White only", color("`color1'") placement(e)) ///
 text(`blackyvalue' `blackxvalue' "Black only", color("`color2'") placement(e)) ///
-text(`otheryvalue' `otherxvalue' "Other", color("`color3'") placement(e))
+text(`otheryvalue' `otherxvalue' "Other", color("`color4'") placement(e))
 graph export ${variableimages}wbo_only_titleimage.svg, replace
 
 /***
