@@ -24,5 +24,6 @@ keep
 	earnhour a_earnhour
 	otcrec
 	otcamt wage_noadj wageotc_noadj
+	ownchild famrel
 ;
 #delimit cr;
