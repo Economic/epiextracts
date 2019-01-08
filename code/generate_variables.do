@@ -28,6 +28,7 @@ foreach var in
 	earnhour a_earnhour
   otcrec
   otcamt wage_noadj wageotc_noadj
+	ownchild
   {;
     do ${codevars}generate_`var'.do;
   };
