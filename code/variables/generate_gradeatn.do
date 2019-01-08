@@ -4,9 +4,11 @@
 gen gradeatn = .
 if tm(1992m1) <= $date & $date <= tm(1993m12) {
 	replace gradeatn = grdatn - 30
+	replace gradeatn = . if gradeatn == -31
 }
 if tm(1994m1) <= $date {
 	replace gradeatn = peeduca - 30
+	replace gradeatn = . if gradeatn == -31
 }
 lab var gradeatn "Education level attained, detailed, post-1991"
 #delimit ;
