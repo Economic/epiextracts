@@ -8,7 +8,6 @@ if tm(1984m1) <= $date & $date <= tm(1993m12) {
 if tm(1999m11) <= $date {
 	replace ownchild = prnmchld if (prfamrel == 1 | prfamrel == 2) & prnmchld >= 0
 }
-#delimit cr
 lab val ownchild ownchild
 notes ownchild: Number of own children in primary family
 notes ownchild: Universe: family reference person or spouse
