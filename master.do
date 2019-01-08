@@ -19,7 +19,7 @@
 * maptile_install using "http://files.michaelstepner.com/geo_statehex.zip"
 * maptile_install using "http://files.michaelstepner.com/geo_cbsa2013.zip"
 * maptile_install using "http://files.michaelstepner.com/geo_state.zip"
-
+* maptile_install using "http://files.michaelstepner.com/geo_county2014.zip"
 
 *******************************************************************************
 * PRELIMINARIES
