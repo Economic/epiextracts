@@ -39,6 +39,10 @@ foreach var of varlist _all {
 	* copy variable code to variablecode directory
 	copy ${codevars}generate_`var'.do ${variablecode}generate_`var'.do, replace
 
+	* copy detailed analysis code if necessary
+	capture confirm file ${codedocs}analysis/`var'_analysis.do
+	if _rc == 0 copy ${codedocs}analysis/`var'_analysis.do ${variablecode}`var'_analysis.do, replace
+
 	* create variable page
 	use `basedata', clear
 	webdoc do ${codedocs}docwrite.do `var', raw nokeep init(${variabledocs}`var'.rst) replace
