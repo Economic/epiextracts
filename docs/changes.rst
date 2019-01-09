@@ -10,6 +10,27 @@ If you use the EPI extracts for your research, please cite them as
 
 
 
+Version 0.6.0 -- 2019-01-08
+===============================================================================
+
+Added
+--------------------------------------------------------------------------------
+* famrel: relationship to primary family
+* ownchild: Number of own children in primary family
+* wbho_only: White only, Black only, Hispanic, Other
+* wbo_only: White only, Black only, Hispanic
+
+Changed
+-------------------------------------------------------------------------------
+* renamed wbonly to wbo_only
+* educ: now categorizes "12th grade, no diploma" as LTHS
+
+Fixed
+--------------------------------------------------------------------------------
+* gradeatn: missing values corrected
+
+
+
 Version 0.5.6 -- 2018-12-20
 ===============================================================================
 
