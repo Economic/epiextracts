@@ -19,15 +19,15 @@
 # -- Project information -----------------------------------------------------
 
 project = u'EPI CPS extracts'
-copyright = u'2018, Economic Policy Institute'
+copyright = u'2019, Economic Policy Institute'
 author = u'Economic Policy Institute'
 
 # -- UPDATE THESE AT EACH NEW RELEASE -----------------------------------------
-version = u'Version 0.5.6'
-today = u'2018-12-20'
+version = u'Version 0.6.0'
+today = u'2019-01-08'
 rst_epilog = """
 .. |latestdata| replace:: 2018m11
-.. |year| replace:: 2018
+.. |year| replace:: 2019
 """
 # The full version, including alpha/beta/rc tags
 release = version

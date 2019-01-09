@@ -8,8 +8,7 @@ if tm(1984m1) <= $date & $date <= tm(1993m12) {
 if tm(1999m11) <= $date {
 	replace ownchild = prnmchld if (prfamrel == 1 | prfamrel == 2) & prnmchld >= 0
 }
-lab val ownchild ownchild
-notes ownchild: Number of own children in primary family
+lab var ownchild "Number of own children in primary family"
 notes ownchild: Universe: family reference person or spouse
 notes ownchild: 1984m1-1984m4: topcode=4
 notes ownchild: 1984m5-1993: topcode=8
