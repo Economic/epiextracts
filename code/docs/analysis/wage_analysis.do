@@ -41,7 +41,7 @@ local dollar=char(36)
 line wage_0 wage_1 year, ///
 legend(off) ///
 xlabel(1975(5)2015) ///
-ylabel(12(2)18 20 "$20", angle(0)) ///
+ylabel(12(2)22 22 "$22", angle(0)) ///
 xtitle("") ytitle("") ///
 lcolor("`color4'" "`color2'") ///
 graphregion(color("252 252 252")) plotregion(color("252 252 252")) ///

@@ -46,7 +46,7 @@ ylabel(12(2)18 20 "$20", angle(0) gmin gmax) ///
 xtitle("") ytitle("") ///
 lcolor("`color4'" "`color2'") ///
 graphregion(color("252 252 252")) plotregion(color("252 252 252")) ///
-title("Median real wages for ages 16-64, 1973-2017 (in 2018`dollar')", size(medium)) ///
+title("Median real wages for ages 16-64, 1973-2018 (in 2018`dollar')", size(medium)) ///
 text(`wageyvalue' `wagexvalue' "wage", color("`color4'") placement(c)) ///
 text(`wageotcyvalue' `wageotcxvalue' "wageotc", color("`color2'") placement(c))
 graph export ${variableimages}wageotc_titleimage.svg, replace
