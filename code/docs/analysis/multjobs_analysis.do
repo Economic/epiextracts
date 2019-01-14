@@ -27,7 +27,7 @@ ylabel(0(2)8 10 "12%", angle(0) gmin gmax) ///
 xtitle("") ytitle("") ///
 lcolor("`color4'" "`color2'") ///
 graphregion(color("252 252 252")) plotregion(color("252 252 252")) ///
-title("Share of workforce with multiple jobs, by gender, 1994-2017", size(medium)) ///
+title("Share of workforce with multiple jobs, by gender, 1994-2018", size(medium)) ///
 text(`multjobs_0yvalue' `multjobs_0xvalue' "Male", color("`color4'") placement(c)) ///
 text(`multjobs_1yvalue' `multjobs_1xvalue' "Female", color("`color2'") placement(c))
 graph export ${variableimages}multjobs_titleimage.svg, replace

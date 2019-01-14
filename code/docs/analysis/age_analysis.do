@@ -41,7 +41,7 @@ yscale(r(5 27)) ///
 xtitle("") ytitle("") ///
 lcolor("`color1'" "`color2'" "`color3'" "`color4'" "`color5'" "`color6'") ///
 graphregion(color("252 252 252")) plotregion(color("252 252 252")) ///
-title("Share of civilian population by age group, 1982-2017", size(medium)) ///
+title("Share of civilian population by age group, 1982-2018", size(medium)) ///
 text(`childyvalue' `childxvalue' "Ages 0-15", color("`color1'") placement(r)) ///
 text(`youngyvalue' `youngxvalue' "Ages 16-24", color("`color2'") placement(r)) ///
 text(`earlyyvalue' `earlyxvalue' "Ages 25-39", color("`color3'") placement(r)) ///

@@ -30,7 +30,7 @@ ylabel(50(10)90 100 "100%", angle(0)) ///
 xtitle("") ytitle("") ///
 lcolor("`color4'" "`color2'") ///
 graphregion(color("252 252 252")) plotregion(color("252 252 252")) ///
-title("Prime-age labor force participation rates, by gender, 1976-2017", size(medium)) ///
+title("Prime-age labor force participation rates, by gender, 1976-2018", size(medium)) ///
 text(`lfpr_0yvalue' `lfpr_0xvalue' "Male", color("`color4'") placement(c)) ///
 text(`lfpr_1yvalue' `lfpr_1xvalue' "Female", color("`color2'") placement(c))
 graph export ${variableimages}lfstat_titleimage.svg, replace

@@ -57,7 +57,7 @@ ylabel(16(2)22 24 "$24", angle(0) gmin gmax) ///
 xtitle("") ytitle("") ///
 lcolor("`color4'" "`color2'") ///
 graphregion(color("252 252 252")) plotregion(color("252 252 252")) ///
-title("Mean real wages for ages 16-64, 1973-2017 (in 2017`dollar')", size(medium)) ///
+title("Mean real wages for ages 16-64, 1973-2017 (in 2018`dollar')", size(medium)) ///
 text(`wageyvalue' `wagexvalue' "wage (adjusted)", color("`color2'") placement(c)) ///
 text(`wage_noadjyvalue' `wage_noadjxvalue' "wage_noadj (unadjusted)", color("`color4'") placement(c))
 graph export ${variableimages}wage_noadj_titleimage.svg, replace
