@@ -35,11 +35,6 @@ if `begindate' < tm(1973m1) {
 * cpi levels and extreme wage values
 import delimited using ${suppdata}cpiurs_extended.csv, clear varnames(1)
 keep if year >= 1973
-* for now extend to 2018 using last year's change
-moreobs 1
-replace year = 2018 if year == .
-tsset year
-replace cpiurs_extended = (L.cpiurs_extended/L2.cpiurs_extended) * L.cpiurs_extended if year == 2018
 replace cpiurs_extended = round(cpiurs_extended,0.1)
 sum cpiurs_extended if year == 1989
 scalar cpibase = r(mean)
