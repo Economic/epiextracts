@@ -14,9 +14,9 @@ deploywebdocs:
 	aws s3 sync docs/_build/html/ s3://microdata.epi.org/
 
 deploywebcode:
-	cp code/ado/append_extracts.ado packages/stata/
-	cp code/ado/append_extracts.sthlp packages/stata/
-	cp code/ado/append_extracts.pkg packages/stata/
+	cp code/ado/load_epiextracts.ado packages/stata/
+	cp code/ado/load_epiextracts.sthlp packages/stata/
+	cp code/ado/load_epiextracts.pkg packages/stata/
 	cp code/ado/stata.toc packages/stata/
 	aws s3 sync packages/stata/ s3://microdata.epi.org/stata --exclude ".gitignore*" --delete
 
@@ -39,8 +39,8 @@ deploysas:
 deployado:
 	cp code/ado/append_rawdata.ado /usr/local/ado/
 	cp code/ado/append_rawdata.sthlp /usr/local/ado/
-	cp code/ado/append_extracts.ado /usr/local/ado/
-	cp code/ado/append_extracts.sthlp /usr/local/ado/
+	cp code/ado/load_epiextracts.ado /usr/local/ado/
+	cp code/ado/load_epiextracts.sthlp /usr/local/ado/
 	cp code/ado/merge_rawextracts.ado /usr/local/ado/
 	cp code/ado/merge_rawextracts.sthlp /usr/local/ado/
 	cp code/ado/keepifexist.ado /usr/local/ado/

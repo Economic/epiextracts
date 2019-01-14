@@ -284,7 +284,7 @@ foreach year of numlist `minyear'(1)`maxyear' {
 			local beginmonth = `monthcount' + 1
 
 			* create full calendar year of basic to adjust wages
-			append_extracts, begin(`prevyear'm`beginmonth') end(`prevyear'm12) sample(basic) version(local)
+			load_epiextracts, begin(`prevyear'm`beginmonth') end(`prevyear'm12) sample(basic) version(local)
 			foreach month of numlist `monthlist`year'' {
 				append using `basic_month`month''
 			}
@@ -295,7 +295,7 @@ foreach year of numlist `minyear'(1)`maxyear' {
 			save `basicadjusted'
 
 			* create full calendar year of ORG to adjust wages
-			append_extracts, begin(`prevyear'm`beginmonth') end(`prevyear'm12) sample(org) version(local)
+			load_epiextracts, begin(`prevyear'm`beginmonth') end(`prevyear'm12) sample(org) version(local)
 			foreach month of numlist `monthlist`year'' {
 				append using `org_month`month''
 			}
