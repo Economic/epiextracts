@@ -74,6 +74,7 @@ While there is not always a single correct answer regarding which weight you sho
 	* If your analysis involves the ORG data, such as earnings information, use :doc:`orgwgt <variables/weights/orgwgt>`.
 	* :doc:`finalwgt <variables/weights/finalwgt>` is the only weight defined for individuals under the age of 16.
 
+.. _which-wage-variable:
 
 Which wage variable should I use?
 ==============================================================================
