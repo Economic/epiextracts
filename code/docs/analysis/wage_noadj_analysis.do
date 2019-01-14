@@ -9,26 +9,15 @@ replace wgt = orgwgt if year >= 1979
 gcollapse (mean) wage_noadj wage [pw=wgt], by(year) fast
 * inflation-adjust wages
 preserve
-import delimited ${suppdata}cpiurs_allitems.csv, clear
-keep year avg
-rename avg cpiurs
-keep if cpiurs ~= .
-* for 1973-1977 use EPI's spliced CPI-X1 series
-* manually add these
-forvalues i = 1973(1)1977 {
-	moreobs 1
-	replace year = `i' if year == .
-}
-replace cpiurs = 73.0 if year == 1973
-replace cpiurs = 80.3 if year == 1974
-replace cpiurs = 86.9 if year == 1975
-replace cpiurs = 91.9 if year == 1976
-replace cpiurs = 97.7 if year == 1977
+import delimited using ${suppdata}cpiurs_extended.csv, clear varnames(1)
+rename cpiurs_extended cpiurs
+keep year cpiurs
+keep if year > = 1973
 tempfile cpiurs
 save `cpiurs'
 restore
 merge m:1 year using `cpiurs', keep(3) nogenerate
-sum cpiurs if year == 2017
+sum cpiurs if year == 2018
 local basevalue = r(mean)
 replace wage = wage * `basevalue' / cpiurs
 replace wage_noadj = wage_noadj * `basevalue' / cpiurs
