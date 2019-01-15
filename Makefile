@@ -32,9 +32,9 @@ convertsas:
 	Rscript code/dtaextracts_to_sas7bdat.R
 
 deploysas:
-	rsync -avPzh /data/cps/basic/epi/sas/epi_cpsbasic_*.sas7bdat.zip /home/bzipperer/mount/epiextracts/cps/basic/
-	rsync -avPzh /data/cps/org/epi/sas/epi_cpsorg_*.sas7bdat.zip /home/bzipperer/mount/epiextracts/cps/org/
-	rsync -avPzh /data/cps/may/epi/sas/epi_cpsmay_*.sas7bdat.zip /home/bzipperer/mount/epiextracts/cps/may/
+	rsync -avPzh /data/cps/basic/epi/sas/epi_cpsbasic_*.sas7bdat.zip ~/mount/epiextracts/cps/basic/
+	rsync -avPzh /data/cps/org/epi/sas/epi_cpsorg_*.sas7bdat.zip ~/mount/epiextracts/cps/org/
+	rsync -avPzh /data/cps/may/epi/sas/epi_cpsmay_*.sas7bdat.zip ~/mount/epiextracts/cps/may/
 
 deployado:
 	cp code/ado/append_rawdata.ado /usr/local/ado/
