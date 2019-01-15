@@ -13,7 +13,7 @@ lab def famnum 1 "Primary family member only", add
 forvalues i = 2/39 {
 	lab def famnum `i' "Subfamily no. `i' member", add
 }
-lav val famid famid
+lab val famid famid
 lab var famid "Family identifer (unique within household)"
 notes famid: Family ID unique within year X month X hhid
 notes famid: 1984-1993: Unicon famnum

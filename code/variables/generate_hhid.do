@@ -1,6 +1,7 @@
 ********************************************************************************
 * Household ID
 ********************************************************************************
+capture rename hhid oldhhid
 gen hhid = .
 if tm(1984m1) <= $date & $date <= tm(1993m12) {
 	gegen temp_hhid = group(year month hrhhid)
@@ -8,7 +9,7 @@ if tm(1984m1) <= $date & $date <= tm(1993m12) {
 	drop temp_hhid
 }
 if tm(1994m1) <= $date & $date <= tm(1997m12) {
-	gegen temp_hhid = group(year month statefips hrhhid huhhnum hrsample hrsersuf)
+	gegen temp_hhid = group(year month gestfips hrhhid huhhnum hrsample hrsersuf)
 	replace hhid = temp_hhid
 	drop temp_hhid
 }
