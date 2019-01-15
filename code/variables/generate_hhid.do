@@ -1,7 +1,11 @@
 ********************************************************************************
 * Consistent household id
 ********************************************************************************
-*gen hhid = .
-*for 1976-1993, prob not available
-*for 1994-2004m4, will need to convert some things to strings, concatenate
-*for 2004m5-present, concatenate hrhhid hrhhid2
+gen hhid = .
+if tm(1998m1) <= $date {
+	destring qstnum, replace
+	replace hhid = qstnum
+}
+lab var hhid "Household identifer (unique within month)"
+notes hhid: Household ID unique within year and month
+notes hhid: 1998-present: CPS qstnum
