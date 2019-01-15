@@ -7,7 +7,7 @@ foreach var in
   year month minsamp
   hrhhid hrhhid2 hrsample hrsersuf huhhnum pulineno unicon_recnum
   hhid famid personid proxy
-  finalwgt cmpwgt basicwgt orgwgt
+  finalwgt cmpwgt basicwgt orgwgt famwgt
   statefips statecensus division region countyfips cbsafips metstat cbsasize
   age female hispanic wbho wbhao wbhom wbhaom raceorig wbo_only wbho_only
 	citistat citizen married veteran
