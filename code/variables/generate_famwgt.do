@@ -4,10 +4,10 @@
 capture rename famwgt oldfamwgt
 gen famwgt = .
 if tm(1984m1) <= $date & $date <= tm(1993m12) {
-	replace famwgt = oldfamwgt / 10000
+	replace famwgt = oldfamwgt / 100
 }
 if tm(1994m1) <= $date {
-	replace famwgt = pwfmwgt / 100
+	replace famwgt = pwfmwgt / 10000
 }
 lab var famwgt "Family weight"
 notes famwgt: Family weight, based on head of family
