@@ -31,15 +31,15 @@ any data!
 
 Alternatively, if you're using Stata on maynard, we have written some
 helpful functions to access the EPI extracts.
-If you simply want to load certain years or variables of the EPI CPS extracts into memory, try the Stata command :code:`append_extracts`:
+If you simply want to load certain years or variables of the EPI CPS extracts into memory, try the Stata command :code:`load_epiextracts`:
 
 .. code::
 
 		* Load all of the 2016-2017 EPI CPS Basic monthly extracts
-		append_extracts, begin(2016m1) end(2017m12) sample(basic)
+		load_epiextracts, begin(2016m1) end(2017m12) sample(basic)
 
 		* Load certain variables from the 1990m7-2018m6 EPI CPS ORG
-		append_extracts, begin(1990m7) end(2018m6) sample(org) keep(age lfstat union)
+		load_epiextracts, begin(1990m7) end(2018m6) sample(org) keep(age lfstat union)
 
 
 If you'd like to investigate certain variables in the raw CPS data and merge them to
@@ -50,4 +50,4 @@ the EPI extracts, try the command :code:`merge_rawextracts`:
 	merge_rawextracts, begin(1994m1) end(1995m12) sample(org) keepraw(peernlab) keepextracts(age selfemp lfstat orgwgt)
 
 
-See :code:`help append_extracts` or :code:`help merge_rawextracts` for more details.
+See :code:`help load_epiextracts` or :code:`help merge_rawextracts` for more details.

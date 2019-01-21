@@ -14,7 +14,7 @@ forvalues i = 1 / `N' {
 }
 
 * load data for a given year to gather all variables
-append_extracts, begin(2017m1) end(2017m12) sample(basic) version(local)
+load_epiextracts, begin(2018m1) end(2018m1) sample(basic) version(local)
 keep if _n == 1
 tempfile basedata
 save `basedata'

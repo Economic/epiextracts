@@ -6,8 +6,8 @@ assert $earnerinfo == 1 | $earnerinfo == 0
 foreach var in
   year month minsamp
   hrhhid hrhhid2 hrsample hrsersuf huhhnum pulineno unicon_recnum
-  hhid personid proxy
-  finalwgt cmpwgt basicwgt orgwgt
+  hhid famid personid proxy hhtype famtype
+  finalwgt cmpwgt basicwgt orgwgt hhwgt famwgt
   statefips statecensus division region countyfips cbsafips metstat cbsasize
   age female hispanic wbho wbhao wbhom wbhaom raceorig wbo_only wbho_only
 	citistat citizen married veteran
@@ -28,6 +28,7 @@ foreach var in
 	earnhour a_earnhour
   otcrec
   otcamt wage_noadj wageotc_noadj
+	faminc
 	ownchild famrel
   {;
     do ${codevars}generate_`var'.do;

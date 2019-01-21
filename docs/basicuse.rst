@@ -25,23 +25,23 @@ Feel free to just use the datasets just as you would any Stata dataset!
 	unzipfile "/data/cps/epi_cpsbasic_2017.dta.zip", replace
 	use epi_cpsbasic_2017.dta, clear
 
-Alternatively, the Stata command :code:`append_extracts` is an easy way to load a selection of years and variables of the EPI CPS extracts into memory. First, install the Stata package with
+Alternatively, the Stata command :code:`load_epiextracts` is an easy way to load a selection of years and variables of the EPI CPS extracts into memory. First, install the Stata package with
 
 .. code::
 
-	net install append_extracts, from("https://microdata.epi.org/stata")
+	net install load_epiextracts, from("https://microdata.epi.org/stata")
 
 and then use it like
 
 .. code::
 
 		* Load all of the 2016-2017 EPI CPS Basic monthly extracts
-		append_extracts, begin(2016m1) end(2017m12) sample(basic) sourcedir("/data/cps")
+		load_epiextracts, begin(2016m1) end(2017m12) sample(basic) sourcedir("/data/cps")
 
 		* Load certain variables from the 1990m7-2018m6 EPI CPS ORG
-		append_extracts, begin(1990m7) end(2018m6) keep(age lfstat union) sample(org) sourcedir("/data/cps")
+		load_epiextracts, begin(1990m7) end(2018m6) keep(age lfstat union) sample(org) sourcedir("/data/cps")
 
-After installing the command see :code:`help append_extracts` for more details.
+After installing the command see :code:`help load_epiextracts` for more details.
 
 R
 -------------------------------------------------------------------------------

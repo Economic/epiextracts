@@ -9,6 +9,19 @@ If you use the EPI extracts for your research, please cite them as
 	Economic Policy Institute. |year|. Current Population Survey Extracts, |release|.
 
 
+Version 0.6.1 -- 2019-01-21
+===============================================================================
+
+Added
+--------------------------------------------------------------------------------
+* faminc: family income category
+* famtype: family type
+* famwgt: family weight
+* famid: family id
+* hhtype: household type
+* hhid: household id
+* personid: person id
+
 
 Version 0.6.0 -- 2019-01-08
 ===============================================================================
@@ -28,7 +41,6 @@ Changed
 Fixed
 --------------------------------------------------------------------------------
 * gradeatn: missing values corrected
-
 
 
 Version 0.5.6 -- 2018-12-20

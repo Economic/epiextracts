@@ -21,5 +21,5 @@ ylabel(0(10)40 50 "50%", angle(0) gmin gmax) ///
 xtitle("") ytitle("") ///
 lcolor("`color4'") ///
 graphregion(color("252 252 252")) plotregion(color("252 252 252")) ///
-title("Share of workforce with BLS allocated hourly earnings, ages 16-64, 1979-2017", size(medsmall))
+title("Share of workforce with BLS allocated hourly earnings, ages 16-64, 1979-2018", size(medsmall))
 graph export ${variableimages}a_earnhour_titleimage.svg, replace

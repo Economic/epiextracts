@@ -35,11 +35,6 @@ if `begindate' < tm(1973m1) {
 * cpi levels and extreme wage values
 import delimited using ${suppdata}cpiurs_extended.csv, clear varnames(1)
 keep if year >= 1973
-* for now extend to 2018 using last year's change
-moreobs 1
-replace year = 2018 if year == .
-tsset year
-replace cpiurs_extended = (L.cpiurs_extended/L2.cpiurs_extended) * L.cpiurs_extended if year == 2018
 replace cpiurs_extended = round(cpiurs_extended,0.1)
 sum cpiurs_extended if year == 1989
 scalar cpibase = r(mean)
@@ -289,7 +284,7 @@ foreach year of numlist `minyear'(1)`maxyear' {
 			local beginmonth = `monthcount' + 1
 
 			* create full calendar year of basic to adjust wages
-			append_extracts, begin(`prevyear'm`beginmonth') end(`prevyear'm12) sample(basic) version(local)
+			load_epiextracts, begin(`prevyear'm`beginmonth') end(`prevyear'm12) sample(basic) version(local)
 			foreach month of numlist `monthlist`year'' {
 				append using `basic_month`month''
 			}
@@ -300,7 +295,7 @@ foreach year of numlist `minyear'(1)`maxyear' {
 			save `basicadjusted'
 
 			* create full calendar year of ORG to adjust wages
-			append_extracts, begin(`prevyear'm`beginmonth') end(`prevyear'm12) sample(org) version(local)
+			load_epiextracts, begin(`prevyear'm`beginmonth') end(`prevyear'm12) sample(org) version(local)
 			foreach month of numlist `monthlist`year'' {
 				append using `org_month`month''
 			}

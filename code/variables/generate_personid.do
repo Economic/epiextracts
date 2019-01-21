@@ -1,11 +1,11 @@
 ********************************************************************************
 * Consistent person id
 ********************************************************************************
-* use pulineno & recnum?
-* use already existing hrhhid hrsersuf huhhnum pulineno to uniquely id persons
-* for 1994m1-2004m4:
-*		duplicates report gestcen hrhhid hrsample hrsersuf huhhnum pulineno
-*		assert r(unique_value) == r(N)
-* for 1994m1-2004m4:
-* 	duplicates report hrhhid hrhhid2 pulineno
-*		assert r(unique_value) == r(N)
+gen personid = .
+if tm(1998m1) <= $date {
+	destring occurnum, replace
+	replace personid = occurnum
+}
+lab var personid "Person identifer (unique within household-month)"
+notes personid: Person ID unique within year, month, hhid
+notes personid: 1998-present: CPS occurnum

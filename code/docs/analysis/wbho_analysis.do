@@ -27,7 +27,7 @@ ylabel(0(20)60 80 "80%", angle(0) gmin gmax) ///
 xtitle("") ytitle("") ///
 lcolor("`color1'" "`color2'" "`color3'" "`color4'") ///
 graphregion(color("252 252 252") margin(r=17)) plotregion(color("252 252 252")) ///
-title("Share of population by race/ethnicity, ages 16 and over, 1973-2017", size(medium)) ///
+title("Share of population by race/ethnicity, ages 16 and over, 1973-2018", size(medium)) ///
 text(`whiteyvalue' `whitexvalue' "White", color("`color1'") placement(e)) ///
 text(`blackyvalue' `blackxvalue' "Black", color("`color2'") placement(e)) ///
 text(`hispanicyvalue' `hispanicxvalue' "Hispanic", color("`color3'") placement(e)) ///

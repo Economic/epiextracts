@@ -10,14 +10,14 @@
 {title:Title}
 
 {phang}
-{bf:append_extracts} {hline 2} Load EPI extracts into memory
+{bf:load_epiextracts} {hline 2} Load EPI extracts into memory
 
 
 {marker syntax}{...}
 {title:Syntax}
 
 {p 8 17 2}
-{cmd:append_extracts}{cmd:,}
+{cmd:load_epiextracts}{cmd:,}
 {opt begin(datestring)} {opt end(datestring)} {opt sample(samplename)} [{it:options}]
 
 {pstd}where {it:datestring} is a monthly date of the form 1990m1, 2008m8, etc.,
@@ -37,7 +37,7 @@ and {it:samplename} is either Basic, May, or ORG.
 {title:Description}
 
 {pstd}
-{cmd:append_extracts} loads EPI extracts into memory.
+{cmd:load_epiextracts} loads EPI extracts into memory.
 
 {marker options}{...}
 {title:Options}
@@ -65,7 +65,7 @@ This command clears any existing data in memory.
 
     {hline}
 {pstd}Load all of the 2016-2017 EPI CPS Basic monthly extracts{p_end}
-{phang2}{cmd:. append_extracts, begin(2016m1) end(2017m12) sample(basic) sourcedir(/data/cps/basic/epi/)}
+{phang2}{cmd:. load_epiextracts, begin(2016m1) end(2017m12) sample(basic) sourcedir(/data/cps/basic/epi/)}
 
 {pstd}Load certain variables from the 1990m7-2018m6 EPI CPS ORG{p_end}
-{phang2}{cmd:. append_extracts, begin(1990m7) end(2018m6) sample(org) keep(age lfstat union) sourcedir(/data/cps/org/epi/)}
+{phang2}{cmd:. load_epiextracts, begin(1990m7) end(2018m6) sample(org) keep(age lfstat union) sourcedir(/data/cps/org/epi/)}

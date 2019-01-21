@@ -9,26 +9,15 @@ replace wgt = orgwgt if year >= 1979
 gcollapse (p50) wage wageotc [pw=wgt], by(year) fast
 * inflation-adjust wages
 preserve
-import delimited ${suppdata}cpiurs_allitems.csv, clear
-keep year avg
-rename avg cpiurs
-keep if cpiurs ~= .
-* for 1973-1977 use EPI's spliced CPI-X1 series
-* manually add these
-forvalues i = 1973(1)1977 {
-	moreobs 1
-	replace year = `i' if year == .
-}
-replace cpiurs = 73.0 if year == 1973
-replace cpiurs = 80.3 if year == 1974
-replace cpiurs = 86.9 if year == 1975
-replace cpiurs = 91.9 if year == 1976
-replace cpiurs = 97.7 if year == 1977
+import delimited using ${suppdata}cpiurs_extended.csv, clear varnames(1)
+rename cpiurs_extended cpiurs
+keep year cpiurs
+keep if year > = 1973
 tempfile cpiurs
 save `cpiurs'
 restore
 merge m:1 year using `cpiurs', keep(3) nogenerate
-sum cpiurs if year == 2017
+sum cpiurs if year == 2018
 local basevalue = r(mean)
 replace wage = wage * `basevalue' / cpiurs
 replace wageotc = wageotc * `basevalue' / cpiurs
@@ -57,7 +46,7 @@ ylabel(12(2)18 20 "$20", angle(0) gmin gmax) ///
 xtitle("") ytitle("") ///
 lcolor("`color4'" "`color2'") ///
 graphregion(color("252 252 252")) plotregion(color("252 252 252")) ///
-title("Median real wages for ages 16-64, 1973-2017 (in 2017`dollar')", size(medium)) ///
+title("Median real wages for ages 16-64, 1973-2018 (in 2018`dollar')", size(medium)) ///
 text(`wageyvalue' `wagexvalue' "wage", color("`color4'") placement(c)) ///
 text(`wageotcyvalue' `wageotcxvalue' "wageotc", color("`color2'") placement(c))
 graph export ${variableimages}wageotc_titleimage.svg, replace

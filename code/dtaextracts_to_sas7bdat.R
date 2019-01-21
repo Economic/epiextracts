@@ -48,7 +48,8 @@ myfunction <- function(x) {
 
   #system(paste("pigz -dc",rawdest,">",dtafilename))
   system(paste("unzip",rawdest))
-  write_sas(read_dta(dtafilename,encoding="latin1"),sasfilename)
+	#write_sas(read_dta(dtafilename,encoding="latin1"),sasfilename)
+	system(paste("st",dtafilename,"sas8",sasfilename))
 	system(paste("chmod 0444",sasfilename))
   system(paste("pigz -Kf",sasfilename))
 	system(paste("chmod 0444",finalfilename))

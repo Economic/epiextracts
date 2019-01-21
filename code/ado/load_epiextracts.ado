@@ -1,11 +1,11 @@
 *************************************************************************
-* NAME: append_extracts
+* NAME: load_epiextracts
 * DESC: Append uniform extracts in extracts/ and load into memory.
 * Useful for analysis/testing. Used in documentation creation.
 * Not used in the creation of extracts.
 *************************************************************************
-capture program drop append_extracts
-program define append_extracts
+capture program drop load_epiextracts
+program define load_epiextracts
 syntax, begin(string) end(string) sample(string) [keep(string) version(string) sourcedir(string)]
 
 * determine sample
