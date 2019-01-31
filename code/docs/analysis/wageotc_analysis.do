@@ -52,5 +52,5 @@ text(`wageotcyvalue' `wageotcxvalue' "wageotc", color("`color2'") placement(c))
 graph export ${variableimages}wageotc_titleimage.svg, replace
 
 /***
-The analysis above uses the CPS ORG for 1979-2017 and the CPS May for 1973-1978.
+The analysis above uses the CPS ORG for 1979-2018 and the CPS May for 1973-1978.
 ***/
