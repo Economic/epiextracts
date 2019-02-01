@@ -36,7 +36,7 @@ The imputed usual weekly hours is used when calculating hourly wages for nonhour
 .. code::
 
 	gen wage_nohv = wage
-	replace wage_nohv = . if paidhre == 1 & hoursvary == 1
+	replace wage_nohv = . if paidhre == 0 & hoursvary == 1
 
 
 Trimming outliers
