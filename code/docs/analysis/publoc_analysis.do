@@ -37,5 +37,5 @@ text(`publoc_1yvalue' `publoc_1xvalue' "Female", color("`color2'") placement(c))
 graph export ${variableimages}publoc_titleimage.svg, replace
 
 /***
-The analysis above uses employed workers in the CPS Basic for 1989-2017.
+The analysis above uses employed workers in the CPS Basic for 1989-2018.
 ***/

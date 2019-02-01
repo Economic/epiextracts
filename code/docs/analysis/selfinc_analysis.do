@@ -37,5 +37,5 @@ text(`selfinc_1yvalue' `selfinc_1xvalue' "Female", color("`color2'") placement(c
 graph export ${variableimages}selfinc_titleimage.svg, replace
 
 /***
-The analysis above uses employed workers in the CPS Basic for 1989-2017.
+The analysis above uses employed workers in the CPS Basic for 1989-2018.
 ***/
