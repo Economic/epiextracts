@@ -21,11 +21,11 @@ deploywebcode:
 	aws s3 sync packages/stata/ s3://microdata.epi.org/stata --exclude ".gitignore*" --delete
 
 deploywebdata:
-	zip -j epi_cpsorg_1979_2018.zip extracts/epi_cpsorg_*.dta.zip
-	zip -j epi_cpsbasic_2000_2018.zip extracts/epi_cpsbasic_20*.dta.zip
+	zip -j epi_cpsorg_1979_2019.zip extracts/epi_cpsorg_*.dta.zip
+	zip -j epi_cpsbasic_2000_2019.zip extracts/epi_cpsbasic_20*.dta.zip
 	zip -j epi_cpsbasic_1976_1999.zip extracts/epi_cpsbasic_19*.dta.zip
 	zip -j epi_cpsmay_1973_1981.zip extracts/epi_cpsmay_*.dta.zip
-	aws s3 sync . s3://microdata.epi.org/ --exclude "*" --include "epi_cps*.zip"
+	aws s3 sync . s3://microdata.epi.org/ --exclude "*" --include "epi_cps*.zip" --delete
 	rm epi_cps*.zip
 
 convertsas:
