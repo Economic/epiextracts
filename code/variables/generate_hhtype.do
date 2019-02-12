@@ -23,7 +23,7 @@ lab def hhtype
 9 "Group quarters (1984-1993) / Group quarters with family (1994+)"
 10 "Group quarters without family (1994+)"
 ;
-#delimt cr;
+#delimit cr;
 lab val hhtype hhtype
 lab var hhtype "Household type"
 notes hhtype: Type of household

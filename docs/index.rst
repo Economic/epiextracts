@@ -4,9 +4,6 @@
 ================================================================================
 EPI CPS Extracts
 ================================================================================
-.. tip::
-
-	**EPI users:** the extracts are already on maynard and epi06. See :doc:`here <epiuse>` for instructions. You don't need to download the data.
 
 
 Download the data
@@ -23,11 +20,11 @@ The latest EPI CPS extracts are available in Stata format:
 	  - Version (:doc:`Changelog <changes>`)
 	* - CPS ORG
 	  - 1979 - |latestdata|
-	  - :raw-html:`<a class="reference download internal" href="epi_cpsorg_1979_2018.zip" download=""><code class="xref download docutils literal notranslate"><span class="pre">` epi_cpsorg_1979_2018.zip :raw-html:`</span></code></a>`
+	  - :raw-html:`<a class="reference download internal" href="epi_cpsorg_1979_2019.zip" download=""><code class="xref download docutils literal notranslate"><span class="pre">` epi_cpsorg_1979_2019.zip :raw-html:`</span></code></a>`
 	  - |version|
 	* - CPS Basic monthly
 	  - 1976 - |latestdata|
-	  - :raw-html:`<a class="reference download internal" href="epi_cpsbasic_2000_2018.zip" download=""><code class="xref download docutils literal notranslate"><span class="pre">` epi_cpsbasic_2000_2018.zip :raw-html:`</span></code></a>` :raw-html:`<br/> <a class="reference download internal" href="epi_cpsbasic_1976_1999.zip" download=""><code class="xref download docutils literal notranslate"><span class="pre">` epi_cpsbasic_1976_1999.zip :raw-html:`</span></code></a>`
+	  - :raw-html:`<a class="reference download internal" href="epi_cpsbasic_2000_2019.zip" download=""><code class="xref download docutils literal notranslate"><span class="pre">` epi_cpsbasic_2000_2019.zip :raw-html:`</span></code></a>` :raw-html:`<br/> <a class="reference download internal" href="epi_cpsbasic_1976_1999.zip" download=""><code class="xref download docutils literal notranslate"><span class="pre">` epi_cpsbasic_1976_1999.zip :raw-html:`</span></code></a>`
 	  - |version|
 	* - CPS May
 	  - 1973 - 1981
@@ -58,7 +55,6 @@ View the documentation
 	wagemethodology
 	sources
 	issues
-	epiuse
 
 
 Citations

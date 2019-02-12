@@ -16,7 +16,7 @@ lab def famtype
 4 "Unrelated secondary family"
 5 "Unrelated secondary individual"
 ;
-#delimt cr;
+#delimit cr;
 lab val famtype famtype
 lab var famtype "Family type"
 notes famtype: Type of family
