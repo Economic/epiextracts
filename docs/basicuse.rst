@@ -1,9 +1,7 @@
 ===============================================================================
 How to use the EPI extracts
 ===============================================================================
-.. tip::
 
-	**EPI users:** the extracts are already on maynard and epi06. See :doc:`here <epiuse>` for instructions. You don't need to download the data.
 
 1. Download the data
 ===============================================================================

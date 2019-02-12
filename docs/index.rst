@@ -4,9 +4,6 @@
 ================================================================================
 EPI CPS Extracts
 ================================================================================
-.. tip::
-
-	**EPI users:** the extracts are already on maynard and epi06. See :doc:`here <epiuse>` for instructions. You don't need to download the data.
 
 
 Download the data
@@ -58,7 +55,6 @@ View the documentation
 	wagemethodology
 	sources
 	issues
-	epiuse
 
 
 Citations
