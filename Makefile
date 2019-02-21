@@ -14,6 +14,8 @@ deploywebdocs:
 	aws s3 sync docs/_build/html/ s3://microdata.epi.org/
 
 deploywebcode:
+	cp code/ado/keepifexist.ado packages/stata
+	cp code/ado/keepifexist.sthlp packages/stata
 	cp code/ado/load_epiextracts.ado packages/stata/
 	cp code/ado/load_epiextracts.sthlp packages/stata/
 	cp code/ado/load_epiextracts.pkg packages/stata/
