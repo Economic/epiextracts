@@ -9,6 +9,18 @@ If you use the EPI extracts for your research, please cite them as
 	Economic Policy Institute. |year|. Current Population Survey Extracts, |release|.
 
 
+Version 0.6.4 -- 2019-02-22
+===============================================================================
+
+Added
+--------------------------------------------------------------------------------
+* agechild - presence of own children, by age group
+
+Modified
+--------------------------------------------------------------------------------
+* Hourly wage limits for 2019 updated based on CBO inflation projections.
+
+
 Version 0.6.3 -- 2019-02-07
 ===============================================================================
 
