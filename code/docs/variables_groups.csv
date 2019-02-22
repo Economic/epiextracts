@@ -2,6 +2,7 @@ varname,group,basic,march,may,org
 a_earnhour,income,"","","","1979 - 1993, 1995m9 - present"
 a_weekpay,income,"","","","1979 - 1993, 1995m9 - present"
 age,demographics,"All years","","All years","All years"
+agechild,demographics,"1999m11 - present","","","1999m11 - present"
 basicwgt,weights,"All years","","All years","All years"
 cbsafips,geography,"2004m5 - present","","","2004m5 - present"
 cbsasize,geography,"2004m5 - present","","","2004m5 - present"

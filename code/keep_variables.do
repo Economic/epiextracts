@@ -25,6 +25,6 @@ keep
 	otcrec
 	otcamt wage_noadj wageotc_noadj
 	faminc
-	ownchild famrel
+	ownchild famrel agechild
 ;
 #delimit cr;

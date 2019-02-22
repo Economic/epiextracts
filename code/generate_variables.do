@@ -29,7 +29,7 @@ foreach var in
   otcrec
   otcamt wage_noadj wageotc_noadj
 	faminc
-	ownchild famrel
+	ownchild famrel agechild
   {;
     do ${codevars}generate_`var'.do;
   };
