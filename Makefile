@@ -3,9 +3,9 @@ all: deploydata createdocs deploywebdocs deploywebcode
 .PHONY: all deploydata createdocs deploywebdocs deploywebcode deploywebdata convertsas deploysas deployado
 
 deploydata:
-	rsync -avh --chmod=0444 extracts/epi_cpsbasic*.dta.zip maynard:/data/cps/basic/epi/
-	rsync -avh --chmod=0444 extracts/epi_cpsorg*.dta.zip maynard:/data/cps/org/epi/
-	rsync -avh --chmod=0444 extracts/epi_cpsmay*.dta.zip maynard:/data/cps/may/epi/
+	rsync -avh --chmod=0444 extracts/epi_cpsbasic*.dta.zip /data/cps/basic/epi/
+	rsync -avh --chmod=0444 extracts/epi_cpsorg*.dta.zip /data/cps/org/epi/
+	rsync -avh --chmod=0444 extracts/epi_cpsmay*.dta.zip /data/cps/may/epi/
 
 createdocs:
 	cd docs && $(MAKE) clean html
