@@ -7,7 +7,7 @@ d Support: https://microdata.epi.org
 d
 d load_epiextracts loads selected EPI extracts and variables into memory.
 d
-d Distribution-Date: 20190221
+d Distribution-Date: 20190417
 d
 
 f load_epiextracts.ado

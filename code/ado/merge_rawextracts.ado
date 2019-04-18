@@ -60,17 +60,18 @@ qui if "`lowersample'" == "may" {
 
 		* load extracts
 		noi di "Processing `year' EPI CPS `samplename'"
-		unzipfile `inputpathextracts'`inputfileextracts'.zip, replace
-		use unicon_recnum year month `keepextracts' using `inputfileextracts', clear
-		erase `inputfileextracts'
+
+		tempfile tmpextract
+		!unzip -p "`inputpathextracts'`inputfileextracts'.zip" > `tmpextract'
+		use unicon_recnum year month `keepextracts' using `tmpextract', clear
 		tempfile extracts`year'
 		save `extracts`year''
 
 		* load raw
 		noi di "Processing raw CPS `samplename' `year'"
-		unzipfile `inputpathraw'`inputfileraw'.zip, replace
-		use recnum age `keepraw' using `inputfileraw', clear
-		erase `inputfileraw'
+		tempfile tmpraw
+		!unzip -p "`inputpathraw'`inputfileraw'.zip" > `tmpraw'
+		use recnum age `keepraw' using `tmpraw', clear
 		* extracts sample restriction
 		drop if age == .
 		assert age >= 0
@@ -93,7 +94,7 @@ qui if "`lowersample'" == "may" {
 		else append using `final`year''
 	}
 
-}
+} // end may
 
 
 qui if "`lowersample'" == "basic" | "`lowersample'" == "org" {
@@ -104,14 +105,13 @@ qui if "`lowersample'" == "basic" | "`lowersample'" == "org" {
 	}
 	forvalues year = `minyear'/`maxyear' {
 
-
 		capture confirm file `inputpathextracts'epi_cps`lowersample'_`year'.dta.zip
 		* if annual file exists, unzip it, save as temp
 		if _rc == 0 {
 			local inputfile epi_cps`lowersample'_`year'.dta
-			unzipfile `inputpathextracts'`inputfile'.zip, replace
-			use `inputfile', clear
-			erase `inputfile'
+			tempfile tmpextract
+			!unzip -p "`inputpathextracts'`inputfile'.zip" > `tmpextract'
+			use `tmpextract', clear
 			tempfile extracts`year'
 			save `extracts`year''
 		}
@@ -120,10 +120,9 @@ qui if "`lowersample'" == "basic" | "`lowersample'" == "org" {
 			foreach month of numlist `monthlist`year'' {
 				capture confirm file `inputpathextracts'epi_cps`lowersample'_`year'_`month'.dta.zip
 				if _rc == 0 {
-					local inputfile epi_cps`lowersample'_`year'_`month'.dta
-					unzipfile `inputpathextracts'`inputfile'.zip, replace
-					use `inputfile', clear
-					erase `inputfile'
+					tempfile tmpextract
+					!unzip -p "`inputpathextracts'`inputfile'.zip" > `tmpextract'
+					use `tmpextract', clear
 					tempfile monthlydata`month'
 					save `monthlydata`month''
 				}
@@ -209,9 +208,10 @@ qui if "`lowersample'" == "basic" | "`lowersample'" == "org" {
 
 			* load raw
 			noi di "Processing raw CPS `samplename' `year'm`month'"
-			unzipfile `inputpathraw'`inputfileraw'.zip, replace
-			use `rawpullvars' `keepraw' using `inputfileraw', clear
-			erase `inputfileraw'
+
+			tempfile tmpraw
+			!unzip -p "`inputpathraw'`inputfileraw'.zip" > `tmpraw'
+			use `rawpullvars' `keepraw' using `tmpraw', clear
 			capture gen age = peage
 			capture gen age = prtage
 			capture gen orgwgt = pworwgt
@@ -237,14 +237,7 @@ qui if "`lowersample'" == "basic" | "`lowersample'" == "org" {
 			merge 1:1 `mergeidvars' using `extractsm`date'', assert(3) nogenerate
 			tempfile finalm`date'
 			save `finalm`date''
-
-			* clean up
-			erase `extractsm`date''
-
 		}
-
-		* clean up
-		erase `extracts`year''
 	}
 	* load merged data
 	local counter = 0
@@ -256,9 +249,7 @@ qui if "`lowersample'" == "basic" | "`lowersample'" == "org" {
 		if `counter' == 1 use `finalm`date'', clear
 		else append using `finalm`date''
 	}
-}
 
-
-
+} // end basic/org
 
 end
