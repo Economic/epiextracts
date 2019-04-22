@@ -1,0 +1,661 @@
+infile dictionary  {
+*by Jean Roth Thu Aug  4 13:53:49 EDT 2005
+*Please report errors to jroth@nber.org
+*See the .do file for directions and run with do cpsmar99
+*NOTE:  This program is distributed under the GNU GPL. 
+*See end of this file and http://www.gnu.org/licenses/ for details.
+_column(1   )   byte hrecord     %1f                                         
+_column(2   )   long h_seq       %5f "Household sequence number"             
+_column(7   )   byte hhpos       %2f "Trailer portion of unique household"   
+_column(9   )   byte hunits      %1f "Item 78 - How many units in the struct"
+_column(10  )   byte h_faminc    %2f "Family income"                         
+_column(12  )   byte h_respnm    %2f "Line number of household"              
+_column(14  )    int h_year      %4f "Year of survey"                        
+_column(20  )   byte h_hhtype    %1f "Type of household"                     
+_column(21  )   byte h_numper    %2f "Number of persons in household"        
+_column(23  )   byte hnumfam     %2f "Number of families in household"       
+_column(25  )   byte h_type      %1f "Household type"                        
+_column(26  )   byte h_month     %2f "Month of survey"                       
+_column(29  )   byte h_mis       %1f "Month in sample"                       
+_column(30  )   byte h_hhnum     %1f "Household number"                      
+_column(31  )   byte h_livqrt    %2f "Item 4 - Type of living quarters (reco"
+_column(33  )   byte h_typebc    %2f "Item 15 - Type B/C"                    
+_column(35  )   byte h_tenure    %1f "Tenure"                                
+_column(36  )   byte h_telhhd    %1f "Telephone in household"                
+_column(37  )   byte h_telavl    %1f "Telephone available"                   
+_column(38  )   byte h_telint    %1f "Telephone interview acceptable"        
+_column(39  )   byte hg_reg      %1f "Region"                                
+_column(40  )   byte hg_st60     %2f "1960 Census State Code"                
+_column(44  )    int hg_msac     %4f "MSA or PMSA FIPS code"                 
+_column(50  )    int geco        %3f "FIPS County Code"                      
+_column(53  )   byte hg_cmsa     %2f "Specific CMSA code (See Appendix E)"   
+_column(55  )   byte hmssz       %1f "CMSA/MSA size"                         
+_column(56  )   byte hpmsasz     %1f "MSA/PMSA size"                         
+_column(57  )   byte hmsa_r      %1f "Modified metropolitan statistical"     
+_column(58  )   byte hccc_r      %1f "Central city metropolitan"             
+_column(60  )   byte hunder15    %2f "Recode"                                
+_column(62  )   byte hcmcare     %1f "Item 80 - During 19.. how many of the" 
+_column(63  )   byte hcmceno     %1f "Item 80 - Number of children in"       
+_column(64  )   byte hchi        %1f "Item 81 - during 19.. how"             
+_column(65  )   byte hchino      %1f "Item 81 - Number of"                   
+_column(66  )   byte hchinrh     %1f "Item 81a - During 19.. how many of the"
+_column(67  )   byte hchinno     %1f "Item 81a - During 19.."                
+_column(68  )   byte hh5to18     %2f "Recode"                                
+_column(70  )   byte hhotlun     %1f "Item 83 - During 19.. how many of the" 
+_column(71  )   byte hhotno      %1f "Item 83 - Number of children in househ"
+_column(72  )   byte hflunch     %1f "Item 86 - During 19.. how many of the" 
+_column(73  )   byte hflunno     %1f "Item 86 - Number receiving free lunch" 
+_column(74  )   byte hpublic     %1f "Item 88 - Is this a public housing"    
+_column(75  )   byte hlorent     %1f "Item 89 - Are you paying lower rent"   
+_column(76  )   byte hfoodsp     %1f "Item 90 - Did anyone in this household"
+_column(77  )   byte hfoodno     %1f "Item 91 - Number of children covered"  
+_column(79  )   byte hfoodmo     %2f "Item 92 - Number months covered by"    
+_column(81  )    int hfdval      %4f "Item 93 - What was the value of all"   
+_column(85  )   byte hengast     %1f "Item 94 - Since october 1, 19.., has t"
+_column(86  )    int hengval     %4f "Item 95 - Altogether, how much energy" 
+_column(90  )   byte hinc_ws     %1f "Recode - Wage and Salary"              
+_column(91  )   long hwsval      %7f "Recode - HHLD income - Wages and Salar"
+_column(98  )   byte hinc_se     %1f "Recode - Own business self-employment" 
+_column(99  )   long hseval      %7f "Recode - HHLD income - self employment"
+_column(106 )   byte hinc_fr     %1f "Recode - Farm self-employment"         
+_column(107 )   long hfrval      %7f "Recode - HHLD income - Farm income"    
+_column(114 )   byte hinc_uc     %1f "Recode - Unemployment compensation"    
+_column(115 )   long hucval      %7f "Recode - HHLD income - Unemployment"   
+_column(122 )   byte hinc_wc     %1f "Recode - Worker's compensation"        
+_column(123 )   long hwcval      %7f "Recode - HHLD income - Worker's"       
+_column(130 )   byte hss_yn      %1f "Recode - Social Security payments"     
+_column(131 )   long hssval      %7f "Recode - HHLD income - Social Security"
+_column(138 )   byte hssi_yn     %1f "Recode - Supplemental Security benefit"
+_column(139 )   long hssival     %6f "Recode - HHLD income - Supplemental"   
+_column(145 )   byte hpaw_yn     %1f "Recode - Public Assistance"            
+_column(146 )   long hpawval     %6f "Recode - HHLD income - Public"         
+_column(152 )   byte hvet_yn     %1f "Recode - Veterans' Payments"           
+_column(153 )   long hvetval     %7f "Recode - HHLD income - Veteran Payment"
+_column(160 )   byte hsur_yn     %1f "Recode - Survivor Benefits"            
+_column(161 )   long hsurval     %7f "Recode - HHLD income - survivor income"
+_column(168 )   byte hdis_yn     %1f "Recode - Disability benefits"          
+_column(169 )   long hdisval     %7f "Recode - HHLD income - Disability inco"
+_column(176 )   byte hret_yn     %1f "Recode - Retirement payments"          
+_column(177 )   long hretval     %7f "Recode - HHLD income - Retirement inco"
+_column(184 )   byte hint_yn     %1f "Recode -interest payments"             
+_column(185 )   long hintval     %7f "Recode - HHLD income - Interest income"
+_column(192 )   byte hdiv_yn     %1f "Recode - Dividend payments"            
+_column(193 )   long hdivval     %7f "Recode - HHLD income - dividend income"
+_column(200 )   byte hrnt_yn     %1f "Recode - Rental payments"              
+_column(201 )   long hrntval     %7f "Recode - HHLD income - Rent income"    
+_column(208 )   byte hed_yn      %1f "Recode - Educational assistance"       
+_column(209 )   long hedval      %7f "Recode - HHLD income - Education incom"
+_column(216 )   byte hcsp_yn     %1f "Recode - Child support payments"       
+_column(217 )   long hcspval     %7f "Recode - HHLD income - child support"  
+_column(224 )   byte halm_yn     %1f "Recode - Alimony payments"             
+_column(225 )   long halmval     %7f "Recode - HHLD income - alimony"        
+_column(232 )   byte hfin_yn     %1f "Recode - Financial assistance payments"
+_column(233 )   long hfinval     %7f "Recode - HHLD income - Financial"      
+_column(240 )   byte hoi_yn      %1f "Other income payments"                 
+_column(241 )   long hoival      %7f "Recode - HHLD income - Other income"   
+_column(248 )   long htotval     %8f "Recode - Total household income"       
+_column(256 )   long hearnval    %8f "Recode - Total household earnings"     
+_column(264 )   long hothval     %8f "All other types of income except HEARN"
+_column(272 )   byte hhinc       %2f "Recode -total household income"        
+_column(274 )   byte hmcare      %1f "Anyone in HHLD covered by Medicare"    
+_column(275 )   byte hmcaid      %1f "Anyone in HHLD covered by Medicaid"    
+_column(276 )   byte hchamp      %1f "CHAMPUS, VA, or military health care"  
+_column(277 )   byte hhi_yn      %1f "Anyone in HHLD have health insurance"  
+_column(278 )   byte hhstatus    %1f "Recode - Household status"             
+_column(279 )   byte hunder18    %2f "Recode - Number of persons in HHLD"    
+_column(281 )   byte htop5pct    %1f "Recode - Household income percentiles" 
+_column(282 )   byte hpctcut     %2f "Recode - HHLD income percentiles -"    
+_column(285 )   byte indccode    %1f                                         
+_column(287 ) double hsup_wgt  %8.2f "Final weight (2 implied decimal places"
+_column(295 )   byte hptenure    %1f                                         
+_column(297 )   byte hplivqrt    %1f                                         
+_column(299 )   byte hptelhhd    %1f                                         
+_column(300 )   byte hptelavl    %1f                                         
+_column(301 )   byte hptelint    %1f                                         
+_column(308 )   byte i_hhotlu    %1f                                         
+_column(309 )   byte i_hhotno    %1f                                         
+_column(310 )   byte i_hflunc    %1f                                         
+_column(311 )   byte i_hflunn    %1f                                         
+_column(312 )   byte i_hpubli    %1f                                         
+_column(313 )   byte i_hloren    %1f                                         
+_column(314 )   byte i_hfoods    %1f                                         
+_column(315 )   byte i_hfdval    %1f                                         
+_column(316 )   byte i_hfoodn    %1f                                         
+_column(317 )   byte i_hfoodm    %1f                                         
+_column(318 )   byte i_hengas    %1f                                         
+_column(319 )   byte i_hengva    %1f                                         
+_column(332 )   long prop_tax    %5f "Annual property taxes"                 
+_column(337 )   long housret     %5f "Return to home equity"                 
+_column(342 )   byte hrhtype     %2f "Household type"                        
+_column(344 )  str15 h_idnum    %15s "Household identification number"       
+_column(359 )   byte i_hunits    %1f "Allocation flag for HUNITS"            
+
+
+_column(1   )   byte frecord     %1f                                         
+_column(2   )   long fh_seq      %5f "Household sequence number"             
+_column(7   )   byte ffpos       %2f "Unique family identifier"              
+_column(9   )   byte fkind       %1f "Kind of family"                        
+_column(10  )   byte ftype       %1f "Family type"                           
+_column(11  )   byte fpersons    %2f "Number of persons in family"           
+_column(13  )   byte fheadidx    %2f "Index to person record of family head" 
+_column(15  )   byte fwifeidx    %2f "Index to person record of family wife" 
+_column(17  )   byte fhusbidx    %2f "Index to person record of family"      
+_column(19  )   byte fspouidx    %2f "Index to person record of family spous"
+_column(21  )   byte flastidx    %2f "Index to person record of last"        
+_column(23  )   byte fmlasidx    %2f "Index to person record of last"        
+_column(25  )   byte fownu6      %1f "Own children in family under 6"        
+_column(27  )   byte fownu18     %1f "Number of own never married children"  
+_column(28  )   byte frelu6      %1f "Related persons in family under 6"     
+_column(29  )   byte frelu18     %1f "Related persons in family under 18"    
+_column(30  )   byte fpctcut     %2f "Income percentiles"                    
+_column(32  )   long fpovcut     %5f "Low income cutoff dollar amount"       
+_column(37  )   byte famlis      %1f "Ratio of family income to low-income"  
+_column(38  )   byte povll       %2f "Ratio of family income to low-income"  
+_column(40  )   byte frspov      %2f "Ratio of related subfamily income to"  
+_column(42  )   long frsppct     %5f "Low income cutoff dollar amount of"    
+_column(47  )   byte finc_ws     %1f "Wage and salary"                       
+_column(48  )   long fwsval      %7f "Family income - wages and salaries"    
+_column(55  )   byte finc_se     %1f "Own business self-employment"          
+_column(56  )   long fseval      %7f "Family income - self employment income"
+_column(63  )   byte finc_fr     %1f "Farm self-employment"                  
+_column(64  )   long ffrval      %7f "Family income - Farm income"           
+_column(71  )   byte finc_uc     %1f "Unemployment compensation"             
+_column(72  )   long fucval      %7f "Family income - Unemployment"          
+_column(79  )   byte finc_wc     %1f "Worker's compensation"                 
+_column(80  )   long fwcval      %7f "Family income - Worker's compensation" 
+_column(87  )   byte finc_ss     %1f "Social Security Benefits"              
+_column(88  )   long fssval      %7f "Family income - Social Security"       
+_column(95  )   byte finc_ssi    %1f "Supplemental Security Benefits"        
+_column(96  )   long fssival     %6f "Family income - Supplemental Security" 
+_column(102 )   byte finc_paw    %1f "Public assistance or welfare benefits" 
+_column(103 )   long fpawval     %6f "Family income - public assistance inco"
+_column(109 )   byte finc_vet    %1f "Veterans' Benefits"                    
+_column(110 )   long fvetval     %7f "Family income - veteran payments"      
+_column(117 )   byte finc_sur    %1f "Survivor's payments"                   
+_column(118 )   long fsurval     %7f "Family income - Survivor income"       
+_column(125 )   byte finc_dis    %1f "Disability payments"                   
+_column(126 )   long fdisval     %7f "Family income - Disability income"     
+_column(133 )   byte finc_ret    %1f "Retirement payments"                   
+_column(134 )   long fretval     %7f "Family income - Retirement income"     
+_column(141 )   byte finc_int    %1f "Interest payments"                     
+_column(142 )   long fintval     %7f "Family income - Interest income"       
+_column(149 )   byte finc_div    %1f "Dividend payments"                     
+_column(150 )   long fdivval     %7f "Family income - Dividend income"       
+_column(157 )   byte finc_rnt    %1f "Rental payments"                       
+_column(158 )   long frntval     %7f "Family income - Rental income"         
+_column(165 )   byte finc_ed     %1f "Education benefits"                    
+_column(166 )   long fedval      %7f "Family income - Education income"      
+_column(173 )   byte finc_csp    %1f "Child support payments"                
+_column(174 )   long fcspval     %7f "Family income - Child support"         
+_column(181 )   byte finc_alm    %1f "Alimony payments"                      
+_column(182 )   long falmval     %7f "Family income - Alimony"               
+_column(189 )   byte finc_fin    %1f "Financial assistance payments"         
+_column(190 )   long ffinval     %7f "Family income - Financial assistance"  
+_column(197 )   byte finc_oi     %1f "Other income payments"                 
+_column(198 )   long foival      %7f "Family income - Other income"          
+_column(205 )   long ftotval     %8f "Total family income"                   
+_column(213 )   long fearnval    %8f "Total family earnings"                 
+_column(221 )   long fothval     %8f "Total other family income"             
+_column(229 )   byte ftot_r      %2f "Total family income recode"            
+_column(231 )   byte fspanish    %1f "Reference person or spouse of Spanish" 
+_column(233 ) double fsup_wgt  %8.2f "Householder or reference person weight"
+_column(241 )   byte ffposold    %2f "Trailer portion of unique household ID"
+_column(243 )    int f_mv_fs     %4f "Family market value of food stamps"    
+_column(247 )    int f_mv_sl     %4f "Family market value of school lunch"   
+_column(251 )   long ffngcare    %5f "Family fungible value of medicare"     
+_column(256 )   long ffngcaid    %5f "Family fungible value of medicaid"     
+_column(261 )    int fhoussub    %3f "Family market value of housing subsidy"
+_column(264 )    int ffoodreq    %4f "Based on USDA figures"                 
+_column(268 )    int fhousreq    %3f "Used to compute fungible value of"     
+
+
+_column(1   )   byte precord     %1f                                         
+_column(2   )   long ph_seq      %5f "Household seq number"                  
+_column(7   )   byte pppos       %2f "Trailer portion of unique household ID"
+_column(9   )   byte a_lineno    %2f "Item 18a - Line number"                
+_column(11  )   byte a_parent    %2f "Item 18c - Parent's line number"       
+_column(13  )   byte a_exprrp    %2f "Expanded relationship code"            
+_column(15  )   byte a_age       %2f "Item 18d - Age"                        
+_column(17  )   byte a_maritl    %1f "Item 18e - Marital status"             
+_column(18  )   byte a_spouse    %2f "Item 18f - Spouse's line number"       
+_column(20  )   byte a_sex       %1f "Item 18g - Sex"                        
+_column(21  )   byte a_vet       %1f "Veteran status"                        
+_column(22  )   byte a_hga       %2f "Item 18h - Educational attainment"     
+_column(25  )   byte a_race      %1f "Item 18j - Race"                       
+_column(26  )   byte p_stat      %1f "Status of person identifier"           
+_column(27  )   byte a_reorgn    %2f "Item 18k - Origin"                     
+_column(29  )   byte a_famnum    %2f "Family number"                         
+_column(31  )   byte a_famtyp    %1f "Family type"                           
+_column(32  )   byte a_famrel    %1f "Family relationship"                   
+_column(33  )   byte a_pfrel     %1f "Primary family relationship"           
+_column(34  )   byte hhdrel      %1f "Detailed household summary"            
+_column(35  )   byte famrel      %2f "Family relationship"                   
+_column(37  )   byte hhdfmx      %2f "Detailed household and family status"  
+_column(39  )   byte parent      %1f "Family members under 18 (excludes"     
+_column(40  )   byte age1        %2f "Age recode - Persons 15+ years"        
+_column(44  )   byte phf_seq     %2f "Pointer to the sequence number of own" 
+_column(46  )   byte pf_seq      %2f "Pointer to the sequence number of fami"
+_column(48  )   byte prnt_ptr    %2f "Sequence number of parent in hhld"     
+_column(50  ) double a_fnlwgt  %8.2f "Final weight (2 implied decimal places"
+_column(58  ) double a_ernlwt  %8.2f "Earnings/not in labor force weight"    
+_column(66  ) double marsupwt  %8.2f "March supplement final weight (2 impli"
+_column(76  )   byte a_hrs1      %2f "How many hrs did ... work last week"   
+_column(79  )   byte a_uslft     %1f "Does ... usually work 35 hrs or more a"
+_column(85  )   byte a_whyabs    %1f "Why was ... absent from work last week"
+_column(86  )   byte a_payabs    %1f "Is ... receiving wages or salary for"  
+_column(96  )    int a_wkslk     %3f "Duration of unemployment"              
+_column(102 )   byte a_whenlj    %1f "When did ... last work?"               
+_column(103 )    int a_ind       %3f "Industry"                              
+_column(106 )    int a_occ       %3f "Occupation"                            
+_column(109 )   byte a_clswkr    %1f "Class of worker"                       
+_column(110 )   byte ppposold    %2f "Trailer portion of unique household id"
+_column(112 )   byte a_nlflj     %1f "When did ... last work for pay at a"   
+_column(114 )   byte a_wantjb    %1f "Does ... want a regular job now,"      
+_column(128 )   byte a_uslhrs    %2f "How many hrs per week does ..."        
+_column(130 )   byte a_hrlywk    %1f "Is ... paid by the hour on this job?"  
+_column(131 ) double a_hrspay  %4.2f "How much does ... earn per hour?"      
+_column(135 )    int a_grswk     %4f "How much does ... usually earn per"    
+_column(139 )   byte a_unmem     %1f "On this job, is ... a member of a"     
+_column(140 )   byte a_uncov     %1f "On this job, is ... covered by a union"
+_column(142 )   byte a_enrlw     %1f "Last week was ... attending or"        
+_column(143 )   byte a_hscol     %1f                                         
+_column(144 )   byte a_ftpt      %1f "Is ... enrolled in school as a full-"  
+_column(145 )   byte a_lfsr      %1f "Labor force status recode"             
+_column(146 )   byte a_untype    %1f "Reason for unemployment"               
+_column(149 )   byte a_wkstat    %1f "Full/part-time status"                 
+_column(150 )   byte a_explf     %1f "Experienced labor force employment"    
+_column(151 )   byte a_wksch     %1f "Labor force by time worked or lost"    
+_column(152 )   byte a_civlf     %1f "Civilian labor force"                  
+_column(153 )   byte a_ftlf      %1f "Full/time labor force"                 
+_column(155 )   byte a_mjind     %2f "Major industry code"                   
+_column(157 )   byte a_dtind     %2f "Detailed industry recode"              
+_column(159 )   byte a_mjocc     %2f "Major occupation code"                 
+_column(161 )   byte a_dtocc     %2f "Detailed occupation recode"            
+_column(163 )   byte prerelg     %1f "Earnings eligibility flag"             
+_column(164 )   byte a_rcow      %1f "Class of worker recode"                
+_column(165 )   byte workyn      %1f "Item 29a - Did ... work at a job or"   
+_column(166 )   byte wtemp       %1f "Item 29b - Did ... do any temporary,"  
+_column(167 )   byte nwlook      %1f "Item 30 - Even though ... did not work"
+_column(168 )   byte nwlkwk      %2f "Item 31 - How may different weeks"     
+_column(170 )   byte rsnnotw     %1f "Item 32 - What was the main"           
+_column(171 )   byte wkswork     %2f "Item 33 - During 19.. in how many week"
+_column(173 )   byte wkcheck     %1f "Item 34 - Interviewer check item -"    
+_column(174 )   byte losewks     %1f "Item 35 Did ... lose any full weeks of"
+_column(175 )   byte lknone      %1f "Item 36 -  You said... worked about"   
+_column(176 )   byte lkweeks     %2f "Item 36 - Weeks was ... looking for"   
+_column(178 )   byte lkstrch     %1f "Item 37 - Were the (entry in item 36)" 
+_column(179 )   byte pyrsn       %1f "Item 38 - What was the main reason ..."
+_column(180 )   byte phmemprs    %1f "Item 39 - For how many employers did ."
+_column(181 )   byte hrswk       %2f "Item 40 - In the weeks that ... worked"
+_column(183 )   byte hrcheck     %1f "Item 41 - Interviewer check item -"    
+_column(184 )   byte ptyn        %1f "Item 42 - Did ... work less than 35 ho"
+_column(185 )   byte ptweeks     %2f "Item 43 - How many weeks did ... work" 
+_column(187 )   byte ptrsn       %1f "Item 44 - What was the main reason ..."
+_column(189 )   byte ljcw        %1f "Item 46e - Class of worker"            
+_column(190 )    int industry    %3f "Item 46b - Industry of longest job"    
+_column(193 )    int occup       %3f "Item 46c - Occupation of longest job"  
+_column(196 )   byte wexp        %2f "Recode -  Worker/nonworker recode -"   
+_column(198 )   byte wewkrs      %1f "Recode -  Worker/nonworker recode -"   
+_column(199 )   byte welknw      %1f "Recode -  Worker/nonworker recode -"   
+_column(200 )   byte weuemp      %1f "Recode - Worker/nonworker recode - Par"
+_column(201 )   byte earner      %1f "Recode - Earner status"                
+_column(202 )   byte clwk        %1f "Recode - Longest job class of worker"  
+_column(203 )   byte weclw       %1f "Recode - Longest job class of worker"  
+_column(204 )   byte poccu2      %2f "Recode - Occupation of longest job by" 
+_column(206 )   byte wemocg      %2f "Recode - Occupation of longest job by" 
+_column(208 )   byte weind       %2f "Recode - Industry of longest job by"   
+_column(210 )   byte wemind      %2f "Recode - Industry of longest job by"   
+_column(213 )   byte migplac     %1f "Item 55a - Metropolitan statistical ar"
+_column(214 )   byte migsame     %1f "Was ... living in this house (apt.) 1" 
+_column(215 )   byte mig_reg     %1f "Recode - Region of previous residence" 
+_column(216 )   byte mig_st      %2f "Recode - FIPS State code of previous"  
+_column(218 )   byte placdscp    %1f "Recode - MSA status of residence 1 yea"
+_column(219 )   byte gediv       %1f "Recode - Census division of current"   
+_column(220 )   byte mig_div     %2f "Recode - Census division of previous"  
+_column(222 )   byte mig_mtr1    %2f                                         
+_column(224 )   byte mig_mtr3    %1f                                         
+_column(225 )   byte mig_mtr4    %1f                                         
+_column(226 )   byte noemp       %1f "Item 47 - Counting all locations where"
+_column(227 )   byte ern_yn      %1f "Earnings from longest job recode"      
+_column(228 )   long ern_val     %6f "Item 48a &  b - How much did ... earn "
+_column(234 )   byte ern_srce    %1f "Earnings  recode"                      
+_column(235 )   byte ern_otr     %1f "Item 49a - Did ... earn money from oth"
+_column(236 )   byte wageotr     %1f "Item 49b -Other wage and salary earnin"
+_column(242 )   byte wsal_yn     %1f "Recode"                                
+_column(243 )   long wsal_val    %6f "Recode - Total wage and salary earning"
+_column(249 )   byte seotr       %1f "Item 49b - Other work - Own business"  
+_column(255 )   byte semp_yn     %1f "Recode - Any own business self-employm"
+_column(256 )   long semp_val    %6f "ERN-YN = 1 or SEOTR = 1"               
+_column(262 )   byte frmotr      %1f "Item 49b- Farm self-employment"        
+_column(263 )   long frm_val     %5f "Item 49b - Farm self-employment earnin"
+_column(268 )   byte frse_yn     %1f "Any own farm self-employment in ERN-YN"
+_column(269 )   long frse_val    %6f "Recode - Total amount of farm self-"   
+_column(275 )   byte uc_yn       %1f "Item 52a - At any time during 19.."    
+_column(276 )   byte subuc       %1f "Item 52a - At any time during 19.."    
+_column(277 )   byte strkuc      %1f "Item 52a -At any time during 19.."     
+_column(278 )   long uc_val      %5f "Item 52b - How much did ... receive in"
+_column(283 )   byte wc_yn       %1f "Item 53a - During 19.. did ... receive"
+_column(284 )   byte wc_type     %1f "Item 53b"                              
+_column(285 )   long wc_val      %5f "Item 53c - How much compensation did ."
+_column(290 )   byte ss_yn       %1f "Item 56b - Did ... receive s.s.?"      
+_column(291 )   long ss_val      %5f "Item 56c - How much did ... receive in"
+_column(296 )   byte ssi_yn      %1f "Item 57b - Did ... receive ssi?"       
+_column(301 )   byte paw_yn      %1f "Item 59b - Did ... receive public"     
+_column(302 )   byte paw_typ     %1f "Item 59c - Did ... receive AFDC or som"
+_column(303 )   byte paw_mon     %2f "Item 59d - In how many months of 19.." 
+_column(305 )   long paw_val     %5f "Item 59e - How much did ... receive in"
+_column(310 )   byte vet_yn      %1f "Item 60b - Did ... receive veterans'"  
+_column(311 )   byte vet_typ1    %1f "Item 60c - Disability compensation"    
+_column(312 )   byte vet_typ2    %1f "Item 60c - Survivor benefits"          
+_column(313 )   byte vet_typ3    %1f "Item 60c - Veterans' pension"          
+_column(314 )   byte vet_typ4    %1f "Item 60c - Education assistance"       
+_column(315 )   byte vet_typ5    %1f "Item 60c - Other veterans' payments"   
+_column(316 )   byte vet_qva     %1f "Item 60d - Is ... required to fill out"
+_column(317 )   long vet_val     %5f "Item 60e - How much did ... receive fr"
+_column(322 )   byte sur_yn      %1f "Item 61b - Other than social security "
+_column(323 )   byte sur_sc1     %2f "Item 61c - What was the source of this"
+_column(325 )   byte sur_sc2     %2f "Item 61d - Any other pension or"       
+_column(327 )   long sur_val1    %5f "Item 61e - how much did ... receive fr"
+_column(332 )   long sur_val2    %5f "Item 61g - How much did ... receive"   
+_column(337 )   long srvs_val    %6f "Recode total amount of survivor's inco"
+_column(343 )   byte dis_hp      %1f "Item 62b -  Does ... have a health"    
+_column(344 )   byte dis_cs      %1f "Item 62c - Did ... retire or leave a j"
+_column(345 )   byte dis_yn      %1f "Item 64b - Other than social security "
+_column(346 )   byte dis_sc1     %2f "Item 64c - What was the source of inco"
+_column(348 )   byte dis_sc2     %2f "Item 64c - Any other disability income"
+_column(350 )   long dis_val1    %5f "Item 64e - How much did ... receive fr"
+_column(355 )   long dis_val2    %5f "Item 64g - How much did ... receive fr"
+_column(360 )   long dsab_val    %6f "Recode total amount of disability inco"
+_column(366 )   byte ret_yn      %1f "Item 65b - Other than social security "
+_column(367 )   byte ret_sc1     %1f "Item 65c - What was the source of"     
+_column(368 )   byte ret_sc2     %1f "Item 65c - Any other retirement income"
+_column(369 )   long ret_val1    %5f "Item 65e - How much did ... receive fr"
+_column(374 )   long ret_val2    %5f "Item 65g - How much did ... receive fr"
+_column(379 )   long rtm_val     %6f "Recode total amount of retirement inco"
+_column(385 )   byte int_yn      %1f "Item 66b - Did ... receive interest?"  
+_column(386 )   long int_val     %5f "Item 66c - How much did ... receive in"
+_column(391 )   byte div_yn      %1f "Item 67b - Did ... receive dividends?" 
+_column(392 )   byte div_non     %1f "Item 67c - No dividends received"      
+_column(393 )   long div_val     %5f "Item 67c - How much did ... receive in"
+_column(398 )   byte rnt_yn      %1f "Item 68b - Did ... received rent?"     
+_column(399 )   long rnt_val     %5f "Item 68c - How much did ... receive in"
+_column(404 )   byte ed_yn       %1f "Item 69c - Did ... receive educational"
+_column(405 )   byte oed_typ1    %1f "Item 69d(1) &  (2) - Source of educati"
+_column(406 )   byte oed_typ2    %1f "Item 69d(3) - Source of educational"   
+_column(407 )   byte oed_typ3    %1f "Item 69d(4)- Source of educational"    
+_column(408 )   long ed_val      %5f "Item 69h - Total amount of educational"
+_column(414 )   byte csp_yn      %1f "Item 70b - Did ... receive child suppo"
+_column(415 )   long csp_val     %5f "Item 70c - How much did ... receive in"
+_column(420 )   byte alm_yn      %1f "Item 71b - Did ... receive alimony"    
+_column(421 )   long alm_val     %5f "Item 71c - How much did ... receive in"
+_column(426 )   byte fin_yn      %1f "Item 72b - Did ... receive financial"  
+_column(427 )   long fin_val     %5f "Item 72c - How much did ... receive in"
+_column(432 )   byte oi_off      %2f "Item 73c"                              
+_column(434 )   byte oi_yn       %1f "Item 73b - Did ... receive other incom"
+_column(435 )   long oi_val      %5f "Item 73d - How much did ... receive in"
+_column(440 )   long ptotval     %8f "Recode - Total persons income"         
+_column(448 )   long pearnval    %8f "Recode - Total persons earnings"       
+_column(457 )   long pothval     %8f "Recode - total other persons income"   
+_column(465 )   byte fl_665      %1f                                         
+_column(466 )   byte ptot_r      %2f "Recode - Total person income recode"   
+_column(468 )   byte perlis      %1f "Recode - Low-income level of persons"  
+_column(469 )   byte mcare       %1f "Item 74b - Was ... covered by medicare"
+_column(470 )   byte mcaid       %1f "Item 74d - Was ... covered by medicaid"
+_column(471 )   byte champ       %1f "Item 74f - Was ... covered by CHAMPUS,"
+_column(472 )   byte hi_yn       %1f "Item 75b - Was ... covered by private" 
+_column(473 )   byte hiown       %1f "Item 75c - Was this health insurance"  
+_column(474 )   byte hiemp       %1f "Item 75d - Was this health insurance p"
+_column(475 )   byte hipaid      %1f "Item 75e - Did ...'s employer or union"
+_column(481 )   byte wrk_ck      %1f "Item 76 - Interviewer check item worke"
+_column(482 )   byte penplan     %1f "Item 76a - Other than social security "
+_column(483 )   byte penincl     %1f "Item 76b - Was ... included in that pl"
+_column(484 )   byte cov_gh      %1f "Recode - Includes dependents included "
+_column(485 )   byte cov_hi      %1f "Recode - Includes dependents covered b"
+_column(486 )   byte ch_mc       %1f "A-AGE less than 15"                    
+_column(487 )   byte ch_hi       %1f "A-AGE less than 15"                    
+_column(489 )   byte aprrp       %1f "Relationship to reference person"      
+_column(490 )   byte apparent    %1f "Parent's line number allocation flag"  
+_column(491 )   byte apage       %1f "Age allocation flag"                   
+_column(492 )   byte apmaritl    %1f "Marital status allocation flag"        
+_column(493 )   byte apspouse    %1f "Spouse's line number allocation flag"  
+_column(494 )   byte apsex       %1f "Sex allocation flag"                   
+_column(495 )   byte apvet       %1f "Veteran status allocation flag"        
+_column(496 )   byte aphga       %1f "Highest grade attended allocation flag"
+_column(498 )   byte aprace      %1f "Race allocation flag"                  
+_column(499 )   byte aporigin    %1f "Origin allocation flag"                
+_column(500 )   byte aplfsr      %1f "Labor force status recode allocation"  
+_column(503 )   byte aphrs       %1f                                         
+_column(510 )   byte apwhyabs    %1f                                         
+_column(511 )   byte appayabs    %1f                                         
+_column(521 )   byte apind       %1f                                         
+_column(522 )   byte apocc       %1f                                         
+_column(523 )   byte apclswkr    %1f                                         
+_column(526 )   byte apnlflj     %1f                                         
+_column(532 )   byte apuslhrs    %1f                                         
+_column(533 )   byte aphrlywk    %1f                                         
+_column(536 )   byte apunmem     %1f                                         
+_column(537 )   byte apuncov     %1f                                         
+_column(539 )   byte apenrlw     %1f                                         
+_column(540 )   byte aphscol     %1f                                         
+_column(541 )   byte apftpt      %1f                                         
+_column(542 )   byte i_ernyn     %1f                                         
+_column(543 )   byte i_ernval    %1f                                         
+_column(544 )   byte i_wsyn      %1f                                         
+_column(545 )   byte i_wsval     %1f                                         
+_column(546 )   byte i_seyn      %1f                                         
+_column(547 )   byte i_seval     %1f                                         
+_column(548 )   byte i_frmyn     %1f                                         
+_column(549 )   byte i_frmval    %1f                                         
+_column(550 )   byte i_ucyn      %1f                                         
+_column(551 )   byte i_ucval     %1f                                         
+_column(552 )   byte i_wcyn      %1f                                         
+_column(553 )   byte i_wctyp     %1f                                         
+_column(554 )   byte i_wcval     %1f                                         
+_column(555 )   byte i_ssyn      %1f                                         
+_column(556 )   byte i_ssval     %1f                                         
+_column(557 )   byte i_ssiyn     %1f                                         
+_column(558 )   byte i_ssival    %1f                                         
+_column(559 )   byte i_pawyn     %1f                                         
+_column(560 )   byte i_pawtyp    %1f                                         
+_column(561 )   byte i_pawval    %1f                                         
+_column(562 )   byte i_pawmo     %1f                                         
+_column(563 )   byte i_vetyn     %1f                                         
+_column(564 )   byte i_vettyp    %1f                                         
+_column(565 )   byte i_vetval    %1f                                         
+_column(566 )   byte i_vetqva    %1f                                         
+_column(567 )   byte i_suryn     %1f                                         
+_column(569 )   byte i_sursc1    %1f                                         
+_column(570 )   byte i_sursc2    %1f                                         
+_column(571 )   byte i_survl1    %1f                                         
+_column(572 )   byte i_survl2    %1f                                         
+_column(573 )   byte i_dissc1    %1f                                         
+_column(574 )   byte i_dissc2    %1f                                         
+_column(575 )   byte i_dishp     %1f                                         
+_column(576 )   byte i_discs     %1f                                         
+_column(577 )   byte i_disyn     %1f                                         
+_column(578 )   byte toi_val     %1f "Other income"                          
+_column(579 )   byte i_disvl1    %1f                                         
+_column(580 )   byte i_disvl2    %1f                                         
+_column(581 )   byte i_retyn     %1f                                         
+_column(582 )   byte i_retsc1    %1f                                         
+_column(583 )   byte i_retsc2    %1f                                         
+_column(584 )   byte i_retvl1    %1f                                         
+_column(585 )   byte i_retvl2    %1f                                         
+_column(586 )   byte i_intyn     %1f                                         
+_column(587 )   byte i_intval    %1f                                         
+_column(588 )   byte i_divyn     %1f                                         
+_column(589 )   byte i_divval    %1f                                         
+_column(590 )   byte i_rntyn     %1f                                         
+_column(591 )   byte i_rntval    %1f                                         
+_column(592 )   byte i_edyn      %1f                                         
+_column(593 )   byte i_edtyp1    %1f                                         
+_column(594 )   byte i_edtyp2    %1f                                         
+_column(595 )   byte i_oedval    %1f                                         
+_column(596 )   byte i_cspyn     %1f                                         
+_column(597 )   byte i_cspval    %1f                                         
+_column(598 )   byte i_almyn     %1f                                         
+_column(599 )   byte i_almval    %1f                                         
+_column(600 )   byte i_finyn     %1f                                         
+_column(601 )   byte i_finval    %1f                                         
+_column(602 )   byte i_oival     %1f                                         
+_column(603 )   byte i_nwlook    %1f                                         
+_column(604 )   byte i_nwlkwk    %1f                                         
+_column(605 )   byte i_rsnnot    %1f                                         
+_column(606 )   byte i_losewk    %1f                                         
+_column(607 )   byte i_lkweek    %1f                                         
+_column(608 )   byte i_lkstr     %1f                                         
+_column(609 )   byte i_pyrsn     %1f                                         
+_column(610 )   byte i_phmemp    %1f                                         
+_column(611 )   byte i_hrswk     %1f                                         
+_column(612 )   byte i_hrchk     %1f                                         
+_column(613 )   byte i_ptyn      %1f                                         
+_column(614 )   byte i_ptwks     %1f                                         
+_column(615 )   byte i_ptrsn     %1f                                         
+_column(616 )   byte i_ljcw      %1f                                         
+_column(617 )   byte i_indus     %1f                                         
+_column(618 )   byte i_occup     %1f                                         
+_column(619 )   byte i_workyn    %1f                                         
+_column(620 )   byte i_wtemp     %1f                                         
+_column(621 )   byte i_wkswk     %1f                                         
+_column(622 )   byte i_wkchk     %1f                                         
+_column(623 )   byte i_ernsrc    %1f                                         
+_column(624 )   byte i_noemp     %1f                                         
+_column(633 )   byte i_penpla    %1f                                         
+_column(634 )   byte i_peninc    %1f                                         
+_column(635 )   byte i_mig1      %1f "MIGSAME imputation flag."              
+_column(636 )   byte i_mig2      %1f "MIG-ST imputation flag."               
+_column(637 )   byte tcernval    %1f "Earnings from employer or self-"       
+_column(638 )   byte tcwsval     %1f "Wage and salary income topcoded flag"  
+_column(639 )   byte tcseval     %1f "Nonfarm self employment income"        
+_column(640 )   byte tcffmval    %1f "Farm self employment income topcoded"  
+_column(641 )   byte a_werntf    %1f "Current earnings - Weekly pay"         
+_column(642 )   byte a_herntf    %1f "Current earnings - Hourly pay"         
+_column(643 )   long p_mvcare    %5f "Person market value of medicare"       
+_column(648 )   long p_mvcaid    %5f "Person market value of medicaid"       
+_column(653 )    int emcontrb    %4f "Employer contribution for health"      
+_column(657 )   byte filestat    %1f "Tax Filer status"                      
+_column(658 )   byte dep_stat    %2f "Dependency status pointer"             
+_column(660 )   long fed_tax     %5f "Federal income tax liability"          
+_column(665 )    int eit_cred    %4f "Earn income tax credit"                
+_column(669 )   long statetax    %5f "State income tax liability"            
+_column(674 )   long fica        %5f "Social security retirement payroll"    
+_column(679 )   long fed_ret     %5f "Federal retirement payroll deduction"  
+_column(684 )   long agi         %5f "Adjusted gross income"                 
+_column(689 )   long cap_gain    %5f "Amount of capital gains"               
+_column(694 )    int cap_loss    %4f "Amount of capital losses"              
+_column(698 )   long tax_inc     %5f "Taxable income amount"                 
+_column(703 )   byte marg_tax    %2f "Federal Income Marginal tax rate"      
+_column(705 )   byte pemlr       %1f "Major labor force recode"              
+_column(706 )   byte pruntype    %1f "Reason for unemployment"               
+_column(707 )   byte prwkstat    %2f "Full/part-time work status"            
+_column(709 )   byte prptrea     %2f "Detailed reason for part-time"         
+_column(711 )   byte prdisc      %1f "Discouraged worker recode"             
+_column(712 )   byte prcow1      %1f "Class of worker recode-job 1"          
+_column(713 )   byte prpertyp    %1f "Type of person record recode"          
+_column(714 )   byte peabsrsn    %2f "What was the main reason...was absent" 
+_column(716 )   byte peio1cow    %2f "Individual class of worker on first jo"
+_column(718 )   byte prnlfsch    %1f "NLF activity in school or not in schoo"
+_column(719 )    int pehruslt    %3f                                         
+_column(722 )    int penatvty    %3f "In what country were you born?"        
+_column(725 )    int pemntvty    %3f "In what country was your mother born?" 
+_column(728 )    int pefntvty    %3f "In what country was your father born?" 
+_column(731 )   byte peinusyr    %2f "When did you come to the U.S. to stay?"
+_column(733 )   byte prcitshp    %1f                                         
+_column(734 )   byte pxnatvty    %2f "Allocation flag for PENATVTY"          
+_column(736 )   byte pxmntvty    %2f "Allocation flag for PEMNTVTY"          
+_column(738 )   byte pxfntvty    %2f "Allocation flag for PEFNTVTY"          
+_column(740 )   byte pxinusyr    %2f "Allocation flag for PEINUSYR"          
+_column(742 )   byte perrp       %2f "Expanded relationship categories"      
+_column(744 )    int mig_cnt     %3f "Country of previous residence."        
+_column(747 )   byte i_mig3      %1f "Imputation flag."                      
+_column(748 )   byte hi          %1f "Covered by a health plan provided"     
+_column(749 )   byte hityp       %1f "Health insurance plan type."           
+_column(750 )   byte dephi       %1f "Covered by a health plan through"      
+_column(751 )   byte hilin1      %2f "Line number of policyholder of health" 
+_column(753 )   byte hilin2      %2f "Line number of policyholder of health" 
+_column(755 )   byte paid        %1f "Did ...'s former or current employer o"
+_column(756 )   byte hiout       %1f "Employer or union plan covered someone"
+_column(757 )   byte priv        %1f "Covered by a plan that they purchased" 
+_column(758 )   byte prityp      %1f "Private health insurance plan type."   
+_column(759 )   byte depriv      %1f "Covered by private plan not related to"
+_column(760 )   byte pilin1      %2f "Line number of first policyholder of"  
+_column(762 )   byte pilin2      %2f "Line number of second policyholder of" 
+_column(764 )   byte pout        %1f "Private plan covered someone outside t"
+_column(765 )   byte out         %1f "Covered by the health plan of someone" 
+_column(766 )   byte care        %1f "Covered by medicare, the health"       
+_column(767 )   byte caid        %1f "Covered by (medicaid/local name), the" 
+_column(768 )   byte mon         %2f "Number of months covered by medicaid ("
+_column(770 )   byte oth         %1f "Covered by any other kind of health"   
+_column(771 )   byte otyp_1      %1f "Covered by CHAMPUS."                   
+_column(772 )   byte otyp_2      %1f "Covered by CHAMPVA."                   
+_column(773 )   byte otyp_3      %1f "Covered by VA or military health care."
+_column(774 )   byte otyp_4      %1f "Covered by Indian health."             
+_column(775 )   byte otyp_5      %1f "Covered by other."                     
+_column(776 )   byte othstper    %1f "Covered by other type of health"       
+_column(777 )   byte othstyp1    %2f "Other type of health insurance include"
+_column(779 )   byte othstyp2    %2f                                         
+_column(781 )   byte othstyp3    %2f                                         
+_column(783 )   byte othstyp4    %2f                                         
+_column(785 )   byte othstyp5    %2f                                         
+_column(787 )   byte othstyp6    %2f                                         
+_column(800 )   byte hea         %1f "Would you say ...'s health in general" 
+_column(801 )   byte i_hi        %1f "Imputation item: HI"                   
+_column(802 )   byte i_dephi     %1f "Imputation item: DEPHI"                
+_column(803 )   byte i_paid      %1f "Imputation item: PAID"                 
+_column(804 )   byte i_hiout     %1f "Imputation item: HIOUT"                
+_column(805 )   byte i_priv      %1f "Imputation item: PRIV"                 
+_column(806 )   byte i_depriv    %1f "Imputation item: DEPRIV"               
+_column(807 )   byte i_pout      %1f "Imputation item: POUT"                 
+_column(808 )   byte i_out       %1f "Imputation item: OUT"                  
+_column(809 )   byte i_care      %1f "Imputation item: CARE"                 
+_column(810 )   byte i_caid      %1f "Imputation item: CAID"                 
+_column(811 )   byte i_mon       %1f "Imputation item: MON"                  
+_column(812 )   byte i_oth       %1f "Imputation item: oth"                  
+_column(813 )   byte i_otyp      %1f "Imputation items: OTYP-1, ..., OTYP-5."
+_column(814 )   byte i_ostper    %1f "Imputation item: OTHSTPER"             
+_column(815 )   byte i_ostyp     %1f "Imputation items: OTHSTYP1, ...,"      
+_column(818 )   byte i_hea       %1f "Imputation item: HEA"                  
+_column(819 )   long ssi_val     %5f "Item 57c - How much did ... receive in"
+_column(824 )   long ws_val      %6f "Item 49b - Other wage and salary earni"
+_column(830 )   long se_val      %6f "Item 49b - Other work - Own business"  
+_column(836 )   byte ihsflg      %1f "Recode:  Covered by Indian Health"     
+_column(837 )   byte tsurval1    %1f "Survivors income, source 1,"           
+_column(838 )   byte tsurval2    %1f "Survivors income, source 2,"           
+_column(839 )   byte tdisval1    %1f "Disability income, source 1,"          
+_column(840 )   byte tdisval2    %1f "Disability income, source 2,"          
+_column(841 )   byte tretval1    %1f "Retirement income, source 1,"          
+_column(842 )   byte tretval2    %1f "Retirement income, source 2,"          
+_column(843 )   byte tint_val    %1f "Interest income"                       
+_column(844 )   byte tdiv_val    %1f "Dividend income"                       
+_column(845 )   byte trnt_val    %1f "Rent income"                           
+_column(846 )   byte ted_val     %1f "Education assistance"                  
+_column(847 )   byte tcsp_val    %1f "Child support payments"                
+_column(848 )   byte talm_val    %1f "Alimony payments"                      
+_column(849 )   byte tfin_val    %1f "Financial assistance"                  
+_column(850 )   byte nxtres      %2f "What was ... main reason for moving?"  
+_column(852 )   byte i_nxtres    %1f "Imputation flag"                       
+
+}
+/*
+Copyright 2005 shared by the National Bureau of Economic Research and Jean Roth
+
+National Bureau of Economic Research.
+1050 Massachusetts Avenue
+Cambridge, MA 02138
+jroth@nber.org
+
+This program and all programs referenced in it are free software. You
+can redistribute the program or modify it under the terms of the GNU
+General Public License as published by the Free Software Foundation;
+either version 2 of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307
+USA.
+*/
