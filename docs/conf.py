@@ -23,8 +23,8 @@ copyright = u'2019, Economic Policy Institute'
 author = u'Economic Policy Institute'
 
 # -- UPDATE THESE AT EACH NEW RELEASE -----------------------------------------
-version = u'Version 0.6.6'
-today = u'2019-04-15'
+version = u'Version 0.6.7'
+today = u'2019-04-22'
 rst_epilog = """
 .. |latestdata| replace:: 2019m3
 .. |year| replace:: 2019

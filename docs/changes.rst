@@ -9,6 +9,14 @@ If you use the EPI extracts for your research, please cite them as
 	Economic Policy Institute. |year|. Current Population Survey Extracts, |release|.
 
 
+Version 0.6.7 -- 2019-04-22
+===============================================================================
+
+Fixed
+--------------------------------------------------------------------------------
+* hhtype no longer missing for 1984-1993.
+
+
 Version 0.6.6 -- 2019-04-15
 ===============================================================================
 
