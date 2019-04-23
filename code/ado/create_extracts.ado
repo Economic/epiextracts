@@ -106,8 +106,9 @@ foreach year of numlist `minyear'(1)`maxyear' {
 		local inputfile unicon_may_`year'.dta
 
 		* load data
-		unzipfile `inputpath'`inputfile'.zip, replace
-		use `inputfile', clear
+		tempfile tmpdat
+		!unzip -p "`inputpath'`inputfile'.zip" > `tmpdat'
+		use `tmpdat', clear
 
 		* run key basic/org programs
 		do ${code}sample_cpsbasic.do
@@ -116,9 +117,6 @@ foreach year of numlist `minyear'(1)`maxyear' {
 
 		* adjust wage variables (top-codes, hours, extreme values)
 		do ${code}adjust_wages.do
-
-		* clean up
-		erase `inputfile'
 
 		* save data
 		compress
@@ -174,8 +172,9 @@ foreach year of numlist `minyear'(1)`maxyear' {
 			}
 
 			* unzip and load source data into memory
-			unzipfile `inputpath'`inputfile'.zip, replace
-			use `inputfile', clear
+			tempfile tmpdat
+			!unzip -p "`inputpath'`inputfile'.zip" > `tmpdat'
+			use `tmpdat', clear
 
 			* run key basic/org programs
 			do ${code}sample_cpsbasic.do
@@ -201,9 +200,6 @@ foreach year of numlist `minyear'(1)`maxyear' {
 				save `org_month`month''
 			}
 
-			* clean up basic monthly input file
-			erase `inputfile'
-
 			* process separate 1979-1981 ORG
 			if `orgexists' == 1 & `separateorg' == 1 {
 				* indicator for using basic monthly file
@@ -216,8 +212,9 @@ foreach year of numlist `minyear'(1)`maxyear' {
 				local inputpath ${uniconorg}
 				local inputfile unicon_org_`year'_`month'.dta
 
-				unzipfile `inputpath'`inputfile'.zip, replace
-				use `inputfile', clear
+				tempfile tmpdat
+				!unzip -p "`inputpath'`inputfile'.zip" > `tmpdat'
+				use `tmpdat', clear
 
 				* run key basic/org programs
 				do ${code}sample_cpsbasic.do
@@ -234,7 +231,6 @@ foreach year of numlist `minyear'(1)`maxyear' {
 				tempfile org_month`month'
 				save `org_month`month''
 
-				erase `inputfile'
 			}
 		}
 

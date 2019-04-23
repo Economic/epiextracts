@@ -4,7 +4,7 @@
 capture rename hhtype oldhhtype
 gen hhtype = .
 if tm(1984m1) <= $date & $date <= tm(1993m12) {
-	replace hhid = hhtype
+	replace hhtype = oldhhtype
 }
 if tm(1994m1) <= $date {
 	replace hhtype = hrhtype
