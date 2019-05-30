@@ -9,6 +9,14 @@ If you use the EPI extracts for your research, please cite them as
 	Economic Policy Institute. |year|. Current Population Survey Extracts, |release|.
 
 
+Version 0.6.8 -- 2019-05-14
+===============================================================================
+
+Added
+--------------------------------------------------------------------------------
+* April 2019 extracts
+
+
 Version 0.6.7 -- 2019-04-22
 ===============================================================================
 
