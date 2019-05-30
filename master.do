@@ -55,10 +55,13 @@ global docs docs/
 * Census data that needs to be converted to Stata
 global censusbasicraw /data/cps/basic/census/raw/
 global censusbasicstata /data/cps/basic/census/stata/
+global censusmarchraw /data/cps/march/census/raw/
+global censusmarchstata /data/cps/march/census/stata/
 * Unicon data already in Stata format
 global uniconbasic /data/cps/basic/unicon/
-global uniconorg /data/cps/org/unicon/
 global uniconmay /data/cps/may/unicon/
+global uniconmarch /data/cps/march/unicon/
+global uniconorg /data/cps/org/unicon/
 
 
 *******************************************************************************
@@ -73,6 +76,7 @@ adopath ++ ${code}ado
 *******************************************************************************
 * process the raw data and convert it to Stata format
 * this is only necessary for additional months of data
+*process_rawmarch, begin(2013) end(2018)
 *process_rawbasic, begin(1994m1) end(2019m4)
 
 * create EPI's extracts from the processed raw data
