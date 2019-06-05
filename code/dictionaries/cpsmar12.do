@@ -1,32 +1,44 @@
-*by Jean Roth Wed Oct  9 10:18:47 EDT 2002
-*Please report errors to jroth@nber.org
-*The raw CPS March files have a hierarchical structure.
-*A household record is followed by a family record and then person records
-*This program produces a person level dataset with family and household data appended
-*Remember, household and family data are repeated for each person in cpsmar01.dta
-*run with do cpsmar01
-*Change input file location 'dictionary using' line on .dct files
-*If you are using a PC, you may need to change the direction of the slashes as in C:\
-*  or "\\Nber\home\data\cps\cpsmar01\cpsmar01.raw"
-* A -1 means Blank; Not in Universe; or In Universe, Met No Conditions;
-* Sometimes, -1 is present but not described in the codebook.
-* These appear to be invalid values also.
-
-* The following changes in variable names have been made:
-*      '$' to 'd';            '-' to '_';              '%' to 'p';
-*      ($ = unedited data;     - = edited data;         % = allocated data)
-* Note:  Variable names in Stata are case-sensitive
-
+/*------------------------------------------------
+  by Jean Roth Tue Sep 18 18:26:33 EDT 2012
+  Please report errors to jroth@nber.org
+  NOTE:  This program is distributed under the GNU GPL.
+  See end of this file and http://www.gnu.org/licenses/ for details.
+  Run with do cpsmar12
+----------------------------------------------- */
 
 local dat_name "`1'"
 local dct_name "`2'"
 
 quietly infile using "`dct_name'", using("`dat_name'") clear
 
+/*------------------------------------------------
+
+  All items, except those with one character, also can have values
+  of -1, -2, or -3 even if the values are not in the documentation
+  The meaning is
+       -1 .Blank or not in universe
+       -2 .Don't know
+       -3 .Refused
+
+  The following changes in variable names have been made, if necessary:
+      '$' to 'd';            '-' to '_';              '%' to 'p';
+      ($ = unedited data;     - = edited data;         % = allocated data)
+
+  Decimal places have been made explict in the dictionary file.
+  Stata resolves a missing value of -1 / # of decimal places as a missing value.
+
+  Variable names in Stata are case-sensitive
+
+ -----------------------------------------------*/
+
+*The replace statements append household
+*and family variables to their respective
+*person records.
+
 replace     h_seq =     h_seq[_n-1]  if  hrecord>1
 replace     hhpos =     hhpos[_n-1]  if  hrecord>1
 replace    hunits =    hunits[_n-1]  if  hrecord>1
-replace  h_faminc =  h_faminc[_n-1]  if  hrecord>1
+replace  hefaminc =  hefaminc[_n-1]  if  hrecord>1
 replace  h_respnm =  h_respnm[_n-1]  if  hrecord>1
 replace    h_year =    h_year[_n-1]  if  hrecord>1
 replace  h_hhtype =  h_hhtype[_n-1]  if  hrecord>1
@@ -42,23 +54,17 @@ replace  h_tenure =  h_tenure[_n-1]  if  hrecord>1
 replace  h_telhhd =  h_telhhd[_n-1]  if  hrecord>1
 replace  h_telavl =  h_telavl[_n-1]  if  hrecord>1
 replace  h_telint =  h_telint[_n-1]  if  hrecord>1
-replace    hg_reg =    hg_reg[_n-1]  if  hrecord>1
-replace   hg_st60 =   hg_st60[_n-1]  if  hrecord>1
+replace     gereg =     gereg[_n-1]  if  hrecord>1
+replace   gestcen =   gestcen[_n-1]  if  hrecord>1
 replace  gestfips =  gestfips[_n-1]  if  hrecord>1
-replace   hg_msac =   hg_msac[_n-1]  if  hrecord>1
-replace      geco =      geco[_n-1]  if  hrecord>1
-replace   hg_cmsa =   hg_cmsa[_n-1]  if  hrecord>1
-replace     hmssz =     hmssz[_n-1]  if  hrecord>1
-replace   hpmsasz =   hpmsasz[_n-1]  if  hrecord>1
-replace    hmsa_r =    hmsa_r[_n-1]  if  hrecord>1
-replace    hccc_r =    hccc_r[_n-1]  if  hrecord>1
+replace    gtcbsa =    gtcbsa[_n-1]  if  hrecord>1
+replace      gtco =      gtco[_n-1]  if  hrecord>1
+replace  gtcbsast =  gtcbsast[_n-1]  if  hrecord>1
+replace  gtmetsta =  gtmetsta[_n-1]  if  hrecord>1
+replace  gtindvpc =  gtindvpc[_n-1]  if  hrecord>1
+replace  gtcbsasz =  gtcbsasz[_n-1]  if  hrecord>1
+replace     gtcsa =     gtcsa[_n-1]  if  hrecord>1
 replace  hunder15 =  hunder15[_n-1]  if  hrecord>1
-replace   hcmcare =   hcmcare[_n-1]  if  hrecord>1
-replace   hcmceno =   hcmceno[_n-1]  if  hrecord>1
-replace      hchi =      hchi[_n-1]  if  hrecord>1
-replace    hchino =    hchino[_n-1]  if  hrecord>1
-replace   hchinrh =   hchinrh[_n-1]  if  hrecord>1
-replace   hchinno =   hchinno[_n-1]  if  hrecord>1
 replace   hh5to18 =   hh5to18[_n-1]  if  hrecord>1
 replace   hhotlun =   hhotlun[_n-1]  if  hrecord>1
 replace    hhotno =    hhotno[_n-1]  if  hrecord>1
@@ -69,7 +75,6 @@ replace   hlorent =   hlorent[_n-1]  if  hrecord>1
 replace   hfoodsp =   hfoodsp[_n-1]  if  hrecord>1
 replace   hfoodno =   hfoodno[_n-1]  if  hrecord>1
 replace   hfoodmo =   hfoodmo[_n-1]  if  hrecord>1
-replace    hfdval =    hfdval[_n-1]  if  hrecord>1
 replace   hengast =   hengast[_n-1]  if  hrecord>1
 replace   hengval =   hengval[_n-1]  if  hrecord>1
 replace   hinc_ws =   hinc_ws[_n-1]  if  hrecord>1
@@ -124,13 +129,12 @@ replace  hhstatus =  hhstatus[_n-1]  if  hrecord>1
 replace  hunder18 =  hunder18[_n-1]  if  hrecord>1
 replace  htop5pct =  htop5pct[_n-1]  if  hrecord>1
 replace   hpctcut =   hpctcut[_n-1]  if  hrecord>1
-replace  indccode =  indccode[_n-1]  if  hrecord>1
 replace  hsup_wgt =  hsup_wgt[_n-1]  if  hrecord>1
-replace  hptenure =  hptenure[_n-1]  if  hrecord>1
-replace  hplivqrt =  hplivqrt[_n-1]  if  hrecord>1
-replace  hptelhhd =  hptelhhd[_n-1]  if  hrecord>1
-replace  hptelavl =  hptelavl[_n-1]  if  hrecord>1
-replace  hptelint =  hptelint[_n-1]  if  hrecord>1
+replace  h1tenure =  h1tenure[_n-1]  if  hrecord>1
+replace  h1livqrt =  h1livqrt[_n-1]  if  hrecord>1
+replace  h1telhhd =  h1telhhd[_n-1]  if  hrecord>1
+replace  h1telavl =  h1telavl[_n-1]  if  hrecord>1
+replace  h1telint =  h1telint[_n-1]  if  hrecord>1
 replace  i_hhotlu =  i_hhotlu[_n-1]  if  hrecord>1
 replace  i_hhotno =  i_hhotno[_n-1]  if  hrecord>1
 replace  i_hflunc =  i_hflunc[_n-1]  if  hrecord>1
@@ -143,29 +147,23 @@ replace  i_hfoodn =  i_hfoodn[_n-1]  if  hrecord>1
 replace  i_hfoodm =  i_hfoodm[_n-1]  if  hrecord>1
 replace  i_hengas =  i_hengas[_n-1]  if  hrecord>1
 replace  i_hengva =  i_hengva[_n-1]  if  hrecord>1
+replace  h_idnum2 =  h_idnum2[_n-1]  if  hrecord>1
 replace  prop_tax =  prop_tax[_n-1]  if  hrecord>1
 replace   housret =   housret[_n-1]  if  hrecord>1
 replace   hrhtype =   hrhtype[_n-1]  if  hrecord>1
-replace   h_idnum =   h_idnum[_n-1]  if  hrecord>1
+replace  h_idnum1 =  h_idnum1[_n-1]  if  hrecord>1
 replace  i_hunits =  i_hunits[_n-1]  if  hrecord>1
-replace    hrtayn =    hrtayn[_n-1]  if  hrecord>1
-replace   hrnumta =   hrnumta[_n-1]  if  hrecord>1
-replace   hrccayn =   hrccayn[_n-1]  if  hrecord>1
-replace   hrnumcc =   hrnumcc[_n-1]  if  hrecord>1
 replace  hrpaidcc =  hrpaidcc[_n-1]  if  hrecord>1
-replace    hrccyn =    hrccyn[_n-1]  if  hrecord>1
-replace  hrcmsryn =  hrcmsryn[_n-1]  if  hrecord>1
-replace    hrjcyn =    hrjcyn[_n-1]  if  hrecord>1
-replace    hrjryn =    hrjryn[_n-1]  if  hrecord>1
-replace    hrjtyn =    hrjtyn[_n-1]  if  hrecord>1
-replace  hrnumcsv =  hrnumcsv[_n-1]  if  hrecord>1
-replace   hrnumjc =   hrnumjc[_n-1]  if  hrecord>1
-replace   hrnumjr =   hrnumjr[_n-1]  if  hrecord>1
-replace   hrnumjt =   hrnumjt[_n-1]  if  hrecord>1
-replace   hrnumsc =   hrnumsc[_n-1]  if  hrecord>1
+replace hprop_val = hprop_val[_n-1]  if  hrecord>1
+replace thprop_val = thprop_val[_n-1]  if  hrecord>1
+replace i_propval = i_propval[_n-1]  if  hrecord>1
 replace  hrnumwic =  hrnumwic[_n-1]  if  hrecord>1
-replace  hrschlyn =  hrschlyn[_n-1]  if  hrecord>1
 replace   hrwicyn =   hrwicyn[_n-1]  if  hrecord>1
+replace    hfdval =    hfdval[_n-1]  if  hrecord>1
+replace tcare_val = tcare_val[_n-1]  if  hrecord>1
+replace  care_val =  care_val[_n-1]  if  hrecord>1
+replace i_careval = i_careval[_n-1]  if  hrecord>1
+replace hpres_mort = hpres_mort[_n-1]  if  hrecord>1
 replace   frecord =   frecord[_n-1]  if  precord==3
 replace    fh_seq =    fh_seq[_n-1]  if  precord==3
 replace     ffpos =     ffpos[_n-1]  if  precord==3
@@ -242,13 +240,361 @@ replace  ffngcaid =  ffngcaid[_n-1]  if  precord==3
 replace  fhoussub =  fhoussub[_n-1]  if  precord==3
 replace  ffoodreq =  ffoodreq[_n-1]  if  precord==3
 replace  fhousreq =  fhousreq[_n-1]  if  precord==3
+replace  fhip_val =  fhip_val[_n-1]  if  precord==3
+replace     fmoop =     fmoop[_n-1]  if  precord==3
+replace  fotc_val =  fotc_val[_n-1]  if  precord==3
+replace  fmed_val =  fmed_val[_n-1]  if  precord==3
+replace i_fhipval = i_fhipval[_n-1]  if  precord==3
 
 replace hrecord = 1
 keep if precord==3
 
-*Everything below this point are value labels
+** These note statements incorporate variable universes into the Stata data file.
+note: by Jean Roth, jroth@nber.org Tue Sep 18 18:26:33 EDT 2012
+note h_seq: U All households
+note hefaminc: U H-HHTYPE = 1
+note h_respnm: U All households
+note h_hhtype: U All households
+note h_numper: U All
+note hnumfam: U H-HHTYPE = 1
+note h_type: U H-HHTYPE = 1
+note h_month: U H-HHTYPE = 1
+note h_mis: U All households
+note h_hhnum: U All households
+note h_livqrt: U All households
+note h_typebc: U All households
+note h_tenure: U H-HHTYPE = 3
+note h_telhhd: U H-HHTYPE = 1
+note h_telavl: U H-HHTYPE = 1
+note h_telint: U H-TELHHD = 2
+note gereg: U H-TELAVL = 1
+note gestcen: U All households
+note gestfips: U All households
+note gtcbsast: U All HHLD's in sample
+note gtmetsta: U All
+note gtindvpc: U All
+note gtcsa: U All HHLD's in sample
+note hh5to18: U ITEM 79 = 1
+note hhotno: U HH5TO18 = 1+
+note hflunch: U HHOTLUN = 1
+note hflunno: U HHOTLUN = 1
+note hpublic: U HFLUNCH = 1
+note hlorent: U HTENURE = 2
+note hfoodsp: U HPUBLIC = 2
+note hfoodno: U H-HHTYPE = 1
+note hfoodmo: U HFOODSP = 1
+note hengast: U HFOODSP = 1
+note hengval: U H-HHTYPE = 1
+note hinc_ws: U HENGAST = 1
+note hwsval: U H-HHTYPE = 1
+note hinc_se: U HINC-WS = 1
+note hseval: U H-HHTYPE = 1
+note hinc_fr: U HINC-SE  = 1
+note hfrval: U H-HHTYPE = 1
+note hinc_uc: U HINC-FR = 1
+note hucval: U H-HHTYPE = 1
+note hinc_wc: U HINC-UC = 1
+note hwcval: U H-HHTYPE = 1
+note hss_yn: U HINC-WC = 1
+note hssval: U H-HHTYPE = 1
+note hssi_yn: U HSS-YN = 1
+note hssival: U H-HHTYPE = 1
+note hpaw_yn: U HSSI-YN = 1
+note hpawval: U H-HHTYPE = 1
+note hvet_yn: U HPAW-YN = 1
+note hvetval: U H-HHTYPE = 1
+note hsur_yn: U HVET-YN = 1
+note hsurval: U H-HHTYPE = 1
+note hdis_yn: U HSUR-YN = 1
+note hdisval: U H-HHTYPE = 1
+note hret_yn: U HDIS-YN = 1
+note hretval: U H-HHTYPE = 1
+note hint_yn: U HRET-YN = 1
+note hintval: U H-HHTYPE = 1
+note hdiv_yn: U HINT-YN = 1
+note hdivval: U H-HHTYPE = 1
+note hrnt_yn: U HDIV-YN = 1
+note hrntval: U H-HHTYPE = 1
+note hed_yn: U HRNT-YN = 1
+note hedval: U H-HHTYPE = 1
+note hcsp_yn: U HED-YN = 1
+note hcspval: U H-HHTYPE = 1
+note halm_yn: U HCSP-YN = 1
+note halmval: U H-HHTYPE = 1
+note hfin_yn: U HALM-YN = 1
+note hfinval: U H-HHTYPE = 1
+note hoi_yn: U HFIN-YN = 1
+note hoival: U H-HHTYPE = 1
+note htotval: U HOI-YN = 1
+note hearnval: U H-HHTYPE = 1
+note hothval: U HINC-WS,HINC-SE or HINC-FR = 1
+note hmcare: U H-HHTYPE = 1
+note hmcaid: U H-HHTYPE = 1
+note hchamp: U H-HHTYPE = 1
+note hhi_yn: U H-HHTYPE = 1
+note hhstatus: U H-HHTYPE = 1
+note hunder18: U H-TYPE = 1:8
+note htop5pct: U H-HHTYPE = 1
+note hpctcut: U H-HHTYPE = 1
+note hsup_wgt: U H-HHTYPE = 1
+note h1tenure: U H-HHTYPE = 1
+note prop_tax: U ALL
+note h_idnum1: U H-HHTYPE = 1
+note i_hunits: U ALL
+note thprop_val: U H-TENURE = 1
+note i_propval: U H_HHTYPE = 1
+note hrnumwic: U H_HHTYPE = 1
+note tcare_val: U HFOODSP = 1
+note i_careval: U U?	HRPAIDCC=1
+note fh_seq: U All families
+note ffpos: U All families
+note fkind: U All families
+note ftype: U All families
+note fpersons: U All families
+note fheadidx: U All families
+note fwifeidx: U All families
+note fhusbidx: U F-KIND = 1
+note fspouidx: U F-KIND = 1
+note flastidx: U F-KIND = 1
+note fmlasidx: U All families
+note fownu6: U All families
+note frelu6: U All families
+note frelu18: U All families
+note fpctcut: U All families
+note fpovcut: U All families
+note frsppct: U F-TYPE = 3
+note finc_ws: U F-TYPE = 3
+note finc_se: U FINC-WS = 1
+note fseval: U All families
+note finc_fr: U FINC-SE = 1
+note ffrval: U All families
+note finc_uc: U FINC-FR = 1
+note fucval: U All families
+note finc_wc: U FINC-UC = 1
+note fwcval: U All families
+note finc_ss: U FINC-WC = 1
+note fssval: U All families
+note finc_ssi: U FINC-SS = 1
+note fssival: U All families
+note finc_paw: U FINC-SSI = 1
+note fpawval: U All families
+note finc_vet: U FINC-PAW = 1
+note fvetval: U All families
+note finc_sur: U FINC-VET = 1
+note fsurval: U All families
+note finc_dis: U FINC-SUR = 1
+note fdisval: U All families
+note finc_ret: U FINC-DIS = 1
+note fretval: U All families
+note finc_int: U FINC-RET = 1
+note fintval: U All families
+note finc_div: U FINC-INT = 1
+note fdivval: U All families
+note finc_rnt: U FINC-DIV = 1
+note frntval: U All families
+note finc_ed: U FINC-RNT = 1
+note fedval: U All families
+note finc_csp: U FINC-ED = 1
+note fcspval: U All families
+note finc_alm: U FINC-CSP = 1
+note falmval: U All families
+note finc_fin: U FINC-ALM = 1
+note ffinval: U All families
+note finc_oi: U FINC-FIN = 1
+note foival: U All families
+note ftotval: U FINC=OI = 1
+note fearnval: U All families
+note fothval: U FINC-WS, FINC-SE OR FINC-FR = 1
+note ftot_r: U All other types of income except HEARNVAL
+note fspanish: U All families
+note fsup_wgt: U All families
+note ffposold: U All families
+note f_mv_fs: U All families
+note pppos: U All
+note a_parent: U All
+note a_exprrp: U all
+note a_age: U All persons
+note a_maritl: U All
+note a_spouse: U All
+note a_sex: U All
+note a_hga: U All
+note prdtrace: U All
+note p_stat: U All
+note prdthsp: U All
+note a_famnum: U PEHSPNON = 1
+note a_famtyp: U All
+note a_famrel: U All
+note a_pfrel: U All
+note hhdrel: U All
+note peafwhn1: U A-AGE greater than or equal to 17
+note peafwhn2: U PEAFEVER=1
+note peafwhn3: U PEAFEVER=1
+note peafwhn4: U PEAFEVER=1
+note pedisear: U PEAFEVER=1
+note pediseye: U PRPERTYP = 2
+note pedisrem: U PRPERTYP = 2
+note pedisphy: U PRPERTYP = 2
+note pedisdrs: U PRPERTYP = 2
+note pedisout: U PRPERTYP = 2
+note prdisflg: U PRPERTYP = 2
+note penatvty: U PRPERTYP = 2
+note fl_665: U All
+note a_fnlwgt: U All
+note marsupwt: U H-MIS=4 or 8
+note a_hrs1: U All
+note a_uslft: U PEMLR=1
+note a_whyabs: U A-HRS1 LE 34
+note a_payabs: U PEMLR=2
+note peioocc: U CLSWKR = 1-7
+note a_clswkr: U CLSWKR = 1-7
+note a_wkslk: U PEMLR=1-4 or H-MIS=4 or 8 and PEMLR=5-7
+note a_whenlj: U PEMLR=3 or 4
+note a_nlflj: U PEMLR = 4
+note a_wantjb: U PEMLR=5,6,or 7 and H-MIS=4 or 8 and
+note prerelg: U PEMLR=5,6,7
+note a_uslhrs: U All
+note a_hrlywk: U All
+note a_hrspay: U PRERELG=1
+note a_grswk: U A-HRLYWK=1
+note a_unmem: U PRERELG=1
+note a_uncov: U PRERELG=1
+note a_enrlw: U A-UNMEM=2
+note a_hscol: U A-AGE=16-24
+note a_ftpt: U A-ENRLW=1
+note a_lfsr: U A-ENRLW=1
+note a_untype: U All
+note a_wkstat: U A-LFSR=3 or 4
+note a_explf: U All
+note a_wksch: U A-CLSWRK NE 8
+note a_civlf: U All
+note a_mjind: U F/T
+note a_dtind: U A-CLSWKR = 1-7
+note a_mjocc: U A-CLSWKR=1-7
+note a_dtocc: U A_CLSWKR = 1-7
+note peio1cow: U A-CLSWKR=1-7
+note prnlfsch: U PEMLR = 2
+note wtemp: U WORKYN = 1 or WTEMP = 1
+note nwlook: U WORKYN = 2
+note nwlkwk: U WORKYN = 2
+note rsnnotw: U NWLOOK = 1
+note wkswork: U WORKYN = 2
+note wkcheck: U WORKYN = 1
+note losewks: U WORKYN = 1
+note lknone: U 50 or 51 in WKSWORK
+note lkweeks: U 1 to 51 in WKSWORK
+note lkstrch: U 1 to 51 in WKSWORK
+note pyrsn: U Entry in LKWEEKS
+note phmemprs: U Sum of entries in WKSWORK and LKWEEKS add
+note hrswk: U Yes in WKSWORK
+note hrcheck: U WORKYN = 1
+note ptyn: U WORKYN = 1
+note ptweeks: U HRCHECK = 2
+note ptrsn: U PTYN = 1 or HRCHECK = 1
+note wexp: U PTYN = 1 or HRCHECK = 1
+note wewkrs: U All adults
+note welknw: U All adults
+note weuemp: U All adults
+note earner: U All adults
+note clwk: U All adults
+note weclw: U All adults
+note poccu2: U All adults
+note wemocg: U All adults
+note weind: U All adults
+note wemind: U All adults
+note ljcw: U All adults
+note industry: U WORKYN = 1
+note occup: U WORKYN = 1
+note noemp: U WORKYN = 1
+note migsame: U MIGSAME = 2
+note ern_otr: U ERN-YN = 1
+note wageotr: U ERN-YN = 1
+note wsal_yn: U ERN-OTR = 1
+note wsal_val: U ERN-YN = 1 or WAGEOTR = 1
+note ws_val: U ERN-YN = 1 or WAGEOTR = 1
+note seotr: U ERN-OTR = 1
+note semp_yn: U ERN-OTR = 1
+note semp_val: U ERN-YN = 1 or SEOTR = 1
+note frmotr: U SEOTR = 1
+note frse_yn: U ERN-OTR = 1
+note frse_val: U ERN-YN = 1 or FRMOTR = 1
+note frm_val: U ERN-YN = 1 or FRMOTR = 1
+note uc_yn: U FRMOTR = 1
+note strkuc: U UC-YN = 1
+note uc_val: U UC-YN = 1
+note wc_yn: U UC-YN = 1
+note wc_val: U WC-YN = 1
+note ss_yn: U WC-YN = 1
+note ss_val: U P-STAT = 1 or 2
+note resnss1: U SS-YN = 1
+note ssi_val: U P-STAT = 1 or 2
+note resnssi1: U SSI-YN = 1
+note paw_typ: U P-STAT = 1 or 2
+note paw_mon: U PAW-YN = 1
+note paw_val: U PAW-YN = 1
+note vet_yn: U PAW-YN = 1
+note vet_typ1: U P-STAT = 1 or 2
+note vet_typ2: U VET-YN = 1
+note vet_typ3: U VET-YN = 1
+note vet_typ4: U VET-YN = 1
+note vet_typ5: U VET-YN = 1
+note vet_qva: U VET-YN = 1
+note vet_val: U VET-YN = 1
+note sur_yn: U VET-YN = 1
+note sur_sc1: U P-STAT = 1 or 2
+note sur_sc2: U SUR-YN = 1
+note sur_val1: U SUR-YN = 1
+note sur_val2: U SUR-YN = 1
+note srvs_val: U SUR-YN = 1
+note dis_cs: U P-STAT = 1 or 2
+note dis_yn: U P-STAT = 1 or 2
+note dis_sc1: U P-STAT = 1 or 2
+note dis_sc2: U DIS-YN = 1
+note dis_val1: U DIS-YN = 1
+note dis_val2: U DIS-SC1 = 1
+note dsab_val: U DIS-SC2 = 1
+note ret_sc1: U P-STAT= 1 or 2
+note ret_sc2: U RET-YN = 1
+note ret_val1: U RET-YN = 1
+note ret_val2: U RET-SC1 = 1
+note rtm_val: U RET-SC2 = 1
+note int_val: U P-STAT = 1 or 2
+note div_yn: U INT-YN = 1
+note div_non: U P-STAT = 1 or 2
+note div_val: U HDIV-YN = 1
+note rnt_yn: U DIV-YN = 1
+note rnt_val: U P-STAT = 1 or 2
+note ed_yn: U RNT-YN = 1
+note oed_typ1: U P-STAT = 1 or 2
+note oed_typ2: U ED-YN = 1
+note oed_typ3: U ED-YN = 1
+note ed_val: U ED-YN = 1
+note csp_yn: U ED-YN = 1
+note csp_val: U P-STAT = 1 or 2
+note alm_yn: U CSP-YN = 1
+note alm_val: U P-STAT = 1 or 2
+note fin_yn: U ALM-YN = 1
+note fin_val: U P-STAT = 1 or 2
+note oi_off: U FIN-YN = 1
+note oi_yn: U OI-YN = 1
+note oi_val: U P-STAT = 1 or 2
+note ptotval: U OI-YN = 1
+note p_mvcare: U HMCARE = 1
+note p_mvcaid: U HMCAID = 1
+note hi_yn: U HCHAMP = 1
+note hiown: U HHI-YN = 1
+note hiemp: U HI-YN = 1
+note hipaid: U HIOWN = 1
+note emcontrb: U HIEMP = 1
+note hityp: U PRPERTYP = 2,3
+note ahiper: U All
+note penincl: U WRK-CK = 1
+note filestat: U PENPLAN = 1
+note paidccyn: U U
+note pxdisear: U PEAFEVER=1
+*Everything below this point, aside from the final save, are value labels
 
 #delimit ;
+
 ;
 label values hrecord  hrecord;
 label define hrecord
@@ -262,23 +608,25 @@ label define hunits
 	4           "5 - 9 Units"
 	5           "10+ Units"
 ;
-label values h_faminc h_faminc;
-label define h_faminc
+label values hefaminc hefaminc;
+label define hefaminc
 	-1          "Not in universe"
-	0           "Less than $5,000"
-	1           "$5,000 to $7,499"
-	2           "$7,500 to $9,999"
-	3           "$10,000 to $12,499"
-	4           "$12,500 to $14,999"
-	5           "$15,000 to $19,999"
-	6           "$20,000 to $24,999"
-	7           "$25,000 to $29,999"
-	8           "$30,000 to $34,999"
-	9           "$35,000 to $39,999"
-	10          "$40,000 to $49,999"
-	11          "$50,000 to $59,999"
-	12          "$60,000 to $74,999"
-	13          "$75,000 and over"
+	1           "Less than $5,000"
+	2           "$5,000 to $7,499"
+	3           "$7,500 to $9,999"
+	4           "$10,000 to $12,499"
+	5           "$12,500 to $14,999"
+	6           "$15,000 to $19,999"
+	7           "$20,000 to $24,999"
+	8           "$25,000 to $29,999"
+	9           "$30,000 to $34,999"
+	10          "$35,000 to $39,999"
+	11          "$40,000 to $49,999"
+	12          "$50,000 to $59,999"
+	13          "$60,000 to $74,999"
+	14          "$75,000 to $99,999"
+	15          "$100,000 to $149,999"
+	16          "$150,000 and over"
 ;
 label values h_respnm h_respnm;
 label define h_respnm
@@ -309,7 +657,7 @@ label define h_type
 	5           "Primary family household -"
 	6           "Civilian male nonfamily"
 	7           "Civilian female nonfamily"
-	8           "Nonfamily householder household-"
+	8           "Nonfamily householder"
 	9           "Group quarters"
 ;
 label values h_month  h_month;
@@ -324,7 +672,7 @@ label values h_livqrt h_livqrt;
 label define h_livqrt
 	1           "House, apt., flat"
 	2           "HU in nontransient hotel, etc."
-	3           "HU, perm,  in trans. hotel, mote"
+	3           "HU, perm,  in trans. hotel,"
 	4           "HU in rooming house"
 	5           "Mobile home or trailer with no"
 	6           "Mobile home or trailer with 1"
@@ -337,7 +685,7 @@ label define h_livqrt
 ;
 label values h_typebc h_typebc;
 label define h_typebc
-	-1          "Not in universe - interviewed,"
+	0           "Interviewed, or Type A"
 	1           "Vacant - regular"
 	2           "Vacant - storage of HHLD"
 	3           "Temp occ by persons with URE"
@@ -383,15 +731,15 @@ label define h_telint
 	1           "Yes"
 	2           "No"
 ;
-label values hg_reg   hg_reg;
-label define hg_reg
+label values gereg    gereg;
+label define gereg
 	1           "Northeast"
 	2           "Midwest"
 	3           "South"
 	4           "West"
 ;
-label values hg_st60  hg_st60l;
-label define hg_st60l
+label values gestcen  gestcen;
+label define gestcen
 	11          "Maine"
 	12          "New Hampshire"
 	13          "Vermont"
@@ -444,20 +792,33 @@ label define hg_st60l
 	94          "Alaska"
 	95          "Hawaii"
 ;
-label values hg_msac  hg_msac;
-label define hg_msac
-	0           "Not MSA/PMSA or not identified"
+label values gtcbsa   gtcbsa;
+label define gtcbsa
+	0           "Non-met or not identified"
 ;
-label values geco     geco;
-label define geco
+label values gtco     gtco;
+label define gtco
 	0           "Not identified"
 ;
-label values hg_cmsa  hg_cmsa;
-label define hg_cmsa
-	0           "Not identified or"
+label values gtcbsast gtcbsast;
+label define gtcbsast
+	1           "Principal city"
+	2           "Balance of CBSA"
+	3           "Non CBSA"
+	4           "Not identified"
 ;
-label values hmssz    hmssz;
-label define hmssz
+label values gtmetsta gtmetsta;
+label define gtmetsta
+	1           "Metropolitan"
+	2           "Non-metropolitan"
+	3           "Not identified"
+;
+label values gtindvpc gtindvpc;
+label define gtindvpc
+	0           "Not identified, non-met, or"
+;
+label values gtcbsasz gtcbsasz;
+label define gtcbsasz
 	0           "Not identified or"
 	2           "100,000 - 249,999"
 	3           "250,000 - 499,999"
@@ -466,68 +827,13 @@ label define hmssz
 	6           "2,500,000 - 4,999,999"
 	7           "5,000,000+"
 ;
-label values hpmsasz  hpmsasz;
-label define hpmsasz
-	0           "Not identified or"
-	2           "100,000 - 249,999"
-	3           "250,000 - 499,999"
-	4           "500,000 - 999,999"
-	5           "1,000,000 - 2,499,999"
-	6           "2,500,000 - 4,999,999"
-	7           "5,000,000+"
-;
-label values hmsa_r   hmsa_r;
-label define hmsa_r
-	1           "MSA"
-	2           "Non MSA"
-	3           "Not identifiable"
-;
-label values hccc_r   hccc_r;
-label define hccc_r
-	1           "Central city"
-	2           "Balance of MSA"
-	3           "Non MSA"
-	4           "Not identifiable"
+label values gtcsa    gtcsa;
+label define gtcsa
+	0           "Non-met or not identified"
 ;
 label values hunder15 hunder1e;
 label define hunder1e
 	0           "None"
-;
-label values hcmcare  hcmcare;
-label define hcmcare
-	0           "Not in universe"
-	1           "All or some"
-	2           "None"
-;
-label values hcmceno  hcmceno;
-label define hcmceno
-	0           "Not in universe"
-	1           "1 child"
-	9           "9 or more children"
-;
-label values hchi     hchi;
-label define hchi
-	0           "Not in universe"
-	1           "All or some"
-	2           "None"
-;
-label values hchino   hchino;
-label define hchino
-	0           "Not in universe  HCHI =  2"
-	1           "1 Child"
-	9           "9 or more children"
-;
-label values hchinrh  hchinrh;
-label define hchinrh
-	0           "Not in universe"
-	1           "All or some"
-	2           "None"
-;
-label values hchinno  hchinno;
-label define hchinno
-	0           "Not in universe  HCHINRH= 2"
-	1           "1 Child"
-	9           "9 or more children"
 ;
 label values hh5to18  hh5to18l;
 label define hh5to18l
@@ -586,10 +892,6 @@ label define hfoodmo
 	0           "Not in universe"
 	1           "1 month"
 	12          "12 Months"
-;
-label values hfdval   hfdval;
-label define hfdval
-	0           "Not in universe"
 ;
 label values hengast  hengast;
 label define hengast
@@ -895,47 +1197,43 @@ label define hunder1h
 ;
 label values htop5pct htop5pct;
 label define htop5pct
-	0           "Not in universe (group quarters)"
+	0           "Not in universe (group"
 	1           "In top 5 percent"
 	2           "Not in top 5 percent"
 ;
 label values hpctcut  hpctcut;
 label define hpctcut
-	0           "Not in universe (group quarters)"
+	0           "Not in universe (group"
 	1           "Lowest 5 percent"
 	2           "Second 5 percent"
 	20          "Top 5 percent"
 ;
-label values indccode indccode;
-label define indccode
-	0           "Not individually identified"
-;
-label values hptenure hptenure;
-label define hptenure
+label values h1tenure h1tenure;
+label define h1tenure
 	0           "No change"
 	1           "Value to blank"
 	4           "Allocated"
 ;
-label values hplivqrt hplivqrt;
-label define hplivqrt
+label values h1livqrt h1livqrt;
+label define h1livqrt
 	0           "No change"
 	4           "Allocated"
 	7           "Blank to NA - no error"
 ;
-label values hptelhhd hptelhhd;
-label define hptelhhd
+label values h1telhhd h1telhhd;
+label define h1telhhd
 	0           "No change"
 	1           "Value to blank"
 	4           "Allocated"
 ;
-label values hptelavl hptelavl;
-label define hptelavl
+label values h1telavl h1telavl;
+label define h1telavl
 	0           "No change"
 	1           "Value to blank"
 	4           "Allocated"
 ;
-label values hptelint hptelint;
-label define hptelint
+label values h1telint h1telint;
+label define h1telint
 	0           "No change"
 	1           "Value to blank"
 	4           "Allocated"
@@ -1013,7 +1311,7 @@ label define hrhtype
 	0           "Non-interview household"
 	1           "Husband/wife primary family"
 	2           "Husband/wife primary family"
-	3           "Unmarried civilian male primary"
+	3           "Unmarried civilian male"
 	4           "Unmarried civilian female"
 	5           "Primary family household -"
 	6           "Civilian male nonfamily"
@@ -1027,73 +1325,55 @@ label define i_hunits
 	0           "No change"
 	1           "Allocated"
 ;
-label values hrtayn   hrtayn;
-label define hrtayn
-	0           "NIU"
-	1           "YES"
-	2           "NO"
-;
-label values hrnumta  hrnumta;
-label define hrnumta
-	0           "NIU"
-;
-label values hrccayn  hrccayn;
-label define hrccayn
-	0           "NIU"
-	1           "YES"
-	2           "NO"
-;
-label values hrnumcc  hrnumcc;
-label define hrnumcc
-	0           "NIU"
-;
 label values hrpaidcc hrpaidcc;
 label define hrpaidcc
 	0           "NIU"
 	1           "YES"
 	2           "NO"
 ;
-label values hrccyn   hrccyn;
-label define hrccyn
-	0           "NIU"
-	1           "YES"
-	2           "NO"
+label values hprop_val hprop_val;
+label define hprop_val
+	0           "Not in universe"
 ;
-label values hrcmsryn hrcmsryn;
-label define hrcmsryn
-	0           "NIU"
-	1           "YES"
-	2           "NO"
+label values thprop_val thprop_val;
+label define thprop_val
+	0           "Not swapped"
+	1           "Topcoded"
 ;
-label values hrjcyn   hrjcyn;
-label define hrjcyn
-	0           "NIU"
-	1           "YES"
-	2           "NO"
-;
-label values hrjryn   hrjryn;
-label define hrjryn
-	0           "NIU"
-	1           "YES"
-	2           "NO"
-;
-label values hrjtyn   hrjtyn;
-label define hrjtyn
-	0           "NIU"
-	1           "YES"
-	2           "NO"
-;
-label values hrschlyn hrschlyn;
-label define hrschlyn
-	0           "NIU"
-	1           "YES"
-	2           "NO"
+label values i_propval i_propval;
+label define i_propval
+	0           "No allocation"
+	1           "Allocated"
 ;
 label values hrwicyn  hrwicyn;
 label define hrwicyn
 	0           "NIU"
 	1           "YES"
 	2           "NO"
+;
+label values hfdval   hfdval;
+label define hfdval
+	0           "Not in universe"
+;
+label values tcare_val tcare_val;
+label define tcare_val
+	0           "No change"
+	1           "Topcoded"
+;
+label values care_val care_val;
+label define care_val
+	0           "Not in universe"
+;
+label values i_careval i_careval;
+label define i_careval
+	0           "No change"
+	1           "Allocated"
+;
+label values hpres_mort hpres_mort;
+label define hpres_mort
+	0           " Not in universe"
+	1           " Yes"
+	2           " No"
 ;
 label values frecord  frecord;
 label define frecord
@@ -1446,6 +1726,10 @@ label values f_mv_sl  f_mv_sl;
 label define f_mv_sl
 	0           "None"
 ;
+label values ffngcare ffngcare;
+label define ffngcare
+	0           "None"
+;
 label values ffngcaid ffngcaid;
 label define ffngcaid
 	0           "None"
@@ -1461,6 +1745,27 @@ label define ffoodreq
 label values fhousreq fhousreq;
 label define fhousreq
 	0           "None"
+;
+label values fhip_val fhip_val;
+label define fhip_val
+	0           "Not in Universe"
+;
+label values fmoop    fmoop;
+label define fmoop
+	0           "Not in Universe"
+;
+label values fotc_val fotc_val;
+label define fotc_val
+	0           " Not in Universe"
+;
+label values fmed_val fmed_val;
+label define fmed_val
+	0           "Not in Universe"
+;
+label values i_fhipval i_fhipval;
+label define i_fhipval
+	0           "No change"
+	1           "Allocated"
 ;
 label values precord  precord;
 label define precord
@@ -1486,11 +1791,37 @@ label define a_exprrp
 	13          "Partner/roommate"
 	14          "Nonrelative without relatives"
 ;
+label values perrp    perrp;
+label define perrp
+	1           "Reference person w/rels."
+	2           "Reference person w/o rels."
+	3           "Spouse"
+	4           "Child"
+	5           "Grandchild"
+	6           "Parent"
+	7           "Brother/sister"
+	8           "Other rel. of ref. person"
+	9           "Foster child"
+	10          "Nonrel. of ref. person w/rels."
+	11          "Not used"
+	12          "Nonrel. of ref. person w/o"
+	13          "Unmarried partner w/rels."
+	14          "Unmarried partner w/o rels."
+	15          "Housemate/roommate w/rels."
+	16          "Housemate/roommate w/o rels."
+	17          "Roomer/boarder w/rels."
+	18          "Roomer/boarder w/o rels."
+;
+label values a_age    a_age;
+label define a_age
+	80          "80-84 years of age"
+	85          "85+ years of age"
+;
 label values a_maritl a_maritl;
 label define a_maritl
 	1           "Married - civilian spouse"
 	2           "Married - AF spouse present"
-	3           "Married - spouse absent (exc"
+	3           "Married - spouse absent (exc."
 	4           "Widowed"
 	5           "Divorced"
 	6           "Separated"
@@ -1504,16 +1835,6 @@ label values a_sex    a_sex;
 label define a_sex
 	1           "Male"
 	2           "Female"
-;
-label values a_vet    a_vet;
-label define a_vet
-	0           "Children or Armed Forces"
-	1           "Vietnam"
-	2           "Korean war"
-	3           "World War II"
-	4           "World War I"
-	5           "Other service"
-	6           "Nonveteran"
 ;
 label values a_hga    a_hga;
 label define a_hga
@@ -1535,12 +1856,29 @@ label define a_hga
 	45          "Professional school degree (for"
 	46          "Doctorate degree (for"
 ;
-label values a_race   a_race;
-label define a_race
-	1           "White"
-	2           "Black"
-	3           "American Indian, Aleut Eskimo"
-	4           "Asian or Pacific Island"
+label values prdtrace prdtrace;
+label define prdtrace
+	1           "White only"
+	2           "Black only"
+	3           "American Indian,"
+	4           "Asian only"
+	5           "Hawaiian/Pacific Islander"
+	6           "White-Black"
+	7           "White-AI"
+	8           "White-Asian"
+	9           "White-HP"
+	10          "Black-AI"
+	11          "Black-Asian"
+	12          "Black-HP"
+	13          "AI-Asian"
+	14          "Asian-HP"
+	15          "White-Black-AI"
+	16          "White-Black-Asian"
+	17          "White-AI-Asian"
+	18          "White-Asian-HP"
+	19          "White-Black-AI-Asian"
+	20          "2 or 3 races"
+	21          "4 or 5 races"
 ;
 label values p_stat   p_stat;
 label define p_stat
@@ -1548,18 +1886,25 @@ label define p_stat
 	2           "Armed Forces"
 	3           "Children 0 - 14"
 ;
-label values a_reorgn a_reorgn;
-label define a_reorgn
-	1           "Mexican American"
-	2           "Chicano"
-	3           "Mexican (Mexicano)"
-	4           "Puerto Rican"
-	5           "Cuban"
-	6           "Central or South American"
-	7           "Other Spanish"
-	8           "All other"
-	9           "Don't know"
-	10          "NA"
+label values prpertyp prpertyp;
+label define prpertyp
+	1           "Child household member"
+	2           "Adult civilian household member"
+	3           "Adult Armed Forces household"
+;
+label values pehspnon pehspnon;
+label define pehspnon
+	1           "Yes"
+	2           "No"
+;
+label values prdthsp  prdthsp;
+label define prdthsp
+	0           "Not in universe"
+	1           "Mexican"
+	2           "Puerto Rican"
+	3           "Cuban"
+	4           "Central/South American"
+	5           "Other Spanish"
 ;
 label values a_famnum a_famnum;
 label define a_famnum
@@ -1689,6 +2034,175 @@ label define age1l
 	16          "70 to 74 years"
 	17          "75 years and over"
 ;
+label values pecohab  pecohab;
+label define pecohab
+	-1          "No Partner present"
+;
+label values pelnmom  pelnmom;
+label define pelnmom
+	-1          "No Mother present"
+	1           "Min Value"
+	16          "Max Value"
+;
+label values pelndad  pelndad;
+label define pelndad
+	-1          "No Father present"
+;
+label values pemomtyp pemomtyp;
+label define pemomtyp
+	-1          "No Mother present"
+	1           "Biological"
+	2           "Step"
+	3           "Adopted"
+;
+label values pedadtyp pedadtyp;
+label define pedadtyp
+	-1          "No Father present"
+	1           "Biological"
+	2           "Step"
+	3           "Adopted"
+;
+label values peafever peafever;
+label define peafever
+	-1          "Not in universe"
+	1           "Yes"
+	2           "No"
+;
+label values peafwhn1 peafwhna;
+label define peafwhna
+	-1          "Not in universe"
+	1           "September 2001 or later"
+	2           "August 1990 to August 2001"
+	3           "May 1975 to July 1990"
+	4           "Vietnam Era (August 1964 to"
+	5           "February 1955 to July 1964"
+	6           "Korean War (July 1950 to"
+	7           "January 1947 to June 1950"
+	8           "World War II (December 1941"
+	9           "November 1941 or earlier"
+;
+label values peafwhn2 peafwhnb;
+label define peafwhnb
+	-1          "Not in universe"
+	1           "September 2001 or later"
+	2           "August 1990 to August 2001"
+	3           "May 1975 to July 1990"
+	4           "Vietnam Era (August 1964 to"
+	5           "February 1955 to July 1964"
+	6           "Korean War (July 1950 to"
+	7           "January 1947 to June 1950"
+	8           "World War II (December 1941"
+	9           "November 1941 or earlier"
+;
+label values peafwhn3 peafwhnc;
+label define peafwhnc
+	-1          "Not in universe"
+	1           "September 2001 or later"
+	2           "August 1990 to August 2001"
+	3           "May 1975 to July 1990"
+	4           "Vietnam Era (August 1964 to"
+	5           "February 1955 to July 1964"
+	6           "Korean War (July 1950 to"
+	7           "January 1947 to June 1950"
+	8           "World War II (December 1941"
+	9           "November 1941 or earlier"
+;
+label values peafwhn4 peafwhnd;
+label define peafwhnd
+	-1          "Not in universe"
+	1           "September 2001 or later"
+	2           "August 1990 to August 2001"
+	3           "May 1975 to July 1990"
+	4           "Vietnam Era (August 1964 to"
+	5           "February 1955 to July 1964"
+	6           "Korean War (July 1950 to"
+	7           "January 1947 to June 1950"
+	8           "World War II (December 1941"
+	9           "November 1941 or earlier"
+;
+label values pedisear pedisear;
+label define pedisear
+	-1          "NIU"
+	1           "Yes"
+	2           "No"
+;
+label values pediseye pediseye;
+label define pediseye
+	-1          "NIU"
+	1           "Yes"
+	2           "No"
+;
+label values pedisrem pedisrem;
+label define pedisrem
+	-1          "NIU"
+	1           "Yes"
+	2           "No"
+;
+label values pedisphy pedisphy;
+label define pedisphy
+	-1          "NIU"
+	1           "Yes"
+	2           "No"
+;
+label values pedisdrs pedisdrs;
+label define pedisdrs
+	-1          "NIU"
+	1           "Yes"
+	2           "No"
+;
+label values pedisout pedisout;
+label define pedisout
+	-1          "NIU"
+	1           "Yes"
+	2           "No"
+;
+label values prdisflg prdisflg;
+label define prdisflg
+	-1          "NIU"
+	1           "Yes"
+	2           "No"
+;
+label values peinusyr peinusyr;
+label define peinusyr
+	0           "NIU"
+	1           "Before 1950"
+	2           "1950-1959"
+	3           "1960-1964"
+	4           "1965-1969"
+	5           "1970-1974"
+	6           "1975-1979"
+	7           "1980-1981"
+	8           "1982-1983"
+	9           "1984-1985"
+	10          "1986-1987"
+	11          "1988-1989"
+	12          "1990-1991"
+	13          "1992-1993"
+	14          "1994-1995"
+	15          "1996-1997"
+	16          "1998-1999"
+	17          "2000-2001"
+	18          "2002-2003"
+	19          "2004-2005"
+	20          "2006-2007"
+	21          "2008-2009"
+	22          "2010-2012"
+;
+label values prcitshp prcitshp;
+label define prcitshp
+	1           "Native, born in the United"
+	2           "Native, born in Puerto Rico or"
+	3           "Native, born abroad of American"
+	4           "Foreign born, U.S. citizen by"
+	5           "Foreign born, not a citizen of"
+;
+label values fl_665   fl_665l;
+label define fl_665l
+	0           "Complete nonresponse to"
+	1           "Supplement interview"
+	2           "Some supplement response but"
+	3           "Supplement interview but not"
+;
 label values a_fnlwgt a_fnlwgt;
 label define a_fnlwgt
 	0           "Supplemental Spanish sample"
@@ -1724,25 +2238,13 @@ label define a_payabs
 	2           "No"
 	3           "Self-employed"
 ;
-label values a_wkslk  a_wkslk;
-label define a_wkslk
-	-1          "Not in universe"
-	0           "Children or Armed Forces"
+label values peioind  peioind;
+label define peioind
+	0           "Not in universe or children"
 ;
-label values a_whenlj a_whenlj;
-label define a_whenlj
-	0           "Not in universe or children and"
-	1           "In last 12 months"
-	2           "More than 12 months ago"
-	5           "Never worked at all"
-;
-label values a_ind    a_ind;
-label define a_ind
-	0           "Old not in universe or children"
-;
-label values a_occ    a_occ;
-label define a_occ
-	0           "Old not in universe or children"
+label values peioocc  peioocc;
+label define peioocc
+	-001        "Not in universe or children"
 ;
 label values a_clswkr a_clswkr;
 label define a_clswkr
@@ -1756,6 +2258,18 @@ label define a_clswkr
 	7           "Without pay"
 	8           "Never worked"
 ;
+label values a_wkslk  a_wkslk;
+label define a_wkslk
+	-1          "Not in universe"
+	0           "Children or Armed Forces"
+;
+label values a_whenlj a_whenlj;
+label define a_whenlj
+	0           "Not in universe or children and"
+	1           "In last 12 months"
+	2           "More than 12 months ago"
+	5           "Never worked at all"
+;
 label values a_nlflj  a_nlflj;
 label define a_nlflj
 	0           "Not in universe or children and"
@@ -1768,6 +2282,16 @@ label define a_wantjb
 	0           "Not in universe or children and"
 	1           "Yes"
 	2           "No"
+	5           "February 1955 to July 1964"
+	6           "Korean War (July 1950 to"
+	7           "January 1947 to June 1950"
+	8           "World War II (December 1941"
+	9           "November 1941 or earlier"
+;
+label values prerelg  prerelg;
+label define prerelg
+	0           "Not earnings eligible"
+	1           "Earnings eligible"
 ;
 label values a_uslhrs a_uslhrs;
 label define a_uslhrs
@@ -1828,7 +2352,7 @@ label define a_lfsr
 ;
 label values a_untype a_untype;
 label define a_untype
-	0           "Not in universe or children and"
+	0           "Not in universe or children"
 	1           "Job loser - on layoff"
 	2           "Other job loser"
 	3           "Job leaver"
@@ -1872,30 +2396,21 @@ label define a_ftlf
 ;
 label values a_mjind  a_mjind;
 label define a_mjind
-	0           "Not in universe or children"
-	1           "Agriculture"
+	0           "Not in universe, or children"
+	1           "Agriculture, forestry,"
 	2           "Mining"
-	3           "Construction manufacturing"
-	4           "Manufacturing-durable goods"
-	5           "Manufacturing-nondurable goods"
-	6           "Transportation"
-	7           "Communications"
-	8           "Utilities and sanitary services"
-	9           "Wholesale trade"
-	10          "Retail trade"
-	11          "Finance, insurance and real"
-	12          "Private household miscellaneous"
-	13          "Business and repair"
-	14          "Personal services, except"
-	15          "Entertainment professional and"
-	16          "Hospital"
-	17          "Medical, except hospital"
-	18          "Educational"
-	19          "Social services"
-	20          "Other professional"
-	21          "Forestry and fisheries"
-	22          "Public administration"
-	23          "Armed Forces"
+	3           "Construction"
+	4           "Manufacturing"
+	5           "Wholesale and retail trade"
+	6           "Transportation and utilities"
+	7           "Information"
+	8           "Financial activities"
+	9           "Professional and business"
+	10          "Educational and health services"
+	11          "Leisure and hospitality"
+	12          "Other services"
+	13          "Public administration"
+	14          "Armed Forces"
 ;
 label values a_dtind  a_dtind;
 label define a_dtind
@@ -1903,43 +2418,154 @@ label define a_dtind
 ;
 label values a_mjocc  a_mjocc;
 label define a_mjocc
-	0           "Not in universe for children or"
-	1           "Executive, admin. &  managerial"
-	2           "Professional specialty"
-	3           "Technicians &  related support"
-	4           "Sales"
-	5           "Administrative support, incl."
-	6           "Private household"
-	7           "Protective service"
-	8           "Other service"
-	9           "Precision production, craft &"
-	10          "Machine operators, assemblers &"
-	11          "Transportation &  material"
-	12          "Handlers, equip. cleaners, etc."
-	13          "Farming, forestry &  fishing"
-	14          "Armed Forces"
+	0           "Not in universe or children"
+	1           "Management, business, and"
+	2           "Professional and related"
+	3           "Service occupations"
+	4           "Sales and related occupations"
+	5           "Office and administrative"
+	6           "Farming, fishing, and"
+	7           "Construction and extraction"
+	8           "Installation, maintenance,"
+	9           "Production occupations"
+	10          "Transportation and material"
+	11          "Armed Forces"
 ;
 label values a_dtocc  a_dtocc;
 label define a_dtocc
 	0           "Not in universe for children or"
 ;
-label values prerelg  prerelg;
-label define prerelg
-	0           "Not earnings eligible"
-	1           "Earnings eligible"
+label values peio1cow peio1cow;
+label define peio1cow
+	0           "NIU"
+	1           "Government-federal"
+	2           "Government-state"
+	3           "Government - local"
+	4           "Private, for profit"
+	5           "Private, nonprofit"
+	6           "Self-employed, incorporated"
+	7           "Self-employed, unincorporated"
+	8           "Without pay"
 ;
-label values a_rcow   a_rcow;
-label define a_rcow
-	0           "Not in universe or children or"
-	1           "Private (Includes self-employed"
-	2           "Federal"
-	3           "State"
-	4           "Local"
-	5           "Self-employed unincorporated"
+label values prcow1   prcow1l;
+label define prcow1l
+	0           "NIU"
+	1           "Federal govt"
+	2           "State govt"
+	3           "Local govt"
+	4           "Private (incl. self-employed"
+	5           "Self-employed, unincorp."
 	6           "Without pay"
+;
+label values pemlr    pemlr;
+label define pemlr
+	0           "NIU"
+	1           "Employed - at work"
+	2           "Employed - absent"
+	3           "Unemployed - on layoff"
+	4           "Unemployed - looking"
+	5           "Not in labor force - retired"
+	6           "Not in labor force - disabled"
+	7           "Not in labor force - other"
+;
+label values pruntype pruntype;
+label define pruntype
+	0           "NIU"
+	1           "Job loser/on layoff"
+	2           "Other job loser"
+	3           "Temporary job ended"
+	4           "Job leaver"
+	5           "Re-entrant"
+	6           "New-entrant"
+;
+label values prwkstat prwkstat;
+label define prwkstat
+	0           "NIU"
+	1           "Not in labor force"
+	2           "FT hours (35+), usually FT"
+	3           "PT for economic reasons,"
+	4           "PT for non-economic reasons,"
+	5           "Not at work, usually FT"
+	6           "PT hrs, usually PT for economic"
+	7           "PT hrs, usually PT for non-"
+	8           "FT hours, usually PT for"
+	9           "FT hours, usually PT for non-"
+	10          "Not at work, usually part-time"
+	11          "Unemployed FT"
+	12          "Unemployed PT"
+;
+label values prptrea  prptrea;
+label define prptrea
+	-1          "NIU - adult civilian"
+	0           "NIU - children or Armed Forces"
+	1           "Usually FT - slack work/"
+	2           "Usually FT - seasonal work"
+	3           "Usually FT - job started/ended"
+	4           "Usually FT - vacation/personal"
+	5           "Usually FT - own illness/"
+	6           "Usually FT - holiday"
+	7           "Usually FT - child care"
+	8           "Usually FT - other fam/pers"
+	9           "Usually FT - labor dispute"
+	10          "Usually FT - weather affected"
+	11          "Usually FT - school/training"
+	12          "Usually FT - civic/military"
+	13          "Usually FT - other reason"
+	14          "Usually PT - slack"
+	15          "Usually PT - PT could only find"
+	16          "Usually PT - seasonal work"
+	17          "Usually PT - child care"
+	18          "Usually PT - other fam/pers"
+	19          "Usually PT - health/medical"
+	20          "Usually PT - school/training"
+	21          "Usually PT - retired/social"
+	22          "Usually PT - workweek <35 hours"
+	23          "Usually PT - other reason"
+;
+label values prdisc   prdisc;
+label define prdisc
+	0           "NIU"
+	1           "Discouraged worker"
+	2           "Conditionally interested"
+	3           "Not available"
+;
+label values peabsrsn peabsrsn;
+label define peabsrsn
+	-1          "NIU - adult civilian"
+	0           "NIU - children or Armed Forces"
+	2           "Slack work/business conditions"
+	4           "Vacation/personal days"
+	5           "Own illness/injury/medical"
+	6           "Child care problems"
+	7           "Other family/personal"
+	8           "Maternity/paternity leave"
+	9           "Labor dispute"
+	10          "Weather affected job"
+	11          "School/training"
+	12          "Civic/military duty"
+	13          "Does not work in the business"
+	14          "Other (specify)"
+;
+label values prnlfsch prnlfsch;
+label define prnlfsch
+	0           "NIU"
+	1           "In school"
+	2           "Not in school"
+;
+label values pehruslt pehruslt;
+label define pehruslt
+	-4          "Hours vary"
+	-1          "NIU - adult civilian"
+	0           "NIU - children or Armed Forces"
 ;
 label values workyn   workyn;
 label define workyn
+	0           "Not in universe"
+	1           "Yes"
+	2           "No"
+;
+label values wrk_ck   wrk_ck;
+label define wrk_ck
 	0           "Not in universe"
 	1           "Yes"
 	2           "No"
@@ -2058,25 +2684,6 @@ label define ptrsn
 	3           "Slack work"
 	4           "Other"
 ;
-label values ljcw     ljcw;
-label define ljcw
-	0           "Not in universe"
-	1           "Private"
-	2           "Federal"
-	3           "State"
-	4           "Local"
-	5           "Self employed incorporated, yes"
-	6           "Self employed incorporated, no"
-	7           "Without pay"
-;
-label values industry industry;
-label define industry
-	0           "Not in universe"
-;
-label values occup    occup;
-label define occup
-	0           "Not in universe"
-;
 label values wexp     wexp;
 label define wexp
 	0           "Not in universe"
@@ -2155,156 +2762,63 @@ label define weclw
 	8           "Unpaid"
 	9           "Never worked"
 ;
-label values poccu2   poccu2l;
-label define poccu2l
-	0           "Children"
-	1           "Officials and administrators,"
-	3           "Salaried"
-	4           "Self-employed"
-	5           "Management related occupations"
-	6           "Accountants and auditors"
-	7           "Engineers :  architects, and"
-	8           "Engineers"
-	9           "Natural scientists and"
-	10          "Computer systems analysts and"
-	11          "Health diagnosing occupations"
-	12          "Physicians and dentists"
-	13          "Health assessment and treating"
-	14          "Teachers, librarians, and"
-	15          "Teachers, except postsecondary"
-	16          "Other professional specialty"
-	17          "Health technologists and"
-	18          "Engineering and science"
-	19          "Technicians, except health:"
-	20          "Supervisors and proprietors,"
-	21          "Sales representatives,"
-	22          "Other sales occupations"
-	23          "Computer equipment operators"
-	24          "Secretaries, stenographers,"
-	25          "Financial records processing"
-	26          "Other administrative support"
-	27          "Private household occupations"
-	28          "Protective service occupations"
-	29          "Food services occupations"
-	30          "Health service occupations"
-	31          "Cleaning and building service"
-	32          "Personal service occupations"
-	33          "Farm operators and managers"
-	34          "Farm occupations, except"
-	35          "Related agricultural"
-	36          "Forestry and fising occupations"
-	37          "Mechanics and reapirers"
-	38          "Construction trades and"
-	39          "Carpenters"
-	40          "Supervisors, production"
-	41          "Precision metal working"
-	42          "Other precision production"
-	43          "Machine operators and tenders,"
-	44          "Fabricators, assemblers  and"
-	45          "Production inspectors, testers,"
-	46          "Transportation occupations"
-	47          "Material moving equipment"
-	48          "Construction laborers"
-	49          "Freight, stock and material"
-	50          "Other specified handlers,"
-	51          "Laborers, except construction"
-	52          "Armed Forces - currently"
-	53          "Never worked"
-;
-label values wemocg   wemocg;
-label define wemocg
-	0           "Children"
-	1           "Executive, administrative, and"
-	2           "Professional specialty"
-	3           "Technicians and related support"
-	4           "Sales occupations"
-	5           "Administrative support"
-	6           "Private household occupations"
-	7           "Protective service occupations"
-	8           "Service occupations, except"
-	9           "Farming, forestry, and fishing"
-	10          "Precision production: craft,"
-	11          "Machine operators, assemblers,"
-	12          "Transportation and material"
-	13          "Handlers, equipment cleaners,"
-	14          "Armed Forces - currently"
-	15          "Never worked"
-;
-label values weind    weind;
-label define weind
-	0           "Children"
-	1           "Agriculture"
-	2           "Mining"
-	3           "Construction"
-	4           "Lumber and wood products,"
-	5           "Furniture and fixtures"
-	6           "Stone, clay, glass, concrete"
-	7           "Primary metals"
-	8           "Fabricated metals"
-	9           "Not specified metal industries"
-	10          "Machinery, except electrical"
-	11          "Electrical machinery,"
-	12          "Motor vehicles and equipment"
-	13          "Aircraft and parts"
-	14          "0ther transportation equipment"
-	15          "Professional and photo"
-	16          "Toys, amusements, and sporting"
-	17          "Miscellaneous and not specified"
-	18          "Food and kindred products"
-	19          "Tobacco manufactures"
-	20          "Textile mill products"
-	21          "Apparel and other finished"
-	22          "Paper and allied products"
-	23          "Printing, publishing, and"
-	24          "Chemicals and allied products"
-	25          "Petroleum and coal products"
-	26          "Rubber and miscellaneous"
-	27          "Leather and leather products"
-	28          "Transportation"
-	29          "Communication"
-	30          "Utilities and sanitary services"
-	31          "Wholesale trade"
-	32          "Retail trade"
-	33          "Banking and other finance"
-	34          "Insurance and real estate"
-	35          "Private household"
-	36          "Business services"
-	37          "Repair services"
-	38          "Personal service except private"
-	39          "Entertainment and recreation"
-	40          "Hospitals"
-	41          "Health services, except"
-	42          "Educational services"
-	43          "Social services"
-	44          "Other professional services"
-	45          "Forestry and fisheries"
-	46          "Public administration"
-	47          "Never worked"
-;
-label values wemind   wemind;
-label define wemind
+label values ljcw     ljcw;
+label define ljcw
 	0           "Not in universe"
-	1           "Agriculture, forestry, and"
-	2           "Mining"
-	3           "Construction"
-	4           "Durable goods"
-	5           "Nondurable goods"
-	6           "Transportation, communications"
-	7           "Wholesale  trade"
-	8           "Retail trade"
-	9           "Finance, insurance, and real"
-	10          "Business and repair services"
-	11          "Personal services, including"
-	12          "Entertainment and recreation"
-	13          "Professional and related"
-	14          "Public administration"
-	15          "Never worked"
+	1           "Private"
+	2           "Federal"
+	3           "State"
+	4           "Local"
+	5           "Self employed incorporated, yes"
+	6           "Self employed incorporated, no"
+	7           "Without pay"
 ;
-label values migplac  migplac;
-label define migplac
+label values industry industry;
+label define industry
+	0           "Not in universe or children"
+;
+label values occup    occup;
+label define occup
+	0           "Not in universe or children"
+;
+label values noemp    noemp;
+label define noemp
+	0           "Not in universe"
+	1           "Under 10"
+	2           "10 - 49"
+	3           "50 - 99"
+	4           "100 - 499"
+	5           "500 - 999"
+	6           "1000+"
+;
+label values nxtres   nxtres;
+label define nxtres
+	0           "NIU"
+	1           "Change in marital status"
+	2           "To establish own household"
+	3           "Other family reason"
+	4           "New job or job transfer"
+	5           "To look for work or lost job"
+	6           "To be closer to work/easier"
+	7           "Retired"
+	8           "Other job-related reason"
+	9           "Wanted to own home, not rent"
+	10          "Wanted new or better house/"
+	11          "Wanted better neighborhood"
+	12          "Cheaper housing"
+	13          "Foreclosure/eviction"
+	14          "Other housing reason"
+	15          "Attend/leave college"
+	16          "Change of climate"
+	17          "Health reasons"
+	18          "Natural disaster"
+	19          "Other reason"
+;
+label values mig_cbst mig_cbst;
+label define mig_cbst
 	0           "NIU, nonmover"
-	1           "MSA"
-	2           "non MSA"
+	1           "CBSA"
+	2           "non CBSA"
 	3           "Abroad"
 	4           "Not identifiable"
 ;
@@ -2380,11 +2894,11 @@ label define mig_st
 	56          "Wyoming"
 	96          "Abroad"
 ;
-label values placdscp placdscp;
-label define placdscp
+label values mig_dscp mig_dscp;
+label define mig_dscp
 	0           "NIU (under 1 year old,"
-	1           "Central city of an MSA/PMSA"
-	2           "Balance of an MSA/PMSA"
+	1           "Principal city of a CBSA"
+	2           "Balance of a CBSA"
 	3           "Non-metro"
 	4           "Abroad"
 	5           "Not identified"
@@ -2418,12 +2932,12 @@ label define mig_div
 label values mig_mtr1 mig_mtra;
 label define mig_mtra
 	1           "Nonmover"
-	2           "MSA to MSA"
-	3           "MSA to nonMSA"
-	4           "NonMSA to MSA"
-	5           "NonMSA to nonMSA"
-	6           "Abroad to MSA"
-	7           "Abroad to nonMSA"
+	2           "Metro to metro"
+	3           "Metro to non-metro"
+	4           "Non-metro to metro"
+	5           "Non-metro to non-metro"
+	6           "Abroad to metro"
+	7           "Abroad to non-metro"
 	8           "Not in universe (Children"
 	9           "Not identifiable"
 ;
@@ -2433,10 +2947,10 @@ label define mig_mtrc
 	2           "Same county"
 	3           "Different county, same state"
 	4           "Different state, same division"
-	5           "Different division, same region"
+	5           "Different division, same"
 	6           "Different region"
 	7           "Abroad"
-	8           "Not in universe (children under"
+	8           "Not in universe (children"
 ;
 label values mig_mtr4 mig_mtrd;
 label define mig_mtrd
@@ -2444,31 +2958,17 @@ label define mig_mtrd
 	2           "Same county"
 	3           "Different county, same state"
 	4           "Different state in Northeast"
-	5           "Different state in midwest"
+	5           "Different state in Midwest"
 	6           "Different state in South"
-	7           "Different state in west"
+	7           "Different state in West"
 	8           "Abroad, foreign country"
-	9           "Not in universe (children under"
-;
-label values noemp    noemp;
-label define noemp
-	0           "Not in universe"
-	1           "Under 10"
-	2           "10 - 24"
-	3           "25 - 99"
-	4           "100 - 499"
-	5           "500 - 999"
-	6           "1000+"
+	9           "Not in universe (children"
 ;
 label values ern_yn   ern_yn;
 label define ern_yn
 	0           "Not in universe"
 	1           "Yes"
 	2           "No"
-;
-label values ern_val  ern_val;
-label define ern_val
-	0           "None or not in universe"
 ;
 label values ern_srce ern_srce;
 label define ern_srce
@@ -2484,6 +2984,10 @@ label define ern_otr
 	1           "Yes"
 	2           "No"
 ;
+label values ern_val  ern_val;
+label define ern_val
+	0           "None or not in universe"
+;
 label values wageotr  wageotr;
 label define wageotr
 	0           "Not in universe"
@@ -2498,6 +3002,10 @@ label define wsal_yn
 ;
 label values wsal_val wsal_val;
 label define wsal_val
+	0           "None or not in universe"
+;
+label values ws_val   ws_val;
+label define ws_val
 	0           "None or not in universe"
 ;
 label values seotr    seotr;
@@ -2516,6 +3024,10 @@ label values semp_val semp_val;
 label define semp_val
 	0           "None or not in universe"
 ;
+label values se_val   se_val;
+label define se_val
+	0           "None or not in universe"
+;
 label values frmotr   frmotr;
 label define frmotr
 	0           "Not in universe"
@@ -2530,6 +3042,10 @@ label define frse_yn
 ;
 label values frse_val frse_val;
 label define frse_val
+	0           "None or not in universe"
+;
+label values frm_val  frm_val;
+label define frm_val
 	0           "None or not in universe"
 ;
 label values uc_yn    uc_yn;
@@ -2582,11 +3098,69 @@ label values ss_val   ss_val;
 label define ss_val
 	0           "None or not in universe"
 ;
+label values resnss1  resnss1l;
+label define resnss1l
+	0           "NIU"
+	1           "Retired"
+	2           "Disabled (adult or child)"
+	3           "Widowed"
+	4           "Spouse"
+	5           "Surviving child"
+	6           "Dependent child"
+	7           "on behalf of surviving,"
+	8           "Other (adult or child)"
+;
+label values resnss2  resnss2l;
+label define resnss2l
+	0           "NIU"
+	1           "Retired"
+	2           "Disabled (adult or child)"
+	3           "Widowed"
+	4           "Spouse"
+	5           "Surviving child"
+	6           "Dependent child"
+	7           "On behalf of surviving,"
+	8           "Other (adult or child)"
+;
+label values sskidyn  sskidyn;
+label define sskidyn
+	0           "NIU"
+	1           "Received SS"
+	2           "Did not receive SS"
+;
 label values ssi_yn   ssi_yn;
 label define ssi_yn
 	0           "Not in universe"
 	1           "Yes"
 	2           "No"
+;
+label values ssi_val  ssi_val;
+label define ssi_val
+	0           "None or not in universe"
+;
+label values resnssi1 resnssia;
+label define resnssia
+	0           "NIU"
+	1           "Disabled (adult or child)"
+	2           "Blind (adult or child)"
+	3           "On behalf of a disabled child"
+	4           "On behalf of a blind child"
+	5           "Other (adult or child)"
+;
+label values resnssi2 resnssib;
+label define resnssib
+	0           "NIU"
+	1           "Disabled (adult or child)"
+	2           "Blind (adult or child)"
+	3           "On behalf of a disabled child"
+	4           "On behalf of a blind child"
+	5           "Other (adult or child)"
+;
+label values ssikidyn ssikidyn;
+label define ssikidyn
+	0           "NIU"
+	1           "Received SSI"
+	2           "Did not receive SSI"
 ;
 label values paw_yn   paw_yn;
 label define paw_yn
@@ -2668,13 +3242,13 @@ label define sur_sc1l
 	0           "None or not in universe"
 	1           "Company or union survivor"
 	2           "Federal government"
-	3           "Us military retirement survivor"
-	4           "State or local gov't survivor"
-	5           "Us railroad retirement survivor"
+	3           "Us military retirement"
+	4           "State or local government"
+	5           "Us railroad retirement"
 	6           "Worker's compensation survivor"
-	7           "Not used"
+	7           "Black Lung Survivor Pension"
 	8           "Regular payments from estates"
-	9           "Regular payments from annuities"
+	9           "Regular payments from"
 	10          "Other or don't know"
 ;
 label values sur_val1 sur_vala;
@@ -2716,9 +3290,9 @@ label define dis_sc1l
 	4           "Us military retirement"
 	5           "State or local gov't employee"
 	6           "Us railroad retirement"
-	7           "Accident or disability insurance"
-	8           "Not used"
-	9           "Not used"
+	7           "Accident or disability"
+	8           "Black Lung miner?s disability"
+	9           "State temporary sickness"
 	10          "Other or don't know"
 ;
 label values dis_val1 dis_vala;
@@ -2900,13 +3474,6 @@ label values pothval  pothval;
 label define pothval
 	0           "None"
 ;
-label values fl_665   fl_665l;
-label define fl_665l
-	0           "No 665 person match"
-	1           "665 person match"
-	2           "Non-interview 665 matched to"
-	3           "Match not enough data"
-;
 label values ptot_r   ptot_r;
 label define ptot_r
 	0           "Not in universe"
@@ -2959,16 +3526,35 @@ label define perlis
 	3           "125 - 149 percent of the low-"
 	4           "150 and above the low-income"
 ;
+label values pov_univ pov_univ;
+label define pov_univ
+	0           "Person NIU"
+	1           "Person in poverty universe"
+;
+label values wicyn    wicyn;
+label define wicyn
+	0           "NIU"
+	1           "Received WIC"
+	2           "Did not receive WIC"
+;
 label values mcare    mcare;
 label define mcare
 	0           "NIU (children under 15)"
 	1           "Yes"
 	2           "No"
 ;
+label values p_mvcare p_mvcare;
+label define p_mvcare
+	0           "None"
+;
 label values mcaid    mcaid;
 label define mcaid
 	1           "Yes"
 	2           "No"
+;
+label values p_mvcaid p_mvcaid;
+label define p_mvcaid
+	0           "None"
 ;
 label values champ    champ;
 label define champ
@@ -3000,904 +3586,9 @@ label define hipaid
 	2           "Part"
 	3           "None"
 ;
-label values wrk_ck   wrk_ck;
-label define wrk_ck
-	0           "Not in universe"
-	1           "Yes"
-	2           "No"
-;
-label values penplan  penplan;
-label define penplan
-	0           "Not in universe"
-	1           "Yes"
-	2           "No"
-;
-label values penincl  penincl;
-label define penincl
-	0           "Not in universe"
-	1           "Yes"
-	2           "No"
-;
-label values cov_gh   cov_gh;
-label define cov_gh
-	1           "Yes"
-	2           "No"
-;
-label values cov_hi   cov_hi;
-label define cov_hi
-	1           "Yes"
-	2           "No"
-;
-label values ch_mc    ch_mc;
-label define ch_mc
-	0           "Not child's record"
-	1           "Yes"
-	2           "No"
-;
-label values ch_hi    ch_hi;
-label define ch_hi
-	0           "Not child's record"
-	1           "Covered by person in household"
-	2           "Covered by person outside of"
-	3           "Not covered"
-;
-label values aprrp    aprrp;
-label define aprrp
-	0           "No change"
-	2           "Blank to value"
-	3           "Value to value"
-;
-label values apparent apparent;
-label define apparent
-	0           "No change"
-	2           "Blank to value"
-	3           "Value to value"
-;
-label values apage    apage;
-label define apage
-	0           "No change"
-	4           "Allocated"
-;
-label values apmaritl apmaritl;
-label define apmaritl
-	0           "No change"
-	4           "Allocated"
-;
-label values apspouse apspouse;
-label define apspouse
-	0           "No change"
-	2           "Blank to value"
-	3           "Value to value"
-;
-label values apsex    apsex;
-label define apsex
-	0           "No change"
-	4           "Allocated"
-;
-label values apvet    apvet;
-label define apvet
-	0           "No change"
-	4           "Allocated"
-;
-label values aphga    aphga;
-label define aphga
-	0           "No change"
-	4           "Allocated"
-;
-label values aprace   aprace;
-label define aprace
-	0           "No change"
-	4           "Allocated"
-;
-label values aporigin aporigin;
-label define aporigin
-	0           "No change"
-	2           "Blank to value"
-	5           "Value to value"
-	8           "Blank to n/a code"
-;
-label values aplfsr   aplfsr;
-label define aplfsr
-	0           "No change or children or armed"
-	4           "Allocated"
-;
-label values aphrs    aphrs;
-label define aphrs
-	0           "No change or children or armed"
-	4           "Allocated"
-;
-label values apwhyabs apwhyabs;
-label define apwhyabs
-	0           "No change or children or armed"
-	4           "Allocated"
-;
-label values appayabs appayabs;
-label define appayabs
-	0           "No change or children or armed"
-	4           "Allocated"
-;
-label values apind    apind;
-label define apind
-	0           "No change or children or armed"
-	4           "Allocated"
-;
-label values apocc    apocc;
-label define apocc
-	0           "No change or children or armed"
-	4           "Allocated"
-;
-label values apclswkr apclswkr;
-label define apclswkr
-	0           "No change or children or armed"
-	4           "Allocated"
-;
-label values apnlflj  apnlflj;
-label define apnlflj
-	0           "No change or children or armed"
-	4           "Allocated"
-;
-label values apuslhrs apuslhrs;
-label define apuslhrs
-	0           "No change or children or armed"
-	4           "Allocated"
-;
-label values aphrlywk aphrlywk;
-label define aphrlywk
-	0           "No change or children or armed"
-	4           "Allocated"
-;
-label values prwernal prwernal;
-label define prwernal
-	0           "Not allocated"
-	4           "Allocated"
-;
-label values prhernal prhernal;
-label define prhernal
-	0           "Not allocated"
-	4           "Allocated"
-;
-label values apunmem  apunmem;
-label define apunmem
-	0           "No change or children or armed"
-	4           "Allocated"
-;
-label values apuncov  apuncov;
-label define apuncov
-	0           "No change or children or armed"
-	4           "Allocated"
-;
-label values apenrlw  apenrlw;
-label define apenrlw
-	0           "No change or children or armed"
-	4           "Allocated"
-;
-label values aphscol  aphscol;
-label define aphscol
-	0           "No change or children or armed"
-	4           "Allocated"
-;
-label values apftpt   apftpt;
-label define apftpt
-	0           "No change or children or armed"
-	4           "Allocated"
-;
-label values i_ernyn  i_ernyn;
-label define i_ernyn
-	0           "No change or children"
-	1           "Allocated"
-;
-label values i_ernval i_ernval;
-label define i_ernval
-	0           "No change or children"
-	1           "Allocated"
-;
-label values i_wsyn   i_wsyn;
-label define i_wsyn
-	0           "No change or children"
-	1           "Allocated"
-;
-label values i_wsval  i_wsval;
-label define i_wsval
-	0           "No change or children"
-	1           "Allocated"
-;
-label values i_seyn   i_seyn;
-label define i_seyn
-	0           "No change or children"
-	1           "Allocated"
-;
-label values i_seval  i_seval;
-label define i_seval
-	0           "No change or children"
-	1           "Allocated"
-;
-label values i_frmyn  i_frmyn;
-label define i_frmyn
-	0           "No change or children"
-	1           "Allocated"
-;
-label values i_frmval i_frmval;
-label define i_frmval
-	0           "No change or children"
-	1           "Allocated"
-;
-label values i_ucyn   i_ucyn;
-label define i_ucyn
-	0           "No change or children"
-	1           "Allocated"
-;
-label values i_ucval  i_ucval;
-label define i_ucval
-	0           "No change or children"
-	1           "Allocated"
-;
-label values i_wcyn   i_wcyn;
-label define i_wcyn
-	0           "No change or children"
-	1           "Allocated"
-;
-label values i_wctyp  i_wctyp;
-label define i_wctyp
-	0           "No change or children"
-	1           "Allocated"
-;
-label values i_wcval  i_wcval;
-label define i_wcval
-	0           "No change or children"
-	1           "Allocated"
-;
-label values i_ssyn   i_ssyn;
-label define i_ssyn
-	0           "No change or children"
-	1           "Allocated"
-;
-label values i_ssval  i_ssval;
-label define i_ssval
-	0           "No change or children"
-	1           "Allocated"
-;
-label values i_ssiyn  i_ssiyn;
-label define i_ssiyn
-	0           "No change or children"
-	1           "Allocated"
-;
-label values i_ssival i_ssival;
-label define i_ssival
-	0           "No change or children"
-	1           "Allocated"
-;
-label values i_pawyn  i_pawyn;
-label define i_pawyn
-	0           "No change or children"
-	1           "Allocated"
-;
-label values i_pawtyp i_pawtyp;
-label define i_pawtyp
-	0           "No change or children"
-	1           "Allocated"
-;
-label values i_pawval i_pawval;
-label define i_pawval
-	0           "No change or children"
-	1           "Allocated"
-;
-label values i_pawmo  i_pawmo;
-label define i_pawmo
-	0           "No change or children"
-	1           "Allocated"
-;
-label values i_vetyn  i_vetyn;
-label define i_vetyn
-	0           "No change or children"
-	1           "Allocated"
-;
-label values i_vettyp i_vettyp;
-label define i_vettyp
-	0           "No change or children"
-	1           "Allocated"
-;
-label values i_vetval i_vetval;
-label define i_vetval
-	0           "No change or children"
-	1           "Allocated"
-;
-label values i_vetqva i_vetqva;
-label define i_vetqva
-	0           "No change or children"
-	1           "Allocated"
-;
-label values i_suryn  i_suryn;
-label define i_suryn
-	0           "No change or children"
-	1           "Allocated"
-;
-label values i_sursc1 i_sursca;
-label define i_sursca
-	0           "No change or children"
-	1           "Allocated"
-;
-label values i_sursc2 i_surscb;
-label define i_surscb
-	0           "No change or children"
-	1           "Allocated"
-;
-label values i_survl1 i_survla;
-label define i_survla
-	0           "No change or children"
-	1           "Allocated"
-;
-label values i_survl2 i_survlb;
-label define i_survlb
-	0           "No change or children"
-	1           "Allocated"
-;
-label values i_dissc1 i_dissca;
-label define i_dissca
-	0           "No change or children"
-	1           "Allocated"
-;
-label values i_dissc2 i_disscb;
-label define i_disscb
-	0           "No change or children"
-	1           "Allocated"
-;
-label values i_dishp  i_dishp;
-label define i_dishp
-	0           "No change or children"
-	1           "Allocated"
-;
-label values i_discs  i_discs;
-label define i_discs
-	0           "No change or children"
-	1           "Allocated"
-;
-label values i_disyn  i_disyn;
-label define i_disyn
-	0           "No change or children"
-	1           "Allocated"
-;
-label values toi_val  toi_val;
-label define toi_val
-	0           "Not topcoded"
-	1           "Topcoded"
-;
-label values i_disvl1 i_disvla;
-label define i_disvla
-	0           "No change or children"
-	1           "Allocated"
-;
-label values i_disvl2 i_disvlb;
-label define i_disvlb
-	0           "No change or children"
-	1           "Allocated"
-;
-label values i_retyn  i_retyn;
-label define i_retyn
-	0           "No change or children"
-	1           "Allocated"
-;
-label values i_retsc1 i_retsca;
-label define i_retsca
-	0           "No change or children"
-	1           "Allocated"
-;
-label values i_retsc2 i_retscb;
-label define i_retscb
-	0           "No change or children"
-	1           "Allocated"
-;
-label values i_retvl1 i_retvla;
-label define i_retvla
-	0           "No change or children"
-	1           "Allocated"
-;
-label values i_retvl2 i_retvlb;
-label define i_retvlb
-	0           "No change or children"
-	1           "Allocated"
-;
-label values i_intyn  i_intyn;
-label define i_intyn
-	0           "No change or children"
-	1           "Allocated"
-;
-label values i_intval i_intval;
-label define i_intval
-	0           "No change or children"
-	1           "Allocated"
-;
-label values i_divyn  i_divyn;
-label define i_divyn
-	0           "No change or children"
-	1           "Allocated"
-;
-label values i_divval i_divval;
-label define i_divval
-	0           "No change or children"
-	1           "Allocated"
-;
-label values i_rntyn  i_rntyn;
-label define i_rntyn
-	0           "No change or children"
-	1           "Allocated"
-;
-label values i_rntval i_rntval;
-label define i_rntval
-	0           "No change or children"
-	1           "Allocated"
-;
-label values i_edyn   i_edyn;
-label define i_edyn
-	0           "No change or children"
-	1           "Allocated"
-;
-label values i_edtyp1 i_edtypa;
-label define i_edtypa
-	0           "No change or children"
-	1           "Allocated"
-;
-label values i_edtyp2 i_edtypb;
-label define i_edtypb
-	0           "No change or children"
-	1           "Allocated"
-;
-label values i_oedval i_oedval;
-label define i_oedval
-	0           "No change or children"
-	1           "Allocated"
-;
-label values i_cspyn  i_cspyn;
-label define i_cspyn
-	0           "No change or children"
-	1           "Allocated"
-;
-label values i_cspval i_cspval;
-label define i_cspval
-	0           "No change or children"
-	1           "Allocated"
-;
-label values i_almyn  i_almyn;
-label define i_almyn
-	0           "No change or children"
-	1           "Allocated"
-;
-label values i_almval i_almval;
-label define i_almval
-	0           "No change or children"
-	1           "Allocated"
-;
-label values i_finyn  i_finyn;
-label define i_finyn
-	0           "No change or children"
-	1           "Allocated"
-;
-label values i_finval i_finval;
-label define i_finval
-	0           "No change or children"
-	1           "Allocated"
-;
-label values i_oival  i_oival;
-label define i_oival
-	0           "No change or children"
-	1           "Allocated"
-;
-label values i_nwlook i_nwlook;
-label define i_nwlook
-	0           "No change or children"
-	1           "Allocated"
-;
-label values i_nwlkwk i_nwlkwk;
-label define i_nwlkwk
-	0           "No change or children"
-	1           "Allocated"
-;
-label values i_rsnnot i_rsnnot;
-label define i_rsnnot
-	0           "No change or children"
-	1           "Allocated"
-;
-label values i_losewk i_losewk;
-label define i_losewk
-	0           "No change or children"
-	1           "Allocated"
-;
-label values i_lkweek i_lkweek;
-label define i_lkweek
-	0           "No change or children"
-	1           "Allocated"
-;
-label values i_lkstr  i_lkstr;
-label define i_lkstr
-	0           "No change or children"
-	1           "Allocated"
-;
-label values i_pyrsn  i_pyrsn;
-label define i_pyrsn
-	0           "No change or children"
-	1           "Allocated"
-;
-label values i_phmemp i_phmemp;
-label define i_phmemp
-	0           "No change or children"
-	1           "Allocated"
-;
-label values i_hrswk  i_hrswk;
-label define i_hrswk
-	0           "No change or children"
-	1           "Allocated"
-;
-label values i_hrchk  i_hrchk;
-label define i_hrchk
-	0           "No change or children"
-	1           "Allocated"
-;
-label values i_ptyn   i_ptyn;
-label define i_ptyn
-	0           "No change or children"
-	1           "Allocated"
-;
-label values i_ptwks  i_ptwks;
-label define i_ptwks
-	0           "No change or children"
-	1           "Allocated"
-;
-label values i_ptrsn  i_ptrsn;
-label define i_ptrsn
-	0           "No change or children"
-	1           "Allocated"
-;
-label values i_ljcw   i_ljcw;
-label define i_ljcw
-	0           "No change or children"
-	1           "Allocated"
-;
-label values i_indus  i_indus;
-label define i_indus
-	0           "No change or children"
-	1           "Allocated"
-;
-label values i_occup  i_occup;
-label define i_occup
-	0           "No change or children"
-	1           "Allocated"
-;
-label values i_workyn i_workyn;
-label define i_workyn
-	0           "No change or children"
-	1           "Allocated"
-;
-label values i_wtemp  i_wtemp;
-label define i_wtemp
-	0           "No change or children"
-	1           "Allocated"
-;
-label values i_wkswk  i_wkswk;
-label define i_wkswk
-	0           "No change or children"
-	1           "Allocated"
-;
-label values i_wkchk  i_wkchk;
-label define i_wkchk
-	0           "No change or children"
-	1           "Allocated"
-;
-label values i_ernsrc i_ernsrc;
-label define i_ernsrc
-	0           "No change or children"
-	1           "Allocated"
-;
-label values i_noemp  i_noemp;
-label define i_noemp
-	0           "No change or children"
-	1           "Allocated"
-;
-label values i_penpla i_penpla;
-label define i_penpla
-	0           "No change or children"
-	1           "Allocated"
-;
-label values i_peninc i_peninc;
-label define i_peninc
-	0           "No change or children"
-	1           "Allocated"
-;
-label values i_mig1   i_mig1l;
-label define i_mig1l
-	0           "NIU, or not changed."
-	1           "Assigned from householder."
-	2           "Assigned from spouse"
-	3           "Allocated from matrix mob"
-	4           "Assign from parents"
-;
-label values i_mig2   i_mig2l;
-label define i_mig2l
-	0           "NIU, or not changed."
-	1           "Assigned from householder"
-	2           "Assigned from spouse"
-	3           "Allocated from matrix MIG1"
-	4           "Allocated from matrix MIG2"
-	5           "Allocated from MIG3"
-	6           "Allocated from MIG4"
-	7           "Allocated from MIG5"
-	8           "Assign from parents"
-;
-label values p_mvcare p_mvcare;
-label define p_mvcare
-	0           "None"
-;
-label values p_mvcaid p_mvcaid;
-label define p_mvcaid
-	0           "None"
-;
 label values emcontrb emcontrb;
 label define emcontrb
 	0           "None"
-;
-label values filestat filestat;
-label define filestat
-	1           "Joint, both <65"
-	2           "Joint, one <65 &  one 65+"
-	3           "Joint, both 65+"
-	4           "Head of household"
-	5           "Single"
-	6           "Nonfiler"
-;
-label values dep_stat dep_stat;
-label define dep_stat
-	0           "Not a dependent"
-;
-label values fed_tax  fed_tax;
-label define fed_tax
-	0           "None"
-;
-label values eit_cred eit_cred;
-label define eit_cred
-	0           "None"
-;
-label values statetax statetax;
-label define statetax
-	0           "None"
-;
-label values fica     fica;
-label define fica
-	0           "None"
-;
-label values fed_ret  fed_ret;
-label define fed_ret
-	0           "None"
-;
-label values agi      agi;
-label define agi
-	0           "None or not in universe"
-;
-label values cap_gain cap_gain;
-label define cap_gain
-	0           "None"
-;
-label values cap_loss cap_loss;
-label define cap_loss
-	0           "None"
-;
-label values tax_inc  tax_inc;
-label define tax_inc
-	0           "None"
-;
-label values marg_tax marg_tax;
-label define marg_tax
-	0           "None"
-;
-label values pemlr    pemlr;
-label define pemlr
-	0           "NIU"
-	1           "Employed - at work"
-	2           "Employed - absent"
-	3           "Unemployed - on layoff"
-	4           "Unemployed - looking"
-	5           "Not in labor force - retired"
-	6           "Not in labor force - disabled"
-	7           "Not in labor force - other"
-;
-label values pruntype pruntype;
-label define pruntype
-	0           "NIU"
-	1           "Job loser/on layoff"
-	2           "Other job loser"
-	3           "Temporary job ended"
-	4           "Job leaver"
-	5           "Re-entrant"
-	6           "New-entrant"
-;
-label values prwkstat prwkstat;
-label define prwkstat
-	0           "NIU"
-	1           "Not in labor force"
-	2           "FT hours (35+), usually FT"
-	3           "PT for economic reasons,"
-	4           "PT for non-economic reasons,"
-	5           "Not at work, usually FT"
-	6           "PT hrs, usually PT for economic"
-	7           "PT hrs, usually PT for non-"
-	8           "FT hours, usually PT for"
-	9           "FT hours, usually PT for non-"
-	10          "Not at work, usually part-time"
-	11          "Unemployed FT"
-	12          "Unemployed PT"
-;
-label values prptrea  prptrea;
-label define prptrea
-	-1          "NIU - adult civilian"
-	0           "NIU - children or Armed Forces"
-	1           "Usually FT - slack work/"
-	2           "Usually FT - seasonal work"
-	3           "Usually FT - job started/ended"
-	4           "Usually FT - vacation/personal"
-	5           "Usually FT - own illness/injury/"
-	6           "Usually FT - holiday"
-	7           "Usually FT - child care problems"
-	8           "Usually FT - other fam/pers"
-	9           "Usually FT - labor dispute"
-	10          "Usually FT - weather affected"
-	11          "Usually FT - school/training"
-	12          "Usually FT - civic/military duty"
-	13          "Usually FT - other reason"
-	14          "Usually PT - slack work/business"
-	15          "Usually PT - PT could only find"
-	16          "Usually PT - seasonal work"
-	17          "Usually PT - child care problems"
-	18          "Usually PT - other fam/pers"
-	19          "Usually PT - health/medical"
-	20          "Usually PT - school/training"
-	21          "Usually PT - retired/social"
-	22          "Usually PT - workweek <35 hours"
-	23          "Usually PT - other reason"
-;
-label values prdisc   prdisc;
-label define prdisc
-	0           "NIU"
-	1           "Discouraged worker"
-	2           "Conditionally interested"
-	3           "Not available"
-;
-label values prcow1   prcow1l;
-label define prcow1l
-	0           "NIU"
-	1           "Federal govt"
-	2           "State govt"
-	3           "Local govt"
-	4           "Private (incl. self-employed"
-	5           "Self-employed, unincorp."
-	6           "Without pay"
-;
-label values prpertyp prpertyp;
-label define prpertyp
-	1           "Child household member"
-	2           "Adult civilian household member"
-	3           "Adult Armed Forces household"
-;
-label values peabsrsn peabsrsn;
-label define peabsrsn
-	-1          "NIU - adult civilian"
-	0           "NIU - children or Armed Forces"
-	2           "Slack work/business conditions"
-	4           "Vacation/personal days"
-	5           "Own illness/injury/medical"
-	6           "Child care problems"
-	7           "Other family/personal"
-	8           "Maternity/paternity leave"
-	9           "Labor dispute"
-	10          "Weather affected job"
-	11          "School/training"
-	12          "Civic/military duty"
-	13          "Does not work in the business"
-	14          "Other (specify)"
-;
-label values peio1cow peio1cow;
-label define peio1cow
-	0           "NIU"
-	1           "Government-federal"
-	2           "Government-state"
-	3           "Government - local"
-	4           "Private, for profit"
-	5           "Private, nonprofit"
-	6           "Self-employed, incorporated"
-	7           "Self-employed, unincorporated"
-	8           "Without pay"
-;
-label values prnlfsch prnlfsch;
-label define prnlfsch
-	0           "NIU"
-	1           "In school"
-	2           "Not in school"
-;
-label values pehruslt pehruslt;
-label define pehruslt
-	-4          "Hours vary"
-	-1          "NIU - adult civilian"
-	0           "NIU - children or Armed Forces"
-;
-label values peinusyr peinusyr;
-label define peinusyr
-	0           "NIU"
-	1           "Before 1950"
-	2           "1950-1959"
-	3           "1960-1964"
-	4           "1965-1969"
-	5           "1970-1974"
-	6           "1975-1979"
-	7           "1980-1981"
-	8           "1982-1983"
-	9           "1984-1985"
-	10          "1986-1987"
-	11          "1988-1989"
-	12          "1990-1991"
-	13          "1992-1993"
-	14          "1994-1995"
-	15          "1996-1997"
-	16          "1998-2001"
-;
-label values prcitshp prcitshp;
-label define prcitshp
-	1           "Native, born in the United"
-	2           "Native, born in Puerto Rico or"
-	3           "Native, born abroad of American"
-	4           "Foreign born, U.S. citizen by"
-	5           "Foreign born, not a citizen of"
-;
-label values pxnatvty pxnatvty;
-label define pxnatvty
-	-1          "Not allocated"
-	0           "Value - no change"
-	1           "Blank - no change"
-	2           "Don't know - no change"
-	3           "Refused - no change"
-	10          "Value to value"
-	11          "Blank to value"
-	12          "Don't know to value"
-	13          "Refused to value"
-	20          "Value to longitudinal value"
-	21          "Blank to longitudinal value"
-	22          "Don't know to longitudinal"
-	23          "Refused to longitudinal value"
-	30          "Value to allocated value long."
-	31          "Blank to allocated value long."
-	32          "Don't know to allocated value"
-	33          "Refused to allocated value"
-	40          "Value to allocated value"
-	41          "Blank to allocated value"
-	42          "Don't know to allocated value"
-	43          "Refused to allocated value"
-	50          "Value to blank"
-	52          "Don't know to blank"
-	53          "Refused to blank"
-;
-label values perrp    perrp;
-label define perrp
-	1           "Reference person w/rels."
-	2           "Reference person w/o rels."
-	3           "Spouse"
-	4           "Child"
-	5           "Grandchild"
-	6           "Parent"
-	7           "Brother/sister"
-	8           "Other rel. of ref. person"
-	9           "Foster child"
-	10          "Nonrel. of ref. person w/rels."
-	11          "Not used"
-	12          "Nonrel. of ref. person w/o rels."
-	13          "Unmarried partner w/rels."
-	14          "Unmarried partner w/o rels."
-	15          "Housemate/roommate w/rels."
-	16          "Housemate/roommate w/o rels."
-	17          "Roomer/boarder w/rels."
-	18          "Roomer/boarder w/o rels."
-;
-label values i_mig3   i_mig3l;
-label define i_mig3l
-	0           "NIU, or not changed."
-	1           "State and below assigned"
-	2           "County and below assigned"
-	3           "MCD and below assigned"
-	4           "County in New York City"
 ;
 label values hi       hi;
 label define hi
@@ -3951,7 +3642,7 @@ label define prityp
 ;
 label values depriv   depriv;
 label define depriv
-	0           "No or niu"
+	0           "No or NIU"
 	1           "Yes"
 ;
 label values pilin1   pilin1l;
@@ -4055,6 +3746,1032 @@ label define hea
 	4           "Fair"
 	5           "Poor"
 ;
+label values ihsflg   ihsflg;
+label define ihsflg
+	1           "Yes"
+	2           "No"
+;
+label values ahiper   ahiper;
+label define ahiper
+	0           "NIU"
+	1           "Yes"
+	2           "No"
+;
+label values ahityp6  ahityp6l;
+label define ahityp6l
+	0           "NIU"
+	1           "Medicare"
+	2           "Medicaid"
+	3           "Tricare or champus"
+	4           "CAMPVA ('CHAMPVA' is the"
+	5           "Va health care"
+	6           "Military health care"
+	7           "Children's health insurance"
+	8           "Indian health service"
+	9           "Other government health care"
+	10          "Employer/union-provided"
+	11          "Employer/union-provided (as"
+	12          "Privately purchased"
+	13          "Privately purchased (as"
+	14          "Plan of someone outside the"
+	15          "Other"
+;
+label values pchip    pchip;
+label define pchip
+	0           "NIU"
+	1           "Yes"
+	2           "No"
+;
+label values cov_gh   cov_gh;
+label define cov_gh
+	1           "Yes"
+	2           "No"
+;
+label values cov_hi   cov_hi;
+label define cov_hi
+	1           "Yes"
+	2           "No"
+;
+label values ch_mc    ch_mc;
+label define ch_mc
+	0           "Not child's record"
+	1           "Yes"
+	2           "No"
+;
+label values ch_hi    ch_hi;
+label define ch_hi
+	0           "Not child's record"
+	1           "Covered by person in household"
+	2           "Covered by person outside of"
+	3           "Not covered"
+;
+label values marg_tax marg_tax;
+label define marg_tax
+	0           "None"
+;
+label values ctc_crd  ctc_crd;
+label define ctc_crd
+	0           "None"
+;
+label values penplan  penplan;
+label define penplan
+	0           "Not in universe"
+	1           "Yes"
+	2           "No"
+;
+label values penincl  penincl;
+label define penincl
+	0           "Not in universe"
+	1           "Yes"
+	2           "No"
+;
+label values filestat filestat;
+label define filestat
+	1           "Joint, both <65"
+	2           "Joint, one <65 &  one 65+"
+	3           "Joint, both 65+"
+	4           "Head of household"
+	5           "Single"
+	6           "Nonfiler"
+;
+label values dep_stat dep_stat;
+label define dep_stat
+	0           "Not a dependent"
+;
+label values eit_cred eit_cred;
+label define eit_cred
+	0           "None"
+;
+label values actc_crd actc_crd;
+label define actc_crd
+	0           "None"
+;
+label values fica     fica;
+label define fica
+	0           "None"
+;
+label values fed_ret  fed_ret;
+label define fed_ret
+	0           "None"
+;
+label values agi      agi;
+label define agi
+	0           "None or not in universe"
+;
+label values tax_inc  tax_inc;
+label define tax_inc
+	0           "None"
+;
+label values fedtax_bc fedtax_bc;
+label define fedtax_bc
+	0           "None"
+;
+label values fedtax_ac fedtax_ac;
+label define fedtax_ac
+	0           "None"
+;
+label values statetax_bc statetax_bc;
+label define statetax_bc
+	0           "None"
+;
+label values statetax_ac statetax_ac;
+label define statetax_ac
+	0           "None"
+;
+label values paidccyn paidccyn;
+label define paidccyn
+	0           "NIU"
+	1           "Yes"
+	2           "No"
+;
+label values paidcyna paidcyna;
+label define paidcyna
+	0           "Not imputed or NIU"
+	1           "Imputed"
+;
+label values moop     moop;
+label define moop
+	0           " NIU"
+;
+label values phip_val phip_val;
+label define phip_val
+	0           " NIU"
+;
+label values potc_val potc_val;
+label define potc_val
+	0           " NIU"
+;
+label values pmed_val pmed_val;
+label define pmed_val
+	0           " NIU"
+;
+label values chsp_val chsp_val;
+label define chsp_val
+	0           " NIU"
+;
+label values chsp_yn  chsp_yn;
+label define chsp_yn
+	0           "NIU"
+	1           "Yes"
+	2           "No"
+;
+label values chelsew_yn chelsew_yn;
+label define chelsew_yn
+	0           "NIU"
+	1           "Yes"
+	2           "No"
+;
+label values axrrp    axrrp;
+label define axrrp
+	0           "No change"
+	2           "Blank to value"
+	3           "Value to value"
+;
+label values axage    axage;
+label define axage
+	0           "No change"
+	4           "Allocated"
+;
+label values axmaritl axmaritl;
+label define axmaritl
+	0           "No change"
+	4           "Allocated"
+;
+label values axspouse axspouse;
+label define axspouse
+	0           "No change"
+	2           "Blank to value"
+	3           "Value to value"
+;
+label values axsex    axsex;
+label define axsex
+	0           "No change"
+	4           "Allocated"
+;
+label values axhga    axhga;
+label define axhga
+	0           "No change"
+	4           "Allocated"
+;
+label values pxrace1  pxrace1l;
+label define pxrace1l
+	0           "Not allocated"
+	1           "Blank - no change"
+	2           "Don't know - no change"
+	3           "Refused - no change"
+	10          "Value to value"
+	11          "Blank to value"
+	12          "Don't know to value"
+	13          "Refused to value"
+	20          "Value to longitudinal value"
+	21          "Blank to longitudinal value"
+	22          "Don't know to longitudinal"
+	23          "Refused to longitudinal value"
+	30          "Value to allocated value long"
+	31          "Blank to allocated value long"
+	32          "Don't know to allocated value"
+	33          "Refused to allocated value long"
+	40          "Value to allocated value"
+	41          "Blank to allocated value"
+	42          "Don't know to allocated value"
+	43          "Refused to allocated value"
+	50          "Value to blank"
+	52          "Don't know to blank"
+	53          "Refused to blank"
+;
+label values pxhspnon pxhspnon;
+label define pxhspnon
+	0           "Not allocated"
+	1           "Blank - no change"
+	2           "Don't know - no change"
+	3           "Refused - no change"
+	10          "Value to value"
+	11          "Blank to value"
+	12          "Don't know to value"
+	13          "Refused to value"
+	20          "Value to longitudinal value"
+	21          "Blank to longitudinal value"
+	22          "Don't know to longitudinal"
+	23          "Refused to longitudinal value"
+	30          "Value to allocated value long"
+	31          "Blank to allocated value long"
+	32          "Don't know to allocated value"
+	33          "Refused to allocated value long"
+	40          "Value to allocated value"
+	41          "Blank to allocated value"
+	42          "Don't know to allocated value"
+	43          "Refused to allocated value"
+	50          "Value to blank"
+	52          "Don't know to blank"
+	53          "Refused to blank"
+;
+label values pxcohab  pxcohab;
+label define pxcohab
+	-1          "Not allocated"
+	0           "Value - No change"
+	1           "Blank - No change"
+	2           "Don?t know - No change"
+	3           "Refused - No change"
+	10          "Value to Value"
+	11          "Blank to Value"
+	12          "Don?t know to Value"
+	13          "Refused to Value"
+	20          "Value to Longitudinal value"
+	21          "Blank to Longitudinal value"
+	22          "Don't know to Longitudinal"
+	23          "Refused to Longitudinal value"
+	30          "Value to Allocated value long."
+	31          "Blank to Allocated value long."
+	32          "Don't know to Allocated value"
+	33          "Refused to Allocated value"
+	40          "Value to Allocated value"
+	41          "Blank to Allocated value"
+	42          "Don't know to Allocated value"
+	43          "Refused to Allocated value"
+	50          "Value to Blank"
+	52          "Don't know to Blank"
+	53          "Refused to Blank"
+;
+label values pxlndad  pxlndad;
+label define pxlndad
+	0           "Value - No change"
+	1           "Blank - No change"
+	2           "Don't know - No change"
+	3           "Refused - No change"
+	10          "Value to Value"
+	11          "Blank to Value"
+	12          "Don't know to Value"
+	13          "Refused to Value"
+	20          "Value to Longitudinal value"
+	21          "Blank to Longitudinal value"
+	22          "Don't know to Longitudinal"
+	23          "Refused to Longitudinal value"
+	30          "Value to Allocated value long."
+	31          "Blank to Allocated value long."
+	32          "Don't know to Allocated value"
+	33          "Refused to Allocated value"
+	40          "Value to Allocated value"
+	41          "Blank to Allocated value"
+	42          "Don't know to Allocated value"
+	43          "Refused to Allocated value"
+	50          "Value to Blank"
+	52          "Don't know to Blank"
+	53          "Refused to Blank"
+;
+label values pxafever pxafever;
+label define pxafever
+	-1          "Not allocated"
+	0           "Value - no change"
+	1           "Blank - no change"
+	2           "Don?t know - no change"
+	3           "Refused - no change"
+	10          "Value to value"
+	11          "Blank to value"
+	12          "Don?t know to value"
+	13          "Refused to value"
+	20          "Value to longitudinal value"
+	21          "Blank to longitudinal value"
+	22          "Don?t know to longitudinal"
+	23          "Refused to longitudinal value"
+	30          "Value to allocated value long"
+	31          "Blank to allocated value long"
+	32          "Don?t know to allocated value"
+	33          "Refused to allocated value long"
+	40          "Value to allocated value"
+	41          "Blank to allocated value"
+	42          "Don?t know to allocated value"
+	43          "Refused to allocated value"
+	50          "Value to blank"
+	52          "Don?t know to blank"
+	53          "Refused to blank"
+;
+label values pxafwhn1 pxafwhna;
+label define pxafwhna
+	-1          "Not allocated"
+	0           "Value - no change"
+	1           "Blank - no change"
+	2           "Don?t know - no change"
+	3           "Refused - no change"
+	10          "Value to value"
+	11          "Blank to value"
+	12          "Don?t know to value"
+	13          "Refused to value"
+	20          "Value to longitudinal value"
+	21          "Blank to longitudinal value"
+	22          "Don?t know to longitudinal"
+	23          "Refused to longitudinal value"
+	30          "Value to allocated value long"
+	31          "Blank to allocated value long"
+	32          "Don?t know to allocated value"
+	33          "Refused to allocated value long"
+	40          "Value to allocated value"
+	41          "Blank to allocated value"
+	42          "Don?t know to allocated value"
+	43          "Refused to allocated value"
+	50          "Value to blank"
+	52          "Don?t know to blank"
+	53          "Refused to blank"
+;
+label values pxdisear pxdisear;
+label define pxdisear
+	-1          "Not allocated"
+	0           "Value - no change"
+	1           "Blank - no change"
+	2           "Don?t know - no change"
+	3           "Refused - no change"
+	10          "Value to value"
+	11          "Blank to value"
+	12          "Don?t know to value"
+	13          "Refused to value"
+	20          "Value to longitudinal value"
+	21          "Blank to longitudinal value"
+	22          "Don?t know to longitudinal"
+	23          "Refused to longitudinal value"
+	30          "Value to allocated value long"
+	31          "Blank to allocated value long"
+	32          "Don?t know to allocated value"
+	33          "Refused to allocated value long"
+	40          "Value to allocated value"
+	41          "Blank to allocated value"
+	42          "Don?t know to allocated value"
+	43          "Refused to allocated value"
+	50          "Value to blank"
+	52          "Don?t know to blank"
+	53          "Refused to blank"
+;
+label values pxnatvty pxnatvty;
+label define pxnatvty
+	-1          "Not allocated"
+	0           "Value - no change"
+	1           "Blank - no change"
+	2           "Don't know - no change"
+	3           "Refused - no change"
+	10          "Value to value"
+	11          "Blank to value"
+	12          "Don't know to value"
+	13          "Refused to value"
+	20          "Value to longitudinal value"
+	21          "Blank to longitudinal value"
+	22          "Don't know to longitudinal"
+	23          "Refused to longitudinal value"
+	30          "Value to allocated value long."
+	31          "Blank to allocated value long."
+	32          "Don't know to allocated value"
+	33          "Refused to allocated value"
+	40          "Value to allocated value"
+	41          "Blank to allocated value"
+	42          "Don't know to allocated value"
+	43          "Refused to allocated value"
+	50          "Value to blank"
+	52          "Don't know to blank"
+	53          "Refused to blank"
+;
+label values prwernal prwernal;
+label define prwernal
+	0           "Not allocated"
+	1           "Allocated"
+;
+label values prhernal prhernal;
+label define prhernal
+	0           "Not allocated"
+	1           "Allocated"
+;
+label values axhrs    axhrs;
+label define axhrs
+	0           "No change or children or armed"
+	4           "Allocated"
+;
+label values axwhyabs axwhyabs;
+label define axwhyabs
+	0           "No change or children or armed"
+	4           "Allocated"
+;
+label values axpayabs axpayabs;
+label define axpayabs
+	0           "No change or children or armed"
+	4           "Allocated"
+;
+label values axclswkr axclswkr;
+label define axclswkr
+	0           "No change or children or armed"
+	4           "Allocated"
+;
+label values axnlflj  axnlflj;
+label define axnlflj
+	0           "No change or children or armed"
+	4           "Allocated"
+;
+label values axuslhrs axuslhrs;
+label define axuslhrs
+	0           "No change or children or armed"
+	4           "Allocated"
+;
+label values axhrlywk axhrlywk;
+label define axhrlywk
+	0           "No change or children or armed"
+	4           "Allocated"
+;
+label values axunmem  axunmem;
+label define axunmem
+	0           "No change or children or armed"
+	4           "Allocated"
+;
+label values axuncov  axuncov;
+label define axuncov
+	0           "No change or children or armed"
+	4           "Allocated"
+;
+label values axenrlw  axenrlw;
+label define axenrlw
+	0           "No change or children or armed"
+	4           "Allocated"
+;
+label values axhscol  axhscol;
+label define axhscol
+	0           "No change or children or armed"
+	4           "Allocated"
+;
+label values axftpt   axftpt;
+label define axftpt
+	0           "No change or children or armed"
+	4           "Allocated"
+;
+label values axlfsr   axlfsr;
+label define axlfsr
+	0           "No change or children or armed"
+	4           "Allocated"
+;
+label values i_workyn i_workyn;
+label define i_workyn
+	0           "No change or children"
+	1           "Allocated"
+;
+label values i_wtemp  i_wtemp;
+label define i_wtemp
+	0           "No change or children"
+	1           "Allocated"
+;
+label values i_nwlook i_nwlook;
+label define i_nwlook
+	0           "No change or children"
+	1           "Allocated"
+;
+label values i_nwlkwk i_nwlkwk;
+label define i_nwlkwk
+	0           "No change or children"
+	1           "Allocated"
+;
+label values i_rsnnot i_rsnnot;
+label define i_rsnnot
+	0           "No change or children"
+	1           "Allocated"
+;
+label values i_wkswk  i_wkswk;
+label define i_wkswk
+	0           "No change or children"
+	1           "Allocated"
+;
+label values i_wkchk  i_wkchk;
+label define i_wkchk
+	0           "No change or children"
+	1           "Allocated"
+;
+label values i_losewk i_losewk;
+label define i_losewk
+	0           "No change or children"
+	1           "Allocated"
+;
+label values i_lkweek i_lkweek;
+label define i_lkweek
+	0           "No change or children"
+	1           "Allocated"
+;
+label values i_lkstr  i_lkstr;
+label define i_lkstr
+	0           "No change or children"
+	1           "Allocated"
+;
+label values i_pyrsn  i_pyrsn;
+label define i_pyrsn
+	0           "No change or children"
+	1           "Allocated"
+;
+label values i_phmemp i_phmemp;
+label define i_phmemp
+	0           "No change or children"
+	1           "Allocated"
+;
+label values i_hrswk  i_hrswk;
+label define i_hrswk
+	0           "No change or children"
+	1           "Allocated"
+;
+label values i_hrchk  i_hrchk;
+label define i_hrchk
+	0           "No change or children"
+	1           "Allocated"
+;
+label values i_ptyn   i_ptyn;
+label define i_ptyn
+	0           "No change or children"
+	1           "Allocated"
+;
+label values i_ptwks  i_ptwks;
+label define i_ptwks
+	0           "No change or children"
+	1           "Allocated"
+;
+label values i_ptrsn  i_ptrsn;
+label define i_ptrsn
+	0           "No change or children"
+	1           "Allocated"
+;
+label values i_ljcw   i_ljcw;
+label define i_ljcw
+	0           "No change or children"
+	1           "Allocated"
+;
+label values i_indus  i_indus;
+label define i_indus
+	0           "No change or children"
+	1           "Allocated"
+;
+label values i_occup  i_occup;
+label define i_occup
+	0           "No change or children"
+	1           "Allocated"
+;
+label values i_noemp  i_noemp;
+label define i_noemp
+	0           "No change or children"
+	1           "Allocated"
+;
+label values i_nxtres i_nxtres;
+label define i_nxtres
+	0           "NIU, or not changed"
+	1           "Assigned from householder"
+	2           "Assigned from spouse"
+	3           "Assigned from mother"
+	4           "Assigned from father"
+	5           "Allocated from matrix"
+;
+label values i_mig1   i_mig1l;
+label define i_mig1l
+	0           "NIU, or not changed."
+	1           "Assigned from householder."
+	2           "Assigned from spouse"
+	3           "Assign from mother"
+	4           "Assign from father"
+	5           "Allocated from matrix mob"
+;
+label values i_mig2   i_mig2l;
+label define i_mig2l
+	0           "NIU, or not changed."
+	1           "Assigned from householder"
+	2           "Assigned from spouse"
+	3           "Assigned from mother"
+	4           "Assigned from father"
+	5           "Allocated from matrix MIG1"
+	6           "Allocated from matrix MIG2"
+	7           "Allocated from MIG3"
+	8           "Allocated from MIG4"
+	9           "Allocated from MIG5"
+	10          "Allocated from MIG6"
+;
+label values i_mig3   i_mig3l;
+label define i_mig3l
+	0           "NIU, or not changed."
+	1           "State and below assigned"
+	2           "County and below assigned"
+	3           "MCD and below assigned"
+	4           "Place only"
+	5           "County in New York City"
+;
+label values i_disyn  i_disyn;
+label define i_disyn
+	0           "No change or children"
+	1           "Allocated"
+;
+label values i_ernyn  i_ernyn;
+label define i_ernyn
+	0           "No change or children"
+	1           "Allocated"
+;
+label values i_ernsrc i_ernsrc;
+label define i_ernsrc
+	0           "No change or children"
+	1           "Allocated"
+;
+label values i_ernval i_ernval;
+label define i_ernval
+	0           "No change or children"
+	1           "Allocated"
+;
+label values i_retsc2 i_retscb;
+label define i_retscb
+	0           "No change or children"
+	1           "Allocated"
+;
+label values i_wsyn   i_wsyn;
+label define i_wsyn
+	0           "No change or children"
+	1           "Allocated"
+;
+label values i_wsval  i_wsval;
+label define i_wsval
+	0           "No change or children"
+	1           "Allocated"
+;
+label values i_seyn   i_seyn;
+label define i_seyn
+	0           "No change or children"
+	1           "Allocated"
+;
+label values i_seval  i_seval;
+label define i_seval
+	0           "No change or children"
+	1           "Allocated"
+;
+label values i_frmyn  i_frmyn;
+label define i_frmyn
+	0           "No change or children"
+	1           "Allocated"
+;
+label values i_frmval i_frmval;
+label define i_frmval
+	0           "No change or children"
+	1           "Allocated"
+;
+label values i_ucyn   i_ucyn;
+label define i_ucyn
+	0           "No change or children"
+	1           "Allocated"
+;
+label values i_ucval  i_ucval;
+label define i_ucval
+	0           "No allocation"
+	1           "Allocated from hot deck"
+	2           "Allocated a loss"
+	3           "Statistically matched at"
+	4           "Statistically matched at"
+;
+label values i_wcyn   i_wcyn;
+label define i_wcyn
+	0           "No change or children"
+	1           "Allocated"
+;
+label values i_wctyp  i_wctyp;
+label define i_wctyp
+	0           "No change or children"
+	1           "Allocated"
+;
+label values i_wcval  i_wcval;
+label define i_wcval
+	0           "No allocation"
+	1           "Allocated from hot deck"
+	2           "Allocated a loss"
+	3           "Statistically matched at Level 1"
+	4           "Statistically matched at Level 2"
+;
+label values i_ssyn   i_ssyn;
+label define i_ssyn
+	0           "No change or children"
+	1           "Allocated"
+;
+label values i_ssval  i_ssval;
+label define i_ssval
+	0           "No allocation"
+	1           "Allocated from hot deck"
+	2           "Allocated a loss"
+	3           "Statistically matched at Level 1"
+	4           "Statistically matched at Level 2"
+;
+label values resnssa  resnssa;
+label define resnssa
+	0           "Not imputed or not in universe"
+	1           "Imputed"
+;
+label values i_ssiyn  i_ssiyn;
+label define i_ssiyn
+	0           "No change or children"
+	1           "Allocated"
+;
+label values sskidyna sskidyna;
+label define sskidyna
+	0           "Not imputed or not in universe"
+	1           "Imputed"
+;
+label values i_ssival i_ssival;
+label define i_ssival
+	0           "No allocation"
+	1           "Allocated from hot deck"
+	2           "Allocated a loss"
+	3           "Statistically matched at Level 1"
+	4           "Statistically matched at Level 2"
+;
+label values resnssia resnssix;
+label define resnssix
+	0           "Not imputed or not in universe"
+	1           "Imputed"
+;
+label values i_pawyn  i_pawyn;
+label define i_pawyn
+	0           "No change or children"
+	1           "Allocated"
+;
+label values ssikdyna ssikdyna;
+label define ssikdyna
+	0           "Not imputed or not in universe"
+	1           "Imputed"
+;
+label values i_pawtyp i_pawtyp;
+label define i_pawtyp
+	0           "No change or children"
+	1           "Allocated"
+;
+label values i_pawmo  i_pawmo;
+label define i_pawmo
+	0           "No change or children"
+	1           "Allocated"
+;
+label values i_pawval i_pawval;
+label define i_pawval
+	0           "No allocation"
+	1           "Allocated from hot deck"
+	2           "Allocated a loss"
+	3           "Statistically matched at Level 1"
+	4           "Statistically matched at Level 2"
+;
+label values i_vetyn  i_vetyn;
+label define i_vetyn
+	0           "No change or children"
+	1           "Allocated"
+;
+label values i_vettyp i_vettyp;
+label define i_vettyp
+	0           "No change or children"
+	1           "Allocated"
+;
+label values i_vetqva i_vetqva;
+label define i_vetqva
+	0           "No change or children"
+	1           "Allocated"
+;
+label values i_vetval i_vetval;
+label define i_vetval
+	0           "No allocation"
+	1           "Allocated from hot deck"
+	2           "Allocated a loss"
+	3           "Statistically matched at Level 1"
+	4           "Statistically matched at Level 2"
+;
+label values i_suryn  i_suryn;
+label define i_suryn
+	0           "No change or children"
+	1           "Allocated"
+;
+label values i_sursc1 i_sursca;
+label define i_sursca
+	0           "No change or children"
+	1           "Allocated"
+;
+label values i_sursc2 i_surscb;
+label define i_surscb
+	0           "No change or children"
+	1           "Allocated"
+;
+label values i_survl1 i_survla;
+label define i_survla
+	0           "No allocation"
+	1           "Allocated from hot deck"
+	2           "Allocated a loss"
+	3           "Statistically matched at"
+	4           "Statistically matched at"
+;
+label values i_survl2 i_survlb;
+label define i_survlb
+	0           "No allocation"
+	1           "Allocated from hot deck"
+	2           "Allocated a loss"
+	3           "Statistically matched at"
+	4           "Statistically matched at"
+;
+label values i_dishp  i_dishp;
+label define i_dishp
+	0           "No change or children"
+	1           "Allocated"
+;
+label values i_discs  i_discs;
+label define i_discs
+	0           "No change or children"
+	1           "Allocated"
+;
+label values i_dissc1 i_dissca;
+label define i_dissca
+	0           "No change or children"
+	1           "Allocated"
+;
+label values i_dissc2 i_disscb;
+label define i_disscb
+	0           "No change or children"
+	1           "Allocated"
+;
+label values i_disvl1 i_disvla;
+label define i_disvla
+	0           "No allocation"
+	1           "Allocated from hot deck"
+	2           "Allocated a loss"
+	3           "Statistically matched at"
+	4           "Statistically matched at"
+;
+label values i_disvl2 i_disvlb;
+label define i_disvlb
+	0           "No allocation"
+	1           "Allocated from hot deck"
+	2           "Allocated a loss"
+	3           "Statistically matched at Level 1"
+	4           "Statistically matched at Level 2"
+;
+label values i_retyn  i_retyn;
+label define i_retyn
+	0           "No change or children"
+	1           "Allocated"
+;
+label values i_retsc1 i_retsca;
+label define i_retsca
+	0           "No change or children"
+	1           "Allocated"
+;
+label values i_retvl1 i_retvla;
+label define i_retvla
+	0           "No allocation"
+	1           "Allocated from hot deck"
+	2           "Allocated a loss"
+	3           "Statistically matched at Level 1"
+	4           "Statistically matched at Level 2"
+;
+label values i_retvl2 i_retvlb;
+label define i_retvlb
+	0           "No allocation"
+	1           "Allocated from hot deck"
+	2           "Allocated a loss"
+	3           "Statistically matched at Level 1"
+	4           "Statistically matched at Level 2"
+;
+label values i_intyn  i_intyn;
+label define i_intyn
+	0           "No change or children"
+	1           "Allocated"
+;
+label values i_intval i_intval;
+label define i_intval
+	0           "No allocation"
+	1           "Allocated from hot deck"
+	2           "Allocated a loss"
+	3           "Statistically matched at Level 1"
+	4           "Statistically matched at Level 2"
+;
+label values i_divyn  i_divyn;
+label define i_divyn
+	0           "No change or children"
+	1           "Allocated"
+;
+label values i_divval i_divval;
+label define i_divval
+	0           "No allocation"
+	1           "Allocated from hot deck"
+	2           "Allocated a loss"
+	3           "Statistically matched at Level 1"
+	4           "Statistically matched at Level 2"
+;
+label values i_rntyn  i_rntyn;
+label define i_rntyn
+	0           "No change or children"
+	1           "Allocated"
+;
+label values i_rntval i_rntval;
+label define i_rntval
+	0           "No allocation"
+	1           "Allocated from hot deck"
+	2           "Allocated a loss"
+	3           "Statistically matched at Level 1"
+	4           "Statistically matched at Level 2"
+;
+label values i_edyn   i_edyn;
+label define i_edyn
+	0           "No change or children"
+	1           "Allocated"
+;
+label values i_edtyp1 i_edtypa;
+label define i_edtypa
+	0           "No change or children"
+	1           "Allocated"
+;
+label values i_edtyp2 i_edtypb;
+label define i_edtypb
+	0           "No change or children"
+	1           "Allocated"
+;
+label values i_oedval i_oedval;
+label define i_oedval
+	0           "No allocation"
+	1           "Allocated from hot deck"
+	2           "Allocated a loss"
+	3           "Statistically matched at"
+	4           "Statistically matched at"
+;
+label values i_cspyn  i_cspyn;
+label define i_cspyn
+	0           "No change or children"
+	1           "Allocated"
+;
+label values i_cspval i_cspval;
+label define i_cspval
+	0           "No allocation"
+	1           "Allocated from hot deck"
+	2           "Allocated a loss"
+	3           "Statistically matched at"
+	4           "Statistically matched at"
+;
+label values i_almyn  i_almyn;
+label define i_almyn
+	0           "No change or children"
+	1           "Allocated"
+;
+label values i_almval i_almval;
+label define i_almval
+	0           "No allocation"
+	1           "Allocated from hot deck"
+	2           "Allocated a loss"
+	3           "Statistically matched at"
+	4           "Statistically matched at"
+;
+label values i_finyn  i_finyn;
+label define i_finyn
+	0           "No change or children"
+	1           "Allocated"
+;
+label values i_finval i_finval;
+label define i_finval
+	0           "No allocation"
+	1           "Allocated from hot deck"
+	2           "Allocated a loss"
+	3           "Statistically matched at"
+	4           "Statistically matched at"
+;
+label values i_oival  i_oival;
+label define i_oival
+	0           "No allocation"
+	1           "Allocated from hot deck"
+	2           "Allocated a loss"
+	3           "Statistically matched at"
+	4           "Statistically matched at"
+;
+label values wicyna   wicyna;
+label define wicyna
+	0           "Not imputed or not in universe"
+	1           "Imputed"
+;
 label values i_hi     i_hi;
 label define i_hi
 	0           "No"
@@ -4139,22 +4856,64 @@ label define i_hea
 	0           "No"
 	1           "Allocated"
 ;
-label values ssi_val  ssi_val;
-label define ssi_val
-	0           "None or not in universe"
+label values iahiper  iahiper;
+label define iahiper
+	0           "Not imputed OR NIU"
+	1           "Imputed"
 ;
-label values ws_val   ws_val;
-label define ws_val
-	0           "None or not in universe"
+label values iahityp  iahityp;
+label define iahityp
+	0           "Not imputed OR NIU"
+	1           "NIU"
 ;
-label values se_val   se_val;
-label define se_val
-	0           "None or not in universe"
+label values i_pchip  i_pchip;
+label define i_pchip
+	0           "Not imputed or NIU"
+	1           "Imputed"
 ;
-label values ihsflg   ihsflg;
-label define ihsflg
-	1           "Yes"
-	2           "No"
+label values i_penpla i_penpla;
+label define i_penpla
+	0           "No change or children"
+	1           "Allocated"
+;
+label values i_peninc i_peninc;
+label define i_peninc
+	0           "No change or children"
+	1           "Allocated"
+;
+label values i_phipval i_phipval;
+label define i_phipval
+	0           "?Valid response or niu"
+	1           " Allocated at family level (non-   elderly only)"
+	2           " Allocated at individual level (elderly only)"
+	3           " Missing in family with at least one valid response"
+	4           " Value changed to $0 because all family members are uninsured"
+	5           " Logical imputation equal to $0 for elderly Medicare enrollees, elderly"
+;
+label values i_potcval i_potcval;
+label define i_potcval
+	0           "No"
+	1           "Allocated"
+;
+label values i_pmedval i_pmedval;
+label define i_pmedval
+	0           "No"
+	1           "Allocated"
+;
+label values i_chspval i_chspval;
+label define i_chspval
+	0           "No"
+	1           "Allocated"
+;
+label values i_chspyn i_chspyn;
+label define i_chspyn
+	0           "No"
+	1           "Allocated"
+;
+label values i_chelsewyn i_chelsewyn;
+label define i_chelsewyn
+	0           "No"
+	1           "Allocated"
 ;
 label values tsurval1 tsurvala;
 label define tsurvala
@@ -4221,254 +4980,54 @@ label define tfin_val
 	0           "Not topcoded"
 	1           "Topcoded"
 ;
-label values nxtres   nxtres;
-label define nxtres
-	0           "NIU"
-	1           "Change in marital status"
-	2           "To establish own household"
-	3           "Other family reason"
-	4           "New job or job transfer"
-	5           "To look for work or lost job"
-	6           "To be closer to work/easier"
-	7           "Retired"
-	8           "Other job-related reason"
-	9           "Wanted to own home, not rent"
-	10          "Wanted new or better house/"
-	11          "Wanted better neighborhood"
-	12          "Cheaper housing"
-	13          "Other housing reason"
-	14          "Attend/leave college"
-	15          "Change of climate"
-	16          "Health reasons"
+label values toi_val  toi_val;
+label define toi_val
+	0           "Not topcoded"
+	1           "Topcoded"
 ;
-label values i_nxtres i_nxtres;
-label define i_nxtres
-	0           "NIU, or not changed"
-	1           "Assigned from householder"
-	2           "Assigned from spouse or mother"
-	3           "Allocated from matrix"
+label values tphip_val tphip_val;
+label define tphip_val
+	0           "Not topcoded"
+	1           "Topcoded"
 ;
-label values frm_val  frm_val;
-label define frm_val
-	0           "None or not in universe"
+label values tpotc_val tpotc_val;
+label define tpotc_val
+	0           "Not topcoded"
+	1           "Topcoded"
 ;
-label values tranyn   tranyn;
-label define tranyn
-	0           "NIU"
-	1           "YES"
-	2           "NO"
+label values tpmed_val tpmed_val;
+label define tpmed_val
+	0           "Not topcoded"
+	1           "Topcoded"
 ;
-label values tranyna  tranyna;
-label define tranyna
-	0           "NOT IMPUTED OR NIU"
-	1           "IMPUTED"
-;
-label values ccayn    ccayn;
-label define ccayn
-	0           "NIU"
-	1           "YES"
-	2           "NO"
-;
-label values ccayna   ccayna;
-label define ccayna
-	0           "NOT IMPUTED OR NIU"
-	1           "IMPUTED"
-;
-label values paidccyn paidccyn;
-label define paidccyn
-	0           "NIU"
-	1           "YES"
-	2           "NO"
-;
-label values paidcyna paidcyna;
-label define paidcyna
-	0           "NOT IMPUTED OR NIU"
-	1           "IMPUTED"
-;
-label values ahiper   ahiper;
-label define ahiper
-	0           "NIU"
-	1           "YES"
-	2           "NO"
-;
-label values iahiper  iahiper;
-label define iahiper
-	0           "NOT IMPUTED OR NIU"
-	1           "IMPUTED"
-;
-label values ahityp6  ahityp6l;
-label define ahityp6l
-	1           "MEDICARE"
-	2           "MEDICAID"
-	3           "TRICARE OR CHAMPUS"
-	4           "CHAMPVA ('CHAMPVA' IS THE"
-	5           "VA HEALTH CARE"
-	6           "MILITARY HEALTH CARE"
-	7           "CHILDREN'S HEALTH INSURANCE"
-	8           "INDIAN HEALTH SERVICE"
-	9           "OTHER GOVERNMENT HEALTH CARE"
-	10          "EMPLOYER/UNION-PROVIDED"
-	11          "EMPLOYER/UNION-PROVIDED (AS"
-	12          "PRIVATELY PURCHASED"
-	13          "PRIVATELY PURCHASED (AS"
-	14          "PLAN OF SOMEONE OUTSIDE THE"
-	15          "OTHER"
-;
-label values iahityp  iahityp;
-label define iahityp
-	0           "NOT IMPUTED OR NIU"
-	1           "IMPUTED"
-;
-label values pchip    pchip;
-label define pchip
-	0           "NIU"
-	1           "YES"
-	2           "NO"
-;
-label values i_pchip  i_pchip;
-label define i_pchip
-	0           "NOT IMPUTED OR NIU"
-	1           "IMPUTED"
-;
-label values resnss1  resnss1l;
-label define resnss1l
-	0           "NIU"
-	1           "RETIRED"
-	2           "DISABLED (ADULT OR CHILD)"
-	3           "WIDOWED"
-	4           "SPOUSE"
-	5           "SURVIVING CHILD"
-	6           "DEPENDENT CHILD"
-	7           "ON BEHALF OF SURVIVING,"
-	8           "OTHER (ADULT OR CHILD)"
-;
-label values resnss2  resnss2l;
-label define resnss2l
-	0           "NIU"
-	1           "RETIRED"
-	2           "DISABLED (ADULT OR CHILD)"
-	3           "WIDOWED"
-	4           "SPOUSE"
-	5           "SURVIVING CHILD"
-	6           "DEPENDENT CHILD"
-	7           "ON BEHALF OF SURVIVING,"
-	8           "OTHER (ADULT OR CHILD)"
-;
-label values resnssa  resnssa;
-label define resnssa
-	0           "NOT IMPUTED OR NOT IN UNIVERSE"
-	1           "IMPUTED"
-;
-label values resnssi1 resnssia;
-label define resnssia
-	0           "NIU"
-	1           "DISABLED (ADULT OR CHILD)"
-	2           "BLIND (ADULT OR CHILD)"
-	3           "ON BEHALF OF A DISABLED CHILD"
-	4           "ON BEHALF OF A BLIND CHILD"
-	5           "OTHER (ADULT OR CHILD)"
-;
-label values resnssi2 resnssib;
-label define resnssib
-	0           "NIU"
-	1           "DISABLED (ADULT OR CHILD)"
-	2           "BLIND (ADULT OR CHILD)"
-	3           "ON BEHALF OF A DISABLED CHILD"
-	4           "ON BEHALF OF A BLIND CHILD"
-	5           "OTHER (ADULT OR CHILD)"
-;
-label values resnssia resnssix;
-label define resnssix
-	0           "NOT IMPUTED OR NOT IN UNIVERSE"
-	1           "IMPUTED"
-;
-label values ssikidyn ssikidyn;
-label define ssikidyn
-	0           "NIU"
-	1           "RECEIVED SSI"
-	2           "DID NOT RECEIVE SSI"
-;
-label values ssikdyna ssikdyna;
-label define ssikdyna
-	0           "NOT IMPUTED OR NOT IN UNIVERSE"
-	1           "IMPUTED"
-;
-label values sskidyn  sskidyn;
-label define sskidyn
-	0           "NIU"
-	1           "RECEIVED SS"
-	2           "DID NOT RECEIVE SS"
-;
-label values sskidyna sskidyna;
-label define sskidyna
-	0           "NOT IMPUTED OR NOT IN UNIVERSE"
-	1           "IMPUTED"
-;
-label values jcyn     jcyn;
-label define jcyn
-	0           "NIU"
-	1           "ATTENDED A JOB SEARCH PROGRAM"
-	2           "DID NOT"
-;
-label values jcyna    jcyna;
-label define jcyna
-	0           "NOT IMPUTED OR NOT IN UNIVERSE"
-	1           "IMPUTED"
-;
-label values jryn     jryn;
-label define jryn
-	0           "NIU"
-	1           "ATTENDED JOB READINESS"
-	2           "DID NOT ATTEND"
-;
-label values jryna    jryna;
-label define jryna
-	0           "NOT IMPUTED OR NOT IN UNIVERSE"
-	1           "IMPUTED"
-;
-label values jtyn     jtyn;
-label define jtyn
-	0           "NIU"
-	1           "ATTENDED A TRAINING PROGRAM TO"
-	2           "DID NOT ATTEND"
-;
-label values jtyna    jtyna;
-label define jtyna
-	0           "NOT IMPUTED OR NOT IN UNIVERSE"
-	1           "IMPUTED"
-;
-label values schoolyn schoolyn;
-label define schoolyn
-	0           "NIU"
-	1           "ATTENDED GED CLASSES OR"
-	2           "DID NOT ATTEND"
-;
-label values scholyna scholyna;
-label define scholyna
-	0           "NOT IMPUTED OR NOT IN UNIVERSE"
-	1           "IMPUTED"
-;
-label values wicyn    wicyn;
-label define wicyn
-	0           "NIU"
-	1           "RECEIVED WIC"
-	2           "DID NOT RECEIVE WIC"
-;
-label values wicyna   wicyna;
-label define wicyna
-	0           "NOT IMPUTED OR NOT IN UNIVERSE"
-	1           "IMPUTED"
-;
-label values comsrvyn comsrvyn;
-label define comsrvyn
-	0           "NIU"
-	1           "PARTICIPATED IN WORK PROGRAMS"
-	2           "DID NOT PARTICIPATE"
-;
-label values cmsrvyna cmsrvyna;
-label define cmsrvyna
-	0           "NOT IMPUTED OR NOT IN UNIVERSE"
-	1           "IMPUTED"
+label values tchsp_val tchsp_val;
+label define tchsp_val
+	0           "Not topcoded"
+	1           "Topcoded"
 ;
 
 #delimit cr
+
+/*
+Copyright 2012 shared by the National Bureau of Economic Research and Jean Roth
+
+National Bureau of Economic Research.
+1050 Massachusetts Avenue
+Cambridge, MA 02138
+jroth@nber.org
+
+This program and all programs referenced in it are free software. You
+can redistribute the program or modify it under the terms of the GNU
+General Public License as published by the Free Software Foundation;
+either version 2 of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307
+USA.
+*/
