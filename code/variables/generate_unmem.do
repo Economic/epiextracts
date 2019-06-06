@@ -3,13 +3,15 @@
 *******************************************************************************
 capture rename unmem old_unmem
 gen byte unmem = .
-if $monthlycps == 0 & $maycps == 1 {
+
+if $maycps == 1 {
 	if tm(1973m1) <= $date & $date <= tm(1981m12) {
 		replace unmem = 0 if old_unmem == 1
 		replace unmem = 1 if old_unmem == 0
  	}
 }
-if $monthlycps == 1 & $maycps == 0 {
+
+if $monthlycps == 1 {
 	if tm(1983m1) <= $date & $date <= tm(1993m12) {
 		replace unmem = 0 if old_unmem == 2
 		replace unmem = 1 if old_unmem == 1
@@ -19,6 +21,7 @@ if $monthlycps == 1 & $maycps == 0 {
 		replace unmem = 1 if peernlab == 1
 	}
 }
+
 lab var unmem "Member of a union"
 lab def unmem 1 "Union member" 0 "Not a union member"
 lab val unmem unmem

@@ -2,12 +2,16 @@
 * Number of jobs
 *******************************************************************************
 gen byte numjobs = .
-if tm(1994m1) <= $date {
-	replace numjobs = 1 if emp == 1
-	replace numjobs = 2 if pemjnum == 2
-	replace numjobs = 3 if pemjnum == 3
-	replace numjobs = 4 if pemjnum == 4
+
+if $monthlycps == 1 {
+	if tm(1994m1) <= $date {
+		replace numjobs = 1 if emp == 1
+		replace numjobs = 2 if pemjnum == 2
+		replace numjobs = 3 if pemjnum == 3
+		replace numjobs = 4 if pemjnum == 4
+	}
 }
+
 lab var numjobs "Number of jobs"
 lab def numjobs 1 "Employed with one job" 2 "Two jobs" 3 "Three jobs" 4 "Four or more jobs"
 lab val numjobs numjobs

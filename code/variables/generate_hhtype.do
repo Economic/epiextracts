@@ -3,12 +3,16 @@
 ********************************************************************************
 capture rename hhtype oldhhtype
 gen hhtype = .
-if tm(1984m1) <= $date & $date <= tm(1993m12) {
-	replace hhtype = oldhhtype
+
+if $monthlycps == 1 {
+	if tm(1984m1) <= $date & $date <= tm(1993m12) {
+		replace hhtype = oldhhtype
+	}
+	if tm(1994m1) <= $date {
+		replace hhtype = hrhtype
+	}
 }
-if tm(1994m1) <= $date {
-	replace hhtype = hrhtype
-}
+
 #delimit ;
 lab def hhtype
 0 "Noninterview household"

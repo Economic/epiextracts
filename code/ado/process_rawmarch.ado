@@ -24,19 +24,19 @@ if `begindate' > `enddate' {
   exit
 }
 
-* Process unicon extracts for all years before 2013
-if `begindate' <= 2012 {
-  if `enddate' <= 2012 local tempenddate = `endate'
-  else local tempenddate = 2012
+* Process unicon extracts for all years before 2005
+if `begindate' <= 1997 {
+  if `enddate' <= 1997 local tempenddate = `endate'
+  else local tempenddate = 1997
   foreach year of numlist `begindate'/`tempenddate' {
     di "Unicon " `year' " ... already converted to Stata"
   }
 }
 
-* Process Census data all years 2013-present
-if `begindate' >= 2013 | `enddate' >= 2013 {
-  if `begindate' >= 2013 local tempbegindate = `begindate'
-  else local tempbegindate = 2013
+* Process Census data all years 2005-present
+if `begindate' >= 1998 | `enddate' >= 1998 {
+  if `begindate' >= 1998 local tempbegindate = `begindate'
+  else local tempbegindate = 1998
   foreach year of numlist `tempbegindate'/`enddate' {
     di "Census CPS " `year' " ... converting to Stata"
 		* Use process_censusbasic function to convert the data to Stata
@@ -62,11 +62,17 @@ syntax, year(integer)
 local shortyear = substr("`year'",3,2)
 
 * determine dictionary/NBER do-file to use
-if 2013 <= `year' & `year' <= 2018 {
-	local nberprogname cpsmar`year'
-}
+if 1998 <= `year' & `year' <= 2012 local nberprogname cpsmar`shortyear'
+if 2013 <= `year' & `year' <= 2018 local nberprogname cpsmar`year'
+
 * determine archive name
-if `year' == 2013 local archivename asec2013_pubuse.zip
+if 1998 <= `year' & `year' <= 2002 local archivename mar`shortyear'supp.zip
+if `year' == 2003 local archivename asec2003.zip
+if `year' == 2004 local archivename asec2004.zip
+if `year' == 2005 local archivename asec2005_pubuse.zip
+if `year' == 2006 local archivename asec2006_pubuse.zip
+if `year' == 2007 local archivename asec2007_pubuse_tax2.zip
+if 2008 <= `year' & `year' <= 2013 local archivename asec`year'_pubuse.zip
 if `year' == 2014 local archivename asec2014_pubuse_3x8_rerun_v2.zip
 if `year' == 2015 local archivename asec2015_pubuse.zip
 if `year' == 2016 local archivename asec2016_pubuse_v3.zip
@@ -84,7 +90,7 @@ do ${dictionaries}`nberprogname'.do `rawdat' ${dictionaries}`nberprogname'.dct
 
 * save, compress, clean up
 compress
-save cpsmarch_`year'.dta, replace
+saveold cpsmarch_`year'.dta, replace version(13)
 zipfile cpsmarch_`year'.dta, saving(cpsmarch_`year'.dta.zip, replace)
 copy cpsmarch_`year'.dta.zip ${censusmarchstata}cpsmarch_`year'.dta.zip, replace
 erase cpsmarch_`year'.dta
@@ -103,7 +109,7 @@ if `year' == 2014 {
 
 	* save, compress, clean up
 	compress
-	save cpsmarch_`year'_traditional.dta, replace
+	saveold cpsmarch_`year'_traditional.dta, replace version(13)
 	zipfile cpsmarch_`year'_traditional.dta, saving(cpsmarch_`year'_traditional.dta.zip, replace)
 	copy cpsmarch_`year'_traditional.dta.zip ${censusmarchstata}cpsmarch_`year'_traditional.dta.zip, replace
 	erase cpsmarch_`year'_traditional.dta

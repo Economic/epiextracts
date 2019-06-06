@@ -2,13 +2,15 @@
 * Self-employed (unincorporated)
 *******************************************************************************
 gen byte selfemp = .
-if $monthlycps == 0 & $maycps == 1 {
+
+if $maycps == 1 {
 	if tm(1973m1) <= $date & $date <= tm(1981m12) {
 		replace selfemp = 0 if class4 >= 1 & class4 != .
 		replace selfemp = 1 if class4 == 3
 	}
 }
-if $monthlycps == 1 & $maycps == 0 {
+
+if $monthlycps == 1 {
 	if tm(1976m1) <= $date & $date <= tm(1978m12) {
 		replace selfemp = 0 if class >= 1 & class != .
 		replace selfemp = 1 if class == 3
@@ -26,6 +28,7 @@ if $monthlycps == 1 & $maycps == 0 {
 		replace selfemp = 1 if peio1cow == 7
 	}
 }
+
 lab var selfemp "Self-employed (unincorporated)"
 lab def selfemp 1 "Self-employed" 0 "Not self-employed"
 lab val selfemp selfemp

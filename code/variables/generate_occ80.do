@@ -3,8 +3,11 @@
 ********************************************************************************
 /* 1983-1991: 1980 census occupation codes */
 gen occ80 = .
-if tm(1983m1) <= $date & $date <= tm(1991m12) {
-	replace occ80 = occcode
+
+if $monthlycps == 1 {
+	if tm(1983m1) <= $date & $date <= tm(1991m12) {
+		replace occ80 = occcode
+	}
 }
 
 #delimit ;

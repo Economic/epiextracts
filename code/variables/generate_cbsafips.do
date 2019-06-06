@@ -2,9 +2,13 @@
 * CBSA
 ********************************************************************************
 gen cbsafips = .
-if tm(2004m5) <= $date {
-	replace cbsafips = gtcbsa
+
+if $monthlycps == 1 {
+	if tm(2004m5) <= $date {
+		replace cbsafips = gtcbsa
+	}
 }
+
 lab var cbsafips "Core Based Statistical Area - FIPS code"
 lab def cbsafips 0 "Not identified"
 lab val cbsafips cbsafips

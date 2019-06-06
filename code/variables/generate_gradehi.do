@@ -2,13 +2,17 @@
 * Education: gradehi
 ********************************************************************************
 gen gradehi = .
-if tm(1973m1) <= $date & $date <= tm(1988m12) {
-	* adjust grdhi to be consistent across 1973-1991
-	replace gradehi = grdhi - 1
+
+if $monthlycps == 1 | $maycps == 1 {
+	if tm(1973m1) <= $date & $date <= tm(1988m12) {
+		* adjust grdhi to be consistent across 1973-1991
+		replace gradehi = grdhi - 1
+	}
+	if tm(1989m1) <= $date & $date <= tm(1991m12) {
+		replace gradehi = grdhi
+	}
 }
-if tm(1989m1) <= $date & $date <= tm(1991m12) {
-	replace gradehi = grdhi
-}
+
 lab var gradehi "Highest grade attended"
 #delimit ;
 lab define gradehi

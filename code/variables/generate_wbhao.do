@@ -2,61 +2,66 @@
 * Race: WBHAO
 ********************************************************************************
 * follow coding at http://ceprdata.org
+
 gen byte wbhao = .
-if tm(1989m1) <= $date & $date <= tm(1993m12) {
-	replace wbhao = 1 if race == 1
-	replace wbhao = 2 if race == 2
-	replace wbhao = 4 if race == 4
-	replace wbhao = 5 if race == 3 | race == 5
-	* Hispanic ethnicity
-	replace wbhao = 3 if hispanic == 1
-}
-if tm(1994m1) <= $date & $date <= tm(2002m12) {
-	replace wbhao = 1 if perace == 1
-	replace wbhao = 2 if perace == 2
-	replace wbhao = 4 if perace == 4
-	replace wbhao = 5 if perace == 3 | perace == 5
-	* Hispanic ethnicity
-	replace wbhao = 3 if hispanic == 1
-}
-if tm(2003m1) <= $date & $date <= tm(2012m4) {
-	* May 2004- July 2005: ptdtrace variable renamed to ptdtrace
-	if tm(2004m5) <= $date & $date <= tm(2005m7) {
-		*ptdtrace will exist due to generate_wbho.do. else:
-		*gen ptdtrace = prdtrace
+
+if $monthlycps == 1 {
+	if tm(1989m1) <= $date & $date <= tm(1993m12) {
+		replace wbhao = 1 if race == 1
+		replace wbhao = 2 if race == 2
+		replace wbhao = 4 if race == 4
+		replace wbhao = 5 if race == 3 | race == 5
+		* Hispanic ethnicity
+		replace wbhao = 3 if hispanic == 1
 	}
-	replace wbhao=1 if ptdtrace==1 /* white only */
-	replace wbhao=2 if ptdtrace==2 /* black only */
-	replace wbhao=2 if ptdtrace==6 /* black-white */ | ptdtrace==10 /*
-	*/ /* black-AI */ | ptdtrace==11 /* black-asian */ | ptdtrace==12 /*
-	*/ /* black-HP */ | ptdtrace==15 /* W-B-AI */ | ptdtrace==16 /* W-B-A */ /*
-	*/ | ptdtrace==19 /* W-B-AI-A */
-	replace wbhao=4 if ptdtrace==4 | ptdtrace==5 /* asian & HP */ /*
-	*/ | ptdtrace==8 /* white-asian */ | ptdtrace==9 /* white-HP */ | ptdtrace==13 /*
-	*/ /* AI-Asian */ | ptdtrace==14 /* asian-HP */ | ptdtrace==17 /* W-AI-A */ /*
-	*/ | ptdtrace==18 /* W-A-HP */
-	replace wbhao=5 if ptdtrace==3 /* AI only */ | ptdtrace==7 /* white-AI */ /*
-	*/ | ptdtrace==20 /* 2 or 3 races */ | ptdtrace==21 /* 4 or 5 races */
-	* Hispanic ethnicity
-	replace wbhao = 3 if hispanic == 1
-}
-if tm(2012m5) <= $date {
-	replace wbhao=1 if ptdtrace==1 /* white only */
-	replace wbhao=2 if ptdtrace==2 /* black only */
-	replace wbhao=2 if ptdtrace==6 /* black-white */ | ptdtrace==10 /*
-	*/ /* black-AI */ | ptdtrace==11 /* black-asian */ | ptdtrace==12 /*
-	*/ /* black-HP */ | ptdtrace==16 /* W-B-AI */ | ptdtrace==17 /* W-B-A */ /*
-	*/ | ptdtrace==18 /* W-B-HP */ | ptdtrace==22 /* B-AI-A */ /*
-	*/ | ptdtrace==23 /* W-B-AI-A */
-	replace wbhao=4 if  ptdtrace==4 | ptdtrace==5 /* asian & hawaiian/pacific islander */ /*
-	*/ | ptdtrace==8 /* white-asian */ | ptdtrace==9 /* white-HP */ | ptdtrace==13 /*
-	*/ /* AI-Asian */ | ptdtrace==14 /*AI-HP */ | ptdtrace==15 /* asian-HP */ /*
-	*/ | ptdtrace==19 /* W-AI-A */ | ptdtrace==20 /* W-AI-HP */ /*
-	*/ | ptdtrace==21 /* W-A-HP */ | ptdtrace==24 /* W-AI-A-HP */
-	replace wbhao=5 if ptdtrace==3 /* AI only */ | ptdtrace==7 /* white-AI */ /*
-	*/ | ptdtrace==25 /* Other 3 races */ | ptdtrace==26 /* Other 4 and 5 races */
-	* Hispanic ethnicity
-	replace wbhao = 3 if hispanic == 1
+	if tm(1994m1) <= $date & $date <= tm(2002m12) {
+		replace wbhao = 1 if perace == 1
+		replace wbhao = 2 if perace == 2
+		replace wbhao = 4 if perace == 4
+		replace wbhao = 5 if perace == 3 | perace == 5
+		* Hispanic ethnicity
+		replace wbhao = 3 if hispanic == 1
+	}
+	if tm(2003m1) <= $date & $date <= tm(2012m4) {
+		* May 2004- July 2005: ptdtrace variable renamed to ptdtrace
+		if tm(2004m5) <= $date & $date <= tm(2005m7) {
+			*ptdtrace will exist due to generate_wbho.do. else:
+			*gen ptdtrace = prdtrace
+		}
+		replace wbhao=1 if ptdtrace==1 /* white only */
+		replace wbhao=2 if ptdtrace==2 /* black only */
+		replace wbhao=2 if ptdtrace==6 /* black-white */ | ptdtrace==10 /*
+		*/ /* black-AI */ | ptdtrace==11 /* black-asian */ | ptdtrace==12 /*
+		*/ /* black-HP */ | ptdtrace==15 /* W-B-AI */ | ptdtrace==16 /* W-B-A */ /*
+		*/ | ptdtrace==19 /* W-B-AI-A */
+		replace wbhao=4 if ptdtrace==4 | ptdtrace==5 /* asian & HP */ /*
+		*/ | ptdtrace==8 /* white-asian */ | ptdtrace==9 /* white-HP */ | ptdtrace==13 /*
+		*/ /* AI-Asian */ | ptdtrace==14 /* asian-HP */ | ptdtrace==17 /* W-AI-A */ /*
+		*/ | ptdtrace==18 /* W-A-HP */
+		replace wbhao=5 if ptdtrace==3 /* AI only */ | ptdtrace==7 /* white-AI */ /*
+		*/ | ptdtrace==20 /* 2 or 3 races */ | ptdtrace==21 /* 4 or 5 races */
+		* Hispanic ethnicity
+		replace wbhao = 3 if hispanic == 1
+	}
+	if tm(2012m5) <= $date {
+		replace wbhao=1 if ptdtrace==1 /* white only */
+		replace wbhao=2 if ptdtrace==2 /* black only */
+		replace wbhao=2 if ptdtrace==6 /* black-white */ | ptdtrace==10 /*
+		*/ /* black-AI */ | ptdtrace==11 /* black-asian */ | ptdtrace==12 /*
+		*/ /* black-HP */ | ptdtrace==16 /* W-B-AI */ | ptdtrace==17 /* W-B-A */ /*
+		*/ | ptdtrace==18 /* W-B-HP */ | ptdtrace==22 /* B-AI-A */ /*
+		*/ | ptdtrace==23 /* W-B-AI-A */
+		replace wbhao=4 if  ptdtrace==4 | ptdtrace==5 /* asian & hawaiian/pacific islander */ /*
+		*/ | ptdtrace==8 /* white-asian */ | ptdtrace==9 /* white-HP */ | ptdtrace==13 /*
+		*/ /* AI-Asian */ | ptdtrace==14 /*AI-HP */ | ptdtrace==15 /* asian-HP */ /*
+		*/ | ptdtrace==19 /* W-AI-A */ | ptdtrace==20 /* W-AI-HP */ /*
+		*/ | ptdtrace==21 /* W-A-HP */ | ptdtrace==24 /* W-AI-A-HP */
+		replace wbhao=5 if ptdtrace==3 /* AI only */ | ptdtrace==7 /* white-AI */ /*
+		*/ | ptdtrace==25 /* Other 3 races */ | ptdtrace==26 /* Other 4 and 5 races */
+		* Hispanic ethnicity
+		replace wbhao = 3 if hispanic == 1
+	}
+
 }
 
 lab var wbhao "Race/ethnicity, including Asian"

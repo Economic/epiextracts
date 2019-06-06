@@ -4,7 +4,7 @@
 gen byte minsamp = .
 
 if $marchcps == 1 {
-	replace mis = h_mis
+	replace minsamp = h_mis
 }
 
 if $monthlycps == 1 | $maycps == 1 {

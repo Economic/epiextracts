@@ -2,10 +2,14 @@
 * Detailed class of worker, job 2
 *******************************************************************************
 gen byte cow2 = .
-if tm(1994m1) <= $date {
-	replace cow2 = peio2cow
-	replace cow2 = . if peio2cow <= 0
+
+if $monthlycps == 1 {
+	if tm(1994m1) <= $date {
+		replace cow2 = peio2cow
+		replace cow2 = . if peio2cow <= 0
+	}
 }
+
 lab var cow2 "Class of Worker, 2nd job"
 #delimit ;
 lab def cow2

@@ -4,18 +4,23 @@
 * hourly and nonhourly workers
 ********************************************************************************
 gen wageotc_noadj = .
-if $earnerinfo == 1 {
-	if tm(1994m1) <= $date {
-		* for hourly workers
-		replace wageotc_noadj = earnhour if paidhre == 1
-		replace wageotc_noadj = (weekpay_noadj/hoursu1) if paidhre == 1 & earnhour < (weekpay_noadj/hoursu1) & (weekpay/hoursu1) ~= .
-		replace wageotc_noadj = earnhour + (otcamt/hoursuorg) if paidhre == 1 & otcrec == 1 & 0 < otcamt & otcamt ~= . & 0 < peernhro & peernhro <= 99
 
-		* for nonhourly
-		replace wageotc_noadj = wage_noadj if paidhre == 0
+if $monthlycps == 1 {
+	if $earnerinfo == 1 {
+		if tm(1994m1) <= $date {
+			* for hourly workers
+			replace wageotc_noadj = earnhour if paidhre == 1
+			replace wageotc_noadj = (weekpay_noadj/hoursu1) if paidhre == 1 & earnhour < (weekpay_noadj/hoursu1) & (weekpay/hoursu1) ~= .
+			replace wageotc_noadj = earnhour + (otcamt/hoursuorg) if paidhre == 1 & otcrec == 1 & 0 < otcamt & otcamt ~= . & 0 < peernhro & peernhro <= 99
+
+			* for nonhourly
+			replace wageotc_noadj = wage_noadj if paidhre == 0
+		}
 	}
 }
+
 replace wageotc_noadj = . if wageotc_noadj < 0
+
 lab var wageotc_noadj "Hourly wage - OTC consistent"
 notes wageotc_noadj: Dollars per hour, for hourly and nonhourly workers
 notes wageotc_noadj: Includes overtime, tips, commissions for nonhourly and hourly

@@ -2,8 +2,12 @@
 * manuf: Consistent manufacturing indicator
 ********************************************************************************
 gen byte manuf = .
-replace manuf = 0 if mind16 ~= .
-replace manuf = 1 if mind16 == 3 | mind16 == 4
+
+if $monthlycps == 1 | $maycps == 1 {
+	replace manuf = 0 if mind16 ~= .
+	replace manuf = 1 if mind16 == 3 | mind16 == 4
+}
+
 label var manuf "Manufacturing industry"
 lab def manuf 0 "Not in manufacturing" 1 "Manufacturing"
 lab val manuf manuf

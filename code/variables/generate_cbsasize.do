@@ -2,9 +2,13 @@
 * cbsasize: size of CBSA metropolitan area
 ********************************************************************************
 gen cbsasize = .
-if tm(2004m5) <= $date {
-	replace cbsasize = gtcbsasz
+
+if $monthlycps == 1 {
+	if tm(2004m5) <= $date {
+		replace cbsasize = gtcbsasz
+	}
 }
+
 lab var cbsasize "Size of metropolitan area (CBSA)"
 #delimit ;
 lab def cbsasize

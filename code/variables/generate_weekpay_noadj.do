@@ -2,32 +2,34 @@
 * Weekly earnings
 ********************************************************************************
 gen weekpay_noadj = .
-if $earnerinfo == 1 {
-	if tm(1973m1) <= $date & $date <= tm(1978m12) {
-		* weekly earnings in May CPS
-		replace weekpay_noadj = wkusern
-	}
-	if tm(1979m1) <= $date & $date <= tm(1988m12) {
-		* use computed weekly earnings
-		replace weekpay_noadj = ernwkc
 
-		* there is a higher top-code available in 1986-1988
-		if tm(1986m1) <= $date & $date <= tm(1988m12) {
-			replace weekpay_noadj = ernwk4x if (weekpay_noadj >= 999 & weekpay_noadj != . & ernwk4x > 999 & ernwk4x != .)
+if $monthlycps == 1 | $maycps == 1 {
+	if $earnerinfo == 1 {
+		if tm(1973m1) <= $date & $date <= tm(1978m12) {
+			* weekly earnings in May CPS
+			replace weekpay_noadj = wkusern
 		}
-	}
-	if tm(1989m1) <= $date & $date <= tm(1993m12) {
-		replace weekpay_noadj = ernwk
-	}
-	if tm(1994m1) <= $date {
-		* note that prernwa in Census ddf is in pennies (has implicit two decimal places) in the raw ascii files
-		* but NBER data dictionaries account for this, so it is in dollars in the raw Stata files
-		replace weekpay_noadj = prernwa
+		if tm(1979m1) <= $date & $date <= tm(1988m12) {
+			* use computed weekly earnings
+			replace weekpay_noadj = ernwkc
+
+			* there is a higher top-code available in 1986-1988
+			if tm(1986m1) <= $date & $date <= tm(1988m12) {
+				replace weekpay_noadj = ernwk4x if (weekpay_noadj >= 999 & weekpay_noadj != . & ernwk4x > 999 & ernwk4x != .)
+			}
+		}
+		if tm(1989m1) <= $date & $date <= tm(1993m12) {
+			replace weekpay_noadj = ernwk
+		}
+		if tm(1994m1) <= $date {
+			* note that prernwa in Census ddf is in pennies (has implicit two decimal places) in the raw ascii files
+			* but NBER data dictionaries account for this, so it is in dollars in the raw Stata files
+			replace weekpay_noadj = prernwa
+		}
 	}
 }
 
-
-if $monthlycps == 0 & $maycps == 1 & tm(1980m1) <= $date & $date <= tm(1980m12) {
+if $maycps == 1 & tm(1980m1) <= $date & $date <= tm(1980m12) {
 	* there seems to be something wrong with ernwk and ernwkc in 1980 may data
 	* moving to missing for now
 	replace weekpay_noadj = .

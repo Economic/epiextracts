@@ -10,21 +10,24 @@ if _rc == 0 {
 	drop wageotc
 }
 gen wageotc = .
-if $earnerinfo == 1 {
-	if tm(1994m1) <= $date {
-		* for hourly workers
-		replace wageotc = wageotc_noadj if paidhre == 1
-		* for nonhourly
-		replace wageotc = wage if paidhre == 0
-	}
-}
 
-* trim wage values according to extreme values
-merge m:1 year using $extremewages, assert(2 3) keepusing(wage_lower wage_upper)
-keep if _merge == 3
-replace wageotc = . if wageotc < wage_lower
-replace wageotc = . if wageotc > wage_upper
-drop _merge wage_lower wage_upper
+if $monthlycps == 1 {
+	if $earnerinfo == 1 {
+		if tm(1994m1) <= $date {
+			* for hourly workers
+			replace wageotc = wageotc_noadj if paidhre == 1
+			* for nonhourly
+			replace wageotc = wage if paidhre == 0
+		}
+	}
+
+	* trim wage values according to extreme values
+	merge m:1 year using $extremewages, assert(2 3) keepusing(wage_lower wage_upper)
+	keep if _merge == 3
+	replace wageotc = . if wageotc < wage_lower
+	replace wageotc = . if wageotc > wage_upper
+	drop _merge wage_lower wage_upper
+}
 
 lab var wageotc "Hourly wage (adjusted) - OTC consistent"
 notes wageotc: Dollars per hour, for hourly and nonhourly workers

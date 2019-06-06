@@ -3,13 +3,15 @@
 *******************************************************************************
 capture rename uncov old_uncov
 gen byte uncov = .
-if $monthlycps == 0 & $maycps == 1 {
+
+if $maycps == 1 {
 	if tm(1977m1) <= $date & $date <= tm(1981m12) {
 		replace uncov = 0 if old_uncov == 1
 		replace uncov = 1 if old_uncov == 0
  	}
 }
-if $monthlycps == 1 & $maycps == 0 {
+
+if $monthlycps == 1 {
 	* uncov available in 1983 ORG but not in 1983 Basic
 	if $earnerinfo == 1 & $basicfile == 0 {
 		if tm(1983m1) <= $date & $date <= tm(1983m12) {
@@ -28,6 +30,7 @@ if $monthlycps == 1 & $maycps == 0 {
 		}
 	}
 }
+
 lab var uncov "Covered by a union contract (not a member)"
 lab def uncov 1 "Union covered" 0 "Not union covered"
 lab val uncov uncov

@@ -3,9 +3,13 @@
 ********************************************************************************
 /* 2014-present: 2012 census industry codes */
 gen ind12 = .
-if tm(2014m1) <= $date {
-	replace ind12 = indcode
+
+if $monthlycps == 1 {
+	if tm(2014m1) <= $date {
+		replace ind12 = indcode
+	}
 }
+
 #delimit ;
 lab def ind12
 170 "Crop production"

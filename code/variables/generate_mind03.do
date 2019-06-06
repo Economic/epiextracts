@@ -2,10 +2,13 @@
 * mind03: Major industry recode, 2003-present
 ********************************************************************************
 gen byte mind03 = .
-if tm(2003m1) <= $date {
-	replace mind03 = prmjind1
+
+if $monthlycps == 1 | $maycps == 1 {
+	if tm(2003m1) <= $date {
+		replace mind03 = prmjind1
+	}
+	replace mind03 = . if mind03 < 0
 }
-replace mind03 = . if mind03 < 0
 
 #delimit ;
 label define mind03

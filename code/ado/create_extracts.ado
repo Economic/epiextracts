@@ -92,8 +92,9 @@ foreach year of numlist `minyear'(1)`maxyear' {
 	global earnerinfo = 0
 	global basicfile = 0
 
-	* first process annual march if necessary
-	if 2013 <= `year' {
+	* process annual march if necessary
+	* currently only processing 2013+
+	if 1998 <= `year' {
 		* survey sample settings
 		global marchcps = 1
 		global monthlycps = 0
@@ -148,7 +149,7 @@ foreach year of numlist `minyear'(1)`maxyear' {
 
 	}
 
-	* first process annual may if necessary
+	* process annual may if necessary
 	if 1973 <= `year' & `year' <= 1981 {
 		* survey sample settings
 		global marchcps = 0

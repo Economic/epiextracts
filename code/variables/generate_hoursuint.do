@@ -2,11 +2,15 @@
 * hoursuint: Usual hours worked weekly, intervalled
 ********************************************************************************
 gen byte hoursuint = .
-if tm(1994m1) <= $date {
-	assert (1 <= prhrusl & prhrusl <= 8) | prhrusl == -1
-	replace hoursuint = prhrusl
-	replace hoursuint = . if hoursuint < 1
+
+if $monthlycps == 1 {
+	if tm(1994m1) <= $date {
+		assert (1 <= prhrusl & prhrusl <= 8) | prhrusl == -1
+		replace hoursuint = prhrusl
+		replace hoursuint = . if hoursuint < 1
+	}
 }
+
 label var hoursuint "Usual hours worked weekly, intervalled"
 #delimit ;
 lab def hoursuint
