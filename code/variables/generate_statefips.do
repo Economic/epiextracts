@@ -4,14 +4,16 @@
 gen byte statefips = .
 
 if $marchcps == 1 {
-	replace statefips = gestfips
-	* we want the missing values and the full value labels, so do the following merge
-	merge m:1 statefips using $stategeocodes, assert(3) nogenerate
-	assert region == gereg
-	* ridiculous hack to pull in value labels for statefips
-	* which are not merged above
-	drop statefips
-	rename statefips_alt statefips
+	if tm(1998m1) <= $date {
+		replace statefips = gestfips
+		* we want the missing values and the full value labels, so do the following merge
+		merge m:1 statefips using $stategeocodes, assert(3) nogenerate
+		assert region == gereg
+		* ridiculous hack to pull in value labels for statefips
+		* which are not merged above
+		drop statefips
+		rename statefips_alt statefips
+	}
 }
 
 if $monthlycps == 1 | $maycps == 1 {

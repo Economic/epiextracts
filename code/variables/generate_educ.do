@@ -4,6 +4,36 @@
 gen byte educ = .
 
 if $marchcps == 1 {
+	if tm(1962m1) <= $date & $date <= tm(1991m12) {
+		* none - 11th
+		replace educ = 1 if 0 <= _grdhi & _grdhi <= 11
+		* did not complete 12th
+		replace educ = 1 if _grdhi == 12 & grdcom == 2
+		* did complete 12th
+		replace educ = 2 if _grdhi == 12 & grdcom == 1
+		* college: 1-3 yrs
+		replace educ = 3 if _grdhi >= 13 & gradehi <= 15
+		* did not complete college
+		replace educ = 3 if _grdhi == 16 & grdcom == 2
+		* did complete college
+		replace educ = 4 if _grdhi == 16 & grdcom == 1
+		* 4-5 years of college
+		replace educ = 4 if _grdhi == 17
+		* more than 5 years of college
+		replace educ = 5 if _grdhi == 18
+	}
+	if tm(1992m1) <= $date & $date <= tm(1997m12) {
+		* LTHS; includes "12th grade, no diploma"
+		replace educ = 1 if 31 <= grdatn & grdatn <= 38
+		* HS
+		replace educ = 2 if grdatn == 39
+		* Some college; includes associate's degrees
+		replace educ = 3 if 40 <= grdatn & grdatn <= 42
+		* College
+		replace educ = 4 if grdatn == 43
+		* Advanced degree
+		replace educ = 5 if 44 <= grdatn & grdatn <= 46
+	}
 	if tm(1998m1) <= $date {
 		* LTHS; includes "12th grade, no diploma"
 		replace educ = 1 if 31 <= a_hga & a_hga <= 38

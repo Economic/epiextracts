@@ -4,6 +4,9 @@
 gen byte hispanic = 0
 
 if $marchcps == 1 {
+	if tm(1971m1) <= $date & $date <= tm(1997m12) {
+		replace hispanic = 1 if 1 <= _spneth & _spneth <= 7
+	}
 	if tm(1998m1) <= $date & $date <= tm(2002m12) {
 		replace hispanic = 1 if 1 <= a_reorgn & a_reorgn <= 7
 	}

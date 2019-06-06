@@ -4,6 +4,16 @@
 gen byte lfstat = .
 
 if $marchcps == 1 {
+	if tm(1962m1) <= $date & $date <= tm(1993m12)  {
+		replace lfstat = 1 if 1 <= _esr & _esr <= 2
+		replace lfstat = 2 if _esr == 3
+		replace lfstat = 3 if _esr == 7
+	}
+	if tm(1994m1) <= $date & $date <= tm(1997m12)  {
+		replace lfstat = 1 if 1 <= mlr & mlr <= 2
+		replace lfstat = 2 if 3 <= mlr & mlr <= 4
+		replace lfstat = 3 if 5 <= mlr & mlr <= 7
+	}
 	if tm(1998m1) <= $date {
 		replace lfstat = 1 if 1 <= pemlr & pemlr <= 2
 		replace lfstat = 2 if 3 <= pemlr & pemlr <= 4

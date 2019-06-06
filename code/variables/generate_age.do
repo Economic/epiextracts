@@ -6,13 +6,17 @@ capture rename age orig_age
 gen int age = .
 
 if $marchcps == 1 {
+	if tm(1962m1) <= $date & $date <= tm(1997m12) {
+		replace age = orig_age
+	}
+
 	if tm(1998m1) <= $date {
 		replace age = a_age
 	}
 }
 
 if $monthlycps == 1 | $maycps == 1 {
-	if tm(1976m1) <= $date & $date <= tm(1993m12) {
+	if tm(1973m1) <= $date & $date <= tm(1993m12) {
 		replace age = orig_age
 	}
 	if tm(1994m1) <= $date & $date <= tm(2012m4) {

@@ -4,6 +4,9 @@
 gen orgwgt = .
 
 if $marchcps == 1 {
+	if tm(1979m1) <= $date & $date <= tm(1997m12) {
+		replace orgwgt = ernwgt / 100
+	}
 	if tm(1998m1) <= $date {
 		replace orgwgt = a_ernlwt
 	}

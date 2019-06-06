@@ -4,7 +4,13 @@
 gen byte minsamp = .
 
 if $marchcps == 1 {
-	replace minsamp = h_mis
+	if tm(1962m1) <= $date & $date <= tm(1997m12) {
+		replace minsamp = mis
+		assert minsamp >= 1 & minsamp <= 8
+	}
+	if tm(1998m1) <= $date {
+		replace minsamp = h_mis
+	}
 }
 
 if $monthlycps == 1 | $maycps == 1 {
