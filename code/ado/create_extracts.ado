@@ -93,8 +93,7 @@ foreach year of numlist `minyear'(1)`maxyear' {
 	global basicfile = 0
 
 	* process annual march if necessary
-	* currently only processing 2013+
-	if 1998 <= `year' {
+	if 1962 <= `year' & `year' <= 2018 {
 		* survey sample settings
 		global marchcps = 1
 		global monthlycps = 0
@@ -105,11 +104,11 @@ foreach year of numlist `minyear'(1)`maxyear' {
 		* for March CPS, use month=3 (march)
 		global date = tm(`year'm3)
 
-		if 1962 <= `year' & `year' <= 2012 {
+		if 1962 <= `year' & `year' <= 1997 {
 			local inputpath ${uniconmarch}
 			local inputfile unicon_march_`year'.dta
 		}
-		if 2013 <= `year' {
+		if 1998 <= `year' {
 			local inputpath ${censusmarchstata}
 			local inputfile cpsmarch_`year'.dta
 		}

@@ -4,10 +4,19 @@
 gen byte statefips = .
 
 if $marchcps == 1 {
-	if tm(1998m1) <= $date {
+
+	if tm(1962m1) <= $date & $date <= tm(2000m12) {
+		* to do: identify correct state codes for marchcps
+		* sometimes tricky in early years
+		cap drop region
+		merge m:1 statefips using $stategeocodes, keep(1) nogenerate
+	}
+
+	if tm(2001m1) <= $date {
 		replace statefips = gestfips
 		* we want the missing values and the full value labels, so do the following merge
 		merge m:1 statefips using $stategeocodes, assert(3) nogenerate
+		cap rename hg_reg gereg
 		assert region == gereg
 		* ridiculous hack to pull in value labels for statefips
 		* which are not merged above

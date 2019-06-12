@@ -3,8 +3,14 @@
 ********************************************************************************
 * only include those with non-missing, positive age
 if $marchcps == 1 {
-	drop if a_age < 0
-	assert a_age >= 0 & a_age ~= .
+	if tm(1962m1) <= $date & $date <= tm(1997m12) {
+		drop if age < 0
+		assert age >= 0 & age ~= .
+	}
+	if tm(1998m1) <= $date {
+		drop if a_age < 0
+		assert a_age >= 0 & a_age ~= .
+	}
 }
 
 if $monthlycps == 1 | $maycps == 1 {

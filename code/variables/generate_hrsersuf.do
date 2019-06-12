@@ -9,7 +9,7 @@ if $monthlycps == 1 | $maycps == 1 {
 		* not available
 	}
 	if tm(1994m1) <= $date & $date <= tm(2004m4) {
-		rename hrsersuf orig_hrsersuf
+		replace hrsersuf = orig_hrsersuf
 	}
 	if tm(2004m5) <= $date {
 		* not available
