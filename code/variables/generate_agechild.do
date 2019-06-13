@@ -2,9 +2,13 @@
 * Presence of children, by age group
 *******************************************************************************
 gen byte agechild = .
-if tm(1999m11) <= $date {
-	replace agechild = prchld if prchld >= 0 & prchld ~= .
+
+if $monthlycps == 1 | $maycps == 1 {
+	if tm(1999m11) <= $date {
+		replace agechild = prchld if prchld >= 0 & prchld ~= .
+	}
 }
+
 lab var agechild "Presence of own children, by age group"
 #delimit ;
 lab def agechild

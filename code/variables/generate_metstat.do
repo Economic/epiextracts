@@ -3,24 +3,28 @@
 ********************************************************************************
 capture rename metstat orig_metstat
 gen metstat = .
-if tm(1973m1) <= $date & $date <= tm(1993m12) {
-	if $monthlycps == 0 & $maycps == 1 & $date <= tm(1976m12) {
-		replace metstat = 1 if citystat == 1 | citystat == 2
-		replace metstat = 0 if citystat == 3
- 	}
-	else {
-		replace metstat = 1 if orig_metstat == 1
-		replace metstat = 0 if orig_metstat == 2
+
+if $monthlycps == 1 | $maycps == 1 {
+	if tm(1973m1) <= $date & $date <= tm(1993m12) {
+		if $monthlycps == 0 & $maycps == 1 & $date <= tm(1976m12) {
+			replace metstat = 1 if citystat == 1 | citystat == 2
+			replace metstat = 0 if citystat == 3
+	 	}
+		else {
+			replace metstat = 1 if orig_metstat == 1
+			replace metstat = 0 if orig_metstat == 2
+		}
+	}
+	if (tm(1994m1) <= $date & $date <= tm(1995m5)) | (tm(1995m9) <= $date & $date <= tm(2004m4)) {
+		replace metstat = 1 if gemetsta == 1
+		replace metstat = 0 if gemetsta == 2
+	}
+	if tm(2004m5) <= $date {
+		replace metstat = 1 if gtmetsta == 1
+		replace metstat = 0 if gtmetsta == 2
 	}
 }
-if (tm(1994m1) <= $date & $date <= tm(1995m5)) | (tm(1995m9) <= $date & $date <= tm(2004m4)) {
-	replace metstat = 1 if gemetsta == 1
-	replace metstat = 0 if gemetsta == 2
-}
-if tm(2004m5) <= $date {
-	replace metstat = 1 if gtmetsta == 1
-	replace metstat = 0 if gtmetsta == 2
-}
+
 lab var metstat "Metropolitan status"
 lab def metstat 0 "Nometropolitan" 1 "Metropolitan"
 lab val metstat metstat

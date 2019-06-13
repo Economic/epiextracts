@@ -2,6 +2,8 @@ keep if age >= 16 & age ~= .
 keep if ptecon ~= .
 keep if lfstat == 1
 
+cap drop hispanic
+
 gen byte white = ptecon == 1 if wbho == 1
 gen byte black = ptecon == 1 if wbho == 2
 gen byte hispanic = ptecon == 1 if wbho == 3

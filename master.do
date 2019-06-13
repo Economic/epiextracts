@@ -33,7 +33,7 @@ set trace off
 * DATA VERSION
 *******************************************************************************
 * The version is saved in the dataset labels and notes
-global dataversion 0.6.8
+global dataversion 0.6.9
 
 
 *******************************************************************************
@@ -55,10 +55,13 @@ global docs docs/
 * Census data that needs to be converted to Stata
 global censusbasicraw /data/cps/basic/census/raw/
 global censusbasicstata /data/cps/basic/census/stata/
+global censusmarchraw /data/cps/march/census/raw/
+global censusmarchstata /data/cps/march/census/stata/
 * Unicon data already in Stata format
 global uniconbasic /data/cps/basic/unicon/
-global uniconorg /data/cps/org/unicon/
 global uniconmay /data/cps/may/unicon/
+global uniconmarch /data/cps/march/unicon/
+global uniconorg /data/cps/org/unicon/
 
 
 *******************************************************************************
@@ -73,11 +76,12 @@ adopath ++ ${code}ado
 *******************************************************************************
 * process the raw data and convert it to Stata format
 * this is only necessary for additional months of data
+*process_rawmarch, begin(1998) end(2018)
 *process_rawbasic, begin(1994m1) end(2019m4)
 
 * create EPI's extracts from the processed raw data
 * creates both basic monthly and ORG subsample
-*create_extracts, begin(1973m1) end(2019m4)
+*create_extracts, begin(1962m1) end(2019m4)
 
 * create documentation
 *do ${codedocs}createdocs.do

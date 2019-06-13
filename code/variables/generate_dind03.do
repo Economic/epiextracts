@@ -2,10 +2,13 @@
 * dind03: Detailed industry recode, 2003-present
 ********************************************************************************
 gen byte dind03 = .
-if tm(2003m1) <= $date {
-	replace dind03 = prdtind1
+
+if $monthlycps == 1 {
+	if tm(2003m1) <= $date {
+		replace dind03 = prdtind1
+	}
+	replace dind03 = . if dind03 < 0
 }
-replace dind03 = . if dind03 < 0
 
 #delimit ;
 label define dind03

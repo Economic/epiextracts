@@ -1,6 +1,8 @@
 keep if age >= 16 & age ~= .
 keep if wbhao ~= .
 
+cap drop hispanic
+
 gen byte white = wbhao == 1
 gen byte black = wbhao == 2
 gen byte hispanic = wbhao == 3

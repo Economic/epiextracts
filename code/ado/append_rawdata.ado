@@ -9,11 +9,12 @@ syntax, begin(integer) end(integer) sample(string) [keep(string)]
 
 * determine sample
 local lowersample = lower("`sample'")
-if "`lowersample'" == "org" local samplename ORG
-else if "`lowersample'" == "basic" local samplename Basic
+if "`lowersample'" == "basic" local samplename Basic
+else if "`lowersample'" == "march" local samplename March
 else if "`lowersample'" == "may" local samplename May
+else if "`lowersample'" == "org" local samplename ORG
 else {
-	di _n "You must specify Basic or ORG or May sample."
+	di _n "You must specify Basic or March or May or ORG sample."
 	error 1
 }
 di _n "Working on CPS `samplename' from `begin' to `end'..." _n
@@ -22,6 +23,12 @@ foreach year of numlist `begin'(1)`end' {
 	* file paths
 	if "`lowersample'" == "may" {
 		local inputpath /data/cps/may/unicon/
+	}
+	else if "`lowersample'" == "march" & `year' <= 1997 {
+		local inputpath /data/cps/march/unicon/
+	}
+	else if "`lowersample'" == "march" & `year' >= 1998 {
+		local inputpath /data/cps/march/census/stata/
 	}
 	else if "`lowersample'" == "org" & `year' >= 1979 & `year' <= 1983 {
 		local inputpath /data/cps/org/unicon/
@@ -42,6 +49,7 @@ foreach year of numlist `begin'(1)`end' {
 
 	* determine whether annual or monthly sample
 	if "`lowersample'" == "may" local annualsample = 1
+	else if "`lowersample'" == "march" local annualsample = 1
 	else local annualsample = 0
 
 	* create keep statement for ORG subsamples
@@ -54,13 +62,28 @@ foreach year of numlist `begin'(1)`end' {
 	* Load each annual file
 	if `annualsample' == 1 {
 		if "`lowersample'" == "may" local inputfile unicon_may_`year'.dta
+		else if "`lowersample'" == "march" & `year' <= 1997 local inputfile unicon_march_`year'.dta
+		else if "`lowersample'" == "march" & `year' >= 1998 local inputfile cpsmarch_`year'.dta
 		else {
-			di "Something is wrong with your intended sample"
+			noi di "Something is wrong with your intended sample"
 			error 1
 		}
 		qui {
-			unzipfile `inputpath'`inputfile'.zip, replace
-			use `inputfile', clear
+			* For March 2014, stack redesigned and traditional files
+			if "`lowersample'" == "march" & `year' == 2014 {
+				tempfile tmpdat_t tmpdat_r
+				!unzip -p "`inputpath'cpsmarch_2014.dta.zip" > `tmpdat_r'
+				!unzip -p "`inputpath'cpsmarch_2014_traditional.dta.zip" > `tmpdat_t'
+				use `tmpdat_r', clear
+				gen byte redesign = 1
+				append using `tmpdat_t'
+				replace redesign = 0 if redesign == .
+			}
+			else {
+				tempfile tmpdat
+				!unzip -p "`inputpath'`inputfile'.zip" > `tmpdat'
+				use `tmpdat', clear
+			}
 			if "`keep'" ~= "" {
 				keepifexist `keep'
 				local keeplist "`r(keeplist)'"
@@ -71,7 +94,6 @@ foreach year of numlist `begin'(1)`end' {
 			noi di "Processing CPS `samplename', `year': `keeplist'"
 			tempfile annualdata`year'
 			save `annualdata`year''
-			erase `inputfile'
 		}
 
 	}
@@ -89,8 +111,9 @@ foreach year of numlist `begin'(1)`end' {
 				local inputfile cps_`year'_`month'.dta
 			}
 			qui {
-				unzipfile `inputpath'`inputfile'.zip, replace
-				use `inputfile', clear
+				tempfile tmpdat
+				!unzip -p "`inputpath'`inputfile'.zip" > `tmpdat'
+				use `tmpdat', clear
 				if "`lowersample'" == "org" {
 					`keeporg'
 				}
@@ -104,7 +127,6 @@ foreach year of numlist `begin'(1)`end' {
 				noi di "Processing CPS `samplename', `year'-`month': `keeplist'"
 				tempfile monthlydata`month'
 				save `monthlydata`month''
-				erase `inputfile'
 			}
 		}
 		qui {

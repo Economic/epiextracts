@@ -1,6 +1,6 @@
 *************************************************************************
 * NAME: process_rawbasic
-* DESC: Processes raw data from Unicon or Census and converts to Stata
+* DESC: Processes raw Basic data from Unicon or Census and converts to Stata
 * format.
 * Called by master.do
 *************************************************************************
@@ -40,7 +40,7 @@ if `begindate' >= tm(1994m1) | `enddate' >= tm(1994m1) {
   foreach date of numlist `tempbegindate'/`enddate' {
     di "Census CPS " %tm `date' " ... converting to Stata"
 		* Use process_censusbasic function to convert the data to Stata
-    process_censusbasic, datenum(`date')
+    qui process_censusbasic, datenum(`date')
   }
 }
 
@@ -77,8 +77,6 @@ if `month' == 10 local monthname oct
 if `month' == 11 local monthname nov
 if `month' == 12 local monthname dec
 
-di "Running process_censusbasic, `year'm`month'"
-
 * process revised 2000 Census based weights if necessary
 if `year' >= 2000 & `year' <= 2002 {
 	if `month' < 10 local month2d 0`month'
@@ -95,7 +93,7 @@ if `year' >= 2000 & `year' <= 2002 {
 
 * determine dictionary/NBER do-file to use
 * January 2017 - present date
-if  tm(2017m1) <= `datenum' & `datenum' <= tm(2019m4) local nberprogname cpsbjan2017
+if  tm(2017m1) <= `datenum' & `datenum' <= tm(2019m5) local nberprogname cpsbjan2017
 * January 2015 - December 2016
 if  tm(2015m1) <= `datenum' & `datenum' <= tm(2016m12) local nberprogname cpsbjan2015
 * April 2014 - December 2014
@@ -130,16 +128,15 @@ if  tm(1994m4) <= `datenum' & `datenum' <= tm(1995m5) local nberprogname cpsbapr
 * January 1994 - March 1994
 if  tm(1994m1) <= `datenum' & `datenum' <= tm(1994m3) local nberprogname cpsbjan94
 
-* determine raw data to use
-ashell zipinfo -1 "${censusbasicraw}`monthname'`shortyear'pub.zip"
-local inputfilename: di r(o1)
-* decompress raw data into current dir
-unzipfile ${censusbasicraw}`monthname'`shortyear'pub.zip, replace
+
+tempfile rawdat
+!unzip -p ${censusbasicraw}`monthname'`shortyear'pub.zip > `rawdat'
+
 * use appropriate NBER .do/.dct
 * arguments refer to dat_name (`1') and dct_name (`2') in NBER do files
 * before running, make necessary changes NBER do files to accept arguments
 clear
-do ${dictionaries}`nberprogname'.do `inputfilename' ${dictionaries}`nberprogname'.dct
+do ${dictionaries}`nberprogname'.do `rawdat' ${dictionaries}`nberprogname'.dct
 
 * include code here for certain months to add reweights
 if `year' >= 2000 & `year' <= 2002 {
@@ -155,6 +152,5 @@ zipfile cps_`year'_`month'.dta, saving(cps_`year'_`month'.dta.zip, replace)
 copy cps_`year'_`month'.dta.zip ${censusbasicstata}cps_`year'_`month'.dta.zip, replace
 erase cps_`year'_`month'.dta
 erase cps_`year'_`month'.dta.zip
-erase `inputfilename'
 
 end

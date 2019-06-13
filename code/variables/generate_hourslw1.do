@@ -2,9 +2,13 @@
 * Hours worked last week, primary job
 *******************************************************************************
 gen int hourslw1 = .
-if tm(1994m1) <= $date {
-	replace hourslw1 = pehract1
+
+if $monthlycps == 1 {
+	if tm(1994m1) <= $date {
+		replace hourslw1 = pehract1
+	}
 }
+
 replace hourslw1 = . if hourslw1 < 0
 lab var hourslw1 "Hours worked last week, main job"
 lab def hourslw1 99 "99+"

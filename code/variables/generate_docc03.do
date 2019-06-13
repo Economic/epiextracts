@@ -2,10 +2,12 @@
 * mocc03: Major occupation recode, 2003-present
 ********************************************************************************
 gen byte docc03 = .
-if tm(2003m1) <= $date {
-	replace docc03 = prdtocc1
+if $monthlycps == 1 {
+	if tm(2003m1) <= $date {
+		replace docc03 = prdtocc1
+	}
+	replace docc03 = . if docc03 < 0
 }
-replace docc03 = . if docc03 < 0
 
 #delimit ;
 label define docc03

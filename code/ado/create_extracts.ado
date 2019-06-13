@@ -26,15 +26,15 @@ foreach date of numlist `begindate'(1)`enddate' {
 	local monthlist`year' `monthlist`year'' `month'
 }
 
-if `begindate' < tm(1973m1) {
-	di _n "Data is not available for" %tm `begindate'
+if `begindate' < tm(1962m1) {
+	di _n "No CPS data available for" %tm `begindate'
 	error 1
 }
 
 * preliminary data
 * cpi levels and extreme wage values
 import delimited using ${suppdata}cpiurs_extended.csv, clear varnames(1)
-keep if year >= 1973
+keep if year >= 1962
 assert year ~= .
 
 * for 2019, temporiarly use 2019-2018 CBO projected growth rate
@@ -86,13 +86,72 @@ global stategeocodes `stategeocodes'
 * process all data
 foreach year of numlist `minyear'(1)`maxyear' {
 	* reset survey sample settings
+	global marchcps = 0
 	global monthlycps = 0
 	global maycps = 0
 	global earnerinfo = 0
+	global basicfile = 0
 
-	* first process annual may if necessary
+	* process annual march if necessary
+	if 1962 <= `year' & `year' <= 2018 {
+		* survey sample settings
+		global marchcps = 1
+		global monthlycps = 0
+		global maycps = 0
+		global earnerinfo = 0
+		global basicfile = 0
+
+		* for March CPS, use month=3 (march)
+		global date = tm(`year'm3)
+
+		if 1962 <= `year' & `year' <= 1997 {
+			local inputpath ${uniconmarch}
+			local inputfile unicon_march_`year'.dta
+		}
+		if 1998 <= `year' {
+			local inputpath ${censusmarchstata}
+			local inputfile cpsmarch_`year'.dta
+		}
+
+		* unzip and load source data into memory
+		* 2014 is an exception with redesigned and traditional files:
+		if `year' == 2014 {
+			tempfile tmpdat_t tmpdat_r
+			!unzip -p "`inputpath'cpsmarch_2014.dta.zip" > `tmpdat_r'
+			!unzip -p "`inputpath'cpsmarch_2014_traditional.dta.zip" > `tmpdat_t'
+			use `tmpdat_r', clear
+			gen byte redesign = 1
+			append using `tmpdat_t'
+			replace redesign = 0 if redesign == .
+		}
+		else {
+			tempfile tmpdat
+			!unzip -p "`inputpath'`inputfile'.zip" > `tmpdat'
+			use `tmpdat', clear
+		}
+
+		* run key programs
+		do ${code}sample_cpsbasic.do
+		do ${code}generate_variables.do
+		do ${code}keep_variables.do
+
+		* save data
+		compress
+		notes drop _dta
+		notes _dta: EPI CPS March Extracts, Version $dataversion
+		label data "EPI CPS March Extracts, Version $dataversion"
+		saveold epi_cpsmarch_`year'.dta, replace version(13)
+		zipfile epi_cpsmarch_`year'.dta, saving(epi_cpsmarch_`year'.dta.zip, replace)
+		copy epi_cpsmarch_`year'.dta.zip ${extracts}epi_cpsmarch_`year'.dta.zip, replace
+		erase epi_cpsmarch_`year'.dta
+		erase epi_cpsmarch_`year'.dta.zip
+
+	}
+
+	* process annual may if necessary
 	if 1973 <= `year' & `year' <= 1981 {
 		* survey sample settings
+		global marchcps = 0
 		global monthlycps = 0
 		global maycps = 1
 		global earnerinfo = 1
@@ -110,7 +169,7 @@ foreach year of numlist `minyear'(1)`maxyear' {
 		!unzip -p "`inputpath'`inputfile'.zip" > `tmpdat'
 		use `tmpdat', clear
 
-		* run key basic/org programs
+		* run key may programs
 		do ${code}sample_cpsbasic.do
 		do ${code}generate_variables.do
 		do ${code}keep_variables.do
@@ -133,6 +192,7 @@ foreach year of numlist `minyear'(1)`maxyear' {
 
 	* 1976 and later, process monthly basic and possibly monthly ORG
 	if `year' >= 1976 {
+		global marchcps = 0
 		global monthlycps = 1
 		global maycps = 0
 		global earnerinfo = 0

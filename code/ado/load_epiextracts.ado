@@ -14,8 +14,9 @@ if "`lowersample'" == "org" local samplename ORG
 else if "`lowersample'" == "basic" local samplename Basic
 else if "`lowersample'" == "swa" local samplename SWA
 else if "`lowersample'" == "may" local samplename May
+else if "`lowersample'" == "march" local samplename March
 else {
-	di _n "You must specify Basic or ORG or May sample."
+	di _n "You must specify Basic or March or May or ORG sample."
 	error 1
 }
 
@@ -46,7 +47,7 @@ if "`sourcedir'" ~= "" & "`version'" == "" {
 if "`sourcedir'" == "" {
 	if "`dataversion'" == "production" local inputpath /data/cps/`lowersample'/epi/
 	if "`dataversion'" == "old" & ("`lowersample'" == "org" | "`lowersample'" == "swa" | "`lowersample'" == "may") local inputpath /data/cps/org/epiold/stata/
-	if "`dataversion'" == "old" & "`lowersample'" == "basic" local inputpath /data/cps/basic/epiold/stata/
+	if "`dataversion'" == "old" & ("`lowersample'" == "basic" | "`lowersample'" == "march") local inputpath /data/cps/`lowersample'/epiold/stata/
 	if "`dataversion'" == "local" local inputpath extracts/
 }
 
@@ -96,7 +97,7 @@ if "`dataversion'" == "old" & "`lowersample'" == "basic" {
 }
 
 * min month and max month check for old ORG/May
-if "`dataversion'" == "old" & ("`lowersample'" == "org" | "`lowersample'" == "swa" | "`lowersample'" == "may") {
+if "`dataversion'" == "old" & ("`lowersample'" == "org" | "`lowersample'" == "swa" | "`lowersample'" == "may" | "`lowersample'" == "march") {
 	local invalidmonth = 0
 	if `minmonth' ~= 1 {
 		local invalidmonth = 1
@@ -107,7 +108,7 @@ if "`dataversion'" == "old" & ("`lowersample'" == "org" | "`lowersample'" == "sw
 		di "Ending month invalid."
 	}
 	if `invalidmonth' == 1 {
-		di _n "Mid-year samples are not available for the old EPI SWA/ORG/May samples, which are available annually"
+		di _n "Mid-year samples are not available for the old EPI SWA/ORG/May/March samples, which are available annually"
 		di "For these datasets, select month ranges comprising full years -- e.g., begin(2012m1) end(2015m12)"
 		error 1
 	}
@@ -131,8 +132,11 @@ if "`keep'" ~= "" {
 	if "`dataversion'" == "old" & "`lowersample'" == "may" {
 		local initkeeplist `keep' month finalwt
 	}
+	if "`dataversion'" == "old" & "`lowersample'" == "march" {
+		local initkeeplist `keep' year wgt
+	}
 	if "`dataversion'" == "production" | "`dataversion'" == "local" {
-		local initkeeplist `keep' year month mins *wgt*
+		local initkeeplist `keep' year month minsamp *wgt*
 	}
 }
 
@@ -170,14 +174,15 @@ qui {
 	* process all other datasets (annual, or monthly)
 	else {
 		foreach year of numlist `minyear'(1)`maxyear' {
-
 			* determine whether full year or not
+			* here full year really just means whether the requested year is a single file
 			local fullyear = 0
 			local counter = 0
 			foreach month of numlist `monthlist`year'' {
 				local counter = `counter' + 1
 			}
 			if `counter' == 12 local fullyear = 1
+			else if "`lowersample'" == "march" local fullyear = 1
 
 			if `fullyear' == 1 {
 				if "`dataversion'" == "local" | "`dataversion'" == "production" local inputfile epi_cps`lowersample'_`year'.dta
@@ -191,17 +196,19 @@ qui {
 				if "`dataversion'" == "old" & "`lowersample'" == "may" {
 					local inputfile may`shortyear'c.dta
 				}
+				if "`dataversion'" == "old" & "`lowersample'" == "march" {
+					local inputfile cps_march_`year'.dta
+				}
 
 				tempfile tmpdat
 				!unzip -p "`inputpath'`inputfile'.zip" > `tmpdat'
-				use `tmpdat', clear
-				if "`keep'" ~= "" {
-					keepifexist `initkeeplist'
-					local keeplist "`r(keeplist)'"
-				}
+				use `initkeeplist' using `tmpdat', clear
+				ds _all
+				if "`keep'" ~= "" local keeplist "`r(varlist)'"
 				else local keeplist "_all"
-				if "`dataversion'" == "old" gen int year = `year'
-				noi di "Processing CPS `samplename', `year'm1-`year'm12: `keeplist'"
+				if "`dataversion'" == "old" & "`lowersample'" ~= "march" gen int year = `year'
+				if "`lowersample'" == "march" | "`lowersample'" == "may" noi di "Processing CPS `samplename', `year': `keeplist'
+				else noi di "Processing CPS `samplename', `year'm1-`year'm12: `keeplist'"
 				tempfile annualdata`year'
 				save `annualdata`year''
 			}
@@ -264,7 +271,8 @@ qui {
 			local maxmonth = max(`commalist')
 			if `counter' == 1 local linebreak _n
 			else local linebreak
-			noi di `linebreak' "Loading CPS `samplename', `year'm`minmonth'-`year'm`maxmonth'"
+			if "`lowersample'" == "march" | "`lowersample'" == "may" noi di `linebreak' "Loading CPS `samplename', `year'"
+			else noi di `linebreak' "Loading CPS `samplename', `year'm`minmonth'-`year'm`maxmonth'"
 			if `counter' == 1 use `annualdata`year'', clear
 			else append using `annualdata`year''
 		}

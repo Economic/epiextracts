@@ -2,7 +2,7 @@
 * Usual hours worked per week, main job (May supplement)
 *******************************************************************************
 gen byte hoursumay = .
-if $monthlycps == 0 & $maycps == 1 {
+if $maycps == 1 {
 	if tm(1973m1) <= $date & $date <= tm(1981m12) {
 		replace hoursumay = wkhrswk
 	}

@@ -3,8 +3,11 @@
 ********************************************************************************
 /* 2003-2012m4: 2000 census occupation codes */
 gen occ00 = .
-if tm(2003m1) <= $date & $date <= tm(2012m4) {
-	replace occ00 = occcode
+
+if $monthlycps == 1 {
+	if tm(2003m1) <= $date & $date <= tm(2012m4) {
+		replace occ00 = occcode
+	}
 }
 
 #delimit ;

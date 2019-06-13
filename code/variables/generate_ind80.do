@@ -3,9 +3,13 @@
 ********************************************************************************
 /* 1983-1991: 1980 census industry codes */
 gen ind80 = .
-if tm(1983m1) <= $date & $date <= tm(1991m12) {
-	replace ind80 = indcode
+
+if $monthlycps == 1 {
+	if tm(1983m1) <= $date & $date <= tm(1991m12) {
+		replace ind80 = indcode
+	}
 }
+
 #delimit ;
 lab def ind80
 10 "Agricultural production, crops"

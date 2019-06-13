@@ -2,26 +2,28 @@
 * Public sector
 *******************************************************************************
 gen byte pubsec = .
-if $monthlycps == 0 & $maycps == 1 {
+
+if $maycps == 1 {
 	if tm(1973m1) <= $date & $date <= tm(1981m12) {
 		replace pubsec = 0 if class4 >= 1 & class4 ~= .
 		replace pubsec = 1 if class4 == 2
 	}
 }
-if $monthlycps == 1 & $maycps == 0 {
+if $monthlycps == 1 {
 	if tm(1976m1) <= $date & $date <= tm(1988m12) {
 		replace pubsec = 0 if class >= 1 & class ~= .
 		replace pubsec = 1 if class == 2
 	}
+	if tm(1989m1) <= $date & $date <= tm(1993m12) {
+		replace pubsec = 0 if class >= 1 & class ~= .
+		replace pubsec = 1 if 2 <= class & class <= 4
+	}
+	if tm(1994m1) <= $date {
+		replace pubsec = 0 if peio1cow >= 1 & peio1cow ~= .
+		replace pubsec = 1 if 1 <= peio1cow & peio1cow <= 3
+	}
 }
-if tm(1989m1) <= $date & $date <= tm(1993m12) {
-	replace pubsec = 0 if class >= 1 & class ~= .
-	replace pubsec = 1 if 2 <= class & class <= 4
-}
-if tm(1994m1) <= $date {
-	replace pubsec = 0 if peio1cow >= 1 & peio1cow ~= .
-	replace pubsec = 1 if 1 <= peio1cow & peio1cow <= 3
-}
+
 lab var pubsec "Public sector employee"
 lab def pubsec 1 "In public sector" 0 "Not in public sector"
 lab val pubsec pubsec
