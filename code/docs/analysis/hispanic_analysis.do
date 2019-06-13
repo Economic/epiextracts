@@ -1,7 +1,5 @@
 keep if age >= 16 & age ~= .
 
-gen byte hispanic = wbho == 3 if wbho ~= .
-
 gcollapse (mean) hispanic [pw=basicwgt], by(year) fast
 sum year
 local maxyear = r(max)

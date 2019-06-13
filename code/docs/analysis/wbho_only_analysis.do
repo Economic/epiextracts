@@ -1,5 +1,7 @@
 keep if age >= 16 & age ~= .
 
+cap drop hispanic
+
 gen byte white = wbho_only == 1 if wbho_only ~= .
 gen byte black = wbho_only == 2 if wbho_only ~= .
 gen byte hispanic = wbho_only == 3 if wbho_only ~= .
