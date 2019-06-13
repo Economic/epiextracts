@@ -4,8 +4,9 @@ all: deploydata createdocs deploywebdocs deploywebcode
 
 deploydata:
 	rsync -avh --chmod=0444 extracts/epi_cpsbasic*.dta.zip /data/cps/basic/epi/
-	rsync -avh --chmod=0444 extracts/epi_cpsorg*.dta.zip /data/cps/org/epi/
+	rsync -avh --chmod=0444 extracts/epi_cpsmarch*.dta.zip /data/cps/march/epi/
 	rsync -avh --chmod=0444 extracts/epi_cpsmay*.dta.zip /data/cps/may/epi/
+	rsync -avh --chmod=0444 extracts/epi_cpsorg*.dta.zip /data/cps/org/epi/
 
 createdocs:
 	cd docs && $(MAKE) clean html
@@ -23,10 +24,11 @@ deploywebcode:
 	aws s3 sync packages/stata/ s3://microdata.epi.org/stata --exclude ".gitignore*" --delete
 
 deploywebdata:
-	zip -j epi_cpsorg_1979_2019.zip extracts/epi_cpsorg_*.dta.zip
-	zip -j epi_cpsbasic_2000_2019.zip extracts/epi_cpsbasic_20*.dta.zip
 	zip -j epi_cpsbasic_1976_1999.zip extracts/epi_cpsbasic_19*.dta.zip
+	zip -j epi_cpsbasic_2000_2019.zip extracts/epi_cpsbasic_20*.dta.zip
+	zip -j epi_cpsmarch_1962_2018.zip extracts/epi_cpsmarch_*.dta.zip
 	zip -j epi_cpsmay_1973_1981.zip extracts/epi_cpsmay_*.dta.zip
+	zip -j epi_cpsorg_1979_2019.zip extracts/epi_cpsorg_*.dta.zip
 	aws s3 sync . s3://microdata.epi.org/ --exclude "*" --include "epi_cps*.zip" --delete
 	rm epi_cps*.zip
 
@@ -35,8 +37,9 @@ convertsas:
 
 deploysas:
 	rsync -avPh /data/cps/basic/epi/sas/epi_cpsbasic_*.sas7bdat.zip ~/mount/epiextracts/cps/basic/
-	rsync -avPh /data/cps/org/epi/sas/epi_cpsorg_*.sas7bdat.zip ~/mount/epiextracts/cps/org/
+	rsync -avPh /data/cps/march/epi/sas/epi_cpsmarch_*.sas7bdat.zip ~/mount/epiextracts/cps/march/
 	rsync -avPh /data/cps/may/epi/sas/epi_cpsmay_*.sas7bdat.zip ~/mount/epiextracts/cps/may/
+	rsync -avPh /data/cps/org/epi/sas/epi_cpsorg_*.sas7bdat.zip ~/mount/epiextracts/cps/org/
 
 deployado:
 	cp code/ado/append_rawdata.ado /usr/local/ado/
