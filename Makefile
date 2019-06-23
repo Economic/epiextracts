@@ -1,6 +1,6 @@
 all: deploydata createdocs deploywebdocs deploywebcode
 
-.PHONY: all deploydata createdocs deploywebdocs deploywebcode deploywebdata convertsas deploysas deployado
+.PHONY: all deploydata createdocs deploywebdocs deploywebcode deploywebdata convertsas deploywindata deployado
 
 deploydata:
 	rsync -avh --chmod=0444 extracts/epi_cpsbasic*.dta.zip /data/cps/basic/epi/
@@ -35,11 +35,11 @@ deploywebdata:
 convertsas:
 	Rscript code/dtaextracts_to_sas7bdat.R
 
-deploysas:
-	rsync -avPh /data/cps/basic/epi/sas/epi_cpsbasic_*.sas7bdat.zip ~/mount/epiextracts/cps/basic/
-	rsync -avPh /data/cps/march/epi/sas/epi_cpsmarch_*.sas7bdat.zip ~/mount/epiextracts/cps/march/
-	rsync -avPh /data/cps/may/epi/sas/epi_cpsmay_*.sas7bdat.zip ~/mount/epiextracts/cps/may/
-	rsync -avPh /data/cps/org/epi/sas/epi_cpsorg_*.sas7bdat.zip ~/mount/epiextracts/cps/org/
+deploywindata:
+	rsync -avPh /data/cps/basic/epi/epi_cpsbasic_*.dta.zip ~/mount/data/cps/basic/epi/
+	rsync -avPh /data/cps/march/epi/epi_cpsmarch_*.dta.zip ~/mount/data/cps/march/epi/
+	rsync -avPh /data/cps/may/epi/epi_cpsmay_*.dta.zip ~/mount/data/cps/may/epi/
+	rsync -avPh /data/cps/org/epi/epi_cpsorg_*.dta.zip ~/mount/data/cps/org/epi/
 
 deployado:
 	cp code/ado/append_rawdata.ado /usr/local/ado/

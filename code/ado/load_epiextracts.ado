@@ -1,6 +1,6 @@
 *************************************************************************
 * NAME: load_epiextracts
-* DESC: Append uniform extracts in extracts/ and load into memory.
+* DESC: Load CPS extracts into memory.
 * Useful for analysis/testing. Used in documentation creation.
 * Not used in the creation of extracts.
 *************************************************************************
@@ -45,7 +45,10 @@ if "`sourcedir'" ~= "" & "`version'" == "" {
 	else local inputpath `sourcedir'
 }
 if "`sourcedir'" == "" {
-	if "`dataversion'" == "production" local inputpath /data/cps/`lowersample'/epi/
+
+	if "`dataversion'" == "production" local inputpath ${epiextracts`lowersample'dir}
+
+	* old and local extracts (for development only)
 	if "`dataversion'" == "old" & ("`lowersample'" == "org" | "`lowersample'" == "swa" | "`lowersample'" == "may") local inputpath /data/cps/org/epiold/stata/
 	if "`dataversion'" == "old" & ("`lowersample'" == "basic" | "`lowersample'" == "march") local inputpath /data/cps/`lowersample'/epiold/stata/
 	if "`dataversion'" == "local" local inputpath extracts/
@@ -57,15 +60,6 @@ if _rc ~= 0 {
 	di _n "Current data source directory is invalid. Please specify valid sourcedir()."
 	error 1
 }
-
-* announce version being used
-if "`version'" ~= "" {
-	di _n "Using `dataversion' version of the EPI CPS `samplename' extracts located in `inputpath'" _n
-}
-else {
-	di _n "Using EPI CPS `samplename' extracts located in `inputpath'" _n
-}
-
 
 * deal with dates
 local begindate = tm(`begin')
@@ -276,6 +270,15 @@ qui {
 			if `counter' == 1 use `annualdata`year'', clear
 			else append using `annualdata`year''
 		}
+
+		* announce version being used
+		if "`dataversion'" == "local" | "`dataversion'" == "production" {
+			local extractversion: char _dta[note1]
+		}
+		else if "`dataversion'" == "old" {
+			local extractversion old EPI CPS `samplename' extracts
+		}
+		noi di _n "Using `extractversion', located in `inputpath'"
 	}
 
 } // end quietly
