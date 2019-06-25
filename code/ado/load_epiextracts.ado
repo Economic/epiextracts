@@ -54,13 +54,6 @@ if "`sourcedir'" == "" {
 	if "`dataversion'" == "local" local inputpath extracts/
 }
 
-* check inputpath
-capture confirm file `inputpath'
-if _rc ~= 0 {
-	di _n "Current data source directory is invalid. Please specify valid sourcedir()."
-	error 1
-}
-
 * deal with dates
 local begindate = tm(`begin')
 local enddate = tm(`end')
@@ -144,6 +137,15 @@ qui {
 			local shortyear = substr("`year'",3,2)
 			local quarter = quarter(dofq(`quarterdate'))
 			local inputfile cps`shortyear'q`quarter'.dta
+
+			* check inputpath
+			capture confirm file "`inputpath'`inputfile'.zip"
+			if _rc ~= 0 {
+				noi di _n "Current data source directory is invalid."
+				noi di "Please specify valid sourcedir() containing `inputfile'.zip."
+				error 1
+			}
+
 			tempfile tmpdat
 			!unzip -p "`inputpath'`inputfile'.zip" > `tmpdat'
 			use `tmpdat', clear
@@ -177,6 +179,7 @@ qui {
 			}
 			if `counter' == 12 local fullyear = 1
 			else if "`lowersample'" == "march" local fullyear = 1
+			else if "`lowersample'" == "may" local fullyear = 1
 
 			if `fullyear' == 1 {
 				if "`dataversion'" == "local" | "`dataversion'" == "production" local inputfile epi_cps`lowersample'_`year'.dta
@@ -192,6 +195,13 @@ qui {
 				}
 				if "`dataversion'" == "old" & "`lowersample'" == "march" {
 					local inputfile cps_march_`year'.dta
+				}
+
+				capture confirm file "`inputpath'`inputfile'.zip"
+				if _rc ~= 0 {
+					noi di _n "Current data source directory is invalid."
+					noi di "Please specify valid sourcedir() containing `inputfile'.zip."
+					error 1
 				}
 
 				tempfile tmpdat
@@ -231,6 +241,13 @@ qui {
 				else {
 					foreach month of numlist `monthlist`year'' {
 						local inputfile epi_cps`lowersample'_`year'_`month'.dta
+						capture confirm file "`inputpath'`inputfile'.zip"
+						if _rc ~= 0 {
+							noi di _n "Current data source directory is invalid."
+							noi di "Please specify valid sourcedir() containing `inputfile'.zip."
+							error 1
+						}
+
 						tempfile tmpdat
 						!unzip -p "`inputpath'`inputfile'.zip" > `tmpdat'
 						use `tmpdat', clear
