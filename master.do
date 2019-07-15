@@ -84,4 +84,4 @@ adopath ++ ${code}ado
 * create_extracts, begin(1962m1) end(2019m6)
 
 * create documentation
-do ${codedocs}createdocs.do
+* do ${codedocs}createdocs.do
