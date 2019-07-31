@@ -42,5 +42,5 @@ text(`otheryvalue' `otherxvalue' "Other", color("`color5'") placement(e))
 graph export ${variableimages}wbhao_titleimage.svg, replace
 
 /***
-Significant race/ethnicity coding changes occur in 1989, 1996, 2003, and 2012.
+Significant race/ethnicity coding changes occur in 1989, 1996, 2003, 2012m5, and 2014. Through 2002, the number of race categories ranged from 3 (white, black, and other) to 5 (white, black, American Indian/Eskimo/Aleut, Asian or Pacific Islander, and other). Beginning in 2003, respondents could report more than one race from a list of 21 race categories . Five more were added in May of 2012 for a total of 26. In 2014, additional cetagories were added to the detailed hispanic group variable. 
 ***/
