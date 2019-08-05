@@ -121,7 +121,7 @@ lab define raceorig
 ;
 #delimit cr
 lab val raceorig raceorig
-notes raceorig: minimally recorded original race variable on file (mostly reordering)
+notes raceorig: minimally recoded original race variable on file (mostly reordering)
 notes raceorig: Coding changes in 1989, 1996, 2003, 2012m5
 notes raceorig: 1973-1993 Unicon: race
 notes raceorig: 1994-2002 CPS: perace
