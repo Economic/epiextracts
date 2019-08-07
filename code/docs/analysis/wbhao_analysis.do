@@ -42,5 +42,5 @@ text(`otheryvalue' `otherxvalue' "Other", color("`color5'") placement(e))
 graph export ${variableimages}wbhao_titleimage.svg, replace
 
 /***
-Significant race/ethnicity coding changes occur in 1989, 1996, 2003, and 2012.
+Significant race/ethnicity coding changes occur in 1989, 1996, 2003, 2012m5, and 2014.  
 ***/

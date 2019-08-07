@@ -39,6 +39,7 @@ View the documentation
 * Recent :doc:`changes <changes>` to the data
 * Frequently asked :doc:`questions <faq>`
 * Wage variables :doc:`methodology <wagemethodology>`
+* Race/ethnicity variables :doc:`methodology <racemethodology>`
 * How to :doc:`cite <sources>` the EPI extracts
 
 
@@ -53,6 +54,7 @@ View the documentation
 	changes
 	faq
 	wagemethodology
+	racemethodology
 	sources
 	issues
 

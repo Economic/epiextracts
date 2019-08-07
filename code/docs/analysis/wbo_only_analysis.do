@@ -33,7 +33,7 @@ text(`otheryvalue' `otherxvalue' "Other", color("`color4'") placement(e))
 graph export ${variableimages}wbo_only_titleimage.svg, replace
 
 /***
-Significant race/ethnicity coding changes occur in 1989, 1996, 2003, and 2012.
+Significant race/ethnicity coding changes occur in 1989, 1996, 2003, 2012m5, and 2014.  
 
 In the figure above, 1973-1975 data are from the EPI CPS May extracts, and 1976-2018 data are from the EPI CPS Basic Monthly extracts.
 ***/
