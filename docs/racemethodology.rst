@@ -29,7 +29,7 @@ data dictionaries are available `here <https://thedataweb.rm.census.gov/ftp/cps_
 Race/Ethnicity variables in the EPI CPS extracts
 ===============================================================================
 There are several harmonized variables that combine and categorize race and Hispanic ethnicity in the EPI CPS extracts. 
-For all variables except for :doc:`wbo_only <variables/demographics/wbo_only>`, race categories are mutually exclusive with :doc:`Hispanic <variables/demographics/hispanic>` ethnicity.
+For all variables except :doc:`wbo_only <variables/demographics/wbo_only>`, race categories are mutually exclusive with :doc:`Hispanic <variables/demographics/hispanic>` ethnicity.
 Click on the linked variable names in the table below to view more specific information about each variable. 
 
 .. csv-table::
