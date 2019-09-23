@@ -204,8 +204,22 @@ qui {
 					error 1
 				}
 
-				tempfile tmpdat
-				!unzip -p "`inputpath'`inputfile'.zip" > `tmpdat'
+				* couldn't figure out how to pipe zip files for all versions of Windows
+				* would love better code than this:
+				if c(os) == "Windows" {
+					local wd = c(pwd)
+					cd "`c(tmpdir)'"
+					unzipfile "`inputpath'`inputfile'.zip"
+					tempfile tmpdat
+					copy `inputfile' `tmpdat'
+					erase `inputfile'
+					cd "`wd'"
+				}
+				else {
+					tempfile tmpdat
+					!unzip -p "`inputpath'`inputfile'.zip" > `tmpdat'
+				}
+
 				use `initkeeplist' using `tmpdat', clear
 				ds _all
 				if "`keep'" ~= "" local keeplist "`r(varlist)'"
@@ -223,8 +237,23 @@ qui {
 				* if annual exists, use appropriate months from that file
 				if _rc == 0 {
 					local inputfile epi_cps`lowersample'_`year'.dta
-					tempfile tmpdat
-					!unzip -p "`inputpath'`inputfile'.zip" > `tmpdat'
+
+					* couldn't figure out how to pipe zip files for all versions of Windows
+					* would love better code than this:
+					if c(os) == "Windows" {
+						local wd = c(pwd)
+						cd "`c(tmpdir)'"
+						unzipfile "`inputpath'`inputfile'.zip"
+						tempfile tmpdat
+						copy `inputfile' `tmpdat'
+						erase `inputfile'
+						cd "`wd'"
+					}
+					else {
+						tempfile tmpdat
+						!unzip -p "`inputpath'`inputfile'.zip" > `tmpdat'
+					}
+
 					foreach month of numlist `monthlist`year'' {
 						use if month == `month' using `tmpdat', clear
 						if "`keep'" ~= "" {
@@ -248,8 +277,22 @@ qui {
 							error 1
 						}
 
-						tempfile tmpdat
-						!unzip -p "`inputpath'`inputfile'.zip" > `tmpdat'
+						* couldn't figure out how to pipe zip files for all versions of Windows
+						* would love better code than this:
+						if c(os) == "Windows" {
+							local wd = c(pwd)
+							cd "`c(tmpdir)'"
+							unzipfile "`inputpath'`inputfile'.zip"
+							tempfile tmpdat
+							copy `inputfile' `tmpdat'
+							erase `inputfile'
+							cd "`wd'"
+						}
+						else {
+							tempfile tmpdat
+							!unzip -p "`inputpath'`inputfile'.zip" > `tmpdat'
+						}
+
 						use `tmpdat', clear
 						if "`keep'" ~= "" {
 							keepifexist `initkeeplist'
