@@ -60,10 +60,7 @@ qui if "`lowersample'" == "may" {
 
 		* load extracts
 		noi di "Processing `year' EPI CPS `samplename'"
-
-		tempfile tmpextract
-		!unzip -p "`inputpathextracts'`inputfileextracts'.zip" > `tmpextract'
-		use unicon_recnum year month `keepextracts' using `tmpextract', clear
+		use unicon_recnum year month `keepextracts' using "`inputpathextracts'`inputfileextracts'", clear
 		tempfile extracts`year'
 		save `extracts`year''
 
@@ -105,29 +102,26 @@ qui if "`lowersample'" == "basic" | "`lowersample'" == "org" {
 	}
 	forvalues year = `minyear'/`maxyear' {
 
-		capture confirm file `inputpathextracts'epi_cps`lowersample'_`year'.dta.zip
+		capture confirm file "`inputpathextracts'epi_cps`lowersample'_`year'.dta"
 		* if annual file exists, unzip it, save as temp
 		if _rc == 0 {
 			local inputfile epi_cps`lowersample'_`year'.dta
-			tempfile tmpextract
-			!unzip -p "`inputpathextracts'`inputfile'.zip" > `tmpextract'
-			use `tmpextract', clear
+			use "`inputpathextracts'`inputfile'", clear
 			tempfile extracts`year'
 			save `extracts`year''
 		}
 		* else, try monthly files
 		else {
 			foreach month of numlist `monthlist`year'' {
-				capture confirm file `inputpathextracts'epi_cps`lowersample'_`year'_`month'.dta.zip
+				local inputfile epi_cps`lowersample'_`year'_`month'.dta
+				capture confirm file "`inputpathextracts'`inputfile'"
 				if _rc == 0 {
-					tempfile tmpextract
-					!unzip -p "`inputpathextracts'`inputfile'.zip" > `tmpextract'
-					use `tmpextract', clear
+					use "`inputpathextracts'`inputfile'", clear
 					tempfile monthlydata`month'
 					save `monthlydata`month''
 				}
 				else {
-					noi di "Data missing: `inputpathextracts'epi_cps`lowersample'_`year'_`month'.dta.zip"
+					noi di "Data missing: `inputpathextracts'`inputfile'"
 					error _rc
 				}
 			}

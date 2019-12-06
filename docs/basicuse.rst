@@ -9,7 +9,7 @@ How to use the EPI extracts
 
 2. Unzip and move the files
 ===============================================================================
-The zip file you downloaded is actually a collection of zipped Stata data files, one file for each year. You should move those annual zip files into an appropriate directory on your computer.
+The zip file you downloaded is a collection of Stata data files, one file for each year (or monthly files when annual data is not available). You should decompress those files and move them into an appropriate directory on your computer.
 
 3. Use the data with your favorite statistical package
 ===============================================================================
@@ -20,8 +20,9 @@ Feel free to just use the datasets just as you would any Stata dataset!
 
 .. code::
 
-	unzipfile "/data/cps/epi_cpsbasic_2017.dta.zip", replace
-	use epi_cpsbasic_2017.dta, clear
+	use "/data/cps/epi_cpsorg_2018.dta, clear"
+
+where you have replaced :code:`"/data/cps/"` with the directory containing the decompressed files.
 
 Alternatively, the Stata command :code:`load_epiextracts` is an easy way to load a selection of years and variables of the EPI CPS extracts into memory. First, install the Stata package with
 
@@ -47,7 +48,7 @@ Use the :code:`read_dta()` function from R's haven package:
 
 .. code-block:: R
 
-	mydata = haven::read_dta(unzip("/data/cps/epi_cpsbasic_2017.dta.zip"))
+	mydata = haven::read_dta("/mydatadirectory/epi_cpsorg_2018.dta.zip")
 
 
 4. Cite the data

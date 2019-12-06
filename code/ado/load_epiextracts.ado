@@ -197,47 +197,17 @@ qui {
 					local inputfile cps_march_`year'.dta
 				}
 
-				capture confirm file "`inputpath'`inputfile'.zip"
+				if "`dataversion'" == "old"	capture confirm file "`inputpath'`inputfile'.zip"
+				else capture confirm file "`inputpath'`inputfile'"
+
 				if _rc ~= 0 {
 					noi di _n "Current data source directory is invalid."
-					noi di "Please specify valid sourcedir() containing `inputfile'.zip."
+					noi di "Please specify valid sourcedir() containing `inputfile'"
 					error 1
 				}
 
-				* couldn't figure out how to pipe zip files for all versions of Windows
-				* would love better code than this:
-				if c(os) == "Windows" {
-					local wd = c(pwd)
-					cd "`c(tmpdir)'"
-					unzipfile "`inputpath'`inputfile'.zip"
-					tempfile tmpdat
-					copy `inputfile' `tmpdat'
-					erase `inputfile'
-					cd "`wd'"
-				}
-				else {
-					tempfile tmpdat
-					!unzip -p "`inputpath'`inputfile'.zip" > `tmpdat'
-				}
-
-				use `initkeeplist' using `tmpdat', clear
-				ds _all
-				if "`keep'" ~= "" local keeplist "`r(varlist)'"
-				else local keeplist "_all"
-				if "`dataversion'" == "old" & "`lowersample'" ~= "march" gen int year = `year'
-				if "`lowersample'" == "march" | "`lowersample'" == "may" noi di "Processing CPS `samplename', `year': `keeplist'
-				else noi di "Processing CPS `samplename', `year'm1-`year'm12: `keeplist'"
-				tempfile annualdata`year'
-				save `annualdata`year''
-			}
-			* monthly files will be either production or local
-			else {
-				* determine whether annual files exist
-				capture confirm file `inputpath'epi_cps`lowersample'_`year'.dta.zip
-				* if annual exists, use appropriate months from that file
-				if _rc == 0 {
-					local inputfile epi_cps`lowersample'_`year'.dta
-
+				* use appropriate data: unzip if old
+				if "`dataversion'" == "old" {
 					* couldn't figure out how to pipe zip files for all versions of Windows
 					* would love better code than this:
 					if c(os) == "Windows" {
@@ -253,9 +223,27 @@ qui {
 						tempfile tmpdat
 						!unzip -p "`inputpath'`inputfile'.zip" > `tmpdat'
 					}
-
+					use `initkeeplist' using `tmpdat', clear
+				}
+				else use `initkeeplist' using "`inputpath'`inputfile'", clear
+				ds _all
+				if "`keep'" ~= "" local keeplist "`r(varlist)'"
+				else local keeplist "_all"
+				if "`dataversion'" == "old" & "`lowersample'" ~= "march" gen int year = `year'
+				if "`lowersample'" == "march" | "`lowersample'" == "may" noi di "Processing CPS `samplename', `year': `keeplist'
+				else noi di "Processing CPS `samplename', `year'm1-`year'm12: `keeplist'"
+				tempfile annualdata`year'
+				save `annualdata`year''
+			}
+			* no for non-full-year sample: monthly files will be either production or local
+			else {
+				* determine whether annual files exist
+				capture confirm file "`inputpath'epi_cps`lowersample'_`year'.dta"
+				* if annual exists, use appropriate months from that file
+				if _rc == 0 {
+					local inputfile epi_cps`lowersample'_`year'.dta
 					foreach month of numlist `monthlist`year'' {
-						use if month == `month' using `tmpdat', clear
+						use if month == `month' using "`inputpath'`inputfile'", clear
 						if "`keep'" ~= "" {
 							keepifexist `initkeeplist'
 							local keeplist "`r(keeplist)'"
@@ -270,30 +258,13 @@ qui {
 				else {
 					foreach month of numlist `monthlist`year'' {
 						local inputfile epi_cps`lowersample'_`year'_`month'.dta
-						capture confirm file "`inputpath'`inputfile'.zip"
+						capture confirm file "`inputpath'`inputfile'"
 						if _rc ~= 0 {
 							noi di _n "Current data source directory is invalid."
 							noi di "Please specify valid sourcedir() containing `inputfile'.zip."
 							error 1
 						}
-
-						* couldn't figure out how to pipe zip files for all versions of Windows
-						* would love better code than this:
-						if c(os) == "Windows" {
-							local wd = c(pwd)
-							cd "`c(tmpdir)'"
-							unzipfile "`inputpath'`inputfile'.zip"
-							tempfile tmpdat
-							copy `inputfile' `tmpdat'
-							erase `inputfile'
-							cd "`wd'"
-						}
-						else {
-							tempfile tmpdat
-							!unzip -p "`inputpath'`inputfile'.zip" > `tmpdat'
-						}
-
-						use `tmpdat', clear
+						use "`inputpath'`inputfile'", clear
 						if "`keep'" ~= "" {
 							keepifexist `initkeeplist'
 							local keeplist "`r(keeplist)'"
