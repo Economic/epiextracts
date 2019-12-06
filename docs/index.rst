@@ -43,8 +43,6 @@ View the documentation
 * How to :doc:`cite <sources>` the EPI extracts
 
 
-
-
 .. toctree::
 	:hidden:
 	:maxdepth: 1
@@ -65,3 +63,6 @@ If you use the EPI extracts for your research, please cite the data in your refe
 
 .. note::
 	Economic Policy Institute. |year|. Current Population Survey Extracts, |release|.
+
+The code that creates the EPI extracts and documentation is available on
+`Github <https://github.com/Economic/epiextracts>`_.

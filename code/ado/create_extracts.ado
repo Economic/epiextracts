@@ -140,12 +140,7 @@ foreach year of numlist `minyear'(1)`maxyear' {
 		notes drop _dta
 		notes _dta: EPI CPS March Extracts, Version $dataversion
 		label data "EPI CPS March Extracts, Version $dataversion"
-		saveold epi_cpsmarch_`year'.dta, replace version(13)
-		zipfile epi_cpsmarch_`year'.dta, saving(epi_cpsmarch_`year'.dta.zip, replace)
-		copy epi_cpsmarch_`year'.dta.zip ${extracts}epi_cpsmarch_`year'.dta.zip, replace
-		erase epi_cpsmarch_`year'.dta
-		erase epi_cpsmarch_`year'.dta.zip
-
+		saveold ${extracts}epi_cpsmarch_`year'.dta, replace version(13)
 	}
 
 	* process annual may if necessary
@@ -182,11 +177,7 @@ foreach year of numlist `minyear'(1)`maxyear' {
 		notes drop _dta
 		notes _dta: EPI CPS May Extracts, Version $dataversion
 		label data "EPI CPS May Extracts, Version $dataversion"
-		saveold epi_cpsmay_`year'.dta, replace version(13)
-		zipfile epi_cpsmay_`year'.dta, saving(epi_cpsmay_`year'.dta.zip, replace)
-		copy epi_cpsmay_`year'.dta.zip ${extracts}epi_cpsmay_`year'.dta.zip, replace
-		erase epi_cpsmay_`year'.dta
-		erase epi_cpsmay_`year'.dta.zip
+		saveold ${extracts}epi_cpsmay_`year'.dta, replace version(13)
 	}
 
 
@@ -312,11 +303,7 @@ foreach year of numlist `minyear'(1)`maxyear' {
 			notes drop _dta
 			notes _dta: EPI CPS Basic Monthly Extracts, Version $dataversion
 			label data "EPI CPS Basic Monthly Extracts, Version $dataversion"
-			saveold epi_cpsbasic_`year'.dta, replace version(13)
-			zipfile epi_cpsbasic_`year'.dta, saving(epi_cpsbasic_`year'.dta.zip, replace)
-			copy epi_cpsbasic_`year'.dta.zip ${extracts}epi_cpsbasic_`year'.dta.zip, replace
-			erase epi_cpsbasic_`year'.dta
-			erase epi_cpsbasic_`year'.dta.zip
+			saveold ${extracts}epi_cpsbasic_`year'.dta, replace version(13)
 
 			* ORG, if exists
 			if `orgexists' == 1 {
@@ -334,11 +321,7 @@ foreach year of numlist `minyear'(1)`maxyear' {
 				notes drop _dta
 				notes _dta: EPI CPS ORG Extracts, Version $dataversion
 				label data "EPI CPS ORG Extracts, Version $dataversion"
-				saveold epi_cpsorg_`year'.dta, replace version(13)
-				zipfile epi_cpsorg_`year'.dta, saving(epi_cpsorg_`year'.dta.zip, replace)
-				copy epi_cpsorg_`year'.dta.zip ${extracts}epi_cpsorg_`year'.dta.zip, replace
-				erase epi_cpsorg_`year'.dta
-				erase epi_cpsorg_`year'.dta.zip
+				saveold ${extracts}epi_cpsorg_`year'.dta, replace version(13)
 			}
 		}
 
@@ -381,11 +364,7 @@ foreach year of numlist `minyear'(1)`maxyear' {
 				notes drop _dta
 				notes _dta: EPI CPS Basic Monthly Extracts, Version $dataversion
 				label data "EPI CPS Basic Monthly Extracts, Version $dataversion"
-				saveold epi_cpsbasic_`year'_`month'.dta, replace version(13)
-				zipfile epi_cpsbasic_`year'_`month'.dta, saving(epi_cpsbasic_`year'_`month'.dta.zip, replace)
-				copy epi_cpsbasic_`year'_`month'.dta.zip ${extracts}epi_cpsbasic_`year'_`month'.dta.zip, replace
-				erase epi_cpsbasic_`year'_`month'.dta
-				erase epi_cpsbasic_`year'_`month'.dta.zip
+				saveold ${extracts}epi_cpsbasic_`year'_`month'.dta, replace version(13)
 
 				* process ORG, if exists
 				if `orgexists' == 1 {
@@ -394,11 +373,7 @@ foreach year of numlist `minyear'(1)`maxyear' {
 					notes drop _dta
 					notes _dta: EPI CPS ORG Extracts, Version $dataversion
 					label data "EPI CPS ORG Extracts, Version $dataversion"
-					saveold epi_cpsorg_`year'_`month'.dta, replace version(13)
-					zipfile epi_cpsorg_`year'_`month'.dta, saving(epi_cpsorg_`year'_`month'.dta.zip, replace)
-					copy epi_cpsorg_`year'_`month'.dta.zip ${extracts}epi_cpsorg_`year'_`month'.dta.zip, replace
-					erase epi_cpsorg_`year'_`month'.dta
-					erase epi_cpsorg_`year'_`month'.dta.zip
+					saveold ${extracts}epi_cpsorg_`year'_`month'.dta, replace version(13)
 				}
 
 			}

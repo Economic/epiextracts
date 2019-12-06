@@ -9,7 +9,7 @@ If you use the EPI extracts for your research, please cite the data in your refe
 Underlying code and documentation
 ==============================================================================
 The code that creates the EPI extracts and documentation is available on
-`Github <https://github.com/Economic/epiextracts_basicorg>`_.
+`Github <https://github.com/Economic/epiextracts>`_.
 
 The current code and documentation draws heavily from other sources:
 
