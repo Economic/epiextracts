@@ -30,7 +30,7 @@ xlabel(1975(5)2015) ///
 ylabel(0(5)20 25 "25%", angle(0) gmin gmax) ///
 xtitle("") ytitle("") ///
 lcolor("`color4'" "`color2'") ///
-graphregion(color("252 252 252")) plotregion(color("252 252 252")) ///
+graphregion(color(white)) plotregion(color(white)) ///
 title("Public sector share of workforce, ages 16-64, by gender, 1973-2018", size(medium)) ///
 text(`pubsec_0yvalue' `pubsec_0xvalue' "Male", color("`color4'") placement(c)) ///
 text(`pubsec_1yvalue' `pubsec_1xvalue' "Female", color("`color2'") placement(c))

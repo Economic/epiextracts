@@ -30,7 +30,7 @@ xlabel(1975(5)2015) ///
 ylabel(0(2)10 10 "10%", angle(0) gmin gmax) ///
 xtitle("") ytitle("") ///
 lcolor("`color4'" "`color2'") ///
-graphregion(color("252 252 252")) plotregion(color("252 252 252")) ///
+graphregion(color(white)) plotregion(color(white)) ///
 title("Share of earners with top-coded weekly pay, ages 16-64, 1973-2018", size(medium)) ///
 text(`tc_0yvalue' `tc_0xvalue' "Male", color("`color4'") placement(c)) ///
 text(`tc_1yvalue' `tc_1xvalue' "Female", color("`color2'") placement(c))

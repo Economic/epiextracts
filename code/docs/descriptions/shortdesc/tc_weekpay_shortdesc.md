@@ -1,0 +1,1 @@
+`tc_weekpay` indicates whether or not the weekly pay variable [`weekpay_noadj`](weekpay_noadj.md) is top-coded. See also [`weekpay`](weekpay.md), which includes imputed weekly earnings for top-coded values.

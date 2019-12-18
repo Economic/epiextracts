@@ -16,7 +16,7 @@ local color4 0 136 55
 maptile n,
   geo(cbsa2013) fcolor(BrBG) ndfcolor(gs12)
   twopt(
-    graphregion(color("252 252 252"))
+    graphregion(color(white))
     title("CBSA identified sample sizes of individuals ages 16-64 in `maxyear'", size(medium))
   )
 ;

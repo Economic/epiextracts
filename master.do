@@ -20,6 +20,8 @@
 * maptile_install using "http://files.michaelstepner.com/geo_cbsa2013.zip"
 * maptile_install using "http://files.michaelstepner.com/geo_state.zip"
 * maptile_install using "http://files.michaelstepner.com/geo_county2014.zip"
+* 
+* you also need the python module tabulate: https://pypi.org/project/tabulate/
 
 *******************************************************************************
 * PRELIMINARIES
@@ -33,7 +35,7 @@ set trace off
 * DATA VERSION
 *******************************************************************************
 * The version is saved in the dataset labels and notes
-global dataversion 0.6.14
+global dataversion 0.6.15
 
 
 *******************************************************************************
@@ -49,7 +51,7 @@ global dictionaries ${code}dictionaries/
 global reweights ${code}dictionaries/reweights/
 
 * path names for docs
-global docs docs/
+global docs documentation/docs/
 
 * CPS raw data directories  - only necessary for converting raw to Stata format
 * Census data that needs to be converted to Stata
@@ -77,11 +79,11 @@ adopath ++ ${code}ado
 * process the raw data and convert it to Stata format
 * this is only necessary for additional months of data
 * process_rawmarch, begin(1998) end(2018)
-* process_rawbasic, begin(1994m1) end(2019m10)
+* process_rawbasic, begin(1994m1) end(2019m11)
 
 * create EPI's extracts from the processed raw data
 * creates both basic monthly and ORG subsample
-* create_extracts, begin(1962m1) end(2019m10)
+* create_extracts, begin(1962m1) end(2019m11)
 
 * create documentation
 * do ${codedocs}createdocs.do

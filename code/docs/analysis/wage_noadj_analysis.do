@@ -1,4 +1,4 @@
-keep if age >= 16 & age <= 64
+keep if age >= 16 & age != .
 recode wage (0 = .)
 recode wageotc (0 = .)
 
@@ -45,8 +45,8 @@ xlabel(1975(5)2015) ///
 ylabel(18(2)26 26 "$26", angle(0) gmin gmax) ///
 xtitle("") ytitle("") ///
 lcolor("`color4'" "`color2'") ///
-graphregion(color("252 252 252")) plotregion(color("252 252 252")) ///
-title("Mean real wages for ages 16-64, 1973-2018 (in 2018`dollar')", size(medium)) ///
+graphregion(color(white)) plotregion(color(white)) ///
+title("Mean real wages, 1973-2018 (in 2018`dollar')", size(medium)) ///
 text(`wageyvalue' `wagexvalue' "wage (adjusted)", color("`color2'") placement(c)) ///
 text(`wage_noadjyvalue' `wage_noadjxvalue' "wage_noadj (unadjusted)", color("`color4'") placement(c))
 graph export ${variableimages}wage_noadj_titleimage.svg, replace

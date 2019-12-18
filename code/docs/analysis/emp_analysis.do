@@ -26,7 +26,7 @@ xlabel(1975(5)2015) ///
 ylabel(55(5)75 80 "80%", angle(0) gmin gmax) ///
 xtitle("") ytitle("") ///
 lcolor("`color1'" "`color2'") ///
-graphregion(color("252 252 252") margin(r=17)) plotregion(color("252 252 252")) ///
+graphregion(color(white) margin(r=17)) plotregion(color(white)) ///
 title("Employment-to-population ratios, overall and prime-age (25-54)", size(medium)) ///
 text(`allepopyvalue' `allepopxvalue' "Overall", color("`color1'") placement(e)) ///
 text(`primeepopyvalue' `primeepopxvalue' "Prime-age", color("`color2'") placement(e))

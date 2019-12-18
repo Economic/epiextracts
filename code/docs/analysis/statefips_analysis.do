@@ -9,8 +9,8 @@ tostring statefips, gen(statefipsstring)
 gen labelvar = stateabb + " - " + statefipsstring
 
 maptile tag, geo(statehex) geoid(statefips) labelhex(labelvar) ///
-  twopt(graphregion(color("252 252 252")) ///
-    plotregion(color("252 252 252")) ///
+  twopt(graphregion(color(white)) ///
+    plotregion(color(white)) ///
     legend(off))
 
 graph export ${variableimages}statefips_titleimage.svg, replace

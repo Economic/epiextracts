@@ -26,7 +26,7 @@ xlabel(1995(5)2015) ///
 ylabel(0(5)30 30 "30%", angle(0) gmin gmax) ///
 xtitle("") ytitle("") ///
 lcolor("`color4'" "`color2'") ///
-graphregion(color("252 252 252")) plotregion(color("252 252 252")) ///
+graphregion(color(white)) plotregion(color(white)) ///
 title("Share of hourly earners receiving overtime/tips/commissions, 1994-2018", size(medium)) ///
 text(`otcrec_0yvalue' `otcrec_0xvalue' "Male", color("`color4'") placement(c)) ///
 text(`otcrec_1yvalue' `otcrec_1xvalue' "Female", color("`color2'") placement(c))

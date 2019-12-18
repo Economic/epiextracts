@@ -1,0 +1,1 @@
+`weekpay_noadj` is the weekly earnings in dollars for nonhourly and hourly workers, including overtime, tips, and commissions. In contrast to [`weekpay`] (weekpay.md), `weekpay_noadj` makes no adjustments for top-coded weekly earnings.

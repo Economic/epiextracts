@@ -19,7 +19,7 @@ local color4 0 136 55
 maptile n,
   geo(county2014) fcolor(BrBG) ndfcolor(white)
   twopt(
-    graphregion(color("252 252 252"))
+    graphregion(color(white))
     title("County identified sample sizes of individuals ages 16-64 in `maxyear'", size(medium))
   )
 ;
