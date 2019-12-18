@@ -1,6 +1,10 @@
-do ${codedocs}detailed_analysis.do
+*do ${codedocs}detailed_analysis.do
 do ${codedocs}add_misc.do
 
+* create variable index page
+webdoc do ${codedocs}variableindex.do, raw nokeep init(${docs}variables/index.md) replace
+
+* create variable-specific pages
 * variable-group definitions
 import delimited using ${codedocs}variables_groups.csv, clear varnames(1)
 tempfile groups
@@ -19,7 +23,7 @@ keep if _n == 1
 tempfile basedata
 save `basedata'
 
-use `basedata', clear
+* create pages
 foreach var of varlist _all {
 
 	if "`group`var''" == "" {
@@ -33,17 +37,9 @@ foreach var of varlist _all {
 	global variableavailability ${codedocs}descriptions/availability/
 	global variabledocs ${docs}variables/`group`var''/
 	global variableimages ${variabledocs}images/
-	global variablelevels ${variabledocs}levels/
 	global variablecode ${variabledocs}code/
-
-	* copy variable code to variablecode directory
-	copy ${codevars}generate_`var'.do ${variablecode}generate_`var'.do, replace
-
-	* copy detailed analysis code if necessary
-	capture confirm file ${codedocs}analysis/`var'_analysis.do
-	if _rc == 0 copy ${codedocs}analysis/`var'_analysis.do ${variablecode}`var'_analysis.do, replace
 
 	* create variable page
 	use `basedata', clear
-	webdoc do ${codedocs}docwrite.do `var', raw nokeep init(${variabledocs}`var'.rst) replace
+	webdoc do ${codedocs}docwrite.do `var', raw nokeep init(${variabledocs}`var'.md) replace
 }

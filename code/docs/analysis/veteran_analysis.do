@@ -18,6 +18,6 @@ xlabel(1975(5)2015) ///
 ylabel(0(10)40 50 "50%", angle(0) gmin gmax) ///
 xtitle("") ytitle("") ///
 lcolor("`color4'") ///
-graphregion(color("252 252 252")) plotregion(color("252 252 252")) ///
+graphregion(color(white)) plotregion(color(white)) ///
 title("Veteran status of men, ages 18 and above, 1973-2018", size(medsmall))
 graph export ${variableimages}veteran_titleimage.svg, replace

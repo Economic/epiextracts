@@ -4,10 +4,10 @@ This repository creates cleaned uniform extracts of the CPS basic monthly, outgo
 ## Get the data and documentation
 You probably just want the data and documentation available [here](https://microdata.epi.org/).
 
-## Deployment
-1. Stata processes the raw data, generates the cleaned datasets, and creates most of the .rst files used in the documentation. Run `master.do` from the project root to load into memory global macros for the directory structure as well as the Stata programs used to generate the data and documentation.
+## Create from source
+1. Stata processes the raw data, generates the cleaned datasets, and creates most of the .md files used in the documentation. Run `master.do` from the project root to load into memory global macros for the directory structure as well as the Stata programs used to generate the data and documentation.
 
-2. [Sphinx](http://www.sphinx-doc.org/en/stable/) processes the .rst files to create the documentation website.
+2. [mkdocs](https://www.mkdocs.org/) processes the .md files to create the documentation website.
 
 3. A Makefile deploys the data, code, and documentation to public and internal EPI servers.
 
@@ -28,4 +28,4 @@ create_extracts, begin(1973m1) end(2018m10)
 ```
 
 ### Create the documentation
-Run `code/docs/createdocs.do` to create the data-specific .rst files used in the documentation. Then use sphinx to generate the website.
+Run `code/docs/createdocs.do` to create the data-specific .md files used in the documentation. Then use `mkdocs` to generate the website.

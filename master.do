@@ -20,6 +20,8 @@
 * maptile_install using "http://files.michaelstepner.com/geo_cbsa2013.zip"
 * maptile_install using "http://files.michaelstepner.com/geo_state.zip"
 * maptile_install using "http://files.michaelstepner.com/geo_county2014.zip"
+* 
+* you also need the python module tabulate: https://pypi.org/project/tabulate/
 
 *******************************************************************************
 * PRELIMINARIES
@@ -49,7 +51,7 @@ global dictionaries ${code}dictionaries/
 global reweights ${code}dictionaries/reweights/
 
 * path names for docs
-global docs docs/
+global docs documentation/docs/
 
 * CPS raw data directories  - only necessary for converting raw to Stata format
 * Census data that needs to be converted to Stata

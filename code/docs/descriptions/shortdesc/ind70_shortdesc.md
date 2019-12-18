@@ -1,0 +1,1 @@
+ind70 is the 1970 Census-based industry code for the primary job of the respondent. See also [`mind16`](mind16.md).

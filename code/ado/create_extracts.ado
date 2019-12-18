@@ -59,12 +59,14 @@ compress
 format %4.1f cpiurs_extended
 format %4.2f wage_lower
 format %4.2f wage_upper
+order year cpiurs_extended wage_lower wage_upper
 tempfile extremewages
 save `extremewages'
 global extremewages `extremewages'
-* add table to documentation folder
 export delimited using ${docs}misc/extremewages.csv, replace datafmt novarnames
-
+* because Stata will not (!) export variable labels to a csv file
+! sed -i -e '1iYear,CPI-U-RS - extended,Lower wage limit ($),Lower wage limit ($)' ${docs}misc/extremewages.csv
+ 
 * state codes
 import delimited using ${suppdata}state_geocodes.csv, clear varnames(1)
 labmask statefips, val(stateabb)

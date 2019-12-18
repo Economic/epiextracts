@@ -1,8 +1,0 @@
-Employment status
-===================================
-
-.. toctree::
-	:glob:
-	:maxdepth: 1
-
-	*

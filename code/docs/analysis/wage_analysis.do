@@ -1,5 +1,5 @@
 keep if wage > 0 & wage ~= .
-keep if age >= 16 & age <= 64
+keep if age >= 16 & age != .
 
 gen wgt = .
 replace wgt = basicwgt if year <= 1978
@@ -44,8 +44,8 @@ xlabel(1975(5)2015) ///
 ylabel(12(2)22 22 "$22", angle(0)) ///
 xtitle("") ytitle("") ///
 lcolor("`color4'" "`color2'") ///
-graphregion(color("252 252 252")) plotregion(color("252 252 252")) ///
-title("Median real wages for ages 16-64, by gender, 1973-2018 (in 2018`dollar')", size(medium)) ///
+graphregion(color(white)) plotregion(color(white)) ///
+title("Median real wages by gender, 1973-2018 (in 2018`dollar')", size(medium)) ///
 text(`wage_0yvalue' `wage_0xvalue' "Male", color("`color4'") placement(c)) ///
 text(`wage_1yvalue' `wage_1xvalue' "Female", color("`color2'") placement(c))
 

@@ -1,0 +1,1 @@
+`wageotc_noadj` is the hourly wage in dollars per hour for workers paid hourly or nonhourly, including payments for overtime, tips, and commissions. In contrast to [`wageotc`](wageotc.md), `wageotc_noadj` is not adjusted for top-coding and is missing for nonhourly workers whose hours vary.

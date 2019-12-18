@@ -27,7 +27,7 @@ legend(off) ///
 xlabel(1975(5)2015) ///
 ylabel(0(5)25 30 "30%", angle(0) gmin gmax) ///
 xtitle("") ytitle("") ///
-graphregion(color("252 252 252")) plotregion(color("252 252 252")) ///
+graphregion(color(white)) plotregion(color(white)) ///
 title("Union representation and membership as a share of the workforce", size(medium)) ///
 text(`unmemyvalue' `unmemxvalue' "Membership", color("`color3'") placement(c)) ///
 text(`unionyvalue' `unionxvalue' "Representation", color("`color2'") placement(c))

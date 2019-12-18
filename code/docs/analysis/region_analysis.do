@@ -17,7 +17,7 @@ forvalues i = 1 / 4 {
 maptile region, geo(state) geoid(statefips) ///
   fcolor(""`color1'" "`color2'" "`color3'" "`color4'"") ///
   twopt( ///
-    graphregion(color("252 252 252")) plotregion(color("252 252 252")) ///
+    graphregion(color(white)) plotregion(color(white)) ///
     legend( ///
       order(2 3 4 5) ///
       lab(2 "`regionname1'") ///

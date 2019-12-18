@@ -1,0 +1,48 @@
+# Project information
+site_name: EPI Microdata Extracts
+site_description: CPS and other microdata extracts used by EPI
+site_url: https://microdata.epi.org
+copyright: 'Copyright &copy; 2019 <a href= "https://epi.org">Economic Policy Institute</a>'
+
+theme:
+  name: 'material'
+  language: en
+  feature:
+    tabs: true
+  #palette:
+  #  primary: 'blue grey'
+  #  accent:  'indigo'
+  font:
+    text: Roboto
+    code: Fira Code
+  favicon: assets/images/favicon.png
+  logo:
+    icon: "home"
+  custom_dir: theme_customizations
+
+markdown_extensions:
+  - attr_list
+  - codehilite
+  - pymdownx.superfences
+  - pymdownx.magiclink
+  - pymdownx.details
+  - admonition
+  - pymdownx.snippets:
+      base_path: docs
+  - toc:
+      permalink: true
+
+plugins:
+  - search
+  - markdownextradata: {}
+  - awesome-pages
+  - exclude:
+      glob: 
+        - misc/*
+
+dev_addr: '127.0.0.1:8282'
+
+extra:
+  version: 0.6.15
+  latestdata: 2019m11
+  year: 2019

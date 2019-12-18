@@ -22,8 +22,8 @@ maptile division, geo(state) geoid(statefips) ///
 cutpoints(division) ///
 fcolor(""`color1'" "`color2'" "`color3'" "`color4'" "`color5'" "`color6'" "`color7'" "`color8'" "`color9'"") ///
 twopt( ///
-  graphregion(color("252 252 252")) ///
-  plotregion(color("252 252 252")) ///
+  graphregion(color(white)) ///
+  plotregion(color(white)) ///
   legend( ///
     size(small) ///
     order(2 3 4 5 6 7 8 9) ///

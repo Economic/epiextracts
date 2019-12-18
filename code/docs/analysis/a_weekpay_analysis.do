@@ -20,6 +20,6 @@ xlabel(1980(5)2015) ///
 ylabel(0(10)40 50 "50%", angle(0) gmin gmax) ///
 xtitle("") ytitle("") ///
 lcolor("`color4'") ///
-graphregion(color("252 252 252")) plotregion(color("252 252 252")) ///
+graphregion(color(white)) plotregion(color(white)) ///
 title("Share of workforce with BLS allocated weekly earnings, ages 16-64, 1979-2018", size(medsmall))
 graph export ${variableimages}a_weekpay_titleimage.svg, replace

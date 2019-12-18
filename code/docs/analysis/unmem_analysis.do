@@ -28,7 +28,7 @@ legend(off) ///
 xlabel(1975(5)2015) ///
 ylabel(0(5)30 35 "35%", angle(0) gmin gmax) ///
 xtitle("") ytitle("") ///
-graphregion(color("252 252 252")) plotregion(color("252 252 252")) ///
+graphregion(color(white)) plotregion(color(white)) ///
 title("Union members as a share of the workforce, by gender", size(medium)) ///
 text(`unmem0yvalue' `unmem0xvalue' "Men", color("`color3'") placement(c)) ///
 text(`unmem1yvalue' `unmem1xvalue' "Women", color("`color2'") placement(c))

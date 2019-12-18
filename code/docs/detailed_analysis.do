@@ -25,12 +25,11 @@ foreach var of varlist `analysisvarlist' {
   global variablelongdesc ${codedocs}descriptions/longdesc/
   global variabledocs ${docs}variables/`group`var''/
   global variableimages ${variabledocs}images/
-  global variablelevels ${variabledocs}levels/
   use `fulldata', clear
-  webdoc do ${codedocs}analysis/`var'_analysis.do, raw nokeep init(${variablelongdesc}`var'_longdesc.rst) replace
+  webdoc do ${codedocs}analysis/`var'_analysis.do, raw nokeep init(${variablelongdesc}`var'_longdesc.md) replace
 	* if longdesc output is empty, delete
-	ashell du -k "${variablelongdesc}`var'_longdesc.rst" | cut -f1
-	if `r(o1)' == 0 erase "${variablelongdesc}`var'_longdesc.rst"
+	ashell du -k "${variablelongdesc}`var'_longdesc.md" | cut -f1
+	if `r(o1)' == 0 erase "${variablelongdesc}`var'_longdesc.md"
 }
 
 
@@ -51,12 +50,11 @@ foreach var of varlist `analysisvarlist' {
   global variablelongdesc ${codedocs}descriptions/longdesc/
   global variabledocs ${docs}variables/`group`var''/
   global variableimages ${variabledocs}images/
-  global variablelevels ${variabledocs}levels/
   use `fulldata', clear
-	webdoc do ${codedocs}analysis/`var'_analysis.do, raw nokeep init(${variablelongdesc}`var'_longdesc.rst) replace
+	webdoc do ${codedocs}analysis/`var'_analysis.do, raw nokeep init(${variablelongdesc}`var'_longdesc.md) replace
 	* if longdesc output is empty, delete
-	ashell du -k "${variablelongdesc}`var'_longdesc.rst" | cut -f1
-	if `r(o1)' == 0 erase "${variablelongdesc}`var'_longdesc.rst"
+	ashell du -k "${variablelongdesc}`var'_longdesc.md" | cut -f1
+	if `r(o1)' == 0 erase "${variablelongdesc}`var'_longdesc.md"
 }
 
 
@@ -76,12 +74,11 @@ foreach var of varlist `analysisvarlist' {
   global variablelongdesc ${codedocs}descriptions/longdesc/
   global variabledocs ${docs}variables/`group`var''/
   global variableimages ${variabledocs}images/
-  global variablelevels ${variabledocs}levels/
   use `fulldata', clear
-	webdoc do ${codedocs}analysis/`var'_analysis.do, raw nokeep init(${variablelongdesc}`var'_longdesc.rst) replace
+	webdoc do ${codedocs}analysis/`var'_analysis.do, raw nokeep init(${variablelongdesc}`var'_longdesc.md) replace
 	* if longdesc output is empty, delete
-	ashell du -k "${variablelongdesc}`var'_longdesc.rst" | cut -f1
-	if `r(o1)' == 0 erase "${variablelongdesc}`var'_longdesc.rst"
+	ashell du -k "${variablelongdesc}`var'_longdesc.md" | cut -f1
+	if `r(o1)' == 0 erase "${variablelongdesc}`var'_longdesc.md"
 }
 
 
@@ -103,10 +100,9 @@ foreach var of varlist `analysisvarlist' {
   global variablelongdesc ${codedocs}descriptions/longdesc/
   global variabledocs ${docs}variables/`group`var''/
   global variableimages ${variabledocs}images/
-  global variablelevels ${variabledocs}levels/
   use `fulldata', clear
-	webdoc do ${codedocs}analysis/`var'_analysis.do, raw nokeep init(${variablelongdesc}`var'_longdesc.rst) replace
+	webdoc do ${codedocs}analysis/`var'_analysis.do, raw nokeep init(${variablelongdesc}`var'_longdesc.md) replace
 	* if longdesc output is empty, delete
-	ashell du -k "${variablelongdesc}`var'_longdesc.rst" | cut -f1
-	if `r(o1)' == 0 erase "${variablelongdesc}`var'_longdesc.rst"
+	ashell du -k "${variablelongdesc}`var'_longdesc.md" | cut -f1
+	if `r(o1)' == 0 erase "${variablelongdesc}`var'_longdesc.md"
 }
