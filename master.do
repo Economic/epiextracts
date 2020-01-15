@@ -35,7 +35,7 @@ set trace off
 * DATA VERSION
 *******************************************************************************
 * The version is saved in the dataset labels and notes
-global dataversion 0.6.15
+global dataversion 1.0
 
 
 *******************************************************************************
@@ -83,7 +83,7 @@ adopath ++ ${code}ado
 
 * create EPI's extracts from the processed raw data
 * creates both basic monthly and ORG subsample
-* create_extracts, begin(1962m1) end(2019m11)
+* create_extracts, begin(1962m1) end(2019m12)
 
 * create documentation
 * do ${codedocs}createdocs.do
