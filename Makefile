@@ -9,7 +9,7 @@ deploydata:
 	rsync -avh --chmod=0444 extracts/epi_cpsorg*.dta /data/cps/org/epi/
 
 createdocs:
-	cd docs && $(MAKE) clean html
+	cd documentation && mkdocs build 
 
 deploywebdocs:
 	aws s3 sync documentation/site/ s3://microdata.epi.org/
@@ -31,9 +31,6 @@ deploywebdata:
 	zip -j epi_cpsorg_1979_2019.zip extracts/epi_cpsorg_*.dta
 	aws s3 sync . s3://microdata.epi.org/ --exclude "*" --include "epi_cps*.zip" --delete
 	rm epi_cps*.zip
-
-convertsas:
-	Rscript code/dtaextracts_to_sas7bdat.R
 
 deploywindata:
 	rsync -avPh /data/cps/basic/epi/epi_cpsbasic_*.dta ~/mount/data/cps/basic/epi/

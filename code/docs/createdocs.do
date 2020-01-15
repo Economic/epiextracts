@@ -1,4 +1,4 @@
-*do ${codedocs}detailed_analysis.do
+do ${codedocs}detailed_analysis.do
 do ${codedocs}add_misc.do
 
 * create variable index page
@@ -18,7 +18,7 @@ forvalues i = 1 / `N' {
 }
 
 * load data for a given year to gather all variables
-load_epiextracts, begin(2018m1) end(2018m1) sample(basic) version(local)
+load_epiextracts, begin(2019m1) end(2019m12) sample(org) version(local)
 keep if _n == 1
 tempfile basedata
 save `basedata'
