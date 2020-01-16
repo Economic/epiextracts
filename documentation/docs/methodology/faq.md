@@ -54,7 +54,7 @@ While there is not always a single correct answer regarding which weight you sho
 
 * [`finalwgt`](../variables/weights/finalwgt.md) is the only weight defined for individuals under the age of 16.
 
-* If you want to match monthly labor force statistics published by the BLS like unemployment rates, this is possible from 1998 through the present day using [`basicwgt`](../variables/weights/basicwgt.md)or [`cmpwgt`](../variables/weights/basicwgt.md), which have the same values during that time period.
+* If you want to match monthly labor force statistics published by the BLS like unemployment rates, this is possible from 1998 through the present day using [`basicwgt`](../variables/weights/basicwgt.md)or [`cmpwgt`](../variables/weights/cmpwgt.md), which have the same values during that time period.
 
 In a given month, the above weights sum to the total monthly population estimate of the relevant sample.
 
