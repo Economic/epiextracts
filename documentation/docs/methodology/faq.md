@@ -5,7 +5,7 @@
 Access the dataset label to determine the version of the extracts you are using:
 
 ```stata tab="Stata"
-use epi_cpsorg_2018.dta, clear
+use epi_cpsorg_2019.dta, clear
 
 * describe the data to view the version
 describe, short
@@ -16,7 +16,7 @@ display "`dataversion'"
 ```
 
 ```r tab="R"
-mydata <- haven::read_dta("epi_cpsorg_2018.dta")
+mydata <- haven::read_dta("epi_cpsorg_2019.dta")
 dataversion <- attr(mydata,"label")
 ```
 
@@ -53,6 +53,10 @@ While there is not always a single correct answer regarding which weight you sho
 * If your analysis involves the ORG data, such as earnings information, use [`orgwgt`](../variables/weights/orgwgt.md).
 
 * [`finalwgt`](../variables/weights/finalwgt.md) is the only weight defined for individuals under the age of 16.
+
+* If you want to match monthly labor force statistics published by the BLS like unemployment rates, this is possible from 1998 through the present day using [`basicwgt`](../variables/weights/basicwgt.md)or [`cmpwgt`](../variables/weights/basicwgt.md), which have the same values during that time period.
+
+In a given month, the above weights sum to the total monthly population estimate of the relevant sample.
 
 ## Which wage variable should I use? {: #which-wage-variable}
 
