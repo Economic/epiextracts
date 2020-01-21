@@ -35,9 +35,9 @@ The imputed usual weekly hours is used when calculating hourly wages for nonhour
 
 ## Trimming outliers
 
-The hourly wage variables `wage`(../variables/income/wage.md) `wageotc`(../variables/income/wageotc.md) are trimmed of outliers. Specifically, these hourly wage values are set to missing if they are above 50 cents per hour or $100 per hour in 1989 dollars.
+The hourly wage variables [`wage`](../variables/income/wage.md) and [`wageotc`](../variables/income/wageotc.md) are trimmed of outliers. Specifically, these hourly wage values are set to missing if they are above 50 cents per hour or $100 per hour in 1989 dollars.
 
-For hourly wage variables that do not have this modification, see `wage_noadj`(../variables/income/wage_noadj.md) and `wageotc_noadj`(../variables/income/wageotc_noadj.md)
+For hourly wage variables that do not have this modification, see [`wage_noadj`](../variables/income/wage_noadj.md) and [`wageotc_noadj`](../variables/income/wageotc_noadj.md)
 
 ??? note "Hourly wage limits for [`wage`](../variables/income/wage.md) and [`wageotc`](../variables/income/wageotc.md)"
     --8<-- "misc/extremewages.md"

@@ -38,7 +38,7 @@ plugins:
   - awesome-pages
   - exclude:
       glob: 
-        - misc/*
+        - misc/*.md
 
 dev_addr: '127.0.0.1:8282'
 
