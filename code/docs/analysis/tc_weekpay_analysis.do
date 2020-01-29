@@ -31,11 +31,11 @@ ylabel(0(2)10 10 "10%", angle(0) gmin gmax) ///
 xtitle("") ytitle("") ///
 lcolor("`color4'" "`color2'") ///
 graphregion(color(white)) plotregion(color(white)) ///
-title("Share of earners with top-coded weekly pay, ages 16-64, 1973-2018", size(medium)) ///
+title("Share of earners with top-coded weekly pay, ages 16-64", size(medium)) ///
 text(`tc_0yvalue' `tc_0xvalue' "Male", color("`color4'") placement(c)) ///
 text(`tc_1yvalue' `tc_1xvalue' "Female", color("`color2'") placement(c))
 graph export ${variableimages}tc_weekpay_titleimage.svg, replace
 
 /***
-The analysis above uses observations with positive weekly earnings workers in the CPS ORG for 1979-2018 and the CPS May for 1973-1978.
+The analysis above uses observations with positive weekly earnings workers in the CPS ORG for 1979-2019 and the CPS May for 1973-1978.
 ***/

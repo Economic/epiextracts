@@ -33,11 +33,11 @@ ylabel(0(20)80 100 "100%", angle(0) gmin gmax) ///
 xtitle("") ytitle("") ///
 lcolor("`color4'" "`color2'") ///
 graphregion(color(white)) plotregion(color(white)) ///
-title("Share of workforce paid by the hour, ages 16-64, by gender, 1973-2018", size(medium)) ///
+title("Share of workforce paid by the hour, ages 16-64, by gender", size(medium)) ///
 text(`paidhre_0yvalue' `paidhre_0xvalue' "Male", color("`color4'") placement(c)) ///
 text(`paidhre_1yvalue' `paidhre_1xvalue' "Female", color("`color2'") placement(c))
 graph export ${variableimages}paidhre_titleimage.svg, replace
 
 /***
-The analysis above uses the CPS ORG for 1979-2018 and the CPS May for 1973-1978.
+The analysis above uses the CPS ORG for 1979-2019 and the CPS May for 1973-1978.
 ***/

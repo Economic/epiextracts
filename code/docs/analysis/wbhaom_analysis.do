@@ -37,7 +37,7 @@ xlabel(,valuelabel labsize(small)) ///
 ylabel(0(20)60 60 "60%", angle(0) gmin gmax) yscale(r(0 67)) ///
 xtitle("") ytitle("") ///
 graphregion(color(white)) plotregion(color(white)) ///
-title("Share of population by race/ethnicity, ages 16 and over, in 2018", size(medium)) ///
+title("Share of population by race/ethnicity, ages 16 and over", size(medium)) ///
 text(`formatyvalue1' 1 "`formatvalue1'", color("`color2'")) ///
 text(`formatyvalue2' 2 "`formatvalue2'", color("`color1'")) ///
 text(`formatyvalue3' 3 "`formatvalue3'", color("`color3'")) ///

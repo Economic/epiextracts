@@ -19,5 +19,5 @@ ylabel(0(10)40 50 "50%", angle(0) gmin gmax) ///
 xtitle("") ytitle("") ///
 lcolor("`color4'") ///
 graphregion(color(white)) plotregion(color(white)) ///
-title("Veteran status of men, ages 18 and above, 1973-2018", size(medsmall))
+title("Veteran status of men, ages 18 and above", size(medsmall))
 graph export ${variableimages}veteran_titleimage.svg, replace
