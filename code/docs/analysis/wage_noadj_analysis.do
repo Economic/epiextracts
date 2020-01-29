@@ -9,7 +9,7 @@ replace wgt = orgwgt if year >= 1979
 gcollapse (mean) wage_noadj wage [pw=wgt], by(year) fast
 * inflation-adjust wages
 preserve
-sysuse cpi_annual
+sysuse cpi_annual, clear
 keep year cpiurs
 keep if year > = 1973
 tempfile cpiurs
