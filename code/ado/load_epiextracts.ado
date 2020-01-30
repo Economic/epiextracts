@@ -6,7 +6,7 @@
 *************************************************************************
 capture program drop load_epiextracts
 program define load_epiextracts
-syntax, begin(string) end(string) sample(string) [keep(string) version(string) sourcedir(string)]
+syntax, sample(string) [years(numlist) beginmonth(string) endmonth(string) keep(string) version(string) sourcedir(string)]
 
 * determine sample
 local lowersample = lower("`sample'")
@@ -45,72 +45,45 @@ if "`sourcedir'" ~= "" & "`version'" == "" {
 	else local inputpath `sourcedir'
 }
 if "`sourcedir'" == "" {
-
 	if "`dataversion'" == "production" local inputpath ${epiextracts`lowersample'dir}
 
 	* old and local extracts (for development only)
-	if "`dataversion'" == "old" & ("`lowersample'" == "org" | "`lowersample'" == "swa" | "`lowersample'" == "may") local inputpath /data/cps/org/epiold/stata/
-	if "`dataversion'" == "old" & ("`lowersample'" == "basic" | "`lowersample'" == "march") local inputpath /data/cps/`lowersample'/epiold/stata/
+	if "`dataversion'" == "old" & inlist("`lowersample'", "org", "swa", "may") local inputpath /data/cps/org/epiold/stata/
+	if "`dataversion'" == "old" & inlist("`lowersample'", "basic", "march") local inputpath /data/cps/`lowersample'/epiold/stata/
 	if "`dataversion'" == "local" local inputpath extracts/
 }
 
 * deal with dates
-local begindate = tm(`begin')
-local enddate = tm(`end')
-local minyear = year(dofm(`begindate'))
-local maxyear = year(dofm(`enddate'))
-local minmonth = month(dofm(`begindate'))
-local maxmonth = month(dofm(`enddate'))
-* quarterdate list for EPI Basic
-local minquarterdate = yq(`minyear',quarter(dofm(`begindate')))
-local maxquarterdate = yq(`maxyear',quarter(dofm(`enddate')))
-
-* min month and max month check for old Basic
-if "`dataversion'" == "old" & "`lowersample'" == "basic" {
-	local invalidmonth = 0
-	if inlist(`minmonth',1,4,7,10) ~= 1 {
-		local invalidmonth = 1
-		di "Beginning month invalid."
-	}
-	if inlist(`maxmonth',3,6,9,12) ~= 1 {
-		local invalidmonth = 1
-		di "Ending month invalid."
-	}
-	if `invalidmonth' == 1 {
-		di _n "Mid-quarter samples are not available for the old EPI Basic, which is available quarterly."
-		di "For this dataset, select a month range comprising full quarters -- e.g., begin(2012m4) end(2015m9)."
-		error 1
-	}
+if "`years'" == "" & "`months'" == "" {
+	di _n "Specify the timeframe of the data in years() or months()."
+	error 1
+}
+if "`years'" != "" & "`months'" != "" {
+	di _n "Select the timeframe using either years() or months(), but not both."
+	error 1
+}
+if "`dataversion'" == "old" & "`years'" == "" {
+	di _n "If using the old EPI extracts, specify the timeframe of the sample in years()."
+	error 1
+}
+if inlist("`lowersample'", "march", "may") & "`years'" == "" {
+	di _n "Select the timeframe of the CPS `samplename' data in years()."
+	error 1
 }
 
-* min month and max month check for old ORG/May
-if "`dataversion'" == "old" & ("`lowersample'" == "org" | "`lowersample'" == "swa" | "`lowersample'" == "may" | "`lowersample'" == "march") {
-	local invalidmonth = 0
-	if `minmonth' ~= 1 {
-		local invalidmonth = 1
-		di "Beginning month invalid."
-	}
-	if `maxmonth' ~= 12 {
-		local invalidmonth = 1
-		di "Ending month invalid."
-	}
-	if `invalidmonth' == 1 {
-		di _n "Mid-year samples are not available for the old EPI SWA/ORG/May/March samples, which are available annually"
-		di "For these datasets, select month ranges comprising full years -- e.g., begin(2012m1) end(2015m12)"
-		error 1
-	}
-}
-
-* create list of months for each year to process
-foreach date of numlist `begindate'(1)`enddate' {
-  local year = year(dofm(`date'))
-  local month = month(dofm(`date'))
-  local monthlist`year' `monthlist`year'' `month'
+local fullyear = 1
+if "`months'" != "" {
+	local minmonth = month(dofm(`beginmonth'))
+	local maxmonth = month(dofm(`endmonth'))
+	local minyear = year(dofm(`beginmonth'))
+	local maxyear = year(dofm(`endmonth'))
+	local years `minyear'(1)`maxyear'
+	if "`minmonth'" != 1 | "`maxmonth'" != 12 local fullyear = 0
 }
 
 * keep varlists for datasets
 if "`keep'" ~= "" {
-	if "`dataversion'" == "old" & ("`lowersample'" == "org" | "`lowersample'" == "swa") {
+	if "`dataversion'" == "old" & inlist("`lowersample'", "org", "swa") {
 		local initkeeplist `keep' month mins orgwt
 	}
 	if "`dataversion'" == "old" & "`lowersample'" == "basic" {
@@ -126,10 +99,23 @@ if "`keep'" ~= "" {
 		local initkeeplist `keep' year month minsamp *wgt*
 	}
 }
+else {
+	local initkeeplist _all
+}
 
+if "`dataversion'" == "old" & "`lowersample'" == "basic" {
+	load_quarters, years(`years') sample(`lowersample') samplename(`samplename') inputpath(`inputpath') keep(`initkeeplist') dataversion(`dataversion')
+}
+else {
+	load_years, years(`years') sample(`lowersample') samplename(`samplename') inputpath(`inputpath') keep(`initkeeplist') dataversion(`dataversion')
+}
+
+
+
+stop 
 
 * process data
-qui {
+*qui {
 	* process old EPI Basic (quarterly)
 	if "`dataversion'" == "old" & "`lowersample'" == "basic" {
 		foreach quarterdate of numlist `minquarterdate'(1)`maxquarterdate' {
@@ -312,7 +298,122 @@ qui {
 		noi di _n "Using `extractversion', located in `inputpath'"
 	}
 
-} // end quietly
+*} // end quietly
 
 
 end
+
+
+
+capture program drop load_quarters
+program define load_quarters
+syntax, years(numlist) sample(string) samplename(string) inputpath(string) keep(string) dataversion(string)
+	if "`sample'" != "basic" & "`dataversion'" != "old" error 1
+	qui {
+		foreach year of numlist `years' {
+			local shortyear = substr("`year'",3,2)
+			forvalues quarter = 1 / 4 {
+				noi confirm_load, inputfile(cps`shortyear'q`quarter'.dta) inputpath(`inputpath') keep(`keep') dataversion(`dataversion')
+				local keeplist `r(keeplist)'
+				gen int year = `year'
+				noi di "Processing CPS `samplename', " %tq tq(`year'q`quarter') ": `keeplist'"
+				tempfile data`year'q`quarter'
+				save `data`year'q`quarter''
+			}
+		}
+
+		local counter = 0
+		foreach year of numlist `years' {
+			forvalues quarter = 1 / 4 {
+				local counter = `counter' + 1
+				noi di "Loading CPS `samplename', " %tq tq(`year'q`quarter')
+				if `counter' == 1 use `data`year'q`quarter'', clear
+				else append using `data`year'q`quarter''
+			}
+		}
+	}
+end
+
+capture program drop load_years
+program define load_years
+syntax, years(numlist) sample(string) samplename(string) inputpath(string) keep(string) dataversion(string)
+	qui {
+		foreach year of numlist `years' {
+			local shortyear = substr("`year'",3,2)
+
+			if "`dataversion'" == "local" | "`dataversion'" == "production" local inputfile epi_cps`sample'_`year'.dta
+			local shortyear = substr("`year'",3,2)
+			if "`dataversion'" == "old" & "`sample'" == "org" {
+				local inputfile org`shortyear'c.dta
+			}
+			if "`dataversion'" == "old" & "`sample'" == "swa" {
+				local inputfile wage`shortyear'c.dta
+			}
+			if "`dataversion'" == "old" & "`sample'" == "may" {
+				local inputfile may`shortyear'c.dta
+			}
+			if "`dataversion'" == "old" & "`sample'" == "march" {
+				local inputfile cps_march_`year'.dta
+			}
+
+			noi confirm_load, inputfile(`inputfile') inputpath(`inputpath') keep(`keep') dataversion(`dataversion')
+			local keeplist `r(keeplist)'
+			if "`dataversion'" == "old" & "`lowersample'" ~= "march" gen int year = `year'
+			if "`lowersample'" == "march" | "`lowersample'" == "may" noi di "Processing CPS `samplename', `year': `keeplist'
+			else noi di "Processing CPS `samplename', `year'm1-`year'm12: `keeplist'"
+			tempfile data`year'
+			save `data`year''
+		}
+
+		local counter = 0
+		foreach year of numlist `years' {
+			local counter = `counter' + 1
+			if `counter' == 1 local linebreak _n
+			else local linebreak
+			if "`lowersample'" == "march" | "`lowersample'" == "may" noi di `linebreak' "Loading CPS `samplename', `year'"
+			else noi di `linebreak' "Loading CPS `samplename', `year'm1-`year'm12"	
+			if `counter' == 1 use `data`year'', clear
+			else append using `data`year''
+		}
+	}
+end
+
+capture program drop confirm_load 
+program define confirm_load, rclass
+syntax, inputfile(string) inputpath(string) keep(string) dataversion(string)
+	qui {
+
+		if "`dataversion'" == "old" {
+			capture confirm file "`inputpath'`inputfile'.zip"
+			if _rc ~= 0 {
+				noi di _n "Current data source directory is invalid."
+				noi di "Please specify valid sourcedir() containing `inputfile'.zip."
+				error 1
+			}
+			tempfile tmpdat
+			!unzip -p "`inputpath'`inputfile'.zip" > `tmpdat'
+			use `tmpdat', clear
+			if "`keep'" ~= "_all" {
+				keepifexist `keep'
+			}
+		}
+		else {
+			capture confirm file "`inputpath'`inputfile'"
+			if _rc ~= 0 {
+				noi di _n "Current data source directory is invalid."
+				noi di "Please specify valid sourcedir() containing `inputfile'."
+				error 1
+			}
+			use `keep' using "`inputpath'`inputfile'", clear
+		}
+
+		if "`keep'" == "_all" return local keeplist _all
+		else {
+			fvexpand _all
+			return local keeplist `r(varlist)'
+		}
+	}
+end
+
+
+
