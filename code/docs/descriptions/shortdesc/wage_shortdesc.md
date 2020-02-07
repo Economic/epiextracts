@@ -1,1 +1,1 @@
-`wage` is the hourly wage in dollars per hour for workers paid hourly or nonhourly. In contrast to [`wage_noadj`](wage_noadj.md) <wage_noadj>`, `wage` includes imputed values for respondents with top-coded weekly earnings or weekly hours that vary.
+`wage` is the hourly wage in dollars per hour for workers paid hourly or nonhourly. In contrast to [`wage_noadj`](wage_noadj.md), `wage` includes imputed values for respondents with top-coded weekly earnings or weekly hours that vary.

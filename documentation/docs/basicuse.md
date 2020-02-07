@@ -11,7 +11,7 @@ The zip file you downloaded is a collection of Stata data files, one file for ea
 ??? info "Stata examples"
     Feel free to just use the datasets just as you would any Stata dataset:
     ```stata
-    use "/data/cps/epi_cpsorg_2018.dta", clear
+    use "/data/cps/epi_cpsorg_2019.dta", clear
     ```
     where you have replaced `/data/cps/` with the directory containing the decompressed files.
 
@@ -33,7 +33,7 @@ The zip file you downloaded is a collection of Stata data files, one file for ea
 ??? info "R examples"
     The haven package will load Stata datasets:
     ```r
-    mydata <- haven::read_dta("/data/cps/epi_cpsorg_2018.dta.zip")
+    mydata <- haven::read_dta("/data/cps/epi_cpsorg_2019.dta")
     ```
 
 ## 4. Cite the data
