@@ -31,11 +31,11 @@ ylabel(0(5)20 25 "25%", angle(0) gmin gmax) ///
 xtitle("") ytitle("") ///
 lcolor("`color4'" "`color2'") ///
 graphregion(color(white)) plotregion(color(white)) ///
-title("Self-employed share of workforce, ages 16-64, by gender, 1973-2018", size(medium)) ///
+title("Self-employed share of workforce, ages 16-64, by gender", size(medium)) ///
 text(`selfemp_0yvalue' `selfemp_0xvalue' "Male", color("`color4'") placement(c)) ///
 text(`selfemp_1yvalue' `selfemp_1xvalue' "Female", color("`color2'") placement(c))
 graph export ${variableimages}selfemp_titleimage.svg, replace
 
 /***
-The analysis above uses employed workers in the CPS Basic for 1976-2018 and CPS May 1973-1975.
+The analysis above uses employed workers in the CPS Basic for 1976-2019 and CPS May 1973-1975.
 ***/

@@ -31,11 +31,11 @@ ylabel(0(5)20 25 "25%", angle(0) gmin gmax) ///
 xtitle("") ytitle("") ///
 lcolor("`color4'" "`color2'") ///
 graphregion(color(white)) plotregion(color(white)) ///
-title("Public sector share of workforce, ages 16-64, by gender, 1973-2018", size(medium)) ///
+title("Public sector share of workforce, ages 16-64, by gender", size(medium)) ///
 text(`pubsec_0yvalue' `pubsec_0xvalue' "Male", color("`color4'") placement(c)) ///
 text(`pubsec_1yvalue' `pubsec_1xvalue' "Female", color("`color2'") placement(c))
 graph export ${variableimages}pubsec_titleimage.svg, replace
 
 /***
-The analysis above uses employed workers in the CPS Basic for 1976-2018 and the CPS May for 1973-1975.
+The analysis above uses employed workers in the CPS Basic for 1976-2019 and the CPS May for 1973-1975.
 ***/

@@ -38,7 +38,7 @@ line schenrl_1 schenrl_2 year, ///
 	ylabel(0(20)80 100 "100%", angle(0) gmin gmax) ///
 	xtitle("") ytitle("") ///
 	graphregion(color(white)) plotregion(color(white)) ///
-	title("Share of individuals enrolled in school, by age group, 1984-2018", size(medium)) ///
+	title("Share of individuals enrolled in school, by age group", size(medium)) ///
 	text(`schenrl_1yvalue' `schenrl_1xvalue' "Ages 16-21", color("`color1'") placement(e)) ///
 	text(`schenrl_2yvalue' `schenrl_2xvalue' "Ages 22-24", color("`color2'") placement(e)) ///
 	text(`schenrl_3yvalue' `schenrl_3xvalue' "Ages 25-39", color("`color3'") placement(e)) ///

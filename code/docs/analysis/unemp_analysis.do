@@ -32,7 +32,7 @@ ylabel(0(5)15 20 "20%", angle(0) gmin gmax) ///
 xtitle("") ytitle("") ///
 lcolor("`color1'" "`color2'") ///
 graphregion(color(white)) plotregion(color(white)) ///
-title("Unemployment rates by race, 1976-2018", size(medium)) ///
+title("Unemployment rates by race", size(medium)) ///
 text(`blackyvalue' `blackxvalue' "Black", color("`color1'") placement(c)) ///
 text(`nonblackyvalue' `nonblackxvalue' "Non-black", color("`color2'") placement(c))
 graph export ${variableimages}unemp_titleimage.svg, replace

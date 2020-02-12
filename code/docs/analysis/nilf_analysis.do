@@ -29,7 +29,7 @@ ylabel(0(10)40 50 "50%", angle(0) gmin gmax) ///
 xtitle("") ytitle("") ///
 lcolor("`color4'" "`color2'") ///
 graphregion(color(white)) plotregion(color(white)) ///
-title("Share of prime-age population not in the labor force, by gender, 1976-2018", size(medium)) ///
+title("Share of prime-age population not in the labor force, by gender", size(medium)) ///
 text(`nilf_0yvalue' `nilf_0xvalue' "Male", color("`color4'") placement(c)) ///
 text(`nilf_1yvalue' `nilf_1xvalue' "Female", color("`color2'") placement(c))
 graph export ${variableimages}nilf_titleimage.svg, replace

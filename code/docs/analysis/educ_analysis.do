@@ -31,7 +31,7 @@ line lths hs some college advanced year if year >= 1992, ///
 	ylabel(0(5)35 40 "40%", angle(0) gmin gmax) ///
 	xtitle("") ytitle("") ///
 	graphregion(color(white) margin(r=21)) plotregion(color(white)) ///
-	title("Share of population age 25 and over by educational attainment, 1973-2018", size(medium) span margin(l=20)) ///
+	title("Share of population age 25 and over by educational attainment", size(medium) span margin(l=20)) ///
 	text(`lthsyvalue' `lthsxvalue' "Less than" "high school", color("`color1'") placement(r) justification(left)) ///
 	text(`hsyvalue' `hsxvalue' "High school", color("`color2'") placement(r)) ///
 	text(`someyvalue' `somexvalue' "Some college", color("`color3'") placement(r)) ///

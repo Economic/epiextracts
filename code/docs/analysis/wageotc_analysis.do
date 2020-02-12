@@ -9,15 +9,14 @@ replace wgt = orgwgt if year >= 1979
 gcollapse (p50) wage wageotc [pw=wgt], by(year) fast
 * inflation-adjust wages
 preserve
-import delimited using ${suppdata}cpiurs_extended.csv, clear varnames(1)
-rename cpiurs_extended cpiurs
+sysuse cpi_annual, clear
 keep year cpiurs
 keep if year > = 1973
 tempfile cpiurs
 save `cpiurs'
 restore
 merge m:1 year using `cpiurs', keep(3) nogenerate
-sum cpiurs if year == 2018
+sum cpiurs if year == 2019
 local basevalue = r(mean)
 replace wage = wage * `basevalue' / cpiurs
 replace wageotc = wageotc * `basevalue' / cpiurs
@@ -46,11 +45,11 @@ ylabel(12(2)18 20 "$20", angle(0) gmin gmax) ///
 xtitle("") ytitle("") ///
 lcolor("`color4'" "`color2'") ///
 graphregion(color(white)) plotregion(color(white)) ///
-title("Median real wages, 1973-2018 (in 2018`dollar')", size(medium)) ///
+title("Median real wages (in 2019`dollar')", size(medium)) ///
 text(`wageyvalue' `wagexvalue' "wage", color("`color4'") placement(c)) ///
 text(`wageotcyvalue' `wageotcxvalue' "wageotc", color("`color2'") placement(c))
 graph export ${variableimages}wageotc_titleimage.svg, replace
 
 /***
-The analysis above uses the CPS ORG for 1979-2018 and the CPS May for 1973-1978.
+The analysis above uses the CPS ORG for 1979-2019 and the CPS May for 1973-1978.
 ***/

@@ -40,7 +40,7 @@ xlabel(1990(5)2015) ///
 ylabel(0(2)10 12 "12%", angle(0) gmin gmax) ///
 xtitle("") ytitle("") ///
 graphregion(color(white) margin(r=12)) plotregion(color(white)) ///
-title("Working part-time for economic reasons as a share of employment, 1989-2018", size(medium)) ///
+title("Working part-time for economic reasons as a share of employment", size(medium)) ///
 text(`whiteyvalue' `whitexvalue' "White", color("`color1'") placement(e)) ///
 text(`blackyvalue' `blackxvalue' "Black", color("`color2'") placement(e)) ///
 text(`hispanicyvalue' `hispanicxvalue' "Hispanic", color("`color3'") placement(e)) ///

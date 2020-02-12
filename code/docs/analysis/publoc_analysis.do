@@ -31,11 +31,11 @@ ylabel(0(5)20 25 "25%", angle(0) gmin gmax) ///
 xtitle("") ytitle("") ///
 lcolor("`color4'" "`color2'") ///
 graphregion(color(white)) plotregion(color(white)) ///
-title("Local government share of workforce, ages 16-64, by gender, 1989-2018", size(medium)) ///
+title("Local government share of workforce, ages 16-64, by gender", size(medium)) ///
 text(`publoc_0yvalue' `publoc_0xvalue' "Male", color("`color4'") placement(c)) ///
 text(`publoc_1yvalue' `publoc_1xvalue' "Female", color("`color2'") placement(c))
 graph export ${variableimages}publoc_titleimage.svg, replace
 
 /***
-The analysis above uses employed workers in the CPS Basic for 1989-2018.
+The analysis above uses employed workers in the CPS Basic for 1989-2019.
 ***/

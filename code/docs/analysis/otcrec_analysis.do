@@ -27,11 +27,11 @@ ylabel(0(5)30 30 "30%", angle(0) gmin gmax) ///
 xtitle("") ytitle("") ///
 lcolor("`color4'" "`color2'") ///
 graphregion(color(white)) plotregion(color(white)) ///
-title("Share of hourly earners receiving overtime/tips/commissions, 1994-2018", size(medium)) ///
+title("Share of hourly earners receiving overtime/tips/commissions", size(medium)) ///
 text(`otcrec_0yvalue' `otcrec_0xvalue' "Male", color("`color4'") placement(c)) ///
 text(`otcrec_1yvalue' `otcrec_1xvalue' "Female", color("`color2'") placement(c))
 graph export ${variableimages}otcrec_titleimage.svg, replace
 
 /***
-The analysis above uses hourly wage earners, ages 16-64,from the CPS ORG for 1994-2018.
+The analysis above uses hourly wage earners, ages 16-64,from the CPS ORG for 1994-2019.
 ***/
