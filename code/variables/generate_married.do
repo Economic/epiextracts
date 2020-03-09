@@ -18,6 +18,29 @@ if $monthlycps == 1 | $maycps == 1 {
 	}
 }
 
+if $marchcps == 1 {
+	if tm(1963m1) <= $date & $date <= tm(1967m12) {
+		replace married = 0 if 4 <= marstat & marstat <= 7
+		replace married = 1 if 1 <= marstat & marstat <= 3
+	}
+	if tm(1968m1) <= $date & $date <= tm(1975m12) {
+		replace married = 0 if marstat == 1 | marstat == 3 | 6 <= marstat & marstat <= 7
+		replace married = 1 if marstat == 2 | marstat == 4
+	}
+	if tm(1976m1) <= $date & $date <= tm(1987m12) {
+		replace married = 0 if 5 <= marstat & marstat <= 8
+		replace married = 1 if 1 <= marstat & marstat <= 4
+	}
+	if tm(1988m1) <= $date & $date <= tm(1997m12) {
+		replace married = 0 if 4 <= marstat & marstat <= 7
+		replace married = 1 if 1 <= marstat & marstat <= 3
+	}
+	if tm(1998m1) <= $date & $date <= tm(2010m12) {
+		replace married = 0 if a
+
+	}
+}
+
 label var married "Married"
 lab def married 0 "Not married" 1 "Married"
 lab val married married
