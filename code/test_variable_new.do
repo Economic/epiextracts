@@ -13,8 +13,7 @@ adopath ++ ${code}ado
 * do the recoding
 foreach year of numlist `beginyear' / `endyear' {
     global date = tm(`year'm1)
-    append_rawdata, begin(`year') end(`year') sample(march) 
-    keep year hfminc hufaminc hefaminc
+    load_rawcps, begin(`year') end(`year') sample(march) 
     do variables/generate_faminc.do
     keep year faminc
     tempfile data`year'

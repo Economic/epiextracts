@@ -19,7 +19,7 @@ if $marchcps == 1 {
     }
 }
 
-lab val faminc faminc
-lab var faminc "Family income category: continuous"
+lab val faminc_c faminc_c
+lab var faminc_c "Family income category: continuous"
 notes faminc_c: 1968-1997: Unicon faminc
 notes faminc_c: 1998-present: CPS ftotval
