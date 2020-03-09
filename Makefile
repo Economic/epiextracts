@@ -39,8 +39,8 @@ deploywindata:
 	rsync -avPh /data/cps/org/epi/epi_cpsorg_*.dta ~/mount/data/cps/org/epi/
 
 deployado:
-	cp code/ado/append_rawdata.ado /usr/local/ado/
-	cp code/ado/append_rawdata.sthlp /usr/local/ado/
+	cp code/ado/load_rawcps.ado /usr/local/ado/
+	cp code/ado/load_rawcps.sthlp /usr/local/ado/
 	cp code/ado/load_epiextracts.ado /usr/local/ado/
 	cp code/ado/load_epiextracts.sthlp /usr/local/ado/
 	cp code/ado/merge_rawextracts.ado /usr/local/ado/

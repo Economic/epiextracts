@@ -1,6 +1,6 @@
 {smcl}
 {vieweralsosee "load_epiextracts" "help load_epiextracts"}{...}
-{vieweralsosee "append_rawdata" "help append_rawdata"}{...}
+{vieweralsosee "load_rawcps" "help load_rawcps"}{...}
 {vieweralsosee "keepifexist" "help keepifexist"}{...}
 {viewerjumpto "Syntax" "examplehelpfile##syntax"}{...}
 {viewerjumpto "Description" "examplehelpfile##description"}{...}
