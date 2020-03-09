@@ -1,10 +1,10 @@
 *************************************************************************
-* NAME: append_rawdata
+* NAME: load_rawcps
 * DESC: Append raw source data in hard-coded paths and load into memory.
 * Useful for analysis/testing. Not used in the creation of extracts.
 *************************************************************************
-capture program drop append_rawdata
-program define append_rawdata
+capture program drop load_rawcps
+program define load_rawcps
 syntax, begin(integer) end(integer) sample(string) [keep(string)]
 
 * determine sample
@@ -62,7 +62,7 @@ foreach year of numlist `begin'(1)`end' {
 	* Load each annual file
 	if `annualsample' == 1 {
 		if "`lowersample'" == "may" local inputfile unicon_may_`year'.dta
-		else if "`lowersample'" == "march" & `year' <= 1997 
+		else if "`lowersample'" == "march" & `year' <= 1997 {
 			if `year' == 1988 unicon_march_1988b.dta
 			else local inputfile unicon_march_`year'.dta
 		}

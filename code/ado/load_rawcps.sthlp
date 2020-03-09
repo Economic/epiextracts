@@ -10,14 +10,14 @@
 {title:Title}
 
 {phang}
-{bf:append_rawdata} {hline 2} Load raw CPS data into memory
+{bf:load_rawcps} {hline 2} Load raw CPS data into memory
 
 
 {marker syntax}{...}
 {title:Syntax}
 
 {p 8 17 2}
-{cmd:append_rawdata}{cmd:,}
+{cmd:load_rawcps}{cmd:,}
 {opt begin(year)} {opt end(year)} {opt sample(samplename)} [{it:options}]
 
 {pstd}where {it:year} is a year like 1973, 1990, 2018, etc.
@@ -35,7 +35,7 @@ and {it:samplename} is either Basic, May, or ORG.
 {title:Description}
 
 {pstd}
-{cmd:append_rawdata} loads raw CPS data into memory.
+{cmd:load_rawcps} loads raw CPS data into memory.
 From 1994-present, these are the raw data downloaded from the Census.
 Prior to 1994, these are the Unicon extracts.
 
@@ -65,7 +65,7 @@ rotation months with positive earnings weights.
 
     {hline}
 {pstd}Load all of the 2017 raw CPS basic monthly files{p_end}
-{phang2}{cmd:. append_rawdata, begin(2017) end(2017) sample(basic)}
+{phang2}{cmd:. load_rawcps, begin(2017) end(2017) sample(basic)}
 
 {pstd}Load certain variables from the 2010-2013 raw CPS ORG data{p_end}
-{phang2}{cmd:. append_rawdata, begin(2010) end(2013) sample(org) keep(peage prtage)}
+{phang2}{cmd:. load_rawcps, begin(2010) end(2013) sample(org) keep(peage prtage)}

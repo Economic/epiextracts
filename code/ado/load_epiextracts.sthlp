@@ -1,5 +1,5 @@
 {smcl}
-{vieweralsosee "append_rawdata" "help append_rawdata"}{...}
+{vieweralsosee "load_rawcps" "help load_rawcps"}{...}
 {vieweralsosee "merge_rawextracts" "help merge_rawextracts"}{...}
 {vieweralsosee "keepifexist" "help keepifexist"}{...}
 {viewerjumpto "Syntax" "examplehelpfile##syntax"}{...}
