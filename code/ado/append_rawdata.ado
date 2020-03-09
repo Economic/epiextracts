@@ -62,7 +62,10 @@ foreach year of numlist `begin'(1)`end' {
 	* Load each annual file
 	if `annualsample' == 1 {
 		if "`lowersample'" == "may" local inputfile unicon_may_`year'.dta
-		else if "`lowersample'" == "march" & `year' <= 1997 local inputfile unicon_march_`year'.dta
+		else if "`lowersample'" == "march" & `year' <= 1997 
+			if `year' == 1988 unicon_march_1988b.dta
+			else local inputfile unicon_march_`year'.dta
+		}
 		else if "`lowersample'" == "march" & `year' >= 1998 local inputfile cpsmarch_`year'.dta
 		else {
 			noi di "Something is wrong with your intended sample"
