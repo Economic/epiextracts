@@ -20,6 +20,21 @@ if $monthlycps == 1 {
 	}
 }
 
+if $marchcps == 1 {
+	if tm(1989m1) <= $date & $date <= tm(1994m12) {
+		replace faminc = hfminc - 1 if hfminc < 19
+	}
+	if tm(1995m1) <= $date & $date <= tm(1997m12) {
+		replace faminc = hfminc - 1 if hmfinc < 19
+	}
+	if tm(1998m1) <= $date & $date <= tm(2004m12) {
+		replace faminc = hufaminc - 1 if hufaminc < 19
+	}
+	if tm(2005m1) <= $date {
+		replace faminc = hefaminc
+	}
+}
+
 #delimit ;
 lab def faminc
 1 "Less than $5,000"
@@ -34,9 +49,9 @@ lab def faminc
 10 "$35,000 - $39,999"
 11 "$40,000 - $49,999"
 12 "$50,000 - $74,999"
-13 "$75,000 - $99,999 (2003m10-present) / $75,000+ (1989-2003m9)"
-14 "$100,000 - $149,999 (2003m10-present)"
-15 "$150,000+ (2003m10-present)"
+13 "$75,000 - $99,999 (2003m10-present) / $75,000+ (CPS: 1989-2003m9) / 75000+ (March: 1988-2004)"
+14 "$100,000 - $149,999 (2003m10-present) / (March: 2005-present)"
+15 "$150,000+ (2003m10-present) / (March: 2005-present)"
 ;
 #delimit cr;
 lab val faminc faminc
