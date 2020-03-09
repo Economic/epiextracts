@@ -72,6 +72,66 @@ if $monthlycps == 1 | $maycps == 1 {
 	}
 }
 
+if $marchcps == 1 {
+	if tm(1973m1) <= $date & $date <= tm(1987m12) {
+		replace wbho = 1 if race == 1
+		replace wbho = 2 if race == 2
+		replace wbho = 4 if race == 3
+		* Hispanic ethnicity
+		replace wbho = 3 if hispanic == 1
+	}
+
+	if tm(1988m1) <= $date & $date <= tm(1997m12) {
+		replace wbho = 1 if race == 1
+		replace wbho = 2 if race == 2
+		replace wbho = 4 if 3 <= race
+		* Hispanic ethnicity
+		replace wbho = 3 if hispanic == 1
+	}
+	if tm(1998m1) <= $date & $date <= tm(2002m12) {
+		replace wbho = 1 if a_race == 1
+		replace wbho = 2 if a_race == 2
+		replace wbho = 4 if 3 <= a_race
+		* Hispanic ethnicity
+		replace wbho = 3 if hispanic == 1
+		
+	}
+	if tm(2003m1) <= $date & $date <= tm(2012m12) {
+		replace wbho = 1 if prdtrace == 1
+		replace wbho = 2 if prdtrace == 2
+		replace wbho = 2 if prdtrace == 6 /* black-white */ | prdtrace == 10 /*
+		*/ /* black-AI */ | prdtrace == 11 /* black-asian */ | prdtrace == 12 /*
+		*/ /* black-HP */ | prdtrace == 15 /* W-B-AI */ | prdtrace == 16 /* W-B-A */ /*
+		*/ | prdtrace == 19 /* W-B-AI-A */
+		replace wbho = 4 if (3 <= prdtrace & prdtrace <= 5)
+		replace wbho = 4 if prdtrace == 7 /* white-AI */ | prdtrace == 8 /*
+		*/ /* white-asian */ | prdtrace == 9 /* white-hawaiian */ | prdtrace == 13 /*
+		*/ /* AI-asian */ | prdtrace == 14 /* Asian-HP */ | prdtrace == 17 /* W-AI-A */ /*
+		*/ | prdtrace == 18 /* W-A-HP */ | prdtrace == 20 /* 2 or 3 races */ /*
+		*/ | prdtrace == 21 /* 4 or 5 races */
+		* Hispanic ethnicity
+		replace wbho = 3 if hispanic == 1
+	}
+	if tm(2013m12) <= $date {
+	replace wbho = 1 if prdtrace == 1 /* white */
+			replace wbho = 2 if prdtrace == 2 /* black */
+			replace wbho = 2 if prdtrace == 6 /* black-white */ | prdtrace == 10 /*
+			*/ /* black-AI */ | prdtrace == 11 /* black-asian */ | prdtrace == 12 /*
+			*/ /* black-HP */ | prdtrace == 16 /* W-B-AI */ | prdtrace == 17 /* W-B-A */ /*
+			*/ | prdtrace == 18 /* W-B-HP */ | prdtrace == 22 /* B-AI-A */ /*
+			*/ | prdtrace == 23 /* W-B-AI-A */
+			replace wbho = 4 if (3 <= prdtrace & prdtrace <= 5)
+			replace wbho = 4 if prdtrace  ==  7 /* white-AI */ | prdtrace  ==  8 /*
+			*/ /* white-asian */ | prdtrace == 9 /* white-hawaiian */ | prdtrace == 13 /*
+			*/ /* AI-asian */ | prdtrace == 14 /* AI-HP */ | prdtrace == 15 /* Asian-HP */ /*
+			*/ | prdtrace == 19 /* W-AI-A */ | prdtrace == 20 /* W-AI-HP */ /*
+			*/ | prdtrace == 21 /* W-A-HP */ | prdtrace == 24 /* W-AI-A-HP */ /*
+			*/ | prdtrace == 25 /* Other 3 races */ | prdtrace == 26 /* 4 and 5 races */
+			* Hispanic ethnicity
+			replace wbho = 3 if hispanic == 1
+	}
+}
+
 lab var wbho "Race/ethnicity"
 #delimit ;
 lab define wbho

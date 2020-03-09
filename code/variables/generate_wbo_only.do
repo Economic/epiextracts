@@ -42,6 +42,44 @@ if $monthlycps == 1 | $maycps == 1 {
 	}
 }
 
+if $marchcps == 1 {
+	if tm(1962m1) == $date {
+    	replace wbo_only = 1 if race == 0
+    	replace wbo_only = 2 if race == 1
+    	replace wbo_only = 3 if race == 2
+	}
+	if tm(1963m1) <= $date & $date <= tm(1987m12) {
+	    replace wbo_only = 1 if race == 1 
+	    replace wbo_only = 2 if race == 2
+	    replace wbo_only = 3 if race == 3
+	}
+	if tm(1988m1) <= $date & $date <= tm(1995m12) {
+	    replace wbo_only = 1 if race == 1
+	    replace wbo_only = 2 if race == 2
+	    replace wbo_only = 3 if 4 <= race & race <= 5
+	}
+	if tm(1996m1) <= $date & $date <= tm(1997m12) {
+	    replace wbo_only = 1 if race == 1
+	    replace wbo_only = 2 if race == 2
+	    replace wbo_only = 3 if 3 <= race
+	}
+	if tm(1998m1) <= $date & $date <= tm(2002m12) {
+	    replace wbo_only = 1 if a_race == 1
+	    replace wbo_only = 2 if a_race == 2
+	    replace wbo_only = 3 if 3 <= a_race
+	}
+	if tm(2003m1) <= $date & $date <= tm(2012m12) {
+	    replace wbo_only = 1 if prdtrace == 1
+	    replace wbo_only = 2 if prdtrace == 2
+	    replace wbo_only = 3 if 3 <= prdtrace
+	}
+	if tm(2013m1) <= $date {
+	    replace wbo_only = 1 if prdtrace == 1
+	    replace wbo_only = 2 if prdtrace == 2
+	    replace wbo_only = 3 if 3 <= prdtrace
+	}
+}
+
 lab var wbo_only "Race: white only, black only, other"
 #delimit ;
 lab define wbo_only

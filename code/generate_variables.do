@@ -29,7 +29,8 @@ foreach var in
   otcrec
   otcamt wage_noadj wageotc_noadj
 	faminc
-	ownchild famrel agechild
+	ownchild famrel agechild 
+  pov_lev
   {;
     do ${codevars}generate_`var'.do;
   };
