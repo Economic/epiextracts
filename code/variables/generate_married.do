@@ -31,15 +31,16 @@ if $marchcps == 1 {
 		replace married = 0 if 4 <= marstat & marstat <= 7
 		replace married = 1 if 1 <= marstat & marstat <= 3
 	}
-	if tm(1998m1) <= $date & $date <= tm(2010m12) {
-		replace married = 0 if a
-
+	if tm(1998m1) <= $date {
+		replace married = 0 if 4 <= a_maritl & a_maritl <= 7
+		replace married = 1 if 1 <= a_maritl & a_maritl <= 3
 	}
 }
 
 label var married "Married"
 lab def married 0 "Not married" 1 "Married"
 lab val married married
-notes married: 1973-1993 Unicon: marstat
+notes married: 1973-1993/1997 Unicon: marstat
 notes married: 1994-present CPS: prmarsta
+notes married: 1998-present March: a_maritl
 notes married: definition change in 1989
