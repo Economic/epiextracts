@@ -53,6 +53,37 @@ if $monthlycps == 1 | $maycps == 1 {
 	}
 }
 
+if $marchcps == 1 {
+    if tm(1973m1) <= $date & $date <= tm(1988m1) {
+        replace wbho_only = 1 if race == 1
+        replace wbho_only = 2 if race == 2
+        replace wbho_only = 4 if race == 3
+        * Hispanic ethnicity
+        replace wbho_only = 3 if hispanic == 1
+    }
+    if tm(1988m1) <= $date & $date <= tm(1997m12) {
+        replace wbho_only = 1 if race == 1
+        replace wbho_only = 2 if race == 2
+        replace wbho_only = 4 if 3 <= race
+        * Hispanic ethnicity
+        replace wbho_only = 3 if hispanic == 1
+    }
+    if tm(1998m1) <= $date & $date <= tm(2002m12) {
+        replace wbho_only = 1 if a_race == 1
+        replace wbho_only = 2 if a_race == 2
+        replace wbho_only = 4 if 3 <= a_race
+        * Hispanic ethnicity
+        replace wbho_only = 3 if hispanic == 1
+    }
+    if tm(2003m1) <= $date {
+        replace wbho_only = 1 if prdtrace == 1
+        replace wbho_only = 2 if prdtrace == 2
+        replace wbho_only = 4 if 3 <= prdtrace
+        * hispanic
+        replace wbho_only = 3 if hispanic == 1
+    }
+}
+
 lab var wbho_only "Race: white only, black only, hispanic, other"
 #delimit ;
 lab define wbho_only

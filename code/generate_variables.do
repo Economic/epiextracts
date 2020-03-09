@@ -31,6 +31,8 @@ foreach var in
 	faminc
 	ownchild famrel agechild
   telework hourslwtw
+	ownchild famrel agechild 
+  pov_lev
   {;
     do ${codevars}generate_`var'.do;
   };

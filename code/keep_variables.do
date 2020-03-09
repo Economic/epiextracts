@@ -27,5 +27,6 @@ keep
 	faminc
 	ownchild famrel agechild
 	telework hourslwtw
+	pov_lev
 ;
 #delimit cr;

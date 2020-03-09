@@ -31,6 +31,28 @@ if $monthlycps == 1 {
 	}
 }
 
+if $marchcps == 1 {
+	if tm(2003m1) <= $date & $date <= tm(2012m1) {
+		replace wbhom = 1 if prdtrace == 1
+		replace wbhom = 2 if prdtrace == 2
+		replace wbhom = 4 if 3 <= prdtrace & prdtrace <= 5
+		replace wbhom = 5 if 6 <= prdtrace & prdtrace <= 21 /*multiple*/
+		replace wbhom = 4 if prdtrace == 13 /* AI-asian */ | prdtrace == 14 /* Asian-HP */
+		* Hispanic ethnicity
+		replace wbhom = 3 if hispanic == 1
+	}
+	if tm(2013m1) {
+		replace wbhom = 1 if prdtrace == 1
+		replace wbhom = 2 if prdtrace == 2
+		replace wbhom = 4 if 3 <= prdtrace & prdtrace <= 5
+		replace wbhom = 5 if 6 <= prdtrace & prdtrace <= 26 /*multiple*/
+		replace wbhom = 4 if prdtrace == 13 /* AI-asian */ | prdtrace == 14 /* AI-HP */ /*
+		*/ | prdtrace == 15 /* Asian-HP */
+		* Hispanic ethnicity
+		replace wbhom = 3 if hispanic == 1
+	}
+}
+
 lab var wbhom "Race/ethnicity, including multiple"
 #delimit ;
 lab define wbhom
