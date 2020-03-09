@@ -12,6 +12,14 @@ if $monthlycps == 1 | $maycps == 1 {
 		replace hrhhid2 = orig_hrhhid2
 	}
 }
+
+if $marchcps == 1 {
+	if tm(2005m1) <= $date & $date <= tm(2018m12) {
+		replace hrhhid2 = h_idnum2
+	}
+}
+
 lab var hrhhid2 "CPS: Household identifier (Part 2)"
-notes hrhhid2: 2004m5-present: CPS household identifier, part 2
+notes hrhhid2: 2004m5-present: May/Basic household identifier, part 2
+notes hrhhid2: 2005-2018: March household identifier, part 2
 notes hrhhid2: Used for joining EPI extracts to BLS/Census raw data

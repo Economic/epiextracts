@@ -53,6 +53,37 @@ if $monthlycps == 1 | $maycps == 1 {
 	}
 }
 
+if $marchcps == 1 {
+    if tm(1973m1) <= $date & $date <= tm(1988m1) {
+        replace wbho_only = 1 if race == 1
+        replace wbho_only = 2 if race == 2
+        replace wbho_only = 4 if race == 3
+        * Hispanic ethnicity
+        replace wbho_only = 3 if hispanic == 1
+    }
+    if tm(1988m1) <= $date & $date <= tm(1997m12) {
+        replace wbho_only = 1 if race == 1
+        replace wbho_only = 2 if race == 2
+        replace wbho_only = 4 if 3 <= race
+        * Hispanic ethnicity
+        replace wbho_only = 3 if hispanic == 1
+    }
+    if tm(1998m1) <= $date & $date <= tm(2002m12) {
+        replace wbho_only = 1 if a_race == 1
+        replace wbho_only = 2 if a_race == 2
+        replace wbho_only = 4 if 3 <= a_race
+        * Hispanic ethnicity
+        replace wbho_only = 3 if hispanic == 1
+    }
+    if tm(2003m1) <= $date {
+        replace wbho_only = 1 if prdtrace == 1
+        replace wbho_only = 2 if prdtrace == 2
+        replace wbho_only = 4 if 3 <= prdtrace
+        * hispanic
+        replace wbho_only = 3 if hispanic == 1
+    }
+}
+
 lab var wbho_only "Race: white only, black only, hispanic, other"
 #delimit ;
 lab define wbho_only
@@ -66,6 +97,9 @@ lab val wbho_only wbho_only
 notes wbho_only: Racial and ethnic categories are mutually exclusive
 notes wbho_only: Coding changes in 1989, 1996, 2003, 2012m5
 notes wbho_only: Hispanic definition from variable hispanic
-notes wbho_only: 1973-1993 Unicon: race
-notes wbho_only: 1994-2002 CPS: perace
-notes wbho_only: 2003-present CPS: ptdtrace
+notes wbho_only: 1973-1993 May/basic: race
+notes wbho_only: 1994-2002 May/Basic: perace
+notes wbho_only: 2003-present May/Basic: ptdtrace
+notes wbho_only: 1973-1997 March: race
+notes wbho_only: 1997-2002 March: a_race
+notes wbho_only: 2003-present March: prdtrace

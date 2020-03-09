@@ -22,6 +22,7 @@ foreach var in
 	paidhre
   hoursu1 hoursu2 hoursut hourslw1 hourslw2 hourslwt hoursumay hoursuorg
 	hoursvary1 hoursvary2 hoursvaryt hoursuint
+  hourslyr
   indcode ind70 ind80 ind90 ind02 ind07 ind12 ind17 ind22 mind16 manuf dind03 mind03
   occcode occ70 occ80 occ90 occ00 occ10 occ18 mocc10 mocc03 docc03
   weekpay_noadj tc_weekpay a_weekpay
@@ -33,6 +34,13 @@ foreach var in
   telework hourslwtw
   diffdress differrands diffhear diffmemory diffphysical diffvision
   difficulty
+	faminc faminc_c
+  famern
+  famiws
+  hhinc_c
+  wkslyr wkslyr_binned
+	ownchild famrel agechild
+  poverty
   {;
     do ${codevars}generate_`var'.do;
   };

@@ -12,6 +12,18 @@ if $monthlycps == 1 {
 	}
 }
 
+if $marchcps == 1 {
+	if tm(1963m1) <= $date & $date <= tm(1987m12) {
+		replace famid = famnum
+	}
+	if tm(1988m1) <= $date & $date <= tm(1997m12) {
+		replace famid = famnum - 1
+	}
+	if tm(1998m1) <= $date {
+		replace famid = a_famnum
+	}
+}
+
 lab def famid 0 "Not a family member"
 lab def famid 1 "Primary family member only", add
 forvalues i = 2/39 {
@@ -20,5 +32,7 @@ forvalues i = 2/39 {
 lab val famid famid
 lab var famid "Family identifer (unique within household)"
 notes famid: Family ID unique within year X month X hhid
-notes famid: 1984-1993: Unicon famnum
-notes famid: 1994-present: CPS prfamnum
+notes famid: 1984-1993 Basic: famnum
+notes famid: 1994-present Basic: prfamnum
+notes famid: 1963-1997 March: famnum
+notes famid: 1998-present March: a_famnum

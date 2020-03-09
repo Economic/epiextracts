@@ -13,7 +13,28 @@ if $monthlycps == 1 {
 	}
 }
 
+if $marchcps == 1 {
+	if tm(1963m1) <= $date & $date <= tm(1997m12) {
+		if tm(1976m1) <= $date & $date <= tm(1976m12) {
+			egen firstperson = min(perid), by(hhid famid)
+			replace famwgt2 = asecwgt / 100 if perid == firstperson
+			egen famwgt3 = mean(famwgt2), by(hhid famid)
+			replace famwgt = famwgt3
+			drop firstperson famwgt2 famwgt3
+		}
+		else {
+			replace famwgt = oldfamwgt / 100
+		}
+	}
+	if tm(1998m1) <= $date {
+		replace famwgt = fsup_wgt / 100
+	}
+}
+
 lab var famwgt "Family weight"
 notes famwgt: Family weight, based on head of family
-notes famwgt: 1984-1993: Unicon famwgt
-notes famwgt: 1994-present: CPS pwfmwgt
+notes famwgt: 1984-1993 Basic: famwgt
+notes famwgt: 1994-present Basic: pwfmwgt
+notes famwgt: 1963-1997 March: famwgt
+notes famwgt: 1976 March: asecwgt (for first person in family)
+notes famwgt: 1998-present March: fsup_wgt
