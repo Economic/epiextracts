@@ -14,8 +14,9 @@ adopath ++ ${code}ado
 foreach year of numlist `beginyear' / `endyear' {
     global date = tm(`year'm1)
     load_rawcps, begin(`year') end(`year') sample(march) 
-    do variables/generate_faminc.do
-    keep year faminc
+    do variables/generate_hispanic.do
+    do variables/generate_wbho.do
+    keep year wbho
     tempfile data`year'
     save `data`year''
 }
