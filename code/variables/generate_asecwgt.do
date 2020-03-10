@@ -23,8 +23,9 @@ if $marchcps == 1 {
     }
 }
 
+replace asecwgt = . if asecwgt < 0
+
 label var asecwgt "March/ASEC weight"
-notes asecwgt: Sum to civilian, non-institutional population age > 16
 notes asecwgt: 1963-1997 Unicon: wgt
 notes asecwgt: 1980-1997 Unicon: wgtalt used in available years (1980 & 1990)
 notes asecwgt: 1998-present CPS: marsupwt 
