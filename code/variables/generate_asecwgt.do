@@ -21,16 +21,7 @@ if $marchcps == 1 {
     if tm(1998m1) <= $date {
         replace asecwgt = marsupwt
     }
-    * age restrictions
-	if tm(1973m1) <= $date & $date <= tm(1997m12) {
-		replace asecwgt = . if orig_age < 16 | orig_age < 0
-	}
-	if tm(1998m1) <= $date {
-        replace asecwgt = . if a_age < 16 | a_age < 0
-    }
 }
-
-
 
 label var asecwgt "March/ASEC weight"
 notes asecwgt: Sum to civilian, non-institutional population age > 16
