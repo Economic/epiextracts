@@ -38,7 +38,7 @@ if $marchcps == 1 {
 		replace wbhaom = 5 if prdtrace == 3 /* AI only */
 		replace wbhaom = 6 if 6 <= prdtrace & prdtrace <= 21 /*multiple*/
 		* Hispanic ethnicity
-		replace wbhaom = 3 if hispanic == 3
+		replace wbhaom = 3 if hispanic == 1
 	}
 	if tm(2013m1) <= $date {
 		replace wbhaom = 1 if prdtrace == 1
@@ -47,7 +47,7 @@ if $marchcps == 1 {
 		replace wbhaom = 5 if prdtrace == 3 /* AI only */
 		replace wbhaom = 6 if 6 <= prdtrace & prdtrace <= 26 /*multiple*/
 		* Hispanic ethnicity
-		replace wbhaom = 3 if hispanic == 3
+		replace wbhaom = 3 if hispanic == 1
 	}
 }
 
