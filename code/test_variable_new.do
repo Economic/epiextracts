@@ -1,6 +1,6 @@
 set more off
 
-local beginyear = 1990
+local beginyear = 1988
 local endyear = 2018
 
 global marchcps = 1
@@ -15,8 +15,8 @@ foreach year of numlist `beginyear' / `endyear' {
     global date = tm(`year'm1)
     load_rawcps, begin(`year') end(`year') sample(march) 
     do variables/generate_hispanic.do
-    do variables/generate_wbho.do
-    keep year wbho
+    do variables/generate_wbhao.do
+    keep year wbhao
     tempfile data`year'
     save `data`year''
 }
