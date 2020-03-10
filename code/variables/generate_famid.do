@@ -12,6 +12,18 @@ if $monthlycps == 1 {
 	}
 }
 
+if $marchcps == 1 {
+	if tm(1963m1) <= $date & $date <= tm(1997m12) {
+		replace famid = famnum
+	}
+	if tm(1998m1) <= $date & $date <= tm(2010m12) {
+		replace famid = a_fmnum
+	}
+	if tm(2011m1) <= $date {
+		replace famid = a_famnum
+	}
+}
+
 lab def famid 0 "Not a family member"
 lab def famid 1 "Primary family member only", add
 forvalues i = 2/39 {
