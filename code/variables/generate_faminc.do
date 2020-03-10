@@ -27,17 +27,17 @@ if $marchcps == 1 {
 		replace faminc = hfminc if 13 <= hfminc & hfminc < 19
 	}
 	if tm(1998m1) <= $date & $date <= tm(2004m12) {
-		replace faminc = h_faminc + 1 if 0 <= h_faminc & h_faminc <= 10
+		replace faminc = h_faminc + 1 if h_faminc <= 10
 		replace faminc = 12 if 11 <= h_faminc & h_faminc <= 12
 		replace faminc = h_faminc if 13 <= h_faminc & h_faminc < 19
 	}
 	if tm(2005m1) <= $date & $date <= tm(2009m12) {
-		replace faminc = hufaminc if 0 < hufaminc & hufaminc <= 11
+		replace faminc = hufaminc if hufaminc <= 11
 		replace faminc = 12 if 12 <= hufaminc & hufaminc <= 13
 		replace faminc = hufaminc - 1 if 14 <= hufaminc
 	}
 	if tm(2010m1) <= $date & $date <= tm(2018m12) {
-		replace faminc = hefaminc if 0 < hefaminc & hefaminc <= 11
+		replace faminc = hefaminc if hefaminc <= 11
 		replace faminc = 12 if 12 <= hefaminc & hefaminc <= 13
 		replace faminc = hefaminc - 1 if 14 <= hefaminc
 	}
