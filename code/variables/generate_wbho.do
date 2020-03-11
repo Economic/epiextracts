@@ -112,7 +112,7 @@ if $marchcps == 1 {
 		* Hispanic ethnicity
 		replace wbho = 3 if hispanic == 1
 	}
-	if tm(2013m12) <= $date {
+	if tm(2013m1) <= $date {
 	replace wbho = 1 if prdtrace == 1 /* white */
 			replace wbho = 2 if prdtrace == 2 /* black */
 			replace wbho = 2 if prdtrace == 6 /* black-white */ | prdtrace == 10 /*
