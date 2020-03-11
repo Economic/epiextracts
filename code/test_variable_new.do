@@ -31,7 +31,7 @@ foreach year of numlist `beginyear' / `endyear' {
 tab married, gen(married_)
 * basic CPS does not have age < 14 prior to 1982
 drop if age < 14 & year <= 1981
-
+keep if age >= 15
 
 gcollapse (mean) married_* [pw=asecwgt], by(year)
 foreach var of varlist married_* {
