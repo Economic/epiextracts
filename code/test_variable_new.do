@@ -16,8 +16,8 @@ foreach year of numlist `beginyear' / `endyear' {
     global date = tm(`year'm1)    
     do variables/generate_age.do
     do variables/generate_asecwgt.do
-    do variables/generate_faminc.do
-    keep year age faminc asecwgt
+    do variables/generate_married.do
+    keep year age married asecwgt
     tempfile data`year'
     save `data`year''
 }
@@ -28,25 +28,28 @@ foreach year of numlist `beginyear' / `endyear' {
     else append using `data`year''
 }
 
-tab faminc, gen(faminc_)
+tab married, gen(married_)
 * basic CPS does not have age < 14 prior to 1982
 drop if age < 14 & year <= 1981
 
-gcollapse (mean) faminc_* [pw=asecwgt], by(year)
-foreach var of varlist faminc_* {
+
+gcollapse (mean) married_* [pw=asecwgt], by(year)
+foreach var of varlist married_* {
     rename `var' march_`var'
 }
 tempfile marchstats
 save `marchstats'
 
-load_epiextracts, begin(`beginyear'm1) end(`endyear'm12) sample(basic) keep(year age faminc finalwgt basicwgt)
-tab faminc, gen(faminc_)
-gcollapse (mean) faminc_* [pw=finalwgt], by(year)
-foreach var of varlist faminc_* {
+load_epiextracts, begin(`beginyear'm1) end(`endyear'm12) sample(basic) keep(year age married finalwgt basicwgt)
+tab married, gen(married_)
+keep if age >= 15
+
+gcollapse (mean) married_* [pw=finalwgt], by(year)
+foreach var of varlist married_* {
     rename `var' basic_`var'
 }
 merge 1:1 year using `marchstats', assert(3) nogenerate
-foreach var in faminc_1 faminc_2 faminc_3 faminc_4 faminc_5 faminc_6 faminc_7 faminc_8 faminc_9 faminc_10 faminc_ 11 faminc_12 faminc_13 faminc_14 faminc_15 {
+foreach var in married_1 married_2 {
     gen diff`var' = basic_`var' - march_`var'
 }
 

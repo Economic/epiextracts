@@ -61,6 +61,8 @@ if $marchcps == 1 {
 	}
 }
 
+drop if faminc <= 0
+
 #delimit ;
 lab def faminc
 1 "Less than $5,000"
