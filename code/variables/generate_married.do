@@ -37,8 +37,6 @@ if $marchcps == 1 {
 	}
 }
 
-keep if age >= 15
-
 label var married "Married"
 lab def married 0 "Not married" 1 "Married"
 lab val married married
