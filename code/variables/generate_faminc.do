@@ -21,7 +21,10 @@ if $monthlycps == 1 {
 }
 
 if $marchcps == 1 {
-	if tm(1990m1) <= $date & $date <= tm(1997m12) {
+	if tm(1988m1) <= $date & $date <= tm(1997m12) {
+		if tm(1989m1) <= $date & $date <= tm(1989m12) {
+			replace faminc = 0
+		}
 		replace faminc = hfminc + 1 if hfminc <= 10
 		replace faminc = 12 if 11 <= hfminc & hfminc <= 12
 		replace faminc = hfminc if 13 <= hfminc & hfminc < 19
