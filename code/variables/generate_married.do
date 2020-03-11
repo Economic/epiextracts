@@ -28,8 +28,8 @@ if $marchcps == 1 {
 		replace married = 1 if 1 <= marstat & marstat <= 4
 	}
 	if tm(1988m1) <= $date & $date <= tm(1997m12) {
-		replace married = 0 if 5 <= marstat & marstat <= 8
-		replace married = 1 if 1 <= marstat & marstat <= 4
+		replace married = 0 if 4 <= marstat & marstat <= 7
+		replace married = 1 if 1 <= marstat & marstat <= 3
 	}
 	if tm(1998m1) <= $date {
 		replace married = 0 if 4 <= a_maritl & a_maritl <= 7
