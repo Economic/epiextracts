@@ -15,6 +15,10 @@ if $monthlycps == 1 | $maycps == 1 {
 }
 
 if $marchcps == 1 {
+	if tm(1962m1) <= $date & $date <= tm(1962m12) {
+		replace married = 0 if  0 <= marstat & marstat <= 2
+		replace married = 1 if 3 <= marstat <= 6
+	}
 	if tm(1963m1) <= $date & $date <= tm(1967m12) {
 		replace married = 0 if 4 <= marstat & marstat <= 7
 		replace married = 1 if 1 <= marstat & marstat <= 3
@@ -23,11 +27,19 @@ if $marchcps == 1 {
 		replace married = 0 if marstat == 1 | marstat == 3 | marstat == 6 | marstat == 7
 		replace married = 1 if marstat == 2 | marstat == 4 | marstat == 5
 	}
-	if tm(1976m1) <= $date & $date <= tm(1987m12) {
+	/*if tm(1976m1) <= $date & $date <= tm(1987m12) {
 		replace married = 0 if 5 <= marstat & marstat <= 8
 		replace married = 1 if 1 <= marstat & marstat <= 4
+	}*/
+	if tm(1976m1) <= $date & $date <= tm(1987m12) {
+		replace married = 0 if 5 <= marstat & marstat <= 6 | marstat == 8
+		replace married = 1 if 1 <= marstat & marstat <= 4 | marstat == 7
 	}
-	if tm(1988m1) <= $date & $date <= tm(1997m12) {
+	if tm(1988m1) <= $date & $date <= tm(1988m12) {
+		replace married = 0 if 4 <= marstat & marstat <= 5 | marstat == 7
+		replace married = 1 if 1 <= marstat & marstat <= 3 | marstat == 6
+	}
+	if tm(1989m1) <= $date & $date <= tm(1997m12) {
 		replace married = 0 if 4 <= marstat & marstat <= 7
 		replace married = 1 if 1 <= marstat & marstat <= 3
 	}
@@ -43,4 +55,5 @@ lab val married married
 notes married: 1973-1993/1997 Unicon: marstat
 notes married: 1994-present CPS: prmarsta
 notes married: 1998-present March: a_maritl
-notes married: definition change in 1989
+notes married: definition change in 1989 for basic CPS: separated excluded from married
+notes married: definition for March CPS 1962-present: excludes separated from married
