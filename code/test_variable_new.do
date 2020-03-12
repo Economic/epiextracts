@@ -1,7 +1,8 @@
+
 set more off
 
-local beginyear = 1979
-local endyear = 2018
+local beginyear = 1989
+local endyear = 1989
 
 global marchcps = 1
 global monthlycps = 0
