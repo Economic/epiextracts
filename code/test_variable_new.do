@@ -2,7 +2,7 @@
 set more off
 
 local beginyear = 1989
-local endyear = 1989
+local endyear = 1993
 
 global marchcps = 1
 global monthlycps = 0
@@ -41,7 +41,7 @@ foreach var of varlist married_* {
 tempfile marchstats
 save `marchstats'
 
-load_epiextracts, begin(`beginyear'm1) end(`endyear'm12) sample(basic) keep(year age married finalwgt basicwgt)
+load_epiextracts, begin(`beginyear'm1) end(`endyear'm12) sample(basic) sourcedir(../extracts) keep(year age married finalwgt basicwgt)
 tab married, gen(married_)
 keep if age >= 15
 
