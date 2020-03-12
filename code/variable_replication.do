@@ -1,6 +1,6 @@
 set more off
 
-local beginyear = 1988
+local beginyear = 2010
 local endyear = 2018
 
 global marchcps = 1
@@ -14,8 +14,9 @@ adopath ++ ${code}ado
 foreach year of numlist `beginyear' / `endyear' {
     global date = tm(`year'm1)
     load_rawcps, begin(`year') end(`year') sample(march) 
-    do variables/generate_faminc.do
-    keep year faminc
+    do variables/generate_asecwgt.do
+    do variables/generate_faminc_c.do
+    keep year asecwgt faminc_c
     tempfile data`year'
     save `data`year''
 }
@@ -26,3 +27,7 @@ foreach year of numlist `beginyear' / `endyear' {
     if `year' == `beginyear' use `data`year'', clear
     else append using `data`year''
 }  
+
+binipolate faminc_c [pw=asecwgt], binsize(0.25) p(50) by(year) collapsefun(gcollapse)
+li
+
