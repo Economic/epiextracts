@@ -303,7 +303,7 @@ if $monthlycps == 1 | $maycps == 1 {;
 			(indcode >= 6870 & indcode <= 7190) | /* finance, insurance, and real estate */
 			(indcode >= 7270 & indcode <= 7470) | /* professional serivces (excl veterinary) */
 			(indcode >= 7490 & indcode <= 7790) | /* professional serivces (excl veterinary) */
-			(indcode >= 8770 & indcode <= 8890) | /* other services (repair) (includes shoe repair after mid 2000's, which used to be in personal services) */
+			(indcode >= 8770 & indcode <= 8891) | /* other services (repair) (includes shoe repair after mid 2000's, which used to be in personal services) */
 			(indcode >= 9160 & indcode <= 9190) /* other services (religious, membership) */
 		);
 		/* Personal services, including household */
@@ -316,7 +316,9 @@ if $monthlycps == 1 | $maycps == 1 {;
 			(indcode >= 8560 & indcode <= 8690);
 		/* Hospital */
 		replace mind16 = 12 if
-			(indcode == 8190);
+			(indcode == 8190) |
+			(indcode == 8191 & year == 2020) |
+			(indcode == 8192 & year == 2020); 
 		/* Medical, except hospital */
 		replace mind16 = 13 if	(
 			(indcode >= 7970 & indcode <= 8180) |
@@ -368,4 +370,5 @@ notes mind16: 1983-1991: ind80
 notes mind16: 1992-2002: ind90
 notes mind16: 2003-2008: ind02
 notes mind16: 2009-2013: ind07
-notes mind16: 2014-present: ind12
+notes mind16: 2014-2019: ind12
+notes mind16: 2020-present: ind17
