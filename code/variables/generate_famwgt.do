@@ -13,6 +13,15 @@ if $monthlycps == 1 {
 	}
 }
 
+if $marchcps == 1 {
+	if tm(1962m1) <= $date & $date <= tm(1997m12) {
+		replace famwgt = oldfamwgt / 100
+	}
+	if tm(1998m1) <= $date {
+		replace famwgt = fsup_wgt / 100
+	}
+}
+
 lab var famwgt "Family weight"
 notes famwgt: Family weight, based on head of family
 notes famwgt: 1984-1993: Unicon famwgt
