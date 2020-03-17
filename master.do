@@ -22,6 +22,10 @@
 * maptile_install using "http://files.michaelstepner.com/geo_county2014.zip"
 * 
 * you also need the python module tabulate: https://pypi.org/project/tabulate/
+*
+* The extracts and documentation use the CPI-U-RS to adjust for inflation when 
+* trimming wage variables. EPI's CPI stata package is called on to load this data.
+* This package is available here: https://github.com/Economic/cpi
 
 *******************************************************************************
 * PRELIMINARIES
@@ -35,7 +39,7 @@ set trace off
 * DATA VERSION
 *******************************************************************************
 * The version is saved in the dataset labels and notes
-global dataversion 1.0
+global dataversion 1.0.1
 
 
 *******************************************************************************
@@ -83,7 +87,7 @@ adopath ++ ${code}ado
 
 * create EPI's extracts from the processed raw data
 * creates both basic monthly and ORG subsample
-* create_extracts, begin(1962m1) end(2019m12)
+* create_extracts, begin(1962m1) end(2020m2)
 
 * create documentation
-* do ${codedocs}createdocs.do
+ do ${codedocs}createdocs.do

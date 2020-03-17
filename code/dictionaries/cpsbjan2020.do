@@ -388,15 +388,13 @@ note peafwhn2: U PEAFEVER = 1
 note peafwhn3: U PEAFEVER = 1
 note peafwhn4: U PEAFEVER = 1
 note pxafever: U PEAFEVER = 1
-note pelndad: U PEAFEVER = 1
-note pelnmom: U ALL
-note pedadtyp: U ALL
-note pemomtyp: U ALL
+note pepar2typ: U ALL
+note pepar2typ: U ALL
 note pecohab: U ALL
-note pxlndad: U ALL
-note pxlnmom: U ALL
-note pxdadtyp: U ALL
-note pxmomtyp: U ALL
+note pxpar2: U ALL
+note pxpar1: U ALL
+note pxpar2typ: U ALL
+note pxpar1typ: U ALL
 note pxcohab: U ALL
 note pedisear: U ALL
 note pediseye: U PRPERTYP = 2
@@ -2768,8 +2766,8 @@ label define prmjocgr
 	6           "Production, transportation, and material moving"
 	7           "Armed Forces"
 ;
-label values prsjms  prsjms;
-label define prsjms
+label values prsjmj  prsjmj;
+label define prsjmj
 	1           "SINGLE JOBHOLDER"
 	2           "MULTIPLE JOBHOLDER"
 ;
@@ -3839,14 +3837,6 @@ label define peafwhnd
 	7           "JANUARY 1947 TO JUNE 1950"
 	8           "WORLD WAR II (DECEMBER 1941 TO DECEMBER 1946)"
 	9           "NOVEMBER 1941 OR EARLIER"
-;
-label values pelndad  pelndad;
-label define pelndad
-	-1          "NO FATHER PRESENT"
-;
-label values pelnmom  pelnmom;
-label define pelnmom
-	-1          "NO MOTHER PRESENT"
 ;
 label values pecohab  pecohab;
 label define pecohab
