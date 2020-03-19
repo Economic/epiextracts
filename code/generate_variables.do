@@ -38,7 +38,7 @@ foreach var in
   hhinc_c
   wks_lyr wks_lyr_binned
 	ownchild famrel agechild 
-  pov_lev
+  povlev povcut
   {;
     do ${codevars}generate_`var'.do;
   };

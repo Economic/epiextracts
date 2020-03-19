@@ -16,7 +16,7 @@ if $monthlycps == 1 {
 if $marchcps == 1 {
 	if tm(1963m1) <= $date & $date <= tm(1997m12) {
 		if tm(1976m1) <= $date & $date <= tm(1976m12) {
-			replace famwgt = asecwgt / 100 if famid == 1
+			replace famwgt = asecwgt / 100 if perid == 1
 		}
 		else {
 			replace famwgt = oldfamwgt / 100

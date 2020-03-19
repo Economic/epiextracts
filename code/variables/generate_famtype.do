@@ -1,5 +1,5 @@
 ********************************************************************************
-* Family type
+* Family type (person level)
 ********************************************************************************
 gen famtype = .
 
@@ -38,7 +38,7 @@ lab def famtype
 ;
 #delimit cr;
 lab val famtype famtype
-lab var famtype "Family type"
+lab var famtype "Family type (person level)"
 notes famtype: Type of family
 notes famtype: 1984-1993/1997: Unicon famtyp
 notes famtype: 1994-present: CPS prfamtyp
