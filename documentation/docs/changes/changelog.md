@@ -14,6 +14,7 @@ If you use the EPI extracts for your research, please cite them as
 * January 2020 extracts
 * February 2020 extracts
 * `ind17` - 2017 census industry recodes (changes apply to data starting in 2020)
+* `occ18` - 2018 Cencus occupational classification (changes apply to data starting in 2020)
 
 #### Modified
 
@@ -23,6 +24,7 @@ If you use the EPI extracts for your research, please cite them as
 #### Fixed
 
 * union, unioncov and unionmem no longer missing for January 1984 in the basic monthly/January 1983 in the ORG 
+* `occ10` - fixed to start in January 2011 instead of April 2012.
 
 ### Version 1.0 -- 2020-01-15
 

@@ -79,6 +79,7 @@ Variable | Description
 [`numjobs`](employment/numjobs.md) | Number of jobs
 [`occ00`](indocc/occ00.md) | 2000 Census Occupation Classification
 [`occ10`](indocc/occ10.md) | 2010 Census Occupation Classification
+[`occ18`](indocc/occ18.md) | 2018 Census Occupation Classification
 [`occ70`](indocc/occ70.md) | 1970 Census Occupation Classification
 [`occ80`](indocc/occ80.md) | 1980 Census Occupation Classification
 [`occ90`](indocc/occ90.md) | 1990 Census Occupation Classification

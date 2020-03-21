@@ -343,12 +343,12 @@ if $monthlycps == 1 | $maycps == 1 {;
 
 	/*
 	Occupation coding for:
-	CPS Basic 2003-2012m4
-	CPS ORG 2003-2012m4
-	CPS May 2003-2012m4
+	CPS Basic 2003-2010m12
+	CPS ORG 2003-2010m12
+	CPS May 2003-2010m12
 	*/
 
-	if tm(2003m1) <= $date & $date <= tm(2012m4){;
+	if tm(2003m1) <= $date & $date <= tm(2010m12){;
 		replace mocc10 = . if (
 			(occcode == -1) |
 			(occcode == 9840) /*armed forces (double check for this period)*/
@@ -491,7 +491,7 @@ if $monthlycps == 1 | $maycps == 1 {;
 			);
 	};
 
-	if tm(2012m5) <= $date {;
+	if tm(2011m1) <= $date {;
 		replace mocc10 = . if (
 			(occcode == -1) |
 			(occcode == 9840) /*armed forces */
@@ -658,5 +658,6 @@ notes mocc10: Major occupation classification, consistent for 1973-present
 notes mocc10: 1973-1982: occ70
 notes mocc10: 1983-1991: occ80
 notes mocc10: 1992-2002: occ90
-notes mocc10: 2003-2012m4: occ00
-notes mocc10: 2012m4-present: occ10
+notes mocc10: 2003-2010m12: occ00
+notes mocc10: 2011m1-2019m12: occ10
+notes mocc10: 2020m1-present: occ18
