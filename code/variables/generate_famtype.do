@@ -40,6 +40,7 @@ lab def famtype
 lab val famtype famtype
 lab var famtype "Family type (person level)"
 notes famtype: Type of family
-notes famtype: 1984-1993/1997: Unicon famtyp
-notes famtype: 1994-present: CPS prfamtyp
-notes famtype: 1998-present: March a_famtyp
+notes famtype: 1984-1993 May/Basic: famtyp
+notes famtype: 1994-present May/Basic: prfamtyp
+notes famtype: 1976-1997 March: famtyp
+notes famtype: 1998-present March a_famtyp

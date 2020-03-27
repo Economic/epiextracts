@@ -66,4 +66,5 @@ notes wbhaom: Racial and ethnic categories are mutually exclusive
 notes wbhaom: Asians include Hawaiian/Pacific Islanders
 notes wbhaom: Available 2003-present; definition changes in 2012m5, 2014
 notes wbhaom: Hispanic definition from variable hispanic
-notes wbhaom: 2003-present CPS: ptdtrace
+notes wbhaom: 2003-present May/Basic: ptdtrace
+notes wbhaom: 2003-present March: prtdrace

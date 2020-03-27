@@ -16,10 +16,7 @@ if $marchcps == 1 {
 	if tm(1963m1) <= $date & $date <= tm(1997m12) {
 		replace famid = famnum
 	}
-	if tm(1998m1) <= $date & $date <= tm(2010m12) {
-		replace famid = a_fmnum
-	}
-	if tm(2011m1) <= $date {
+	if tm(1998m1) <= $date {
 		replace famid = a_famnum
 	}
 }
@@ -32,5 +29,7 @@ forvalues i = 2/39 {
 lab val famid famid
 lab var famid "Family identifer (unique within household)"
 notes famid: Family ID unique within year X month X hhid
-notes famid: 1984-1993: Unicon famnum
-notes famid: 1994-present: CPS famnum
+notes famid: 1984-1993 Basic: famnum
+notes famid: 1994-present Basic: prfamnum
+notes famid: 1963-1997 March: famnum
+notes famid: 1998-present March: a_famnum

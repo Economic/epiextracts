@@ -144,6 +144,9 @@ notes wbhao: From 2003, black includes all respondents listing black; other /*
 */ includes all respondents listing non-white or non-black races, except /*
 */ those also listing black
 notes wbhao: 1989-present: Hispanic definition from variable hispanic
-notes wbhao: 1989-1993 Unicon: race
-notes wbhao: 1994-2002 CPS: perace
-notes wbhao: 2003-present CPS: ptdtrace
+notes wbhao: 1989-1993 May/Basic: race
+notes wbhao: 1994-2002 May/Basic: perace
+notes wbhao: 2003-present May/Basic: ptdtrace
+notes wbhao: 1988-1997 March: race
+notes wbhao: 1998-2002 March: a_race
+notes wbhao: 2003-present: prdtrace

@@ -69,4 +69,5 @@ notes wbhom: Hispanic definition from variable hispanic
 notes wbhom: From 2003, black, white, and other exclude all respondents /*
 */ listing more than one race, except AI-Asian, AI-HP, Asian-HP, which /*
 */ are included in other
-notes wbhom: 2003-present CPS: ptdtrace
+notes wbhom: 2003-present May/Basic: ptdtrace
+notes wbhom: 2003-present March: prdtrace
