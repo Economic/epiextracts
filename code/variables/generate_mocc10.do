@@ -29,7 +29,7 @@ if $monthlycps == 1 | $maycps == 1 {;
 				(occcode >= 4 & occcode <= 21) |
 				(occcode >= 23 & occcode <= 55) |
 				(occcode >= 61 & occcode <= 76) |
-				(occcode >= 86 & occcode <= 100) |
+				(occcode >= 86 & occcode <= 101) |
 				(occcode >= 102 & occcode <= 145) |
 				(occcode >= 174 & occcode <= 191) |
 				(occcode >= 193 & occcode <= 194) |
