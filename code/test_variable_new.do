@@ -1,8 +1,8 @@
 
 set more off
 
-local beginyear = 1979
-local endyear = 1991
+local beginyear = 2015
+local endyear = 2018
 
 global marchcps = 1
 global monthlycps = 0
@@ -11,14 +11,20 @@ global earnerinfo = 0
 global basicfile = 0
 adopath ++ ${code}ado
 
+sysuse cpi_annual, clear
+keep year cpiurs
+tempfile cpiurs
+save `cpiurs'
+
 * do the recoding
 foreach year of numlist `beginyear' / `endyear' {
     load_rawcps, begin(`year') end(`year') sample(march)
     global date = tm(`year'm1)    
-    do variables/generate_age.do
-    do variables/generate_asecwgt.do
-    do variables/generate_gradehi.do
-    keep year age gradehi asecwgt
+    do code/variables/generate_age.do
+    do code/variables/generate_famwgt.do
+    do code/variables/generate_faminc_c.do
+    do code/variables/generate_famid.do
+    keep year age faminc_c famwgt famid
     tempfile data`year'
     save `data`year''
 }
@@ -29,30 +35,52 @@ foreach year of numlist `beginyear' / `endyear' {
     else append using `data`year''
 }
 
-tab gradehi, gen(gradehi_)
+
+*tab realfaminc, gen(realfaminc_)
+
+*tab hourslwt, gen(hourslwt_)
 * basic CPS does not have age < 14 prior to 1982
 drop if age < 14
 
-gcollapse (mean) gradehi_* [pw=asecwgt], by(year)
-foreach var of varlist gradehi_* {
+merge m:1 year using `cpiurs'
+drop if _merge == 2
+
+sum cpiurs if year == 2018
+local cpi_base = `r(mean)'
+
+gen realfaminc = faminc_c * `cpi_base'/cpiurs
+
+binipolate faminc_c if famid == 1 [pw=famwgt], binsize(0.25) p(50) by(year) collapsefun(gcollapse)
+li
+
+*gcollapse (mean) faminc_c [pw=famwgt], by(year)
+
+
+
+
+/*foreach var of varlist faminc_c {
     rename `var' march_`var'
 }
 tempfile marchstats
 save `marchstats'
 
-load_epiextracts, begin(`beginyear'm1) end(`endyear'm12) sample(basic) keep(year age gradehi finalwgt basicwgt)
+load_epiextracts, begin(`beginyear'm1) end(`endyear'm12) sample(basic) keep(year age faminc_c finalwgt basicwgt)
 drop if age < 14
-tab gradehi, gen(gradehi_)
+*replace hourslwt = 99 if 99 <= hourslwt 
 
-gcollapse (mean) gradehi_* [pw=finalwgt], by(year)
-foreach var of varlist gradehi_* {
+*tab hourslwt, gen(hourslwt_)
+
+gcollapse (mean) faminc_c [pw=finalwgt], by(year)
+foreach var of varlist faminc_c {
     rename `var' basic_`var'
 }
 merge 1:1 year using `marchstats', assert(3) nogenerate
-foreach var in gradehi_1 gradehi_2 gradehi_3 gradehi_4 gradehi_5 gradehi_6 gradehi_7 gradehi_8 gradehi_9 gradehi_10 gradehi_11 gradehi_12 gradehi_13 gradehi_14 gradehi_15 gradehi_16 gradehi_17 gradehi_18 {
+foreach var in faminc_c {
     gen diff`var' = basic_`var' - march_`var'
 }
 
 sort year
 format %4.3f diff*
-list year diff*
+*list year diff* */
+
+*export excel data.xlsx, firstrow(variables)

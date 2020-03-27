@@ -97,6 +97,9 @@ lab val wbho_only wbho_only
 notes wbho_only: Racial and ethnic categories are mutually exclusive
 notes wbho_only: Coding changes in 1989, 1996, 2003, 2012m5
 notes wbho_only: Hispanic definition from variable hispanic
-notes wbho_only: 1973-1993 Unicon: race
-notes wbho_only: 1994-2002 CPS: perace
-notes wbho_only: 2003-present CPS: ptdtrace
+notes wbho_only: 1973-1993 May/basic: race
+notes wbho_only: 1994-2002 May/Basic: perace
+notes wbho_only: 2003-present May/Basic: ptdtrace
+notes wbho_only: 1973-1997 March: race
+notes wbho_only: 1997-2002 March: a_race
+notes whbo_only: 2003-present March: prdtrace

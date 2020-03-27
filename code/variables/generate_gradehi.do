@@ -47,4 +47,5 @@ lab define gradehi
 #delimit cr
 lab val gradehi gradehi
 notes gradehi: Only available 1973-1991
-notes gradehi: 1973-1991 Unicon: grdhi
+notes gradehi: 1973-1991 May/Basic: grdhi
+notes gradehi: 1968-1991 March: grdhi

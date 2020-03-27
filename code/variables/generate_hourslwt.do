@@ -21,7 +21,7 @@ if $marchcps == 1 {
 		replace hourslwt = hours
 	}
 	if tm(1994m1) <= $date & $date <= tm(1997m12) {
-		replace hourslwt = hours if
+		replace hourslwt = hours 
 	}
 	if tm(1998m1) <= $date {
 		replace hourslwt = a_hrs1
@@ -35,6 +35,7 @@ notes hourslwt: Universe/definition changes 1973-1988, 1989-1993, 1994-present
 notes hourslwt: Top-coding inconsistent across time
 notes hourslwt: Top-code 1973-1993: 99
 notes hourslwt: Top-code 1994-present: 198
-notes hourslwt: 1973-1993/1997 Unicon: hours
-notes hourslwt: 1994-present CPS: pehractt
-notes hourslwt: 1998-present: a_hrs1
+notes hourslwt: 1973-1993 May/Basic: hours
+notes hourslwt: 1994-present May/Basic: pehractt
+notes hourslwt: 1963-1997 March: hours
+notes hourslwt: 1998-present March: a_hrs1
