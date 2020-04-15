@@ -7,6 +7,16 @@ If you use the EPI extracts for your research, please cite them as
 
 ## Recent changes
 
+### Version 1.0.2 -- 2020-03-15
+
+#### Added
+
+* March 2020 extracts
+
+#### Modified
+
+* `mocc10` - modified to accomodate 2018 occupation recodes (applies to data starting in 2020)
+
 ### Version 1.0.1 -- 2020-03-13
 
 #### Added
