@@ -29,7 +29,7 @@ if $monthlycps == 1 | $maycps == 1 {;
 				(occcode >= 4 & occcode <= 21) |
 				(occcode >= 23 & occcode <= 55) |
 				(occcode >= 61 & occcode <= 76) |
-				(occcode >= 86 & occcode <= 100) |
+				(occcode >= 86 & occcode <= 101) |
 				(occcode >= 102 & occcode <= 145) |
 				(occcode >= 174 & occcode <= 191) |
 				(occcode >= 193 & occcode <= 194) |
@@ -343,12 +343,12 @@ if $monthlycps == 1 | $maycps == 1 {;
 
 	/*
 	Occupation coding for:
-	CPS Basic 2003-2012m4
-	CPS ORG 2003-2012m4
-	CPS May 2003-2012m4
+	CPS Basic 2003-2010m12
+	CPS ORG 2003-2010m12
+	CPS May 2003-2010m12
 	*/
 
-	if tm(2003m1) <= $date & $date <= tm(2012m4){;
+	if tm(2003m1) <= $date & $date <= tm(2010m12){;
 		replace mocc10 = . if (
 			(occcode == -1) |
 			(occcode == 9840) /*armed forces (double check for this period)*/
@@ -491,7 +491,7 @@ if $monthlycps == 1 | $maycps == 1 {;
 			);
 	};
 
-	if tm(2012m5) <= $date {;
+	if tm(2011m1) <= $date {;
 		replace mocc10 = . if (
 			(occcode == -1) |
 			(occcode == 9840) /*armed forces */
@@ -511,32 +511,34 @@ if $monthlycps == 1 | $maycps == 1 {;
 				(occcode	>= 220 & occcode <= 530) |
 				(occcode	>= 560 & occcode <= 620) |
 				(occcode	>= 710 & occcode <= 800) |
-				(occcode	>= 820 & occcode <= 950) |
+				(occcode	>= 820 & occcode <= 960) |
 				/* professionals */
 				(occcode	== 700) |
+				(occcode	== 705) |
 				(occcode	== 1000) |
-				(occcode	>= 1040	& occcode <= 1300) |
+				(occcode	>= 1005	& occcode <= 1306) |
 				(occcode	>= 1320	& occcode <= 1530) |
 				(occcode	>= 1600	& occcode <= 1860) |
 				(occcode	>= 2000	& occcode <= 2100) |
-				(occcode	>= 2200	& occcode <= 2430) |
+				(occcode	>= 2200	& occcode <= 2435) |
 				(occcode	>= 2550	& occcode <= 2700) |
 				(occcode	>= 2720	& occcode <= 2810) |
-				(occcode	>= 2830	& occcode <= 2860) |
-				(occcode	>= 2910	& occcode <= 3260)
+				(occcode	>= 2830	& occcode <= 2865) |
+				(occcode	>= 2910	& occcode <= 3270)
 			);
 		/* Technicians */
 		replace mocc10 = 2 if (
-				(occcode	== 2900	) |
+				(occcode	== 2905	) |
 				(occcode	== 7900	) |
+				(occcode	== 7905	) |
 				(occcode	== 9030 ) |
-				(occcode	>= 1010	& occcode <= 1020) |
+				(occcode	>= 1010	& occcode <= 1021) |
 				(occcode	>= 1540	& occcode <= 1560) |
-				(occcode	>= 1900	& occcode <= 1960) |
+				(occcode	>= 1900	& occcode <= 1980) |
 				(occcode	>= 2140	& occcode <= 2150) |
-				(occcode	>= 3300	& occcode <= 3400) |
-				(occcode	>= 3500	& occcode <= 3510) |
-				(occcode	>= 3530	& occcode <= 3540)
+				(occcode	>= 3300	& occcode <= 3402) |
+				(occcode	>= 3500	& occcode <= 3515) |
+				(occcode	>= 3530	& occcode <= 3550)
 			);
 		/* Sales */
 		replace mocc10 = 3 if (
@@ -549,7 +551,7 @@ if $monthlycps == 1 | $maycps == 1 {;
 		replace mocc10 = 4 if (
 				(occcode	== 540) |
 				(occcode	== 4830) |
-				(occcode	>= 2440	& occcode <= 2540) |
+				(occcode	>= 2440	& occcode <= 2545) |
 				(occcode	>= 5010	& occcode <= 5120) |
 				(occcode	>= 5140	& occcode <= 5930)
 			);
@@ -558,19 +560,20 @@ if $monthlycps == 1 | $maycps == 1 {;
 				(occcode	== 3410) |
 				(occcode	== 3520) |
 				(occcode	== 6300) |
+				(occcode	== 6540) |
 				(occcode	== 7740) |
 				(occcode	== 7840) |
 				(occcode	== 8030) |
 				(occcode	== 8060) |
 				(occcode	== 8130) |
 				(occcode	== 8160) |
-				(occcode	== 8330) |
+				(occcode	== 8335) |
 				(occcode	== 8350) |
 				(occcode	== 8450) |
 				(occcode	>= 6200	& occcode <= 6250) |
-				(occcode	>= 6330	& occcode <= 6530) |
+				(occcode	>= 6330	& occcode <= 6520) |
 				(occcode	>= 6700	& occcode <= 6720) |
-				(occcode	>= 6750	& occcode <= 6940) |
+				(occcode	>= 6750	& occcode <= 6950) |
 				(occcode	>= 7010	& occcode <= 7560) |
 				(occcode	>= 7620	& occcode <= 7700) |
 				(occcode	>= 7800	& occcode <= 7810) |
@@ -583,6 +586,7 @@ if $monthlycps == 1 | $maycps == 1 {;
 		/* Operators, fabricators and laborers */
 		replace mocc10 = 9 if (
 				(occcode	== 6260) |
+				(occcode	== 6305) |
 				(occcode	== 6320) |
 				(occcode	== 6600) |
 				(occcode	== 7610) |
@@ -593,29 +597,29 @@ if $monthlycps == 1 | $maycps == 1 {;
 				(occcode	== 8100) |
 				(occcode	== 8200) |
 				(occcode	== 8340) |
-				(occcode	== 8460) |
+				(occcode	== 8465) |
 				(occcode	>= 6730	& occcode <= 6740) |
 				(occcode	>= 7710	& occcode <= 7730) |
-				(occcode	>= 7920	& occcode <= 8010) |
+				(occcode	>= 7920	& occcode <= 8025) |
 				(occcode	>= 8140	& occcode <= 8150) |
 				(occcode	>= 8240	& occcode <= 8260) |
 				(occcode	>= 8310	& occcode <= 8320) |
 				(occcode	>= 8360	& occcode <= 8420) |
-				(occcode	>= 8530	& occcode <= 8550) |
+				(occcode	>= 8530	& occcode <= 8555) |
 				(occcode	>= 8640	& occcode <= 8740) |
 				(occcode	>= 8800	& occcode <= 8860) |
 				(occcode	>= 8930	& occcode <= 8960) |
-				(occcode	>= 9120	& occcode <= 9360) |
-				(occcode	>= 9420	& occcode <= 9750)
+				(occcode	>= 9120	& occcode <= 9365) |
+				(occcode	>= 9420	& occcode <= 9760)
 			);
 		 /* Protective service */
 		replace mocc10 = 6 if (
-				(occcode	>= 3700	& occcode <= 3950)
+				(occcode	>= 3700	& occcode <= 3960)
 			);
 		/* Service (Food prep, buildings and grounds, cleaning) */
 		replace mocc10 = 7 if (
 				(occcode	>= 4000	& occcode <= 4220) |
-				(occcode	>= 4240	& occcode <= 4250)
+				(occcode	>= 4240	& occcode <= 4255)
 			);
 		/* Personal care and personal services */
 		replace mocc10 = 5 if (
@@ -624,11 +628,11 @@ if $monthlycps == 1 | $maycps == 1 {;
 				(occcode	== 9410) |
 				(occcode	>= 3600	& occcode <= 3650) |
 				(occcode	>= 4300	& occcode <= 4320) |
-				(occcode	>= 4400	& occcode <= 4650)
+				(occcode	>= 4400	& occcode <= 4655)
 			);
 		/* Agriculture */
 		replace mocc10 = 10 if (
-				(occcode	>= 200	& occcode <= 210	) |
+				(occcode	>= 200	& occcode <= 210)  |
 				(occcode	>= 4340	& occcode <= 4350) |
 				(occcode	>= 6000	& occcode <= 6130)
 			);
@@ -658,5 +662,6 @@ notes mocc10: Major occupation classification, consistent for 1973-present
 notes mocc10: 1973-1982: occ70
 notes mocc10: 1983-1991: occ80
 notes mocc10: 1992-2002: occ90
-notes mocc10: 2003-2012m4: occ00
-notes mocc10: 2012m4-present: occ10
+notes mocc10: 2003-2010m12: occ00
+notes mocc10: 2011m1-2019m12: occ10
+notes mocc10: 2020m1-present: occ18

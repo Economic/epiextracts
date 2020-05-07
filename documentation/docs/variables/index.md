@@ -59,6 +59,7 @@ Variable | Description
 [`ind02`](indocc/ind02.md) | 2002 Census Industry Classification
 [`ind07`](indocc/ind07.md) | 2007 Census Industry Classification
 [`ind12`](indocc/ind12.md) | 2012 Census Industry Classification
+[`ind17`]( indocc/ind17.md) | 2017 Census Industry Classification
 [`ind70`](indocc/ind70.md) | 1970 Census Industry Classification
 [`ind80`](indocc/ind80.md) | 1980 Census Industry Classification
 [`ind90`](indocc/ind90.md) | 1990 Census Industry Classification
@@ -78,6 +79,7 @@ Variable | Description
 [`numjobs`](employment/numjobs.md) | Number of jobs
 [`occ00`](indocc/occ00.md) | 2000 Census Occupation Classification
 [`occ10`](indocc/occ10.md) | 2010 Census Occupation Classification
+[`occ18`](indocc/occ18.md) | 2018 Census Occupation Classification
 [`occ70`](indocc/occ70.md) | 1970 Census Occupation Classification
 [`occ80`](indocc/occ80.md) | 1980 Census Occupation Classification
 [`occ90`](indocc/occ90.md) | 1990 Census Occupation Classification

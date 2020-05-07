@@ -15,14 +15,14 @@ if $maycps == 1 {
 
 * recode as missing in basic before 1984 because no union coverage available
 if $monthlycps == 1 & $earnerinfo == 1 & $basicfile == 1 {
-	if $date <= tm(1984m1) {
+	if $date < tm(1984m1) {
 		replace union = .
 	}
 }
 
 * recode as missing in org before 1983 because no union coverage available
 if $monthlycps == 1 & $earnerinfo == 1 & $basicfile == 0 {
-	if $date <= tm(1983m1) {
+	if $date < tm(1983m1) {
 		replace union = .
 	}
 }

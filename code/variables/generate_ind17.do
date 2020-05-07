@@ -1,17 +1,19 @@
 ********************************************************************************
-* Industry: 2012 classification
+* Industry: 2017 classification
 ********************************************************************************
-/* 2014-present: 2012 census industry codes */
-gen ind12 = .
+/* 2020-present: 2017 census industry codes */
+
+gen ind17 = .
+
 
 if $monthlycps == 1 {
-	if tm(2014m1) <= $date {
-		replace ind12 = indcode
+	if tm(2020m1) <= $date {
+		replace ind17 = indcode
 	}
 }
 
 #delimit ;
-lab def ind12
+lab def ind17
 170 "Crop production"
 180 "Animal production"
 190 "Forestry except logging"
@@ -41,8 +43,7 @@ lab def ind12
 1570 "Carpet and rug mills"
 1590 "Textile product mills, except carpet and rug"
 1670 "Knitting mills, and apparel knitting mills"
-1680 "Cut and sew apparel manufacturing"
-1690 "Apparel accessories and other apparel manufacturing"
+1691 "Cut and sew, and apparel accessories and other apparel manufacturing"
 1770 "Footwear manufacturing"
 1790 "Leather tanning and finishing and other allied products manufacturing"
 3770 "Sawmills and wood preservation"
@@ -86,7 +87,7 @@ lab def ind12
 3095 "Commercial and service industry machinery manufacturing"
 3170 "Metalworking machinery manufacturing"
 3180 "Engines, turbines, and power transmission equipment manufacturing"
-3190 "Machinery manufacturing, n.e.c."
+3191 "Machinery manufacturing, n.e.c. or not specified"
 3365 "Computer and peripheral equipment manufacturing"
 3370 "Communications, and audio and video equipment manufacturing"
 3380 "Navigational, measuring, electromedical, and control instruments manufacturing"
@@ -134,7 +135,8 @@ lab def ind12
 4870 "Building material and supplies dealers"
 4880 "Hardware stores"
 4890 "Lawn and garden equipment and supplies stores"
-4970 "Grocery stores"
+4971 "Supermarkets and other grocery (except convenience) stores"
+4972 "Convenience stores"
 4980 "Specialty food stores"
 4990 "Beer, wine, and liquor stores"
 5070 "Pharmacies and drug stores"
@@ -147,16 +149,15 @@ lab def ind12
 5280 "Sewing, needlework and piece goods stores"
 5295 "Music stores"
 5370 "Book stores and news dealers"
-5380 "Department stores and discount stores"
+5381 "Department stores"
+5391 "General merchandise stores, including warehouse clubs and supercenters"
 5390 "Miscellaneous general merchandise stores"
 5470 "Retail florists"
 5480 "Office supplies and stationery stores"
 5490 "Used merchandise stores"
 5570 "Gift, novelty, and souvenir shops"
 5580 "Miscellaneous retail stores"
-5590 "Electronic shopping"
-5591 "Electronic auctions"
-5592 "Mail order houses"
+5593 "Electronic shopping and mail-order houses"
 5670 "Vending machine operators"
 5680 "Fuel dealers"
 5690 "Other direct selling establishments"
@@ -195,11 +196,12 @@ lab def ind12
 6880 "Savings institutions, including credit unions"
 6890 "Non-depository credit and related activities"
 6970 "Securities, commodities, funds, trusts, and other financial investments"
-6990 "Insurance carriers and related activities"
-7070 "Real estate"
+6991 "Insurance carriers"
+6992 "Agencies, brokerages, and other insurance related activities"
+7071 "Lessors of real estate, and offices of real estate agents and brokers"
+7072 "Real estate property managers, offices of real estate appraisers, and other activities related to real estate"
 7080 "Automotive equipment rental and leasing"
-7170 "Video tape and disk rental"
-7180 "Other consumer goods rental"
+7181 "Other consumer goods rental"
 7190 "Commercial, industrial, and other intangible assets rental and leasing"
 7270 "Legal services"
 7280 "Accounting, tax preparation, bookkeeping and payroll services"
@@ -232,14 +234,18 @@ lab def ind12
 8090 "Outpatient care centers"
 8170 "Home health care services"
 8180 "Other health care services"
-8190 "Hospitals"
+8191 "General medical and surgical hospitals, and specialty (except psychiatric and substance abuse) hospitals"
+8192 "Psychiatric and substance abuse hospitals"
 8270 "Nursing care facilities"
 8290 "Residential care facilities, without nursing"
 8370 "Individual and family services"
 8380 "Community food and housing, and emergency services"
 8390 "Vocational rehabilitation services"
 8470 "Child day care services"
-8560 "Independent artists, performing arts, spectator sports, and related industries"
+8561 "Performing arts companies"
+8562 "Spectator sports"
+8563 "Promoters of performing arts, sports, and similar events, agents and managers for artists,athletes, entertainers, and other public figures"
+8564 "Independent artists, writers, and performers"
 8570 "Museums, art galleries, historical sites, and similar institutions"
 8580 "Bowling centers"
 8590 "Other amusement, gambling, and recreation industries"
@@ -251,7 +257,7 @@ lab def ind12
 8780 "Car washes"
 8790 "Electronic and precision equipment repair and maintenance"
 8870 "Commercial and industrial machinery and equipment repair and maintenance"
-8880 "Personal and household goods repair and maintenance and footwear and leather goods repair"
+8891 "Personal and household goods repair and maintenance"
 8970 "Barber shops"
 8980 "Beauty salons"
 8990 "Nail salons and other personal care services"
@@ -274,7 +280,7 @@ lab def ind12
 9890 "Armed Forces"
 ;
 #delimit cr;
-lab val ind12 ind12
-label var ind12 "2012 Census Industry Classification"
-notes ind12: Industry classification for 2014-2019
-notes ind12: 2014-2019 CPS: peio1icd
+lab val ind17 ind17
+label var ind17 "2017 Census Industry Classification"
+notes ind17: Industry classification for 2020-present
+notes ind17: 2020-present CPS: peio1icd

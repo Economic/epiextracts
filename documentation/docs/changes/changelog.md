@@ -7,6 +7,35 @@ If you use the EPI extracts for your research, please cite them as
 
 ## Recent changes
 
+### Version 1.0.2 -- 2020-03-15
+
+#### Added
+
+* March 2020 extracts
+
+#### Modified
+
+* `mocc10` - modified to accomodate 2018 occupation recodes (applies to data starting in 2020)
+
+### Version 1.0.1 -- 2020-03-13
+
+#### Added
+
+* January 2020 extracts
+* February 2020 extracts
+* `ind17` - 2017 census industry recodes (changes apply to data starting in 2020)
+* `occ18` - 2018 Cencus occupational classification (changes apply to data starting in 2020)
+
+#### Modified
+
+* Hourly wage limits for 2020 updated based on CBO inflation projections.
+* `mind16` - modified to accomodate 2017 industry recodes (applies to data starting in 2020)
+
+#### Fixed
+
+* union, unioncov and unionmem no longer missing for January 1984 in the basic monthly/January 1983 in the ORG 
+* `occ10` - fixed to start in January 2011 instead of April 2012.
+
 ### Version 1.0 -- 2020-01-15
 
 #### Added
