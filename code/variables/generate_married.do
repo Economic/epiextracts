@@ -8,8 +8,8 @@ if $monthlycps == 1 | $maycps == 1 {
 		replace married = 0 if 4 <= marstat & marstat <= 5
 		replace married = 1 if 1 <= marstat & marstat <= 3
 	}
-	if tm(1989m1) <= tm $date & $date <= tm(1993m12){
-		replace married = 0 if 4 <= marstat $ marstat <= 7
+	if tm(1989m1) <= $date & $date <= tm(1993m12){
+		replace married = 0 if 4 <= marstat & marstat <= 7
 		replace married = 1 if 1 <= marstat & marstat <= 3
 	}
 	if tm(1994m1) <= $date {
