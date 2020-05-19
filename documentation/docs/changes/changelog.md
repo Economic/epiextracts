@@ -7,7 +7,13 @@ If you use the EPI extracts for your research, please cite them as
 
 ## Recent changes
 
-### Version 1.0.3 -- 2020-03-15
+### Version 1.0.4 -- 2020-05-19
+
+#### Fixed
+
+* `otcamt` corrected (values were too low as they were incorrectly divided by 100); this correction also changes values of `wageotc`
+
+### Version 1.0.3 -- 2020-05-13
 
 #### Added
 
