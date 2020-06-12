@@ -7,6 +7,16 @@ If you use the EPI extracts for your research, please cite them as
 
 ## Recent changes
 
+### Version 1.0.5 -- 2020-06-12
+
+#### Added
+
+* May 2020 extracts
+
+#### Fixed
+* `ind12` - corrected availability; previously was available up to the most recent month of data, when it should have been available through 2019m12 
+
+
 ### Version 1.0.4 -- 2020-05-19
 
 #### Fixed

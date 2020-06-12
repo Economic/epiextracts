@@ -5,7 +5,7 @@
 gen ind12 = .
 
 if $monthlycps == 1 {
-	if tm(2014m1) <= $date {
+	if tm(2014m1) <=  $date & $date <= tm(2019m12) {
 		replace ind12 = indcode
 	}
 }
