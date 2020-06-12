@@ -1,4 +1,4 @@
-all: deploydata createdocs deploywebdocs deploywebcode
+all: deploydata createdocs deploywebdocs deploywebcode deploywebdata
 
 .PHONY: all deploydata createdocs deploywebdocs deploywebcode deploywebdata convertsas deploywindata deployado
 
