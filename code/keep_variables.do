@@ -8,13 +8,13 @@ keep
 	age female hispanic wbho wbhao wbhom wbhaom raceorig wbo_only wbho_only
 	citistat citizen married veteran
 	gradecom gradehi gradeatn educ
-	lfstat emp unemp nilf schenrl samejob
+	dlfstat lfstat emp emphrs unemp nilf schenrl samejob whyabsent whyunemp 	
 	selfemp selfinc cow1 cow2
 	multjobs numjobs
 	unmem uncov union
 	pubsec publoc pubst pubfed
 	unempdur lookdur discwork
-	ptecon
+	ptecon ftptstat
 	paidhre
 	hoursu1 hoursu2 hoursut hourslw1 hourslw2 hourslwt hoursumay hoursuorg
 	hoursvary hoursuint
