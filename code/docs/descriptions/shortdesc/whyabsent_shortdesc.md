@@ -1,0 +1,1 @@
+`whyabsent` describes the reason the respondent was absent from work if they were employed but absent in `dlfstat`. 

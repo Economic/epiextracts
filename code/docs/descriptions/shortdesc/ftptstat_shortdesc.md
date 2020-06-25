@@ -1,0 +1,1 @@
+`ftptstat` is a detailed 12-category variable describing the full/part-time work status of the respondent. 

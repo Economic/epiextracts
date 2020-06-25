@@ -1,0 +1,1 @@
+`whyunemp` describes the reason the respondent is unemployed. 
