@@ -7,6 +7,15 @@ If you use the EPI extracts for your research, please cite them as
 
 ## Recent changes
 
+### Version 1.0.6 -- 2020-06-26
+
+#### Added
+* `dlfstat` : detailed labor force status
+* `emphrs` : reason not at work/hours last week
+* `ftptstat` : full/part time work status
+* `whyabsent` : reason absent from work
+* `whyunemp` : reason for unemployment
+
 ### Version 1.0.5 -- 2020-06-12
 
 #### Added
