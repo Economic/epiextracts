@@ -1,0 +1,1 @@
+`emphrs` is the detailed variable describing the respondents hours at work, or the reason the respondent was not at work but were employed. 
