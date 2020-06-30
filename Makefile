@@ -1,12 +1,15 @@
-all: deploydata createdocs deploywebdocs deploywebcode deploywebdata
+all: createdocs deploywebdocs createfeather deploydata deploywebcode deploywebdata
 
-.PHONY: all deploydata createdocs deploywebdocs deploywebcode deploywebdata convertsas deploywindata deployado
+.PHONY: all deploydata createdocs deploywebdocs deploywebcode deploywebdata deploywindata deployado
+
+createfeather:
+	Rscript extracts_to_feather.R
 
 deploydata:
-	rsync -avh --chmod=0444 extracts/epi_cpsbasic*.dta /data/cps/basic/epi/
-	rsync -avh --chmod=0444 extracts/epi_cpsmarch*.dta /data/cps/march/epi/
-	rsync -avh --chmod=0444 extracts/epi_cpsmay*.dta /data/cps/may/epi/
-	rsync -avh --chmod=0444 extracts/epi_cpsorg*.dta /data/cps/org/epi/
+	rsync -avh --chmod=0444 extracts/epi_cpsbasic* /data/cps/basic/epi/
+	rsync -avh --chmod=0444 extracts/epi_cpsmarch* /data/cps/march/epi/
+	rsync -avh --chmod=0444 extracts/epi_cpsmay* /data/cps/may/epi/
+	rsync -avh --chmod=0444 extracts/epi_cpsorg* /data/cps/org/epi/
 
 createdocs:
 	cd documentation && mkdocs build 
