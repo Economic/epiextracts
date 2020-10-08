@@ -7,7 +7,13 @@ If you use the EPI extracts for your research, please cite them as
 
 ## Recent changes
 
-### Version 1.0.9 -- 2020-08-09
+### Version 1.0.10 -- 2020-10-08
+
+#### Added
+
+* September 2020 extracts
+
+### Version 1.0.9 -- 2020-09-09
 
 #### Added
 
