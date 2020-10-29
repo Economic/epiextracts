@@ -27,13 +27,20 @@ deploywebcode:
 	aws s3 sync packages/stata/ s3://microdata.epi.org/stata --exclude ".gitignore*" --delete
 
 deploywebdata:
-	zip -j epi_cpsbasic_1976_1999.zip extracts/epi_cpsbasic_19*.dta
-	zip -j epi_cpsbasic_2000_2020.zip extracts/epi_cpsbasic_20*.dta
-	zip -j epi_cpsmarch_1962_2018.zip extracts/epi_cpsmarch_*.dta
-	zip -j epi_cpsmay_1973_1981.zip extracts/epi_cpsmay_*.dta
-	zip -j epi_cpsorg_1979_2020.zip extracts/epi_cpsorg_*.dta
-	aws s3 sync . s3://microdata.epi.org/ --exclude "*" --include "epi_cps*.zip" --delete
-	rm epi_cps*.zip
+	cd extracts && zip epi_cpsbasic_1976_1999.zip epi_cpsbasic_19*.dta
+	cd extracts && zip epi_cpsbasic_2000_2020.zip epi_cpsbasic_20*.dta
+	cd extracts && zip epi_cpsmarch_1962_2018.zip epi_cpsmarch_*.dta
+	cd extracts && zip epi_cpsmay_1973_1981.zip epi_cpsmay_*.dta
+	cd extracts && zip epi_cpsorg_1979_2020.zip epi_cpsorg_*.dta
+	cd extracts && aws s3 sync . s3://microdata.epi.org/ --exclude "*" --include "epi_cps*.zip" --delete
+	rm extracts/epi_cps*.zip
+
+	cd extracts && tar cf - epi_cpsbasic_*.feather | pigz > epi_cpsbasic.tar.gz
+	cd extracts && tar cf - epi_cpsmarch_*.feather | pigz > epi_cpsmarch.tar.gz
+	cd extracts && tar cf - epi_cpsmay_*.feather | pigz > epi_cpsmay.tar.gz
+	cd extracts && tar cf - epi_cpsorg_*.feather | pigz > epi_cpsorg.tar.gz
+	cd extracts && aws s3 sync . s3://microdata.epi.org/ --exclude "*" --include "epi_cps*.tar.gz" --delete
+	rm extracts/epi_cps*.tar.gz
 
 deploywindata:
 	rsync -avPh /data/cps/basic/epi/epi_cpsbasic_*.dta ~/mount/data/cps/basic/epi/
