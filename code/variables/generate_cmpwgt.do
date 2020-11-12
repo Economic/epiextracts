@@ -11,7 +11,7 @@ if $monthlycps == 1 {
 			replace cmpwgt = nwcmpwgt
 		}
 	}
-	replace cmpwgt = . if cmpwgt < 0
+	replace cmpwgt = . if cmpwgt <= 0
 	lab var cmpwgt "Composited final monthly weight"
 }
 

@@ -27,7 +27,7 @@ if $monthlycps == 1 {
 	}
 }
 
-replace finalwgt = . if finalwgt < 0
+replace finalwgt = . if finalwgt <= 0
 lab var finalwgt "Final basic monthly weight"
 notes finalwgt: Sum to civilian, non-institutional population in each month
 notes finalwgt: 1973-1981 Unicon May: wgtfnl
