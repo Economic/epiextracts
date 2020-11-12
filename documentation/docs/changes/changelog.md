@@ -7,6 +7,15 @@ If you use the EPI extracts for your research, please cite them as
 
 ## Recent changes
 
+### Version 1.0.11 -- 2020-11-12
+
+#### Added
+
+* October 2020 extracts
+
+#### Modified
+* `cmpwgt` and `finalwgt` - changed instances where weights had a value of zero to be missing instead 
+
 ### Version 1.0.10 -- 2020-10-08
 
 #### Added
