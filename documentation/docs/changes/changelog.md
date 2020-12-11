@@ -7,6 +7,16 @@ If you use the EPI extracts for your research, please cite them as
 
 ## Recent changes
 
+### Version 1.0.12 -- 2020-12-10
+
+#### Added
+
+* November 2020 extracts
+
+### Modified
+
+* January-July 2020 basic monthly CPS were re-released by Census to fix a small occupation coding error. These changes to the data have been incorporated in v1.0.12 (https://www.census.gov/programs-surveys/cps/technical-documentation/user-notes/cpsbasic_2020_01.html)
+
 ### Version 1.0.11 -- 2020-11-12
 
 #### Added
