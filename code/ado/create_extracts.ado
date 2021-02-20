@@ -45,7 +45,7 @@ sum cpiurs_extended if year == 2020
 local cpi2020 = r(mean)
 moreobs 1
 replace year = 2021 if year == .
-replace cpiurs_extended = `cpi2020' * (`cbo2021' / `cbo2020') if year == 2020
+replace cpiurs_extended = `cpi2020' * (`cbo2021' / `cbo2020') if year == 2021
 
 replace cpiurs_extended = round(cpiurs_extended,0.1)
 sum cpiurs_extended if year == 1989

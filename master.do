@@ -87,7 +87,7 @@ adopath ++ ${code}ado
 
 * create EPI's extracts from the processed raw data
 * creates both basic monthly and ORG subsample
-create_extracts, begin(2021m1) end(2021m1)
+create_extracts, begin(2020m1) end(2021m1)
 
 * create documentation
 * do ${codedocs}createdocs.do
