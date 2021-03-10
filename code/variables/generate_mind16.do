@@ -317,8 +317,8 @@ if $monthlycps == 1 | $maycps == 1 {;
 		/* Hospital */
 		replace mind16 = 12 if
 			(indcode == 8190) |
-			(indcode == 8191 & year == 2020) |
-			(indcode == 8192 & year == 2020); 
+			(indcode == 8191 & year >= 2020) |
+			(indcode == 8192 & year >= 2020); 
 		/* Medical, except hospital */
 		replace mind16 = 13 if	(
 			(indcode >= 7970 & indcode <= 8180) |
