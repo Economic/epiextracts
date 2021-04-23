@@ -5,7 +5,7 @@
 gen occ10 = .
 
 if $monthlycps == 1 {
-	if tm(2011m1) <= $date {
+	if tm(2011m1) <= $date & $date <= tm(2019m12) {
 		replace occ10 = occcode
 	}
 }
