@@ -26,7 +26,7 @@ line selfemp_0 selfemp_1 year if 1976 <= year & year <= 1988, lcolor("`color4'" 
 line selfemp_0 selfemp_1 year if 1989 <= year & year <= 1993, lcolor("`color4'" "`color2'") || ///
 line selfemp_0 selfemp_1 year if 1994 <= year, lcolor("`color4'" "`color2'") ///
 legend(off) ///
-xlabel(1975(5)2015) ///
+xlabel(1975(5)2020) ///
 ylabel(0(5)20 25 "25%", angle(0) gmin gmax) ///
 xtitle("") ytitle("") ///
 lcolor("`color4'" "`color2'") ///
@@ -37,5 +37,5 @@ text(`selfemp_1yvalue' `selfemp_1xvalue' "Female", color("`color2'") placement(c
 graph export ${variableimages}selfemp_titleimage.svg, replace
 
 /***
-The analysis above uses employed workers in the CPS Basic for 1976-2019 and CPS May 1973-1975.
+The analysis above uses employed workers in the CPS Basic for 1976-2020 and CPS May 1973-1975.
 ***/

@@ -27,7 +27,7 @@ line lths hs some college advanced year if year < 1992, ///
 line lths hs some college advanced year if year >= 1992, ///
 	lcolor("`color1'" "`color2'" "`color3'" "`color4'" "`color5'") ///
 	legend(off) ///
-	xlabel(1975(5)2015) ///
+	xlabel(1975(5)2020) ///
 	ylabel(0(5)35 40 "40%", angle(0) gmin gmax) ///
 	xtitle("") ytitle("") ///
 	graphregion(color(white) margin(r=21)) plotregion(color(white)) ///

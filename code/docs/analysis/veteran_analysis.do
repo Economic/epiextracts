@@ -14,7 +14,7 @@ local color5 255 127 0
 
 line veteran year, lcolor("`color4'") ///
 legend(off) ///
-xlabel(1975(5)2015) ///
+xlabel(1975(5)2020) ///
 ylabel(0(10)40 50 "50%", angle(0) gmin gmax) ///
 xtitle("") ytitle("") ///
 lcolor("`color4'") ///

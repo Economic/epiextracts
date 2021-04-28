@@ -22,7 +22,7 @@ local color5 255 127 0
 
 line multjobs_0 multjobs_1 year if 1994 <= year, lcolor("`color4'" "`color2'") ///
 legend(off) ///
-xlabel(1995(5)2015) ///
+xlabel(1995(5)2020) ///
 ylabel(0(2)8 10 "12%", angle(0) gmin gmax) ///
 xtitle("") ytitle("") ///
 lcolor("`color4'" "`color2'") ///

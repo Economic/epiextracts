@@ -16,7 +16,7 @@ line a_weekpay year if year <= 1988, lcolor("`color4'") || ///
 line a_weekpay year if year >= 1989 & year <= 1993, lcolor("`color4'") || ///
 line a_weekpay year if year >= 1995, lcolor("`color4'") ///
 legend(off) ///
-xlabel(1980(5)2015) ///
+xlabel(1980(5)2020) ///
 ylabel(0(10)40 50 "50%", angle(0) gmin gmax) ///
 xtitle("") ytitle("") ///
 lcolor("`color4'") ///

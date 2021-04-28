@@ -34,7 +34,7 @@ line schenrl_1 schenrl_2 year, ///
 	line schenrl_3 schenrl_4 year, ///
 	lcolor("`color3'" "`color4'") ///
 	legend(off) ///
-	xlabel(1985(5)2015) ///
+	xlabel(1985(5)2020) ///
 	ylabel(0(20)80 100 "100%", angle(0) gmin gmax) ///
 	xtitle("") ytitle("") ///
 	graphregion(color(white)) plotregion(color(white)) ///

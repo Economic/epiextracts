@@ -35,7 +35,7 @@ local color6 166 86 40
 
 line child young early mid late old year, ///
 legend(off) ///
-xlabel(1985(5)2015) ///
+xlabel(1985(5)2020) ///
 ylabel(5(5)20 25 "25%", angle(0) gmin gmax) ///
 yscale(r(5 27)) ///
 xtitle("") ytitle("") ///
