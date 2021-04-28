@@ -25,7 +25,7 @@ local color5 255 127 0
 
 line lfpr_0 lfpr_1 year, ///
 legend(off) ///
-xlabel(1975(5)2015) ///
+xlabel(1975(5)2020) ///
 ylabel(50(10)90 100 "100%", angle(0)) ///
 xtitle("") ytitle("") ///
 lcolor("`color4'" "`color2'") ///

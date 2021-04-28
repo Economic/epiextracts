@@ -22,7 +22,7 @@ local color5 255 127 0
 
 line otcrec_0 otcrec_1 year, lcolor("`color4'" "`color2'") ///
 legend(off) ///
-xlabel(1995(5)2015) ///
+xlabel(1995(5)2020) ///
 ylabel(0(5)30 30 "30%", angle(0) gmin gmax) ///
 xtitle("") ytitle("") ///
 lcolor("`color4'" "`color2'") ///
@@ -33,5 +33,5 @@ text(`otcrec_1yvalue' `otcrec_1xvalue' "Female", color("`color2'") placement(c))
 graph export ${variableimages}otcrec_titleimage.svg, replace
 
 /***
-The analysis above uses hourly wage earners, ages 16-64,from the CPS ORG for 1994-2019.
+The analysis above uses hourly wage earners, ages 16-64,from the CPS ORG for 1994-2020.
 ***/

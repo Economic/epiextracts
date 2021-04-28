@@ -27,7 +27,7 @@ local color5 255 127 0
 
 line black nonblack year, ///
 legend(off) ///
-xlabel(1975(5)2015) ///
+xlabel(1975(5)2020) ///
 ylabel(0(5)15 20 "20%", angle(0) gmin gmax) ///
 xtitle("") ytitle("") ///
 lcolor("`color1'" "`color2'") ///

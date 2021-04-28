@@ -25,7 +25,7 @@ local unmem1yvalue = `unmem1yvalue' - 4
 line unmem0 unmem1 year if year < 1982, lcolor("`color3'" "`color2'") || ///
 line unmem0 unmem1 year if year > 1982, lcolor("`color3'" "`color2'") ///
 legend(off) ///
-xlabel(1975(5)2015) ///
+xlabel(1975(5)2020) ///
 ylabel(0(5)30 35 "35%", angle(0) gmin gmax) ///
 xtitle("") ytitle("") ///
 graphregion(color(white)) plotregion(color(white)) ///

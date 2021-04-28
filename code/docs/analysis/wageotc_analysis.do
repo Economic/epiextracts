@@ -16,7 +16,7 @@ tempfile cpiurs
 save `cpiurs'
 restore
 merge m:1 year using `cpiurs', keep(3) nogenerate
-sum cpiurs if year == 2019
+sum cpiurs if year == 2020
 local basevalue = r(mean)
 replace wage = wage * `basevalue' / cpiurs
 replace wageotc = wageotc * `basevalue' / cpiurs
@@ -40,16 +40,16 @@ local dollar=char(36)
 
 line wage wageotc year, ///
 legend(off) ///
-xlabel(1975(5)2015) ///
-ylabel(12(2)18 20 "$20", angle(0) gmin gmax) ///
+xlabel(1975(5)2020) ///
+ylabel(12(2)22 24 "$24", angle(0) gmin gmax) ///
 xtitle("") ytitle("") ///
 lcolor("`color4'" "`color2'") ///
 graphregion(color(white)) plotregion(color(white)) ///
-title("Median real wages (in 2019`dollar')", size(medium)) ///
+title("Median real wages (in 2020`dollar')", size(medium)) ///
 text(`wageyvalue' `wagexvalue' "wage", color("`color4'") placement(c)) ///
 text(`wageotcyvalue' `wageotcxvalue' "wageotc", color("`color2'") placement(c))
 graph export ${variableimages}wageotc_titleimage.svg, replace
 
 /***
-The analysis above uses the CPS ORG for 1979-2019 and the CPS May for 1973-1978.
+The analysis above uses the CPS ORG for 1979-2020 and the CPS May for 1973-1978.
 ***/

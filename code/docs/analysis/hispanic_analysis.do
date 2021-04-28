@@ -12,7 +12,7 @@ local hispanicxvalue = `maxyear' + 0.5
 local color1 77 175 74
 line hispanic year, ///
 legend(off) ///
-xlabel(1975(5)2015) ///
+xlabel(1975(5)2020) ///
 ylabel(0(10)40 50 "50%", angle(0) gmin gmax) ///
 xtitle("") ytitle("") ///
 lcolor("`color1'") ///
@@ -24,5 +24,5 @@ graph export ${variableimages}hispanic_titleimage.svg, replace
 /***
 Significant race/ethnicity coding changes occur in 1994, 2003, 2014.
 
-In the figure above, 1973-1975 data are from the EPI CPS May extracts, and 1976-2019 data are from the EPI CPS Basic Monthly extracts.
+In the figure above, 1973-1975 data are from the EPI CPS May extracts, and 1976-2020 data are from the EPI CPS Basic Monthly extracts.
 ***/

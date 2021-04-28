@@ -26,7 +26,7 @@ local color5 255 127 0
 
 line tc_0 tc_1 year, lcolor("`color4'" "`color2'") ///
 legend(off) ///
-xlabel(1975(5)2015) ///
+xlabel(1975(5)2020) ///
 ylabel(0(2)10 10 "10%", angle(0) gmin gmax) ///
 xtitle("") ytitle("") ///
 lcolor("`color4'" "`color2'") ///
@@ -37,5 +37,5 @@ text(`tc_1yvalue' `tc_1xvalue' "Female", color("`color2'") placement(c))
 graph export ${variableimages}tc_weekpay_titleimage.svg, replace
 
 /***
-The analysis above uses observations with positive weekly earnings workers in the CPS ORG for 1979-2019 and the CPS May for 1973-1978.
+The analysis above uses observations with positive weekly earnings workers in the CPS ORG for 1979-2020 and the CPS May for 1973-1978.
 ***/

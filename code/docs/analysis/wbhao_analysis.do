@@ -28,7 +28,7 @@ local color5 255 127 0
 
 line white black hispanic asian other year, ///
 legend(off) ///
-xlabel(1990(5)2015) ///
+xlabel(1990(5)2020) ///
 ylabel(0(20)60 80 "80%", angle(0) gmin gmax) ///
 xtitle("") ytitle("") ///
 lcolor("`color1'" "`color2'" "`color3'" "`color4'" "`color5'") ///

@@ -24,7 +24,7 @@ local unionyvalue = `unionyvalue' + 2
 line unmem union year if year < 1982, lcolor("`color3'" "`color2'") || ///
 line unmem union year if year > 1982, lcolor("`color3'" "`color2'") ///
 legend(off) ///
-xlabel(1975(5)2015) ///
+xlabel(1975(5)2020) ///
 ylabel(0(5)25 30 "30%", angle(0) gmin gmax) ///
 xtitle("") ytitle("") ///
 graphregion(color(white)) plotregion(color(white)) ///

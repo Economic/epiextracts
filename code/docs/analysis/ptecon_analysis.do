@@ -36,7 +36,7 @@ lcolor("`color1'" "`color2'" "`color3'" "`color4'") || ///
 line white black hispanic other year if year >= 1994, ///
 lcolor("`color1'" "`color2'" "`color3'" "`color4'") ///
 legend(off) ///
-xlabel(1990(5)2015) ///
+xlabel(1990(5)2020) ///
 ylabel(0(2)10 12 "12%", angle(0) gmin gmax) ///
 xtitle("") ytitle("") ///
 graphregion(color(white) margin(r=12)) plotregion(color(white)) ///

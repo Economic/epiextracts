@@ -21,7 +21,7 @@ local color4 152 78 163
 
 line white black other year, ///
 legend(off) ///
-xlabel(1975(5)2015) ///
+xlabel(1975(5)2020) ///
 ylabel(0(20)60 80 "80%", angle(0) gmin gmax) ///
 xtitle("") ytitle("") ///
 lcolor("`color1'" "`color2'" "`color4'") ///
@@ -35,5 +35,5 @@ graph export ${variableimages}wbo_only_titleimage.svg, replace
 /***
 Significant race/ethnicity coding changes occur in 1989, 1996, 2003, 2012m5, and 2014.  
 
-In the figure above, 1973-1975 data are from the EPI CPS May extracts, and 1976-2019 data are from the EPI CPS Basic Monthly extracts.
+In the figure above, 1973-1975 data are from the EPI CPS May extracts, and 1976-2020 data are from the EPI CPS Basic Monthly extracts.
 ***/

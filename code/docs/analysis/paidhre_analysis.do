@@ -28,7 +28,7 @@ line paidhre_0 paidhre_1 year if year <= 1978, lcolor("`color4'" "`color2'") || 
 line paidhre_0 paidhre_1 year if 1979 <= year & year <= 1993, lcolor("`color4'" "`color2'") || ///
 line paidhre_0 paidhre_1 year if 1994 <= year, lcolor("`color4'" "`color2'") ///
 legend(off) ///
-xlabel(1975(5)2015) ///
+xlabel(1975(5)2020) ///
 ylabel(0(20)80 100 "100%", angle(0) gmin gmax) ///
 xtitle("") ytitle("") ///
 lcolor("`color4'" "`color2'") ///
@@ -39,5 +39,5 @@ text(`paidhre_1yvalue' `paidhre_1xvalue' "Female", color("`color2'") placement(c
 graph export ${variableimages}paidhre_titleimage.svg, replace
 
 /***
-The analysis above uses the CPS ORG for 1979-2019 and the CPS May for 1973-1978.
+The analysis above uses the CPS ORG for 1979-2020 and the CPS May for 1973-1978.
 ***/
