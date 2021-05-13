@@ -217,7 +217,6 @@ if $monthlycps == 1 | $maycps == 1 {;
 		);
 		/* Finance, insurance and real estate. Business, auto and repair services, and other professional. */
 		replace mind16 = 9 if	(
-			(indcode == 12) | /* vetrinary services */
 			(indcode == 841) | /* legal services */
 			(indcode >= 700 & indcode <= 712) | /* finance, insurance, and real estate */
 			(indcode >= 721 & indcode <= 760) | /* business and repair services */
@@ -290,7 +289,8 @@ if $monthlycps == 1 | $maycps == 1 {;
 		/* Communications and utilities (treated information as communication) */
 		replace mind16 = 6 if	(
 			(indcode >= 0570 & indcode <= 0690) | /* utilities */
-			(indcode >= 6490 & indcode <= 6780) /* information (excl publishing, incl software publishing */
+			(indcode >= 6490 & indcode <= 6695) | /* information (excl publishing and libraries, incl software publishing) */
+			(indcode >= 6780 & indcode <= 6790)
 		);
 		/* Wholesale trade */
 		replace mind16 = 7 if
@@ -325,8 +325,10 @@ if $monthlycps == 1 | $maycps == 1 {;
 			(indcode >= 8270 & indcode <= 8290)
 		);
 		/* Educational */
-		replace mind16 = 14 if
-			(indcode >= 7860 & indcode <= 7890);
+		replace mind16 = 14 if  (
+			(indcode == 6770) | /* libraries and archives */
+			(indcode >= 7860 & indcode <= 7890)
+		);
 		/* Social services */
 		replace mind16 = 15 if
 			(indcode >= 8370 & indcode <= 8470);
