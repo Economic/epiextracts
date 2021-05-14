@@ -6,6 +6,12 @@ If you use the EPI extracts for your research, please cite them as
     Economic Policy Institute. {{ year }}. Current Population Survey Extracts, Version {{ version }}, https://microdata.epi.org.
 
 ## Recent changes
+### Version 1.0.17 -- 2021-05-13
+#### Added
+* April 2021 extracts
+
+#### Modified 
+* Minor coding changes to `mind16` suggested by Brain Dew (see here: https://github.com/Economic/epiextracts/pull/163)
 ### Version 1.0.16 -- 2021-04-08
 #### Added
 
