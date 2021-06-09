@@ -9,9 +9,9 @@ The latest EPI CPS extracts are available in Stata format:
 
 Extract     | Years   | File | Version
 ------------|---------|------|---------------------------------
-CPS Basic monthly | 1976 - {{ latestdata}} | [epi_cpsbasic_2000_2020.zip](epi_cpsbasic_2000_2020.zip) <br/> [epi_cpsbasic_1976_1999.zip](epi_cpsbasic_1976_1999.zip) | {{ version }}
+CPS Basic monthly | 1976 - {{ latestdata}} | [epi_cpsbasic_2000_2021.zip](epi_cpsbasic_2000_2021.zip) <br/> [epi_cpsbasic_1976_1999.zip](epi_cpsbasic_1976_1999.zip) | {{ version }}
 CPS May           | 1973 - 1981            | [epi_cpsmay_1973_1981.zip](epi_cpsmay_1973_1981.zip) | {{ version }}
-CPS ORG           | 1979 - {{ latestdata}} | [epi_cpsorg_1979_2020.zip](epi_cpsorg_1979_2020.zip) | {{ version }}
+CPS ORG           | 1979 - {{ latestdata}} | [epi_cpsorg_1979_2021.zip](epi_cpsorg_1979_2021.zip) | {{ version }}
 
 ## View the documentation
 * [Variables](variables/index.md) available in the EPI extracts
