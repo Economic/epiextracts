@@ -93,7 +93,7 @@ if `year' >= 2000 & `year' <= 2002 {
 
 * determine dictionary/NBER do-file to use
 * January 2020 - present date
-if  tm(2020m1) <= `datenum' & `datenum' <= tm(2021m4) local nberprogname cpsbjan2020
+if  tm(2020m1) <= `datenum' & `datenum' <= tm(2021m5) local nberprogname cpsbjan2020
 * January 2017 - December 2019
 if  tm(2017m1) <= `datenum' & `datenum' <= tm(2019m12) local nberprogname cpsbjan2017
 * January 2015 - December 2016
