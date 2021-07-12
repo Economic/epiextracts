@@ -6,6 +6,11 @@ If you use the EPI extracts for your research, please cite them as
     Economic Policy Institute. {{ year }}. Current Population Survey Extracts, Version {{ version }}, https://microdata.epi.org.
 
 ## Recent changes
+### Version 1.0.19 -- 2021-07-12
+#### Added
+* June 2021 extracts
+#### Modified
+* March 2021 CPS Basic data had missing wage values. A modified file was uploaded by Census (https://www2.census.gov/programs-surveys/cps/datasets/2021/basic/may21pub.zip). v1.0.19 incorporates this new file for March. 
 ### Version 1.0.18 -- 2021-06-09
 #### Added
 * May 2021 extracts
