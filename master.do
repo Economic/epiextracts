@@ -39,7 +39,7 @@ set trace off
 * DATA VERSION
 *******************************************************************************
 * The version is saved in the dataset labels and notes
-global dataversion 1.0.18
+global dataversion 1.0.19
 
 
 *******************************************************************************
@@ -83,11 +83,11 @@ adopath ++ ${code}ado
 * process the raw data and convert it to Stata format
 * this is only necessary for additional months of data
 * process_rawmarch, begin(1998) end(2018)
-* process_rawbasic, begin(1994m1) end(2019m11)
+ process_rawbasic, begin(2021m3) end(2021m6)
 
 * create EPI's extracts from the processed raw data
 * creates both basic monthly and ORG subsample
-create_extracts, begin(1962m1) end(2021m5)
+create_extracts, begin(1962m1) end(2021m6)
 
 * create documentation
 * do ${codedocs}createdocs.do
