@@ -14,7 +14,7 @@ CPS May           | 1973 - 1981            | [epi_cpsmay_1973_1981.zip](epi_cpsm
 CPS ORG           | 1979 - {{ latestdata}} | [epi_cpsorg_1979_2021.zip](epi_cpsorg_1979_2021.zip) | {{ version }}
 
 ## View the documentation
-* [Variables](variables/index.md) available in the EPI extracts
+* [Variables](variables/) available in the EPI extracts
 * How to [use](basicuse.md) the data after downloading it
 * Frequently asked [questions](methodology/faq.md)
 * Methodology for specific variables like [wages](methodology/wagevariables.md) and [race/ethnicity](methodology/racevariables.md)
