@@ -24,7 +24,9 @@ foreach year of numlist `beginyear' / `endyear' {
     do code/variables/generate_famwgt.do
     do code/variables/generate_faminc_c.do
     do code/variables/generate_famid.do
-    keep year age faminc_c famwgt famid
+    do code/variables/generate_hhtype.do
+    do code/variables/generate_hhinc_c.do
+    keep year age faminc_c famwgt famid hhtype hhinc_c
     tempfile data`year'
     save `data`year''
 }
@@ -38,7 +40,6 @@ foreach year of numlist `beginyear' / `endyear' {
 
 *tab realfaminc, gen(realfaminc_)
 
-*tab hourslwt, gen(hourslwt_)
 * basic CPS does not have age < 14 prior to 1982
 drop if age < 14
 
@@ -48,9 +49,11 @@ drop if _merge == 2
 sum cpiurs if year == 2018
 local cpi_base = `r(mean)'
 
+drop if hhinc_c == 99999 
+
 gen realfaminc = faminc_c * `cpi_base'/cpiurs
 
-binipolate faminc_c if famid == 1 [pw=famwgt], binsize(0.25) p(50) by(year) collapsefun(gcollapse)
+binipolate realfaminc if famid == 1 & hhtype < 9 [pw=famwgt], binsize(0.25) p(50) by(year) collapsefun(gcollapse)
 li
 
 *gcollapse (mean) faminc_c [pw=famwgt], by(year)

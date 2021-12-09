@@ -11,3 +11,4 @@ master.log
 *.Rproj
 .Rhistory
 .Rproj.user
+*.gz
