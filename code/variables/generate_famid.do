@@ -13,8 +13,11 @@ if $monthlycps == 1 {
 }
 
 if $marchcps == 1 {
-	if tm(1963m1) <= $date & $date <= tm(1997m12) {
+	if tm(1963m1) <= $date & $date <= tm(1987m12) {
 		replace famid = famnum
+	}
+	if tm(1988m1) <= $date & $date <= tm(1997m12) {
+		replace famid = famnum - 1
 	}
 	if tm(1998m1) <= $date {
 		replace famid = a_famnum

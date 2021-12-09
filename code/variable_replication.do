@@ -1,6 +1,6 @@
 set more off
 
-local beginyear = 2015
+local beginyear = 2000
 local endyear = 2018
 
 global marchcps = 1
@@ -18,7 +18,7 @@ foreach year of numlist `beginyear' / `endyear' {
     do code/variables/generate_age.do
     do code/variables/generate_poverty.do
     do code/variables/generate_asecwgt.do
-    keep year poverty asecwgt
+    keep year poverty asecwgt age
     tempfile data`year'
     save `data`year''
 }
@@ -29,7 +29,8 @@ foreach year of numlist `beginyear' / `endyear' {
     else append using `data`year''
 }
 
-gcollapse (mean) poverty [pw-asecwgt], by(year)
+*keep if famtype == 1
+*gcollapse (mean) faminc_c [pw=famwgt], by(year)
 
 *duplicates tag year hhid personid, gen(tagcount)
 *tab year tagcount

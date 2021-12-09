@@ -13,6 +13,15 @@ if $monthlycps == 1 {
 	}
 }
 
+if $marchcps == 1 {
+	if tm(1988m1) <= $date & $date <= tm(1997m12) {
+		replace hhtype = hhtype4
+	}
+	if tm(1998m1) <= $date {
+		replace hhtype = hrhtype
+	}
+}
+
 #delimit ;
 lab def hhtype
 0 "Noninterview household"

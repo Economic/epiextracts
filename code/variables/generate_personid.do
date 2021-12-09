@@ -11,7 +11,7 @@ if $monthlycps == 1 {
 }
 
 if $marchcps == 1 {
-	if tm(1976m1) <= $date & $date tm(1997m12) {
+	if tm(1976m1) <= $date & $date <= tm(1997m12) {
 		destring peridnum, replace
 		replace personid = peridnum
 	}
