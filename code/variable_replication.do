@@ -1,7 +1,7 @@
 set more off
 
-local beginyear = 2000
-local endyear = 2018
+local beginyear = 1988
+local endyear = 1990
 
 global marchcps = 1
 global monthlycps = 0
@@ -14,11 +14,9 @@ adopath ++ ${code}ado
 foreach year of numlist `beginyear' / `endyear' {
     global date = tm(`year'm1)
     load_rawcps, begin(`year') end(`year') sample(march)
-    do code/variables/generate_famtype.do
-    do code/variables/generate_age.do
-    do code/variables/generate_poverty.do
     do code/variables/generate_asecwgt.do
-    keep year poverty asecwgt age
+    do code/variables/generate_selfinc.do
+    keep year asecwgt selfinc
     tempfile data`year'
     save `data`year''
 }
