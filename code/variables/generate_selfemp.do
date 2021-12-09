@@ -29,6 +29,25 @@ if $monthlycps == 1 {
 	}
 }
 
+if $marchcps == 1 {
+	if tm(1962m1) <= $date & $date <= tm(1962m12) {
+		replace selfemp = 0 if class >= 0 & class != .
+		replace selfemp = 1 if class == 2
+	}	
+	if tm(1963m1) <= $date & $date <= tm(1987m12) {
+		replace selfemp = 0 if class >= 1 & class != .
+		replace selfemp = 1 if class == 3
+	}
+	if tm(1988m1) <= $date & $date <= tm(1997m12) {
+		replace selfemp = 0 if class >= 1 & class != .
+		replace selfemp = 1 if class == 6
+	}
+	if tm(1998m1) <= $date {
+		replace selfemp = 0 if peio1cow >= 1 & peio1cow != .
+		replace selfemp = 1 if peio1cow == 7
+	}	
+}
+
 lab var selfemp "Self-employed (unincorporated)"
 lab def selfemp 1 "Self-employed" 0 "Not self-employed"
 lab val selfemp selfemp
