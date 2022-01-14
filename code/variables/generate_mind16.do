@@ -4,7 +4,7 @@
 gen byte mind16 = .
 
 #delimit ;
-if $monthlycps == 1 | $maycps == 1 {;
+if $monthlycps == 1 | $maycps == 1 | $marchcps == 1 {;
 
 	/*
 	Industry coding for:

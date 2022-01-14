@@ -4,7 +4,7 @@
 /* 2014-present: 2012 census industry codes */
 gen ind12 = .
 
-if $monthlycps == 1 {
+if $monthlycps == 1 | $marchcps == 1 {
 	if tm(2014m1) <= $date {
 		replace ind12 = indcode
 	}
@@ -277,4 +277,5 @@ lab def ind12
 lab val ind12 ind12
 label var ind12 "2012 Census Industry Classification"
 notes ind12: Industry classification for 2014-present
-notes ind12: 2014-present CPS: peio1icd
+notes ind12: 2014-present CPS basic: peio1icd
+notes ind12: 2014-present CPS march: peionind

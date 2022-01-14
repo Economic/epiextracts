@@ -33,4 +33,4 @@ notes selfinc: 1994-present CPS: peio1cow
 notes selfinc: 1994-present: For first job
 notes selfinc: 1989-1993 Unicon: derived from class
 notes selfinc: Universe: Class of worker assigned (not necessarily employed)
-notes selfinc: Different definitions/universes: 1989-1993, 1994-present
+notes selfinc: Different definitions/universes: 1989-1993, 1994-present 

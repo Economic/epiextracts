@@ -10,6 +10,13 @@ if $monthlycps == 1 {
 	replace dind03 = . if dind03 < 0
 }
 
+if $marchcps == 1 {
+	if tm(2003m1) <= $date {
+		replace dind03 = a_dtind
+	}
+	replace dind03 = . if dind03 < 0
+}
+
 #delimit ;
 label define dind03
 1	 "Agriculture"
@@ -71,4 +78,5 @@ label values dind03 dind03;
 label var dind03 "Detailed industry recode, 2003-present"
 notes dind03: Detailed industry recode by Census, consistent for 2003-present
 notes dind03: Industry codes from primary job
-notes dind03: 2003-present: prdtind1
+notes dind03: 2003-present CPS basic: prdtind1
+notes dind03: 2003-present CPS march: a_dtind

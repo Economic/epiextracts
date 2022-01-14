@@ -4,8 +4,14 @@
 /* 2012m5-present: 2010 census occupation codes */
 gen occ10 = .
 
-if $monthlycps == 1 {
+if $monthlycps == 1 | $marchcps == 1 {
 	if tm(2012m5) <= $date {
+		replace occ10 = occcode
+	}
+}
+
+if $marchcps == 1 {
+	if tm(2011m1) <= $date {
 		replace occ10 = occcode
 	}
 }
@@ -586,4 +592,5 @@ lab def occ10
 lab val occ10 occ10
 label var occ10 "2010 Census Occupation Classification"
 notes occ10: Occupation classification for 2012m5-present
-notes occ10: 2012m5-present CPS: peio1ocd
+notes occ10: 2012m5-present CPS basic: peio1ocd
+notes occ10: 2012m5-present CPS march: peioocc

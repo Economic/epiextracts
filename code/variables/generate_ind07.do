@@ -4,7 +4,7 @@
 /* 2009-2013: 2007 census industry codes */
 gen ind07 = .
 
-if $monthlycps == 1 {
+if $monthlycps == 1 | $marchcps == 1 {
 	if tm(2009m1) <= $date & $date <= tm(2013m12) {
 		replace ind07 = indcode
 	}
@@ -282,4 +282,5 @@ lab def ind07
 lab val ind07 ind07
 label var ind07 "2007 Census Industry Classification"
 notes ind07: Industry classification for 2009-2013
-notes ind07: 2009-2013 CPS: peio1icd
+notes ind07: 2009-2013 CPS basic: peio1icd
+notes ind07: 2009-2013 CPS march: peioind

@@ -10,6 +10,16 @@ if $monthlycps == 1 {
 	replace mocc03 = . if mocc03 < 0
 }
 
+if $marchcps == 1 {
+	if tm(2003m1) <= $date & $date <= tm(2010m12) {
+		replace mocc03 = mjocc
+	}
+	if tm(2011m1) <= $date {
+		replace mocc03 = a_mjocc
+	}
+	replace mocc03 = . if mocc03 < 0
+}
+
 #delimit ;
 label define mocc03
 1	 "Management, business, and financial occupations"
@@ -29,4 +39,6 @@ label values mocc03 mocc03;
 label var mocc03 "Major occupation recode, 2003-present"
 notes mocc03: Major occupation recode by Census, consistent for 2003-present
 notes mocc03: Occupation codes from primary job
-notes mocc03: 2003-present: prmjocc1
+notes mocc03: 2003-present CPS basic: prmjocc1
+notes mocc03: 2003-2011 CPS march: mjocc
+notes mocc03: 2011-present CPS march: a_mjocc

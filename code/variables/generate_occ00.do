@@ -4,11 +4,18 @@
 /* 2003-2012m4: 2000 census occupation codes */
 gen occ00 = .
 
-if $monthlycps == 1 {
+if $monthlycps == 1 | $marchcps == 1 {
 	if tm(2003m1) <= $date & $date <= tm(2012m4) {
 		replace occ00 = occcode
 	}
 }
+
+if $marchcps == 1 {
+	if tm(2003m1) <= $date & $date <= tm(2010m12) {
+		replace occ00 = occcode
+	}
+}
+
 
 #delimit ;
 lab def occ00
@@ -545,4 +552,5 @@ lab def occ00
 lab val occ00 occ00
 label var occ00 "2000 Census Occupation Classification"
 notes occ00: Occupation classification for 2003-2012m4
-notes occ00: 2003-2012m4 CPS: peio1ocd
+notes occ00: 2003-2012m4 CPS basic: peio1ocd
+notes occ00: 2003-2012m4 CPS march: peioocc

@@ -25,4 +25,4 @@ lab val hoursut hoursut
 notes hoursut: Only available 1994-present (CPS)
 notes hoursut: 1994-present CPS: pehruslt
 notes hoursut: 1979-1997 Unicon: ernush
-notes hoursut: 1998-present CPS: a_uslhrs
+notes hoursut: 1998-present CPS: a_uslhrs 

@@ -4,7 +4,7 @@
 /* 1992-2002: 1990 census occupation codes */
 gen occ90 = .
 
-if $monthlycps == 1 {
+if $monthlycps == 1 | $marchcps == 1 {
 	if tm(1992m1) <= $date & $date <= tm(2002m12) {
 		replace occ90 = occcode
 	}
@@ -522,5 +522,6 @@ lab def occ90
 lab val occ90 occ90
 label var occ90 "1990 Census Occupation Classification"
 notes occ90: Occupation classification for 1992-2002
-notes occ90: 1992-1993 Unicon: occ
-notes occ90: 1994-2002 CPS: peio1ocd
+notes occ90: 1992-1993/1997 Unicon: occ
+notes occ90: 1994-2002 CPS basic: peio1ocd
+notes occ90: 1998-2002 CPS march: peioocc
