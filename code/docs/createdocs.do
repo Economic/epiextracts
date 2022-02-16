@@ -1,5 +1,5 @@
-*do ${codedocs}detailed_analysis.do
-*do ${codedocs}add_misc.do
+do ${codedocs}detailed_analysis.do
+do ${codedocs}add_misc.do
 
 * create variable index page
 webdoc do ${codedocs}variableindex.do, raw nokeep init(${docs}variables/index.md) replace
@@ -18,7 +18,7 @@ forvalues i = 1 / `N' {
 }
 
 * load data for a given year to gather all variables
-load_epiextracts, begin(2021m1) end(2021m12) sample(org)
+load_epiextracts, begin(2021m1) end(2021m12) sample(org) version(local)
 keep if _n == 1
 tempfile basedata
 save `basedata'
