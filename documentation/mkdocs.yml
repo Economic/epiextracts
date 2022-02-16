@@ -7,8 +7,9 @@ copyright: 'Copyright &copy; 2021 <a href= "https://epi.org">Economic Policy Ins
 theme:
   name: 'material'
   language: en
-  feature:
-    tabs: true
+  features:
+    - navigation.tabs
+    - content.tabs.link
   #palette:
   #  primary: 'blue grey'
   #  accent:  'indigo'
@@ -16,8 +17,6 @@ theme:
     text: Roboto
     code: Fira Code
   favicon: assets/images/favicon.png
-  logo:
-    icon: "home"
   custom_dir: theme_customizations
 
 markdown_extensions:
@@ -27,6 +26,9 @@ markdown_extensions:
   - pymdownx.magiclink
   - pymdownx.details
   - admonition
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
   - pymdownx.snippets:
       base_path: docs
   - toc:

@@ -4,21 +4,23 @@
 
 Access the dataset label to determine the version of the extracts you are using:
 
-```stata tab="Stata"
-use epi_cpsorg_2019.dta, clear
 
-* describe the data to view the version
-describe, short
+=== "Stata"
+    ```Stata
+        use epi_cpsorg_2019.dta, clear
 
-* save the version information in a local macro
-local dataversion: data label
-display "`dataversion'"
-```
+        * describe the data to view the version
+        describe, short
 
-```r tab="R"
-mydata <- haven::read_dta("epi_cpsorg_2019.dta")
-dataversion <- attr(mydata,"label")
-```
+        * save the version information in a local macro
+        local dataversion: data label
+        display "`dataversion'"
+    ```
+=== "R"
+    ```r 
+        mydata <- haven::read_dta("epi_cpsorg_2019.dta")
+        dataversion <- attr(mydata,"label")
+    ```
 
 ## What sample restrictions are used in the EPI extracts?
 
