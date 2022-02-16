@@ -15,7 +15,7 @@ tempfile cpiurs
 save `cpiurs'
 restore
 merge m:1 year using `cpiurs', keep(3) nogenerate
-sum cpiurs if year == 2020
+sum cpiurs if year == 2021
 local basevalue = r(mean)
 replace wage = wage * `basevalue' / cpiurs
 
@@ -44,12 +44,12 @@ ylabel(12(2)22 24 "$24", angle(0)) ///
 xtitle("") ytitle("") ///
 lcolor("`color4'" "`color2'") ///
 graphregion(color(white)) plotregion(color(white)) ///
-title("Median real wages by gender (in 2020`dollar')", size(medium)) ///
+title("Median real wages by gender (in 2021`dollar')", size(medium)) ///
 text(`wage_0yvalue' `wage_0xvalue' "Male", color("`color4'") placement(c)) ///
 text(`wage_1yvalue' `wage_1xvalue' "Female", color("`color2'") placement(c))
 
 graph export ${variableimages}wage_titleimage.svg, replace
 
 /***
-The analysis above uses the CPS ORG for 1979-2020 and the CPS May for 1973-1978.
+The analysis above uses the CPS ORG for 1979-2021 and the CPS May for 1973-1978.
 ***/

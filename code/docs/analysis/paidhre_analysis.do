@@ -39,5 +39,5 @@ text(`paidhre_1yvalue' `paidhre_1xvalue' "Female", color("`color2'") placement(c
 graph export ${variableimages}paidhre_titleimage.svg, replace
 
 /***
-The analysis above uses the CPS ORG for 1979-2020 and the CPS May for 1973-1978.
+The analysis above uses the CPS ORG for 1979-2021 and the CPS May for 1973-1978.
 ***/

@@ -33,5 +33,5 @@ text(`otcrec_1yvalue' `otcrec_1xvalue' "Female", color("`color2'") placement(c))
 graph export ${variableimages}otcrec_titleimage.svg, replace
 
 /***
-The analysis above uses hourly wage earners, ages 16-64,from the CPS ORG for 1994-2020.
+The analysis above uses hourly wage earners, ages 16-64,from the CPS ORG for 1994-2021.
 ***/
