@@ -28,10 +28,10 @@ deploywebcode:
 
 deploywebdata:
 	cd extracts && zip epi_cpsbasic_1976_1999.zip epi_cpsbasic_19*.dta
-	cd extracts && zip epi_cpsbasic_2000_2021.zip epi_cpsbasic_20*.dta
+	cd extracts && zip epi_cpsbasic_2000_2022.zip epi_cpsbasic_20*.dta
 	cd extracts && zip epi_cpsmarch_1962_2018.zip epi_cpsmarch_*.dta
 	cd extracts && zip epi_cpsmay_1973_1981.zip epi_cpsmay_*.dta
-	cd extracts && zip epi_cpsorg_1979_2021.zip epi_cpsorg_*.dta
+	cd extracts && zip epi_cpsorg_1979_2022.zip epi_cpsorg_*.dta
 	cd extracts && aws s3 sync . s3://microdata.epi.org/ --exclude "*" --include "epi_cps*.zip" --delete
 	rm extracts/epi_cps*.zip
 
