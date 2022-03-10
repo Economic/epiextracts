@@ -16,7 +16,7 @@ tempfile cpiurs
 save `cpiurs'
 restore
 merge m:1 year using `cpiurs', keep(3) nogenerate
-sum cpiurs if year == 2020
+sum cpiurs if year == 2021
 local basevalue = r(mean)
 replace wage = wage * `basevalue' / cpiurs
 replace wageotc = wageotc * `basevalue' / cpiurs
@@ -51,5 +51,5 @@ text(`wageotcyvalue' `wageotcxvalue' "wageotc", color("`color2'") placement(c))
 graph export ${variableimages}wageotc_titleimage.svg, replace
 
 /***
-The analysis above uses the CPS ORG for 1979-2020 and the CPS May for 1973-1978.
+The analysis above uses the CPS ORG for 1979-2021 and the CPS May for 1973-1978.
 ***/

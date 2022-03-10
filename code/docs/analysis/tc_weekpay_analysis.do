@@ -37,5 +37,5 @@ text(`tc_1yvalue' `tc_1xvalue' "Female", color("`color2'") placement(c))
 graph export ${variableimages}tc_weekpay_titleimage.svg, replace
 
 /***
-The analysis above uses observations with positive weekly earnings workers in the CPS ORG for 1979-2020 and the CPS May for 1973-1978.
+The analysis above uses observations with positive weekly earnings workers in the CPS ORG for 1979-2021 and the CPS May for 1973-1978.
 ***/

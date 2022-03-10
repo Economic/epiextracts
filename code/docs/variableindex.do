@@ -24,7 +24,7 @@ forvalues i = 1 / `N' {
 	local group`var': di group
 }
 
-load_epiextracts, begin(2018m1) end(2018m1) sample(basic) version(local)
+load_epiextracts, begin(2021m1) end(2021m1) sample(basic) version(local)
 keep if _n == 1
 order _all, alphabetic
 foreach var of varlist _all {

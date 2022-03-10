@@ -15,7 +15,7 @@ forvalues i = 1 / `N' {
 local analysisvarlist wbhaom wbhom statefips statecensus cbsafips countyfips region division
 local othervars year basicwgt statefips age
 
-load_epiextracts, begin(2020m1) end(2020m12) sample(basic) version(local) keep(`analysisvarlist' `othervars')
+load_epiextracts, begin(2021m1) end(2021m12) sample(basic) version(local) keep(`analysisvarlist' `othervars')
 tempfile fulldata
 save `fulldata'
 
@@ -40,7 +40,7 @@ local othervars year basicwgt finalwgt female
 load_epiextracts, begin(1973m1) end(1975m12) sample(may) version(local) keep(`analysisvarlist' `othervars')
 tempfile maydata
 save `maydata'
-load_epiextracts, begin(1976m1) end(2020m12) sample(basic) version(local) keep(`analysisvarlist' `othervars')
+load_epiextracts, begin(1976m1) end(2021m12) sample(basic) version(local) keep(`analysisvarlist' `othervars')
 append using `maydata'
 tempfile fulldata
 save `fulldata'
@@ -61,7 +61,7 @@ foreach var of varlist `analysisvarlist' {
 * CPS ORG/May analysis for wage variables
 local analysisvarlist otcrec tc_weekpay a_earnhour a_weekpay paidhre wage wageotc wage_noadj
 local othervars year orgwgt female age basicwgt
-load_epiextracts, begin(1979m1) end(2020m12) sample(org) version(local) keep(`analysisvarlist' `othervars')
+load_epiextracts, begin(1979m1) end(2021m12) sample(org) version(local) keep(`analysisvarlist' `othervars')
 tempfile orgdata
 save `orgdata'
 load_epiextracts, begin(1973m1) end(1978m12) sample(may) version(local) keep(`analysisvarlist' `othervars')
@@ -85,7 +85,7 @@ foreach var of varlist `analysisvarlist' {
 * CPS ORG analysis for unions
 local analysisvarlist union unmem
 local othervars year age female selfemp
-load_epiextracts, begin(1983m1) end(2020m12) sample(org) version(local) keep(`analysisvarlist' `othervars')
+load_epiextracts, begin(1983m1) end(2021m12) sample(org) version(local) keep(`analysisvarlist' `othervars')
 tempfile orgdata
 save `orgdata'
 
