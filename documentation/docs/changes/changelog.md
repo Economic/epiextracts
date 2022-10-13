@@ -7,6 +7,11 @@ If you use the EPI extracts for your research, please cite them as
 
 ## Recent changes
 
+### Version 1.0.34 -- 2022-10-13
+#### Added
+* September 2022 extracts
+#### Modified 
+* Fixed typo in `minsamp` documentation
 ### Version 1.0.33 -- 2022-09-09
 #### Added
 * August 2022 extracts
