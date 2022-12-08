@@ -7,6 +7,9 @@ If you use the EPI extracts for your research, please cite them as
 
 ## Recent changes
 
+### Version 1.0.35 -- 2022-11-10
+#### Added
+* October 2022 extracts
 ### Version 1.0.34 -- 2022-10-13
 #### Added
 * September 2022 extracts

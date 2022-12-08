@@ -12,6 +12,7 @@
 * In order for the code to run, you will need some user-written Stata programs:
 *
 * ssc install webdoc, replace
+* ssc install gtools
 * ssc install ashell, replace
 * ssc install moreobs, replace
 * ssc install maptile, replace
@@ -40,7 +41,7 @@ set trace off
 * DATA VERSION
 *******************************************************************************
 * The version is saved in the dataset labels and notes
-global dataversion 1.0.34
+global dataversion 1.0.35
 
 
 *******************************************************************************
@@ -84,11 +85,11 @@ adopath ++ ${code}ado
 * process the raw data and convert it to Stata format
 * this is only necessary for additional months of data
 * process_rawmarch, begin(1998) end(2018)
-*process_rawbasic, begin(2022m8) end(2022m9)
+*process_rawbasic, begin(2022m10) end(2022m10)
 
 * create EPI's extracts from the processed raw data
 * creates both basic monthly and ORG subsample
-create_extracts, begin(1962m1) end(2022m9)
+create_extracts, begin(1962m1) end(2022m10)
 
 * create documentation
 * do ${codedocs}createdocs.do
