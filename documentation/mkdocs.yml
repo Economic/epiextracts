@@ -2,7 +2,7 @@
 site_name: EPI Microdata Extracts
 site_description: CPS and other microdata extracts used by EPI
 site_url: https://microdata.epi.org
-copyright: 'Copyright &copy; 2022 <a href= "https://epi.org">Economic Policy Institute</a>'
+copyright: 'Copyright &copy; 2023 <a href= "https://epi.org">Economic Policy Institute</a>'
 
 theme:
   name: 'material'
@@ -45,6 +45,6 @@ plugins:
 dev_addr: '127.0.0.1:8282'
 
 extra:
-  version: 1.0.37
-  latestdata: 2022m12
-  year: 2022
+  version: 1.0.38
+  latestdata: 2023m1
+  year: 2023
