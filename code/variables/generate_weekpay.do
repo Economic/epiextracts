@@ -17,7 +17,7 @@ if $monthlycps == 1 | $maycps == 1 {
 		if tm(1989m1) <= $date & $date <= tm(1997m12) {
 			local topcodeval 1923
 		}
-		if tm(1998m1) <= $date {
+		if tm(1998m1) <= $date & $date <= tm(2024m3) {
 			* going to use 2884.60 instead of actual topcode of 2884.61 to avoid precision issues
 			local topcodeval 2884.60
 		}
@@ -45,6 +45,8 @@ if $monthlycps == 1 | $maycps == 1 {
 
 			drop weekpay_male weekpay_female
 		}
+		*account for topcoding change in 2023/2024 where outgoing rotation groups are making their way through the changed procedure
+		replace weekpay = weekpay_noadj if (year == 2023 & month >= 4 | year == 2024) & minsamp == 4 
 	}
 }
 
@@ -53,5 +55,6 @@ notes weekpay: Dollars per week for nonhourly and hourly workers
 notes weekpay: Includes overtime, tips, commissions
 notes weekpay: Original top-code values replaced with Pareto-distribution implied mean above top-code
 notes weekpay: Separate imputations for men and women
-notes weekpay: Original top-code: 1973-88: 999; 1986-97: 1923; 1998-: 2884.61
+notes weekpay: Original top-code: 1973-88: 999; 1986-97: 1923; 1998-2023: 2884.61
+notes weekpay: Beginning in 2023, top-code value is the weighted average of the top 3% of earners in a given month
 notes weekpay: Derived from weekpay_noadj and tc_weekpay

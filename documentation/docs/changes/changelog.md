@@ -6,6 +6,11 @@ If you use the EPI extracts for your research, please cite them as
     Economic Policy Institute. {{ year }}. Current Population Survey Extracts, Version {{ version }}, https://microdata.epi.org.
 
 ## Recent changes
+### Version 1.0.41 -- 2023-08-02
+#### Added
+* April, May, June 2023 extracts
+#### Modified
+* `weekpay` has been adjusted to reflect the [new topcoding](https://www2.census.gov/programs-surveys/cps/methodology/improving-disclosure-avoidance-puf-v2.pdf) procedures from Census. See more about how we deal with this in the [wage variables methodology](../methodology/wagevariables.md)
 ### Version 1.0.40 -- 2023-04-24
 #### Added
 * March 2023 extracts
