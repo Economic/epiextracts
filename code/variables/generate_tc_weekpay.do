@@ -17,7 +17,7 @@ if $monthlycps == 1 | $maycps == 1 {
 			replace tc_weekpay = 1 if weekpay >= 2884.60 & weekpay ~= .
 		}
 		if tm(2023m4) <= $date {
-			replace tc_weekpay = ptwk & weekpay ~= .
+			replace tc_weekpay = ptwk if weekpay ~= .
 		}
 	}
 }
