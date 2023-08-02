@@ -8,8 +8,9 @@ For a shorter overview of the wage variables, see [this discussion](faq.md#which
 
 ## Top-code adjustments
 
-Weekly earnings in the underlying source data are top-coded or right-censored. For the top-coded weekly earnings, the EPI extracts variable [`weekpay`](../variables/income/weekpay.md) contains the gender- and year-specific imputed mean above the top-code assuming the earnings distribution is Pareto above the 80th percentile. For non-hourly workers, these imputed values are also incorporated in the hourly wage variables [`wage`](../variables/income/wage.md) and [`wageotc`](../variables/income/wageotc.md).
+Weekly earnings in the underlying source data are top-coded or right-censored. Beginning in April 2023, the top-coding procedure changed from being a single value for weekly earnings (2,884.61), to a [dynamically adjusted](https://www2.census.gov/programs-surveys/cps/methodology/improving-disclosure-avoidance-puf-v2.pdf) value each month. This dynamic value is calculated by Census, and is the weighted average of the reported earnings of the top 3% of earners. Between April 2023 and March 2024, the new top-coding procedure is phased in so that only respondants who entered the survey in 2023 or later are top coded "dynamically." During this time period, only respondants coded as 4 in [`minsamp`](../variables/id/minsamp.md) will have the new top-coding procedure. 
 
+Prior to April 2023, the EPI extracts variable [`weekpay`](../variables/income/weekpay.md) contains the gender- and year-specific imputed mean above the top-code assuming the earnings distribution is Pareto above the 80th percentile. For non-hourly workers, these imputed values are also incorporated in the hourly wage variables [`wage`](../variables/income/wage.md) and [`wageotc`](../variables/income/wageotc.md). 
 To use a weekly earnings variable without this adjustment, consider [`weekpay_noadj`](../variables/income/weekpay_noadj.md) and the associated hourly wage variables [`wage_noadj`](../variables/income/wage_noadj.md), [`wageotc_noadj`](../variables/income/wageotc_noadj.md).
 
 ??? note "Function used to impute the mean above the topcode"
