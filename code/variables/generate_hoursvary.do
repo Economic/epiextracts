@@ -5,6 +5,7 @@ gen byte hoursvary = .
 
 if $monthlycps == 1 {
 	if tm(1994m1) <= $date {
+		replace hoursvary = 0 if pehrusl1 >= 0 
 		replace hoursvary = 1 if pehrusl1 == -4
 	}
 }
