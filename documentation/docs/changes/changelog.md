@@ -6,6 +6,11 @@ If you use the EPI extracts for your research, please cite them as
     Economic Policy Institute. {{ year }}. Current Population Survey Extracts, Version {{ version }}, https://microdata.epi.org.
 
 ## Recent changes
+### Version 1.0.42 -- 2023-08-16
+#### Added
+* July 2023 extracts
+#### Modified
+* `hoursvary` was only 1 and missing in prior versions. Now has value of 0 when hours do not vary.
 ### Version 1.0.41 -- 2023-08-02
 #### Added
 * April, May, June 2023 extracts
