@@ -37,5 +37,5 @@ text(`pubsec_1yvalue' `pubsec_1xvalue' "Female", color("`color2'") placement(c))
 graph export ${variableimages}pubsec_titleimage.svg, replace
 
 /***
-The analysis above uses employed workers in the CPS Basic for 1976-2021 and the CPS May for 1973-1975.
+The analysis above uses employed workers in the CPS Basic for 1976-2023 and the CPS May for 1973-1975.
 ***/

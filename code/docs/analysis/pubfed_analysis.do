@@ -37,5 +37,5 @@ text(`pubfed_1yvalue' `pubfed_1xvalue' "Female", color("`color2'") placement(c))
 graph export ${variableimages}pubfed_titleimage.svg, replace
 
 /***
-The analysis above uses employed workers in the CPS Basic for 1989-2021.
+The analysis above uses employed workers in the CPS Basic for 1989-2023.
 ***/
