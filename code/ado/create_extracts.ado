@@ -37,15 +37,15 @@ import delimited using ${suppdata}cpiurs_extended.csv, clear varnames(1)
 keep if year >= 1962
 assert year ~= .
 
-* for 2023, temporarily use 2023-2022 CBO projected growth rate
-* from https://www.cbo.gov/system/files/2023-02/51135-2023-02-Economic-Projections.xlsx
-local cbo2022 = 287.7
-local cbo2023 = 303.9
-sum cpiurs_extended if year == 2022
-local cpi2022 = r(mean)
+* for 2024, temporarily use 2024-2023 CBO projected growth rate
+* from https://www.cbo.gov/system/files/2024-02/51135-2024-02-Economic-Projections.xlsx
+local cbo2023 = 304.7
+local cbo2024 = 312.6
+sum cpiurs_extended if year == 2023
+local cpi2023 = r(mean)
 moreobs 1
-replace year = 2023 if year == .
-replace cpiurs_extended = `cpi2022' * (`cbo2023' / `cbo2022') if year == 2023
+replace year = 2024 if year == .
+replace cpiurs_extended = `cpi2023' * (`cbo2024' / `cbo2023') if year == 2024
 
 replace cpiurs_extended = round(cpiurs_extended,0.1)
 sum cpiurs_extended if year == 1989
