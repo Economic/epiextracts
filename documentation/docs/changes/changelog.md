@@ -6,6 +6,14 @@ If you use the EPI extracts for your research, please cite them as
     Economic Policy Institute. {{ year }}. Current Population Survey Extracts, Version {{ version }}, https://microdata.epi.org.
 
 ## Recent changes
+### Version 1.0.49 -- 2024-03-18
+#### Added
+* February 2024 extracts
+#### Modified
+* Fixed labeling errors in `occ90` to be consistent with the relevant [census codebook](https://www2.census.gov/programs-surveys/cps/techdocs/cpsmar96.pdf), appendix B. This impacts value labels for `occ90` from 1992 to 2002 in the basic monthly and ORG data. Thank you to John Schmitt for discovering and notifying EPI of this error!
+    * label for occupation code 021 was "Business and promotion managers", now "Managers, service organizations, n.e.c"
+    * label for occupation code 034 was "Supervisors and proprietors, sales occupation", now "Business and promotion agents"
+    * label for occupation code 243 was "Supervisors--forestry", now  "Supervisors and proprietors, sales occupation"
 ### Version 1.0.48 -- 2024-02-14
 #### Added
 * January 2024 extracts
