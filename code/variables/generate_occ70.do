@@ -2,7 +2,6 @@
 * Occupation: 1970 classification
 ****************************************************************
 * for coding ease, first create occupation code for all dates
-gen int occcode = .
 capture drop occ70
 gen occ70 = .
 
