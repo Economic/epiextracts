@@ -10,7 +10,7 @@ If you use the EPI extracts for your research, please cite them as
 #### Added 
 * documentation for `occcode` - original census occupation code, not harmonized over time
 #### Modified
-* v1.0.50 introduced an error where occupation codes for `occ70` through `occ18` were missing. This update fixes an where the occupation variables relied on code erroneously included in the generation of `occ70` instead of `occcode` to create those variables. Thanks to Hilary Wething for spotting this error!
+* v1.0.50 introduced an error where occupation codes for `occ70` through `occ18` were missing. This update rectified an issue where the occupation variables relied on code erroneously included in the generation of `occ70` instead of `occcode` to create those variables. Thanks to Hilary Wething for spotting this error!
 ### Version 1.0.50 -- 2024-04-11
 #### Added
 * March 2024 extracts
