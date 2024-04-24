@@ -6,6 +6,11 @@ If you use the EPI extracts for your research, please cite them as
     Economic Policy Institute. {{ year }}. Current Population Survey Extracts, Version {{ version }}, https://microdata.epi.org.
 
 ## Recent changes
+### Version 1.0.51 -- 2024-04-23
+#### Added 
+* documentation for `occcode` - original census occupation code, not harmonized over time
+#### Modified
+* v1.0.50 introduced an error where occupation codes for `occ70` through `occ18` were missing. This update fixes an where the occupation variables relied on code erroneously included in the generation of `occ70` instead of `occcode` to create those variables. Thanks to Hilary Wething for spotting this error!
 ### Version 1.0.50 -- 2024-04-11
 #### Added
 * March 2024 extracts
