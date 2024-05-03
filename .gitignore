@@ -2,3 +2,5 @@
 *.sas7bdat
 *.zip
 *.gz
+
+test.do

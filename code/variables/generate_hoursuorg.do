@@ -17,27 +17,28 @@ if $monthlycps == 1 | $maycps == 1 {
 	}
 }
 
-if $march == 1 {
+if $marchcps == 1 {
 	if tm(1979m1) <= $date & $date <= tm(1994m12) {
 		replace hoursuorg = ernush
 	}
-	if ernel == 1 {
+	if tm(1995m1) <= $date & $date <= tm(1997m12) {
 		* ORG hours variable only defined for some hourly workers
-		if tm(1995m1) <= $date & $date <= tm(1997m12) {
+		if a_ernel == 1  {
 			replace hoursuorg = ernush
 		}
-	}
-	else {
-		replace hoursuorg = .
-	}
-	if preregl == 1 {
-		if tm(1998m1) <= $date {
-			replace hoursuorg = a_uslhrs
+		else {
+			replace hoursuorg = .
 		}
 	}
-	else {
-		replace hoursuorg = .
+	if tm(1998m1) <= $date {
+		if prerelg == 1 {
+			replace hoursuorg = a_uslhrs
+		}
+		else {
+			replace hoursuorg = .
+		}
 	}
+	
 }
 
 replace hoursuorg = . if hoursuorg < 0

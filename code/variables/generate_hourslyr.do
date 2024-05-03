@@ -3,19 +3,19 @@
 *******************************************************************************
 
 capture rename hrslyr oldhrslyr
-gen byte hrslyr = .
+gen byte hourslyr = .
 
 if $marchcps == 1 {
     if tm(1976m1) <= $date & $date <= tm(1997m12) {
-        replace hrslyr = oldhrslyr
+        replace hourslyr = oldhrslyr
     }
     if tm(1998m1) <= $date {
-        replace hrslyr = hrswk
+        replace hourslyr = hrswk
     }
 }
 
-replace hrslyr = . if hrslyr == 0
-label var hrslyr "Hours worked last year"
-label value hrslyr hrslyr
-notes hrslyr: 1968-1997: Unicon hrslyr
-notes hrslyr: 1998-present: CPS hrswk
+replace hourslyr = . if hourslyr == 0
+label var hourslyr "Hours worked last year"
+label value hourslyr hourslyr
+notes hourslyr: 1968-1997: Unicon hrslyr
+notes hourslyr: 1998-present: CPS hrswk

@@ -81,7 +81,7 @@ adopath ++ ${code}ado
 
 *create_extracts, begin(2024m1) end(2024m2)
 
-local year 2022
+/*local year 2022
 
   if 2019 <=`year' & `year' <= 2023 {
     local archivename asecpub`year'csv.zip
@@ -105,14 +105,15 @@ local year 2022
   copy cpsmarch_`year'.dta.zip ${censusmarchstata}cpsmarch_`year'.dta.zip, replace
   erase cpsmarch_`year'.dta
   erase cpsmarch_`year'.dta.zip
+*/
   
 
-* process_rawmarch, begin(2022) end(2022)
+*process_rawmarch, begin(2021) end(2021)
 *process_rawbasic, begin(2023m11) end(2024m1)
 
 * create EPI's extracts from the processed raw data
 * creates both basic monthly and ORG subsample
-*create_extracts, begin(2023m1) end(2024m1)
+create_extracts, begin(2018m1) end(2020m12)
 
 * create documentation
 * do ${codedocs}createdocs.do
