@@ -95,7 +95,7 @@ foreach year of numlist `minyear'(1)`maxyear' {
 	global basicfile = 0
 
 	* process annual march if necessary
-	if 1962 <= `year' & `year' <= 2018 {
+	if 1962 <= `year' {
 		* survey sample settings
 		global marchcps = 1
 		global monthlycps = 0

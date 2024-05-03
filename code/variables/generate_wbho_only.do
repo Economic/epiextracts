@@ -102,4 +102,4 @@ notes wbho_only: 1994-2002 May/Basic: perace
 notes wbho_only: 2003-present May/Basic: ptdtrace
 notes wbho_only: 1973-1997 March: race
 notes wbho_only: 1997-2002 March: a_race
-notes whbo_only: 2003-present March: prdtrace
+notes wbho_only: 2003-present March: prdtrace

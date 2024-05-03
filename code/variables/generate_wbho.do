@@ -153,4 +153,4 @@ notes wbho: 1994-2002 May/Basic: perace
 notes wbho: 2003-present May/Bascic: ptdtrace
 notes wbho: 1973-1997 March: race
 notes wbho: 1998-2002 March: a_race
-notes whbo: 2003-present March: prdtrace
+notes wbho: 2003-present March: prdtrace

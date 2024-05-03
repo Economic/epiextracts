@@ -18,20 +18,20 @@ keep
 	paidhre
 	hoursu1 hoursu2 hoursut hourslw1 hourslw2 hourslwt hoursumay hoursuorg
 	hoursvary hoursuint
-	hrs_lyr
-	ind70 ind80 ind90 ind02 ind07 ind12 mind16 manuf dind03 mind03
-	occ70 occ80 occ90 occ00 occ10 mocc10 docc03 mocc03
-	weekpay_noadj tc_weekpay a_weekpay
+  hourslyr
+  ind70 ind80 ind90 ind02 ind07 ind12 mind16 manuf dind03 mind03
+  occ70 occ80 occ90 occ00 occ10 mocc10 mocc03 docc03
+  weekpay_noadj tc_weekpay a_weekpay
 	earnhour a_earnhour
-	otcrec
-	otcamt wage_noadj wageotc_noadj
+  otcrec
+  otcamt wage_noadj wageotc_noadj
 	faminc faminc_c
-	fam_ern
-	famiws
-	hhinc
-	wks_lyr wks_lyr_binned
-	ownchild famrel agechild
 	telework hourslwtw
-	pov_lev
+  famern
+  famiws
+  hhinc_c
+  wkslyr wkslyr_binned
+	ownchild famrel agechild 
+  poverty
 ;
 #delimit cr;

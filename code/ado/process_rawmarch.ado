@@ -115,23 +115,25 @@ if `year' < 2019 {
     copy cpsmarch_`year'_traditional.dta.zip ${censusmarchstata}cpsmarch_`year'_traditional.dta.zip, replace
     erase cpsmarch_`year'_traditional.dta
     erase cpsmarch_`year'_traditional.dta.zip
-  }   
+  }  
+} 
   * 2019 redesign does not have dictionary, use labelled CSV data
   *note: create dictionary files in the future 
-  else {
-    if 2019 <=`year' & `year' <= 2023 {
-      local archivename asecpub`year'csv.zip
-      local filename asec_csv_repwgt_`year'.csv
-    }
+  if `year' >= 2019 {
+    local shortyear = substr("`year'",3,2)
+
+    local archivename asecpub`year'csv.zip
+    local filename pppub`shortyear'.csv
 
     !unzip ${censusmarchraw}`archivename' -d ${censusmarchraw}tempfolder
-
+    clear
+    
     *note: 2019 zipped data has more complicated zipped folder structure
     if `year' == 2019 {
-      import delimited "${censusmarchraw}tempfolder/cpsb/asec/prod/data/2019/`filename'"
+      import delimited "${censusmarchraw}tempfolder/cpspb/asec/prod/data/2019/`filename'"
     }
     else {
-      import delimited "`filename'"
+      import delimited "${censusmarchraw}tempfolder/`filename'"
     }
 
     * save, compress, clean up
@@ -141,9 +143,8 @@ if `year' < 2019 {
     copy cpsmarch_`year'.dta.zip ${censusmarchstata}cpsmarch_`year'.dta.zip, replace
     erase cpsmarch_`year'.dta
     erase cpsmarch_`year'.dta.zip
-  }
-
 }
+
 
 
 
