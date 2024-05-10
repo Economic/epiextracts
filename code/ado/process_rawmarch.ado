@@ -123,18 +123,49 @@ if `year' < 2019 {
     local shortyear = substr("`year'",3,2)
 
     local archivename asecpub`year'csv.zip
-    local filename pppub`shortyear'.csv
 
     !unzip ${censusmarchraw}`archivename' -d ${censusmarchraw}tempfolder
     clear
     
     *note: 2019 zipped data has more complicated zipped folder structure
     if `year' == 2019 {
-      import delimited "${censusmarchraw}tempfolder/cpspb/asec/prod/data/2019/`filename'"
+      tempfile pppub
+      import delimited "${censusmarchraw}tempfolder/cpspb/asec/prod/data/2019/pppub`shortyear'.csv"
+      gen id = ph_seq
+      save `pppub'
+
+      tempfile hhpub
+      import delimited "${censusmarchraw}tempfolder/cpspb/asec/prod/data/2019/hhpub`shortyear'.csv"
+      gen id = h_seq
+      save `hhpub'
+
+      tempfile ffpub
+      import delimited "${censusmarchraw}tempfolder/cpspb/asec/prod/data/2019/ffpub`shortyear'.csv"
+      gen id = fh_seq
+      save `ffpub'
+
     }
     else {
-      import delimited "${censusmarchraw}tempfolder/`filename'"
+      tempfile pppub
+      import delimited "${censusmarchraw}tempfolder/pppub`shortyear'.csv"
+      gen id = ph_seq
+      save `pppub'
+
+      tempfile hhpub
+      import delimited "${censusmarchraw}tempfolder/hhpub`shortyear'.csv"
+      gen id = h_seq
+      save `hhpub'
+    
+      tempfile ffpub
+      import delimited "${censusmarchraw}tempfolder/ffpub`shortyear'.csv"
+      gen id = fh_seq
+      save `ffpub'
+
     }
+
+    use `hhpub', clear
+    joinby id using `hhpub'
+    joinby id using `ffpub'
 
     * save, compress, clean up
     compress
