@@ -14,10 +14,13 @@ if $monthlycps == 1 | $maycps == 1 {
 			* convert Unicon ernhr from pennies to dollars
 			replace earnhour = ernhr/100
 		}
-		if tm(1994m1) <= $date {
+		if tm(1994m1) <= $date & $date <= tm(2021m2) {
 			* note that prernhly in Census ddf is in pennies (has implicit two decimal places) in the raw ascii files
 			* but NBER data dictionaries account for this, so it is in dollars in the raw Stata files
 			replace earnhour = prernhly
+		}
+		if tm(2021m3) <= $date {
+			replace earnhour = pternhly
 		}
 	}
 replace earnhour = . if earnhour < 0

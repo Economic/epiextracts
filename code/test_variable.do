@@ -22,8 +22,15 @@ Example: code/variables/generate_wbhom.do
 *******************************************************************************
 * Process the data month-by-month
 * define beginning and end dates
-local begdate = tm(2003m1)
-local enddate = tm(2018m9)
+local begdate = tm(2021m1)
+local enddate = tm(2021m12)
+
+global marchcps = 0
+global monthlycps = 1
+global maycps = 0
+global earnerinfo = 0
+global basicfile = 0
+
 
 foreach d of numlist `begdate'/`enddate'{
 	* define year and month of data
@@ -33,20 +40,24 @@ foreach d of numlist `begdate'/`enddate'{
 	* load appropriate data depending on date
 	* note that we need to do this conditionally on the date because we
 	* need to keep certain variables associated with certain dates.
-	if tm(2003m1) <= `d' & `d' <= tm(2004m4) {
-		merge_rawextracts, begin(`year'm`month') end(`year'm`month') keepraw(ptdtrace) keepextracts(hispanic basicwgt) sample(basic) version(local)
+	*if tm(2003m1) <= `d' & `d' <= tm(2004m4) {
+	*	merge_rawextracts, begin(`year'm`month') end(`year'm`month') keepraw(ptdtrace) keepextracts(hispanic basicwgt) sample(basic) version(local)
+	*}
+	if tm(2021m1) <= `d' & `d' <= tm(2021m2) {
+		merge_rawextracts, begin(`year'm`month') end(`year'm`month') keepraw(peio1ocd) keepextracts(basicwgt) sample(basic) /*version(local)*/ 
+		*gen ptdtrace = prdtrace
 	}
-	if tm(2004m5) <= `d' & `d' <= tm(2005m7) {
-		merge_rawextracts, begin(`year'm`month') end(`year'm`month') keepraw(prdtrace) keepextracts(hispanic basicwgt) sample(basic) version(local)
-		gen ptdtrace = prdtrace
-	}
-	if tm(2005m8) <= `d' & `d' <= tm(2018m9) {
-		merge_rawextracts, begin(`year'm`month') end(`year'm`month') keepraw(ptdtrace) keepextracts(hispanic basicwgt) sample(basic) version(local)
+	if tm(2021m3) <= `d' & `d' <= tm(2021m12) {
+		merge_rawextracts, begin(`year'm`month') end(`year'm`month') keepraw(ptio1ocd) keepextracts(basicwgt) sample(basic) /*version(local)*/
 	}
 
 	* run variable generation code
 	global date = `d'
-	do code/variables/generate_wbhom.do
+	do /projects/jkandra/epiextracts/code/variables/generate_occcode.do
+	do /projects/jkandra/epiextracts/code/variables/generate_occ90.do
+	do /projects/jkandra/epiextracts/code/variables/generate_occ10.do
+	do /projects/jkandra/epiextracts/code/variables/generate_occ18.do
+
 
 	* save month of data
 	tempfile month`d'
@@ -62,7 +73,7 @@ foreach d of numlist `begdate'/`enddate' {
 }
 
 * Analyze data
-* create a monthly time variable
+/* create a monthly time variable
 gen monthdate = ym(year,month)
 format %tm monthdate
 
