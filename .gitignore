@@ -1,3 +1,5 @@
 *.dta
 *.sas7bdat
 *.zip
+
+test.do
