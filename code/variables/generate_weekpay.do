@@ -33,6 +33,9 @@ if $monthlycps == 1 | $maycps == 1 {
 		if $maycps == 1 & tm(1980m1) <= $date & $date <= tm(1980m12) {
 			replace weekpay = .
 		}
+		if tm(2024m4) <= $date {
+			weekpay = weekpay_noadj
+		}
 		else {
 			* males: generate top-code adjusted weekly earnings
 			topcode_impute weekpay_noadj if weekpay_noadj ~= . & female == 0 & age >= 16 & age ~= . [pw=`weightvar'], generate(weekpay_male) method(Pareto) threshold(80) topcodeval(`topcodeval')
