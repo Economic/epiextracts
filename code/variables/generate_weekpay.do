@@ -34,7 +34,7 @@ if $monthlycps == 1 | $maycps == 1 {
 			replace weekpay = .
 		}
 		if tm(2024m4) <= $date {
-			weekpay = weekpay_noadj
+			replace weekpay = weekpay_noadj
 		}
 		else {
 			* males: generate top-code adjusted weekly earnings
