@@ -4,3 +4,6 @@
 *.gz
 
 test.do
+
+nohup.out
+master.log
