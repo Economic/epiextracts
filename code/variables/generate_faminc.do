@@ -57,7 +57,7 @@ if $marchcps == 1 {
 		replace faminc = 11 if 17 <= ftot_r & ftot_r <= 20
 		replace faminc = 12 if 21 <= ftot_r & ftot_r <= 30
 		replace faminc = 13 if 31 <= ftot_r & ftot_r <= 40
-		replace faminc = 14 if 41 <= ftot_r & ftot_r  
+		replace faminc = 14 if 41 >= ftot_r 
 	}
 }
 
