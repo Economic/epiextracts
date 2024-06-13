@@ -3,3 +3,6 @@
 *.zip
 
 test.do
+
+nohup.out
+master.log
