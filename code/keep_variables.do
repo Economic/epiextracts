@@ -35,6 +35,14 @@ keep
 	hhinc_c
 	wkslyr wkslyr_binned
 	poverty
+	schenrl schenrl_type
+	wrkly
+	hicov hiemp hipaid
+	penplan penincl
+	foodstamps
+	medicaid medicaidcov
+	pubhouse hhtenure rentsub
+	eitc
 ;
 #delimit cr;
  
