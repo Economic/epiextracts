@@ -6,16 +6,16 @@ keep
   finalwgt cmpwgt basicwgt orgwgt hhwgt famwgt
   statefips statecensus division region countyfips cbsafips metstat cbsasize
   age female hispanic wbho wbhao wbhom wbhaom raceorig wbo_only wbho_only
-  citistat citizen married veteran
+	citistat citizen married veteran
   gradecom gradehi gradeatn educ
-  lfstat emp unemp nilf schenrl samejob
+  lfstat emp unemp nilf samejob
   selfemp selfinc cow1 cow2
   multjobs numjobs
   unmem uncov union
   pubsec publoc pubst pubfed
   unempdur lookdur discwork
   ptecon
-  paidhre
+	paidhre
   hoursu1 hoursu2 hoursut hourslw1 hourslw2 hourslwt hoursumay hoursuorg
 	hoursvary hoursuint
   hourslyr
@@ -32,5 +32,13 @@ keep
   wkslyr wkslyr_binned
 	ownchild famrel agechild 
   poverty
+  schenrl schenrl_type
+  wrkly
+  hicov hiemp hipaid
+  penplan penincl
+  foodstamps
+  medicaid medicaidcov
+  pubhouse hhtenure rentsub
+  eitc
 ;
 #delimit cr;
