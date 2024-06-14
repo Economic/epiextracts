@@ -39,6 +39,14 @@ foreach var in
   wkslyr wkslyr_binned
 	ownchild famrel agechild 
   poverty
+  schenrl schenrl_type
+  wrkly
+  hicov hiemp hipaid
+  penplan penincl
+  foodstamps
+  medicaid medicaidcov
+  pubhouse hhtenure rentsub
+  eitc
   {;
     do ${codevars}generate_`var'.do;
   };
