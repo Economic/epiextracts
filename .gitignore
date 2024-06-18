@@ -8,3 +8,4 @@ nohup.out
 master.log
 *.Rproj.user
 *.Rproj
+.Rhistory
