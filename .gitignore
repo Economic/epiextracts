@@ -3,3 +3,9 @@
 *.zip
 
 test.do
+
+nohup.out
+master.log
+*.Rproj.user
+*.Rproj
+.Rhistory
