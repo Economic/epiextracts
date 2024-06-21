@@ -1,6 +1,6 @@
 set more off
 
-local beginyear = 2000
+local beginyear = 2015
 local endyear = 2018
 
 global marchcps = 1
@@ -14,11 +14,11 @@ adopath ++ ${code}ado
 foreach year of numlist `beginyear' / `endyear' {
     global date = tm(`year'm1)
     load_rawcps, begin(`year') end(`year') sample(march)
-    do code/variables/generate_famtype.do
-    do code/variables/generate_age.do
-    do code/variables/generate_poverty.do
-    do code/variables/generate_asecwgt.do
-    keep year poverty asecwgt age
+    do variables/generate_asecwgt.do
+    do variables/generate_hicov.do
+    do variables/generate_hiemp.do
+    do variables/generate_hipaid.do
+    keep year hicov hiemp hipaid asecwgt
     tempfile data`year'
     save `data`year''
 }
@@ -29,41 +29,39 @@ foreach year of numlist `beginyear' / `endyear' {
     else append using `data`year''
 }
 
-*keep if famtype == 1
-*gcollapse (mean) faminc_c [pw=famwgt], by(year)
+* save temporary file of appended march data with select recoded variables
+tempfile march_data
+save `march_data'
+
+/*use `march_data', clear
+
+gcollapse (mean) schenrl [pw=asecwgt], by(year)
+* tag march variables with suffix
+foreach var of varlist schenrl {
+    rename `var' march_`var'
+}
+
+* save march data with tagged variables
+tempfile marchstats
+save `marchstats'
+
+* load basic data for faminc variable
+load_epiextracts, begin(`beginyear'm1) end(`endyear'm12) sample(basic) keep(year finalwgt schenrl)
+* drop if age < 14 to match march data
+*drop if age < 14
+
+gcollapse (mean) schenrl [pw=finalwgt], by(year)
+
+foreach var of varlist schenrl {
+    rename `var' basic_`var'
+}
+merge 1:1 year using `marchstats', assert(3) nogenerate
+
+foreach var in schenrl {
+    gen diff`var' = basic_`var' - march_`var'
+}
 
 *duplicates tag year hhid personid, gen(tagcount)
 *tab year tagcount
 
 
-
-/*
-* load the data back into memory
-foreach year of numlist `beginyear' / `endyear' {
-    if `year' == `beginyear' use `data`year'', clear
-    else append using `data`year''
-}  
-
-* median family income by year
-binipolate faminc_c if famid == 1 [pw=famwgt], binsize(0.25) p(50) by(year) collapsefun(gcollapse)
-li
-
-
-
-
-*gen byte faminc_rep = .
-replace faminc_rep = 1 if 1 <= faminc & faminc <= 5
-replace faminc_rep = 2 if 6 <= faminc & faminc <= 7
-replace faminc_rep = 3 if 8 <= faminc & faminc <= 9
-replace faminc_rep = 4 if 10 <= faminc & faminc <= 11
-replace faminc_rep = 5 if faminc == 12
-replace faminc_rep = 6 if faminc == 13
-replace faminc_rep = 7 if faminc == 14
-replace faminc_rep = 8 if faminc == 15
-
-tab faminc_rep, gen(faminc_rep_)
-gcollapse (mean) faminc_rep_* [pw=famwgt], by(year)
-li
-
-*export excel data.xlsx, firstrow(variables)
-*/
