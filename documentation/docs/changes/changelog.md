@@ -6,6 +6,11 @@ If you use the EPI extracts for your research, please cite them as
     Economic Policy Institute. {{ year }}. Current Population Survey Extracts, Version {{ version }}, https://microdata.epi.org.
 
 ## Recent changes
+### Version 1.0.56 -- 2024-09-13
+#### Added
+* August 2024 extracts
+#### Modified
+* Fixed error in defining `mocc10` to include all `occcode`.
 ### Version 1.0.55 -- 2024-08-09
 #### Added
 * July 2024 extracts
