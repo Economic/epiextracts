@@ -351,7 +351,7 @@ if $monthlycps == 1 | $maycps == 1 {;
 	if tm(2003m1) <= $date & $date <= tm(2010m12){;
 		replace mocc10 = . if (
 			(occcode == -1) |
-			(occcode == 9840) /*armed forces (double check for this period)*/
+			(occcode == 9840)
 		);
 		/* Managers and professionals */
 		replace mocc10 = 1 if (
@@ -363,7 +363,7 @@ if $monthlycps == 1 | $maycps == 1 {;
 				(occcode	== 6660) |
 				(occcode	== 7000) |
 				(occcode	== 9000) |
-				(occcode	== 9040) |
+				(occcode 	== 9040) |
 				(occcode	>= 10 & occcode <= 160) |
 				(occcode	>= 220 & occcode <= 530) |
 				(occcode	>= 560 & occcode <= 620) |
@@ -429,10 +429,10 @@ if $monthlycps == 1 | $maycps == 1 {;
 				(occcode	>= 6700	& occcode <= 6720) |
 				(occcode	>= 6750	& occcode <= 6940) |
 				(occcode	>= 7010	& occcode <= 7560) |
-				(occcode	>= 7620	& occcode <= 7700) |
+				(occcode	>= 7600	& occcode <= 7700) |
 				(occcode	>= 7800	& occcode <= 7810) |
 				(occcode	>= 8210	& occcode <= 8230) |
-				(occcode	>= 8500	& occcode <= 8510) |
+				(occcode	>= 8500	& occcode <= 8520) |
 				(occcode	>= 8600	& occcode <= 8630) |
 				(occcode	>= 8750	& occcode <= 8760) |
 				(occcode	>= 8910	& occcode <= 8920)
@@ -440,29 +440,31 @@ if $monthlycps == 1 | $maycps == 1 {;
 		/* Operators, fabricators and laborers */
 		replace mocc10 = 9 if (
 				(occcode	== 6260) |
-				(occcode	== 6320) |
 				(occcode	== 6600) |
-				(occcode	== 7610) |
 				(occcode	== 7750) |
 				(occcode	== 7830) |
 				(occcode	== 7850) |
+				(occcode 	== 8020) |
 				(occcode	== 8040) |
-				(occcode	== 8100) |
 				(occcode	== 8200) |
 				(occcode	== 8340) |
 				(occcode	== 8460) |
+				(occcode 	== 8900) |
+				(occcode 	== 9410) |
+				(occcode 	>= 8100 & occcode <= 8120) |
+				(occcode 	>= 6310 & occcode <= 6320) |
 				(occcode	>= 6730	& occcode <= 6740) |
 				(occcode	>= 7710	& occcode <= 7730) |
 				(occcode	>= 7920	& occcode <= 8010) |
 				(occcode	>= 8140	& occcode <= 8150) |
 				(occcode	>= 8240	& occcode <= 8260) |
 				(occcode	>= 8310	& occcode <= 8320) |
-				(occcode	>= 8360	& occcode <= 8420) |
+				(occcode	>= 8360	& occcode <= 8440) |
 				(occcode	>= 8530	& occcode <= 8550) |
 				(occcode	>= 8640	& occcode <= 8740) |
 				(occcode	>= 8800	& occcode <= 8860) |
 				(occcode	>= 8930	& occcode <= 8960) |
-				(occcode	>= 9120	& occcode <= 9360) |
+				(occcode	>= 9110	& occcode <= 9360) |
 				(occcode	>= 9420	& occcode <= 9750)
 			);
 		 /* Protective service */
@@ -478,7 +480,6 @@ if $monthlycps == 1 | $maycps == 1 {;
 		replace mocc10 = 5 if (
 				(occcode	== 4230) |
 				(occcode	== 8300) |
-				(occcode	== 9410) |
 				(occcode	>= 3600	& occcode <= 3650) |
 				(occcode	>= 4300	& occcode <= 4320) |
 				(occcode	>= 4400	& occcode <= 4650)
@@ -491,7 +492,7 @@ if $monthlycps == 1 | $maycps == 1 {;
 			);
 	};
 
-	if tm(2011m1) <= $date {;
+	if tm(2011m1) <= $date & $date <= tm(2019m12){;
 		replace mocc10 = . if (
 			(occcode == -1) |
 			(occcode == 9840) /*armed forces */
@@ -501,15 +502,16 @@ if $monthlycps == 1 | $maycps == 1 {;
 				/* managers */
 				(occcode	== 1310) |
 				(occcode	== 2710) |
-				(occcode	== 2820) |
+				(occcode	== 2825) |
 				(occcode	== 5000) |
 				(occcode	== 6660) |
 				(occcode	== 7000) |
 				(occcode	== 9000) |
 				(occcode	== 9040) |
+				(occcode	== 9050) |
 				(occcode	>= 10 & occcode <= 160) |
 				(occcode	>= 220 & occcode <= 530) |
-				(occcode	>= 560 & occcode <= 620) |
+				(occcode	>= 560 & occcode <= 650) |
 				(occcode	>= 710 & occcode <= 800) |
 				(occcode	>= 820 & occcode <= 960) |
 				/* professionals */
@@ -519,7 +521,7 @@ if $monthlycps == 1 | $maycps == 1 {;
 				(occcode	>= 1005	& occcode <= 1306) |
 				(occcode	>= 1320	& occcode <= 1530) |
 				(occcode	>= 1600	& occcode <= 1860) |
-				(occcode	>= 2000	& occcode <= 2100) |
+				(occcode	>= 2000	& occcode <= 2105) |
 				(occcode	>= 2200	& occcode <= 2435) |
 				(occcode	>= 2550	& occcode <= 2700) |
 				(occcode	>= 2720	& occcode <= 2810) |
@@ -528,14 +530,14 @@ if $monthlycps == 1 | $maycps == 1 {;
 			);
 		/* Technicians */
 		replace mocc10 = 2 if (
-				(occcode	== 2905	) |
+				(occcode	== 2900	) |
 				(occcode	== 7900	) |
 				(occcode	== 7905	) |
 				(occcode	== 9030 ) |
 				(occcode	>= 1010	& occcode <= 1021) |
 				(occcode	>= 1540	& occcode <= 1560) |
 				(occcode	>= 1900	& occcode <= 1980) |
-				(occcode	>= 2140	& occcode <= 2150) |
+				(occcode	>= 2145	& occcode <= 2160) |
 				(occcode	>= 3300	& occcode <= 3402) |
 				(occcode	>= 3500	& occcode <= 3515) |
 				(occcode	>= 3530	& occcode <= 3550)
@@ -545,7 +547,7 @@ if $monthlycps == 1 | $maycps == 1 {;
 				(occcode	== 810	) |
 				(occcode	== 5130	) |
 				(occcode	>= 4700	& occcode <= 4820) |
-				(occcode	>= 4840	& occcode <= 4960)
+				(occcode	>= 4840	& occcode <= 4965)
 			);
 		/* Office and admin */
 		replace mocc10 = 4 if (
@@ -553,11 +555,12 @@ if $monthlycps == 1 | $maycps == 1 {;
 				(occcode	== 4830) |
 				(occcode	>= 2440	& occcode <= 2545) |
 				(occcode	>= 5010	& occcode <= 5120) |
-				(occcode	>= 5140	& occcode <= 5930)
+				(occcode	>= 5140	& occcode <= 5940)
 			);
 		/* Precision production, craft and repair */
 		replace mocc10 = 8 if (
-				(occcode	== 3410) |
+				(occcode	== 3420) |
+				(occcode	== 3545) |
 				(occcode	== 3520) |
 				(occcode	== 6300) |
 				(occcode	== 6540) |
@@ -567,18 +570,19 @@ if $monthlycps == 1 | $maycps == 1 {;
 				(occcode	== 8060) |
 				(occcode	== 8130) |
 				(occcode	== 8160) |
-				(occcode	== 8335) |
+				(occcode	== 8330) |
 				(occcode	== 8350) |
 				(occcode	== 8450) |
+				(occcode 	>= 3421 & occcode <= 3430) |
 				(occcode	>= 6200	& occcode <= 6250) |
-				(occcode	>= 6330	& occcode <= 6520) |
+				(occcode	>= 6330	& occcode <= 6530) |
 				(occcode	>= 6700	& occcode <= 6720) |
 				(occcode	>= 6750	& occcode <= 6950) |
 				(occcode	>= 7010	& occcode <= 7560) |
-				(occcode	>= 7620	& occcode <= 7700) |
+				(occcode	>= 7600	& occcode <= 7700) |
 				(occcode	>= 7800	& occcode <= 7810) |
 				(occcode	>= 8210	& occcode <= 8230) |
-				(occcode	>= 8500	& occcode <= 8510) |
+				(occcode	>= 8500	& occcode <= 8520) |
 				(occcode	>= 8600	& occcode <= 8630) |
 				(occcode	>= 8750	& occcode <= 8760) |
 				(occcode	>= 8910	& occcode <= 8920)
@@ -587,29 +591,31 @@ if $monthlycps == 1 | $maycps == 1 {;
 		replace mocc10 = 9 if (
 				(occcode	== 6260) |
 				(occcode	== 6305) |
-				(occcode	== 6320) |
 				(occcode	== 6600) |
-				(occcode	== 7610) |
 				(occcode	== 7750) |
 				(occcode	== 7830) |
 				(occcode	== 7850) |
+				(occcode	== 7855) |
 				(occcode	== 8040) |
-				(occcode	== 8100) |
 				(occcode	== 8200) |
 				(occcode	== 8340) |
-				(occcode	== 8465) |
+				(occcode	== 8460) |
+				(occcode 	== 8900) |
+				(occcode 	== 9410) |
+				(occcode 	>= 6310 & occcode <= 6320) |
 				(occcode	>= 6730	& occcode <= 6740) |
 				(occcode	>= 7710	& occcode <= 7730) |
 				(occcode	>= 7920	& occcode <= 8025) |
+				(occcode 	>= 8100 & occcode <= 8120) |
 				(occcode	>= 8140	& occcode <= 8150) |
 				(occcode	>= 8240	& occcode <= 8260) |
 				(occcode	>= 8310	& occcode <= 8320) |
-				(occcode	>= 8360	& occcode <= 8420) |
-				(occcode	>= 8530	& occcode <= 8555) |
+				(occcode	>= 8360	& occcode <= 8440) |
+				(occcode	>= 8530	& occcode <= 8550) |
 				(occcode	>= 8640	& occcode <= 8740) |
 				(occcode	>= 8800	& occcode <= 8860) |
-				(occcode	>= 8930	& occcode <= 8960) |
-				(occcode	>= 9120	& occcode <= 9365) |
+				(occcode	>= 8930	& occcode <= 8965) |
+				(occcode	>= 9110	& occcode <= 9365) |
 				(occcode	>= 9420	& occcode <= 9760)
 			);
 		 /* Protective service */
@@ -625,8 +631,9 @@ if $monthlycps == 1 | $maycps == 1 {;
 		replace mocc10 = 5 if (
 				(occcode	== 4230) |
 				(occcode	== 8300) |
-				(occcode	== 9410) |
-				(occcode	>= 3600	& occcode <= 3650) |
+				(occcode 	== 9005) |
+				(occcode	== 9415) |
+				(occcode	>= 3600	& occcode <= 3655) |
 				(occcode	>= 4300	& occcode <= 4320) |
 				(occcode	>= 4400	& occcode <= 4655)
 			);
@@ -636,6 +643,157 @@ if $monthlycps == 1 | $maycps == 1 {;
 				(occcode	>= 4340	& occcode <= 4350) |
 				(occcode	>= 6000	& occcode <= 6130)
 			);
+	};
+	
+	if tm(2020m1) <= $date {;
+
+		replace mocc10 = . if (
+				(occcode == -1) |
+				(occcode == 9840) /*armed forces */
+		);
+		/* Managers and professionals */
+		replace mocc10 = 1 if (
+				/* managers */
+				(occcode	== 1310) |
+				(occcode	== 2710) |
+				(occcode	== 2825) |
+				(occcode	== 5000) |
+				(occcode	== 6660) |
+				(occcode	== 7000) |
+				(occcode	== 9005) |
+				(occcode	== 9040) |
+				(occcode	== 9050) |
+				(occcode	>= 10 & occcode <= 160) |
+				(occcode	>= 220 & occcode <= 530) |
+				(occcode	>= 560 & occcode <= 650) |
+				(occcode	>= 710 & occcode <= 800) |
+				(occcode	>= 820 & occcode <= 960) |
+				/* professionals */
+				(occcode	== 700) |
+				(occcode	== 705) |
+				(occcode	== 1000) |
+				(occcode	>= 1005	& occcode <= 1306) |
+				(occcode	>= 1320	& occcode <= 1530) |
+				(occcode	>= 1600	& occcode <= 1860) |
+				(occcode	>= 2000	& occcode <= 2105) |
+				(occcode	>= 2200	& occcode <= 2435) |
+				(occcode	>= 2550	& occcode <= 2700) |
+				(occcode	>= 2720	& occcode <= 2810) |
+				(occcode	>= 2830	& occcode <= 2865) |
+				(occcode	>= 2910	& occcode <= 3270)
+			);
+		/* Technicians */
+		replace mocc10 = 2 if (
+				(occcode	== 2905	) |
+				(occcode	== 7900	) |
+				(occcode	== 7905	) |
+				(occcode	== 9030 ) |
+				(occcode	>= 1010	& occcode <= 1021) |
+				(occcode	>= 1540	& occcode <= 1560) |
+				(occcode	>= 1900	& occcode <= 1980) |
+				(occcode	>= 2145	& occcode <= 2180) |
+				(occcode	>= 3300	& occcode <= 3402) |
+				(occcode	>= 3500	& occcode <= 3515) |
+				(occcode	>= 3530	& occcode <= 3550)
+			);
+		/* Sales */
+		replace mocc10 = 3 if (
+				(occcode	== 810	) |
+				(occcode	== 5130	) |
+				(occcode	>= 4700	& occcode <= 4820) |
+				(occcode	>= 4840	& occcode <= 4965)
+			);
+		/* Office and admin */
+		replace mocc10 = 4 if (
+				(occcode	== 540) |
+				(occcode	== 4830) |
+				(occcode	>= 2440	& occcode <= 2545) |
+				(occcode	>= 5010	& occcode <= 5120) |
+				(occcode	>= 5140	& occcode <= 5940)
+			);
+		/* Precision production, craft and repair */
+		replace mocc10 = 8 if (
+				(occcode	== 3545) |
+				(occcode	== 3520) |
+				(occcode	== 6300) |
+				(occcode	== 6540) |
+				(occcode	== 7740) |
+				(occcode	== 7840) |
+				(occcode	== 8030) |
+				(occcode	== 8060) |
+				(occcode	== 8130) |
+				(occcode	== 8160) |
+				(occcode	== 8335) |
+				(occcode	== 8350) |
+				(occcode	== 8450) |
+				(occcode 	>= 3421 & occcode <= 3430) |
+				(occcode	>= 6200	& occcode <= 6250) |
+				(occcode	>= 6330	& occcode <= 6530) |
+				(occcode	>= 6700	& occcode <= 6720) |
+				(occcode	>= 6750	& occcode <= 6950) |
+				(occcode	>= 7010	& occcode <= 7560) |
+				(occcode	>= 7600	& occcode <= 7700) |
+				(occcode	>= 7800	& occcode <= 7810) |
+				(occcode	>= 8210	& occcode <= 8230) |
+				(occcode	>= 8500	& occcode <= 8510) |
+				(occcode	>= 8600	& occcode <= 8630) |
+				(occcode	>= 8750	& occcode <= 8760) |
+				(occcode	>= 8910	& occcode <= 8920)
+			);
+		/* Operators, fabricators and laborers */
+		replace mocc10 = 9 if (
+				(occcode	== 6260) |
+				(occcode	== 6305) |
+				(occcode	== 6600) |
+				(occcode	== 7750) |
+				(occcode	== 7830) |
+				(occcode	== 8040) |
+				(occcode	== 8200) |
+				(occcode 	== 8365) |
+				(occcode	== 8465) |
+				(occcode 	== 8990) |
+				(occcode 	== 9410) |
+				(occcode 	>= 6310 & occcode <= 6320) |
+				(occcode	>= 6730	& occcode <= 6740) |
+				(occcode	>= 7710	& occcode <= 7730) |
+				(occcode 	>= 7850 & occcode <= 7855) |
+				(occcode	>= 7920	& occcode <= 8025) |
+				(occcode 	>= 8100 & occcode <= 8120) |
+				(occcode	>= 8140	& occcode <= 8150) |
+				(occcode	>= 8240	& occcode <= 8260) |
+				(occcode	>= 8310	& occcode <= 8320) |
+				(occcode	>= 8530	& occcode <= 8555) |
+				(occcode	>= 8640	& occcode <= 8740) |
+				(occcode	>= 8800	& occcode <= 8865) |
+				(occcode	>= 8930	& occcode <= 8965) |
+				(occcode	>= 9110	& occcode <= 9365) |
+				(occcode	>= 9420	& occcode <= 9760)
+			);
+		 /* Protective service */
+		replace mocc10 = 6 if (
+				(occcode	>= 3700	& occcode <= 3960)
+			);
+		/* Service (Food prep, buildings and grounds, cleaning) */
+		replace mocc10 = 7 if (
+				(occcode	>= 4000	& occcode <= 4220) |
+				(occcode	>= 4240	& occcode <= 4255)
+			);
+		/* Personal care and personal services */
+		replace mocc10 = 5 if (
+				(occcode	== 4230) |
+				(occcode	== 8300) |
+				(occcode	== 9415) |
+				(occcode	>= 3600	& occcode <= 3655) |
+				(occcode	>= 4300	& occcode <= 4330) |
+				(occcode	>= 4400	& occcode <= 4655)
+			);
+		/* Agriculture */
+		replace mocc10 = 10 if (
+				(occcode	>= 200	& occcode <= 210)  |
+				(occcode	>= 4340	& occcode <= 4350) |
+				(occcode	>= 6000	& occcode <= 6130)
+			);
+	
 	};
 	
 };
