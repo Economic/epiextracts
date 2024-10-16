@@ -89,13 +89,7 @@ process_rawbasic, begin(2023m9) end(2024m9)
 
 * create EPI's extracts from the processed raw data
 * creates both basic monthly and ORG subsample
-create_extracts, begin(1962m1) end(1979m12)
-
-*note: comment out if-statement in weekpay
-*create_extracts, begin(1980m1) end(1980m12)
-
-*note: uncomment if-statement in weekpay
-*create_extracts, begin(1981m1) end(2024m9)
+create_extracts, begin(1962m1) end(2024m9)
 
 * create documentation
 * do ${codedocs}createdocs.do
