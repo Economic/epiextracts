@@ -6,11 +6,14 @@ If you use the EPI extracts for your research, please cite them as
     Economic Policy Institute. {{ year }}. Current Population Survey Extracts, Version {{ version }}, https://microdata.epi.org.
 
 ## Recent changes
+### Version 1.0.57 -- 2024-10-11
+#### Added
+* September 2024 extracts
 ### Version 1.0.56 -- 2024-09-13
 #### Added
 * August 2024 extracts
 #### Modified
-* Fixed error in defining `mocc10` to account for changing occupation codes in 2020, modified `mocc10`` to include occupation codes that were previously erroneously excluded. See [commit](https://github.com/Economic/epiextracts/commit/f646c37cd9c2b329035c77b51e82c262432dd270#diff-eb3c834281425bb265a1ffc0fd741e846b529d9e164840a527aa84cd1353b932) for details. Thanks to Stevie Marvin for spotting this error!
+* Fixed error in defining `mocc10` to account for changing occupation codes in 2020, modified `mocc10` to include occupation codes that were previously erroneously excluded. See [commit](https://github.com/Economic/epiextracts/commit/f646c37cd9c2b329035c77b51e82c262432dd270#diff-eb3c834281425bb265a1ffc0fd741e846b529d9e164840a527aa84cd1353b932) for details. Thanks to Stevie Marvin for spotting this error!
 ### Version 1.0.55 -- 2024-08-09
 #### Added
 * July 2024 extracts

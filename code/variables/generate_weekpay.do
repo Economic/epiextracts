@@ -27,15 +27,19 @@ if $monthlycps == 1 | $maycps == 1 {
 		if $monthlycps == 0 & $maycps == 1 local weightvar basicwgt
 
 
+
 		* Do top-code adjustment
-		* there seems to be something wrong with ernwk and ernwkc in 1980 may data
-		* coding weekpay in these data as missing for now
-		if $maycps == 1 & tm(1980m1) <= $date & $date <= tm(1980m12) {
-			replace weekpay = .
-		}
+		* account for topcoding change after April 2024
 		if tm(2024m4) <= $date {
 			replace weekpay = weekpay_noadj
 		}
+
+		* there seems to be something wrong with ernwk and ernwkc in 1980 may data
+		* coding weekpay in these data as missing for now
+		else if $maycps == 1 & tm(1980m1) <= $date & $date <= tm(1980m12) {
+			replace weekpay = .
+		}
+
 		else {
 			* males: generate top-code adjusted weekly earnings
 			topcode_impute weekpay_noadj if weekpay_noadj ~= . & female == 0 & age >= 16 & age ~= . [pw=`weightvar'], generate(weekpay_male) method(Pareto) threshold(80) topcodeval(`topcodeval')
