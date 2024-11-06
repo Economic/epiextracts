@@ -30,6 +30,7 @@ foreach var in
   otcamt wage_noadj wageotc_noadj
 	faminc
 	ownchild famrel agechild
+  telework hourstwlw
   {;
     do ${codevars}generate_`var'.do;
   };

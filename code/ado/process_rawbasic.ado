@@ -91,6 +91,24 @@ if `year' >= 2000 & `year' <= 2002 {
 	save `rwdta'
 }
 
+* process telework-covid supplement
+if `datenum' >= tm(2022m10) & `datenum' <= tm(2024m5) {
+	tempfile twdat
+	* unzip telework supplement and store as temp data
+	!unzip -p ${censusbasicraw}`monthname'`shortyear'cpucvr_pub.zip `monthname'`shortyear'cpucvr_pub.dat > `twdat'
+	
+	clear
+	* map data dictionary to data
+    quietly infile using ${dictionaries}telework_covid_cps_supplement.dct, using("twdat") clear
+	tostring occurnum, replace format(%2.0f)
+	tostring qstnum, replace format(%5.0f)
+	tempfile twdta
+	save `twdta'
+}
+
+
+tempfile twdat
+
 * determine dictionary/NBER do-file to use
 * March 2021 - present date
 if  tm(2021m3) <= `datenum' & `datenum' <= tm(2024m9) local nberprogname cpsbmar2021
@@ -147,6 +165,14 @@ if `year' >= 2000 & `year' <= 2002 {
 	merge 1:1 qstnum hryear4 hrmonth occurnum using `rwdta', assert(2 3)
 	keep if _merge == 3
 	drop _merge
+}
+
+* merge telework-covid supplement
+*note: June 2024 telework-covid added to CPS basic
+if tm(2022m10) <= `datenum' & `datenum' <= tm(2024m5) {
+  merge 1:1 qstnum hryear hrmonth occurnum using `twdta', assert(2 3)
+  keep if _merge == 3
+  drop _merge
 }
 
 * save, compress, clean up
