@@ -26,6 +26,6 @@ keep
 	otcamt wage_noadj wageotc_noadj
 	faminc
 	ownchild famrel agechild
-	telework hourstwlw
+	telework hourslwtw
 ;
 #delimit cr;

@@ -12,6 +12,9 @@ if $monthlycps == 1 {
 	}
 }
 
+replace telework = 0 if telework == 2
+replace telework = . if telework < 0
+
 lab var telework "Teleworked last week"
 lab def telework 0 "Did not telework" 1 "Teleworked"
 lab val telework telework
