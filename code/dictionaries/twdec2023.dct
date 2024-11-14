@@ -4,9 +4,9 @@ infile dictionary {
 _column(1)      str5     qstnum      %5s     "Unique household identifier"
 _column(6)      str2     occurnum    %2s     "Unique person identifier"
 _column(8)      byte     hrmonth     %2f     "Month of interview"                    
-_column(10)     byte     hryear      %4f     "Year of interview"
+_column(10)     byte     hryear4     %4f     "Year of interview"
 _column(14)     byte     ptcovr1     %2f     "Telework last week"
-_column(16)     byte     ptcovr2     %6f     "Hours teleworked last week"
-_column(19)     byte     ptcovr3     %2f     "Telework prior to February 2020"
-_column(21)     byte     ptcovr4     %2f     "Volume of telework relative to February 2020"
+_column(16)     byte     ptcovr2     %3f     "Hours teleworked last week"
+_column(19)     byte     pxcovr1     %2f     "Allocation flag for PTCOVR1"
+_column(21)     byte     pxcovr2     %2f     "Allocation flag for PTCOVR2"
 }
