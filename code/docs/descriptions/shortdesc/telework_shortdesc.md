@@ -1,1 +1,1 @@
-`telework` indicates whether the respondent teleworked or worked at home for pay at any time last week. See also [`hourslwtw`](hourslwtw.md)
+`telework` indicates whether the respondent teleworked or worked at home for pay at any time last week. See also [`hourslwtw`](variables/hours/hourslwtw.md)

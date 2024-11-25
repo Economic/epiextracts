@@ -1,1 +1,0 @@
-`hourslwtw` is the number of hours that the respondent teleworked or worked from home last week. See also [`telework`](telework.md)

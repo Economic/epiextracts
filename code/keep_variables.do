@@ -18,7 +18,7 @@ keep
 	paidhre
 	hoursu1 hoursu2 hoursut hourslw1 hourslw2 hourslwt hoursumay hoursuorg
 	hoursvary hoursuint
-	indcode ind70 ind80 ind90 ind02 ind07 ind12 ind17 mind16 manuf dind03 mind03
+	ind70 ind80 ind90 ind02 ind07 ind12 ind17 mind16 manuf dind03 mind03
 	occcode occ70 occ80 occ90 occ00 occ10 occ18 mocc10 docc03 mocc03
 	weekpay_noadj tc_weekpay a_weekpay
 	earnhour a_earnhour

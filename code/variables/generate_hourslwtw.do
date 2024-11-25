@@ -19,5 +19,5 @@ lab def hourslwtw 99 "99+"
 lab val hourslwtw hourslwtw
 notes hourslwtw: Universe restricted to employed at work
 notes hourslwtw: Only available 2022m10-present
-notes hourslwtw: 2022-2024 CPS: ptcovr2
-notes hourslwtw: 2022-2024 CPS: pttlwkhr
+notes hourslwtw: 2022m10-2024m5 CPS: ptcovr2
+notes hourslwtw: 2024m6-present CPS: pttlwkhr
