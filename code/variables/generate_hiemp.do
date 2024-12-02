@@ -1,7 +1,6 @@
 *******************************************************************************
 * Included in employer group health plan
 *******************************************************************************
-label drop hiemp
 capture rename hiemp orig_hiemp
 gen byte hiemp = .
 

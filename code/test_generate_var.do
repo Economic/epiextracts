@@ -22,6 +22,10 @@ keep year cpiurs
 tempfile cpiurs
 save `cpiurs'
 
+********************************************************************
+***************** FAMILY AND HOUSEHOLD INCOME **********************
+********************************************************************
+
 * do the recoding
 foreach year of numlist `beginyear' / `endyear' {
     * pull in individual year of raw march CPS
@@ -42,6 +46,22 @@ foreach year of numlist `beginyear' / `endyear' {
     tempfile data`year'
     save `data`year''
 }
+
+********************************************************************
+********************** HEALTH INSURANCE ****************************
+********************************************************************
+
+/*foreach year of numlist `beginyear' / `endyear' {
+    global date = tm(`year'm1)
+    load_rawcps, begin(`year') end(`year') sample(march)
+    do variables/generate_asecwgt.do
+    do variables/generate_hicov.do
+    do variables/generate_hiemp.do
+    do variables/generate_hipaid.do
+    keep year hicov hiemp hipaid asecwgt
+    tempfile data`year'
+    save `data`year''
+}*/
 
 * load the data back into memory
 foreach year of numlist `beginyear' / `endyear' {
@@ -96,7 +116,6 @@ replace faminc_rep = 8 if faminc == 15
 tab faminc_rep, gen(faminc_rep_)
 gcollapse (mean) faminc_rep_* [pw=famwgt], by(year)
 li
-
 
 /*
 use `march_data', clear

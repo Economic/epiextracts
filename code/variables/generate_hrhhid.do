@@ -24,6 +24,7 @@ if $marchcps == 1 {
 		replace hrhhid = h_idnum1
 	}
 	if tm(2019m1) <= $date {
+		tostring h_idnum, replace force
 		replace hrhhid = h_idnum
 	}
 }

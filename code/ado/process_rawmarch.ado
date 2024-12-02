@@ -122,50 +122,41 @@ if `year' < 2019 {
   if `year' >= 2019 {
     local shortyear = substr("`year'",3,2)
 
-    local archivename asecpub`year'csv.zip
+    *local archivename asecpub`year'csv.zip
 
-    !unzip ${censusmarchraw}`archivename' -d ${censusmarchraw}tempfolder
+    *!unzip ${censusmarchraw}`archivename' -d ${censusmarchraw}tempfolder
+    *clear
+
+    tempfile pppub
+    import delimited "${censusmarchraw}tempfolder/pppub`shortyear'.csv"
+    gen id = ph_seq
+    gen id2 = pf_seq
+    save `pppub'
+
+    clear 
+
+    tempfile hhpub
+    import delimited "${censusmarchraw}tempfolder/hhpub`shortyear'.csv"
+    gen id = h_seq
+    save `hhpub'
+    
     clear
-    
-    *note: 2019 zipped data has more complicated zipped folder structure
-    if `year' == 2019 {
-      tempfile pppub
-      import delimited "${censusmarchraw}tempfolder/cpspb/asec/prod/data/2019/pppub`shortyear'.csv"
-      gen id = ph_seq
-      save `pppub'
 
-      tempfile hhpub
-      import delimited "${censusmarchraw}tempfolder/cpspb/asec/prod/data/2019/hhpub`shortyear'.csv"
-      gen id = h_seq
-      save `hhpub'
+    tempfile ffpub
+    import delimited "${censusmarchraw}tempfolder/ffpub`shortyear'.csv"
+    gen id = fh_seq
+    gen id2 = ffpos
+    save `ffpub'
 
-      tempfile ffpub
-      import delimited "${censusmarchraw}tempfolder/cpspb/asec/prod/data/2019/ffpub`shortyear'.csv"
-      gen id = fh_seq
-      save `ffpub'
+    clear
 
-    }
-    else {
-      tempfile pppub
-      import delimited "${censusmarchraw}tempfolder/pppub`shortyear'.csv"
-      gen id = ph_seq
-      save `pppub'
+    use `pppub', clear
+    joinby id id2 using `ffpub'
+    merge m:1 id using `hhpub'
 
-      tempfile hhpub
-      import delimited "${censusmarchraw}tempfolder/hhpub`shortyear'.csv"
-      gen id = h_seq
-      save `hhpub'
-    
-      tempfile ffpub
-      import delimited "${censusmarchraw}tempfolder/ffpub`shortyear'.csv"
-      gen id = fh_seq
-      save `ffpub'
-
-    }
-
-    use `hhpub', clear
-    joinby id using `hhpub'
-    joinby id using `ffpub'
+    * keep only matched merge
+    keep if _merge == 3
+    drop _merge
 
     * save, compress, clean up
     compress
@@ -174,6 +165,8 @@ if `year' < 2019 {
     copy cpsmarch_`year'.dta.zip ${censusmarchstata}cpsmarch_`year'.dta.zip, replace
     erase cpsmarch_`year'.dta
     erase cpsmarch_`year'.dta.zip
+
+    clear
 }
 
 

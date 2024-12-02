@@ -13,12 +13,9 @@ if $marchcps == 1 {
 	}  
 }
 
-lab var eitc "Employer-provided pension plan"
-lab def eitc 1 "Employer provides pension" 0 "Employer does not provide pension"
+lab var eitc "Earned income tax credit"
 lab val eitc eitc
-notes eitc: Available 1980-present
-notes eitc: 1980-present universe: Those who worked last year
-*notes eitc: 1980-1988 Unicon: eitcrd
+notes eitc: Available 1991-present
 notes eitc: 1991-1997 Unicon: eit_cred
 notes eitc: 1998-2018 CPS: eit_cred
 notes eitc: 2019-present CPS: spm_eitc

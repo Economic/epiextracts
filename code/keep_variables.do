@@ -8,7 +8,7 @@ keep
 	age female hispanic wbho wbhao wbhom wbhaom raceorig wbo_only wbho_only
 	citistat citizen married veteran
 	gradecom gradehi gradeatn educ
-	dlfstat lfstat emp emphrs unemp nilf schenrl samejob whyabsent whyunemp 	
+	dlfstat lfstat emp emphrs unemp nilf samejob whyabsent whyunemp 	
 	selfemp selfinc cow1 cow2
 	multjobs numjobs
 	unmem uncov union
@@ -34,7 +34,7 @@ keep
 	famiws
 	hhinc_c
 	wkslyr wkslyr_binned
-	poverty
+	poverty povrate
 	schenrl schenrl_type
 	wrkly
 	hicov hiemp hipaid
@@ -43,6 +43,9 @@ keep
 	medicaid medicaidcov
 	pubhouse hhtenure rentsub
 	eitc
+	hhstatus famlis
+	hmcaid now_hmcaid mcaid now_mcaid caid now_caid
+	ftotval
 ;
 #delimit cr;
  

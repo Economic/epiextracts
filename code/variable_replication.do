@@ -10,31 +10,31 @@ global earnerinfo = 0
 global basicfile = 0
 adopath ++ ${code}ado
 
-
+* do the recoding
 foreach year of numlist `beginyear' / `endyear' {
-    global date = tm(`year'm1)
+    * pull in individual year of raw march CPS
     load_rawcps, begin(`year') end(`year') sample(march)
-    do variables/generate_asecwgt.do
-    do variables/generate_hicov.do
-    do variables/generate_hiemp.do
-    do variables/generate_hipaid.do
-    keep year hicov hiemp hipaid asecwgt
+    *global date = tm(`year'm1) 
+
+    * save to temporary file
     tempfile data`year'
     save `data`year''
 }
 
 * load the data back into memory
 foreach year of numlist `beginyear' / `endyear' {
+    * load beginning year data
     if `year' == `beginyear' use `data`year'', clear
+    * append all other years
     else append using `data`year''
 }
 
-* save temporary file of appended march data with select recoded variables
-tempfile march_data
-save `march_data'
+***************************************************
+************** ASEC V. BASIC COMP *****************
+***************************************************
+use `march_data', clear
 
-/*use `march_data', clear
-
+* summary stat of ASEC testing variable
 gcollapse (mean) schenrl [pw=asecwgt], by(year)
 * tag march variables with suffix
 foreach var of varlist schenrl {
@@ -45,16 +45,19 @@ foreach var of varlist schenrl {
 tempfile marchstats
 save `marchstats'
 
-* load basic data for faminc variable
+* load basic data for testing variable
 load_epiextracts, begin(`beginyear'm1) end(`endyear'm12) sample(basic) keep(year finalwgt schenrl)
 * drop if age < 14 to match march data
-*drop if age < 14
+drop if age < 14
 
+* summary stat of Basic testing variable
 gcollapse (mean) schenrl [pw=finalwgt], by(year)
-
+* tag basic variables with suffix
 foreach var of varlist schenrl {
     rename `var' basic_`var'
 }
+
+* merge data and calculate difference in ASEC v. Basic testing var rate
 merge 1:1 year using `marchstats', assert(3) nogenerate
 
 foreach var in schenrl {
