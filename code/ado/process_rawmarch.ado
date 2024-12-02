@@ -122,53 +122,35 @@ if `year' < 2019 {
   if `year' >= 2019 {
     local shortyear = substr("`year'",3,2)
 
-    local archivename asecpub`year'csv.zip
+    *local archivename asecpub`year'csv.zip
 
-    !unzip ${censusmarchraw}`archivename' -d ${censusmarchraw}tempfolder
+    *!unzip ${censusmarchraw}`archivename' -d ${censusmarchraw}tempfolder
+    *clear
+
+    tempfile pppub
+    import delimited "${censusmarchraw}tempfolder/pppub`shortyear'.csv"
+    save `pppub'
+
+    clear 
+
+    tempfile hhpub
+    import delimited "${censusmarchraw}tempfolder/hhpub`shortyear'.csv"
+    save `hhpub'
+    
     clear
-    
-    *note: 2019 zipped data has more complicated zipped folder structure
-    if `year' == 2019 {
-      tempfile pppub
-      import delimited "${censusmarchraw}tempfolder/cpspb/asec/prod/data/2019/pppub`shortyear'.csv"
-      gen id = ph_seq
-      save `pppub'
 
-      tempfile hhpub
-      import delimited "${censusmarchraw}tempfolder/cpspb/asec/prod/data/2019/hhpub`shortyear'.csv"
-      gen id = h_seq
-      save `hhpub'
+    tempfile ffpub
+    import delimited "${censusmarchraw}tempfolder/ffpub`shortyear'.csv"
+    save `ffpub'
 
-      tempfile ffpub
-      import delimited "${censusmarchraw}tempfolder/cpspb/asec/prod/data/2019/ffpub`shortyear'.csv"
-      gen id = fh_seq
-      save `ffpub'
+    clear
 
-    }
-    else {
-      tempfile pppub
-      import delimited "${censusmarchraw}tempfolder/pppub`shortyear'.csv"
-      gen id = ph_seq
-      save `pppub'
-
-      tempfile hhpub
-      import delimited "${censusmarchraw}tempfolder/hhpub`shortyear'.csv"
-      gen id = h_seq
-      save `hhpub'
-    
-      tempfile ffpub
-      import delimited "${censusmarchraw}tempfolder/ffpub`shortyear'.csv"
-      gen id = fh_seq
-      save `ffpub'
-
-    }
-
-    use `hhpub', clear
-    joinby id using `hhpub'
-    joinby id using `ffpub'
+    use `pppub', clear
+    append using `hhpub'
+    append using `ffpub'
 
     * save, compress, clean up
-    compress
+    *compress
     saveold cpsmarch_`year'.dta, replace version(13)
     zipfile cpsmarch_`year'.dta, saving(cpsmarch_`year'.dta.zip, replace)
     copy cpsmarch_`year'.dta.zip ${censusmarchstata}cpsmarch_`year'.dta.zip, replace

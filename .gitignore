@@ -4,6 +4,7 @@
 
 test.do
 test.R
+*.txt
 
 nohup.out
 master.log
