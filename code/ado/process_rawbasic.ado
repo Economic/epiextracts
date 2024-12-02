@@ -91,9 +91,42 @@ if `year' >= 2000 & `year' <= 2002 {
 	save `rwdta'
 }
 
+* process telework-covid supplement
+if `datenum' >= tm(2022m10) & `datenum' <= tm(2024m5) {
+	tempfile twdat
+
+	* unzip telework supplement and store as temp data
+    if `datenum' >= tm(2023m11) & `datenum' <= tm(2024m2) | `datenum' == tm(2024m5) {
+        !unzip -p ${censusbasicraw}`monthname'`shortyear'cpucvr_pub.zip `monthname'`shortyear'cpucvr_puf.dat > `twdat'
+    }
+    else {
+        !unzip -p ${censusbasicraw}`monthname'`shortyear'cpucvr_pub.zip `monthname'`shortyear'cpucvr_pub.dat > `twdat'
+    }
+	clear
+
+	if `datenum' >= tm(2022m10) & `datenum' <= tm(2023m11) {
+    	quietly infile using ${dictionaries}twoct2022.dct, using(`twdat') clear
+
+	}
+
+	else if `datenum' >= tm(2023m12) & `datenum' <= tm(2024m5) {
+    	quietly infile using ${dictionaries}twdec2023.dct, using(`twdat') clear
+	}
+
+	* map data dictionary to data
+	tostring occurnum, replace format(%2.0f)
+	tostring qstnum, replace format(%5.0f)
+	replace hryear4 = hryear4 + 2000
+	tempfile twdta
+	save `twdta' 
+}
+
+
 * determine dictionary/NBER do-file to use
-* March 2021 - present date
-if  tm(2021m3) <= `datenum' & `datenum' <= tm(2024m9) local nberprogname cpsbmar2021
+* June 2024 - present
+if tm(2024m6) <= `datenum' & `datenum' <= tm(2024m10) local nberprogname cpsbjun2024
+* March 2021 - May 2024
+if  tm(2021m3) <= `datenum' & `datenum' <= tm(2024m5) local nberprogname cpsbmar2021
 * January 2020 - February 2021
 if  tm(2020m1) <= `datenum' & `datenum' <= tm(2021m2) local nberprogname cpsbjan2020
 * January 2017 - December 2019
@@ -146,6 +179,21 @@ do ${dictionaries}`nberprogname'.do `rawdat' ${dictionaries}`nberprogname'.dct
 if `year' >= 2000 & `year' <= 2002 {
 	merge 1:1 qstnum hryear4 hrmonth occurnum using `rwdta', assert(2 3)
 	keep if _merge == 3
+	drop _merge
+} 
+
+* merge telework-covid supplement
+*note: June 2024 telework-covid added to CPS basic
+if tm(2022m10) <= `datenum' & `datenum' <= tm(2024m5) {
+	if `datenum' == tm(2024m1) {
+		merge m:1 qstnum hryear4 hrmonth occurnum using `twdta'
+	}
+
+	else {
+		merge 1:1 qstnum hryear4 hrmonth occurnum using `twdta'
+	}
+
+	drop if _merge == 2
 	drop _merge
 }
 

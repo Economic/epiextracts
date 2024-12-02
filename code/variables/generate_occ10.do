@@ -285,7 +285,7 @@ lab def occ10
 4540 "Tour and travel guides"
 4550 "Transportation attendants"
 4600 "Child care workers"
-4610 "Personal and home care aides"
+4610 "Personal care aides"
 4620 "Recreation and fitness workers"
 4630 "Not used"
 4640 "Residential advisors"

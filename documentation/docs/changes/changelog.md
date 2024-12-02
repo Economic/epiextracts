@@ -6,6 +6,12 @@ If you use the EPI extracts for your research, please cite them as
     Economic Policy Institute. {{ year }}. Current Population Survey Extracts, Version {{ version }}, https://microdata.epi.org.
 
 ## Recent changes
+### Version 1.0.58 -- 2024-11-25
+#### Added
+* October 2024 extracts
+* Included two variables,`telework` and `hourslwtw`, from the [Telework/Covid-19](https://www.census.gov/data/datasets/time-series/demo/cps/cps-supp_cps-repwgt/telework-cps-covid.html) supplement. From October 2022 to May 2024, variables related to telework were only available in this supplement file. Starting in [June 2024](https://www.census.gov/programs-surveys/cps/data/datasets/cps-basic-footnotes.html), the telework variables were incorporated in the basic monthly CPS.
+#### Modified
+* Fixed title error for occupational code 4610 in `occ10`. See [commit](https://github.com/Economic/epiextracts/commit/81ad48d3eec676ed94e9fe49ec52501e656d08ed) for details. Thanks to Emma Cohn for spotting this error!
 ### Version 1.0.57 -- 2024-10-11
 #### Added
 * September 2024 extracts
