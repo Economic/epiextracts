@@ -6,6 +6,9 @@ If you use the EPI extracts for your research, please cite them as
     Economic Policy Institute. {{ year }}. Current Population Survey Extracts, Version {{ version }}, https://microdata.epi.org.
 
 ## Recent changes
+### Version 1.0.59 -- 2024-12-
+#### Added
+* November 2024 extracts
 ### Version 1.0.58 -- 2024-11-25
 #### Added
 * October 2024 extracts
