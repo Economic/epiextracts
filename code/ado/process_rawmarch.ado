@@ -129,33 +129,44 @@ if `year' < 2019 {
 
     tempfile pppub
     import delimited "${censusmarchraw}tempfolder/pppub`shortyear'.csv"
+    gen id = ph_seq
+    gen id2 = pf_seq
     save `pppub'
 
     clear 
 
     tempfile hhpub
     import delimited "${censusmarchraw}tempfolder/hhpub`shortyear'.csv"
+    gen id = h_seq
     save `hhpub'
     
     clear
 
     tempfile ffpub
     import delimited "${censusmarchraw}tempfolder/ffpub`shortyear'.csv"
+    gen id = fh_seq
+    gen id2 = ffpos
     save `ffpub'
 
     clear
 
     use `pppub', clear
-    append using `hhpub'
-    append using `ffpub'
+    joinby id id2 using `ffpub'
+    merge m:1 id using `hhpub'
+
+    * keep only matched merge
+    keep if _merge == 3
+    drop _merge
 
     * save, compress, clean up
-    *compress
+    compress
     saveold cpsmarch_`year'.dta, replace version(13)
     zipfile cpsmarch_`year'.dta, saving(cpsmarch_`year'.dta.zip, replace)
     copy cpsmarch_`year'.dta.zip ${censusmarchstata}cpsmarch_`year'.dta.zip, replace
     erase cpsmarch_`year'.dta
     erase cpsmarch_`year'.dta.zip
+
+    clear
 }
 
 
