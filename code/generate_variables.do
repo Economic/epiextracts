@@ -12,7 +12,7 @@ foreach var in
   age female hispanic wbho wbhao wbhom wbhaom raceorig wbo_only wbho_only
 	citistat citizen married veteran
   gradecom gradehi gradeatn educ
-  lfstat dlfstat emp emphrs unemp nilf schenrl samejob whyabsent whyunemp 
+  lfstat dlfstat emp emphrs unemp nilf samejob whyabsent whyunemp 
   selfemp selfinc cow1 cow2
   multjobs numjobs
   unmem uncov union
@@ -29,7 +29,6 @@ foreach var in
 	earnhour a_earnhour
   otcrec
   otcamt wage_noadj wageotc_noadj
-	faminc
 	ownchild famrel agechild
   telework hourslwtw
 	faminc faminc_c
@@ -37,9 +36,8 @@ foreach var in
   famiws
   hhinc_c
   wkslyr wkslyr_binned
-	ownchild famrel agechild 
-  poverty
-  schenrl schenrl_type
+  poverty povrate
+  schenrl
   wrkly
   hicov hiemp hipaid
   penplan penincl

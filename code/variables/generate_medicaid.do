@@ -1,6 +1,6 @@
-*******************************************************************************
-* Household covered by Medicaid last year (some or all)
-*******************************************************************************
+**********************************************************************************************
+* Household covered by Medicaid, PCHIP, or other means-tested coverage last year (some or all)
+**********************************************************************************************
 gen byte medicaid = .
 
 if $marchcps == 1 {
@@ -9,17 +9,13 @@ if $marchcps == 1 {
         replace medicaid = 1 if covmedcd == 1
     }
     *check starting year (1988B or 1989?)
-	if tm(1989m1) <= $date & $date <= tm(1997m12) {
+	if tm(1989m1) <= $date & $date <= tm(2018m12) {
 		replace medicaid = 0 if mcaid == 2
         replace medicaid = 1 if mcaid == 1
 	}    
-	if tm(1998m1) <= $date & $date <= tm(2018m12) {
-		replace medicaid = 0 if hmcaid == 2
-        replace medicaid = 1 if hmcaid == 1
-	} 
     if tm(2019m1) <= $date {
-        replace medicaid = 0 if hmcaid == 3
-        replace medicaid = 1 if hmcaid == 2 | hmcaid == 1
+        replace medicaid = 0 if mcaid == 3
+        replace medicaid = 1 if mcaid == 2 | mcaid == 1
     }
 }
 
@@ -31,4 +27,4 @@ notes medicaid: 1980-1988 universe: All persons
 notes medicaid: 1988-present: All households
 notes medicaid: 1980-1988 Unicon: covmedcd
 notes medicaid: 1989-1997 Unicon: mcaid
-notes medicaid: 1998-present CPS: hmcaid
+notes medicaid: 1998-present CPS: mcaid

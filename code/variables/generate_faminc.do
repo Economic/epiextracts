@@ -2,7 +2,7 @@
 * Family income
 ********************************************************************************
 capture rename faminc oldfaminc
-gen faminc = .
+gen byte faminc = .
 
 if $monthlycps == 1 {
 	if tm(1989m1) <= $date & $date <= tm(1993m12) {
@@ -57,7 +57,7 @@ if $marchcps == 1 {
 		replace faminc = 11 if 17 <= ftot_r & ftot_r <= 20
 		replace faminc = 12 if 21 <= ftot_r & ftot_r <= 30
 		replace faminc = 13 if 31 <= ftot_r & ftot_r <= 40
-		replace faminc = 14 if 41 >= ftot_r 
+		replace faminc = 14 if ftot_r == 41 
 	}
 }
 
@@ -77,7 +77,7 @@ lab def faminc
 12 "$50,000 - $74,999"
 13 "$75,000 - $99,999 (2003m10-present) / $75,000+ (CPS: 1989-2003m9) / 75000+ (March: 1988-2004)"
 14 "$100,000 - $149,999 (2003m10-present) / (March: 2005-present)"
-15 "$150,000+ (2003m10-present) / (March: 2005-present)"
+15 "$150,000+ (2003m10-present) / (March: 2005-2018)"
 ;
 #delimit cr;
 lab val faminc faminc

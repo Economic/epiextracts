@@ -1,7 +1,6 @@
 *******************************************************************************
 * Employer-paid health insurance
 *******************************************************************************
-label drop hipaid
 capture rename hipaid orig_hipaid
 gen byte hipaid = .
 
