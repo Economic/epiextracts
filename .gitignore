@@ -1,6 +1,7 @@
 *.dta
 *.sas7bdat
 *.zip
+*.txt
 
 test.do
 test.R
