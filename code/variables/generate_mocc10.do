@@ -4,7 +4,7 @@
 gen byte mocc10 = .
 
 #delimit ;
-if $monthlycps == 1 | $maycps == 1 {;
+if $monthlycps == 1 | $maycps == 1 | $marchcps == 1 {;
 	/*
 	Occupation coding for:
 	CPS Basic 1976-1982

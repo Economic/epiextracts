@@ -1,6 +1,7 @@
 ********************************************************************************
-* Industry: original Census code
+* Industry recode
 ****************************************************************
+* recode Census industry variable for all dates
 gen int indcode = .
 
 if $monthlycps == 1 | $maycps == 1 {
@@ -11,12 +12,34 @@ if $monthlycps == 1 | $maycps == 1 {
 		replace indcode = peio1icd
 		replace indcode = . if indcode < 0
 	}
-	
 }
 
+if $marchcps == 1 {
+    if tm(1962m1) <= $date & $date <= tm(1962m12) {
+        replace indcode = ind
+        replace indcode = . if indcode == 44
+    }
 
-lab val indcode indcode
-label var indcode "Industry: original Census code"
-notes indcode: Not consistent over time
-notes indcode: 1973-1993 Unicon: ind
-notes indcode: 1994-present CPS: peio1icd
+	if tm(1963m1) <= $date & $date <= tm(1967m12) {
+        replace indcode = ind
+        replace indcode = . if indcode == 45 | indcode == 99
+    }
+	if tm(1968m1) <= $date & $date <= tm(1997m12) {
+        replace indcode = ind
+        replace indcode = . if indcode == 0
+    }
+	if tm(1998m1) <= $date & $date <= tm(2002m12) {
+		replace indcode = a_ind
+        replace indcode = . if indcode == 0
+	}
+	if tm(2003m1) <= $date {
+		replace indcode = peioind
+        replace indcode = . if indcode == 0
+	}
+}
+
+lab var indcode "Industry recode"
+label value indcode indcode
+notes indcode: 1962-1997 Unicon: ind
+notes indcode: 1998-present CPS: peioind
+

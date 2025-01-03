@@ -89,6 +89,16 @@ if `year' < 2019 {
   clear
   do ${dictionaries}`nberprogname'.do `rawdat' ${dictionaries}`nberprogname'.dct
 
+  if 2010 <= `year' & `year' <= 2018 {
+      * spm files based on reference year
+			local spmyear = `year'-1
+			local inputpath ${censusmarchraw}
+      * spmresearch2013 == spmresearch_redes_old
+			local spmfile spmresearch`spmyear'.dta
+
+			merge 1:1 h_seq pppos using "`inputpath'`spmfile'", assert(3) nogenerate
+	}
+ 
   * save, compress, clean up
   compress
   saveold cpsmarch_`year'.dta, replace version(13)
@@ -107,6 +117,11 @@ if `year' < 2019 {
 
     clear
     do ${dictionaries}`nberprogname'.do `rawdat' ${dictionaries}`nberprogname'.dct
+
+		local inputpath ${censusmarchraw}
+		local spmfile spmresearch2013_redes_new.dta
+
+		merge 1:1 h_seq pppos using "`inputpath'`spmfile'", assert(3) nogenerate
 
     * save, compress, clean up
     compress

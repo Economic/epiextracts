@@ -30,9 +30,9 @@ if $marchcps == 1 {
 }
 
 lab var hrhhid "CPS: Household identifier (Part 1)"
-notes hrhhid: 1973-1993 May/Basic: hhid
-notes hrhhid: 1994-present May/Basic: hrhhid
-notes hrhhid: 1962-1997 March: hhid
-notes hrhhid: 1998-2004 March: h_idnum
-notes hrhhid: 2005-2018 March: h_idnum
+notes hrhhid: 1973-1993 Unicon May/Basic: hhid
+notes hrhhid: 1994-present CPS May/Basic: hrhhid
+notes hrhhid: 1962-1997 Unicon March: hhid
+notes hrhhid: 1998-2004 CPS March: h_idnum
+notes hrhhid: 2005-2018 CPS March: h_idnum
 notes hrhhid: Used for joining EPI extracts to BLS/Census raw data

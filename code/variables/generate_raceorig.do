@@ -87,6 +87,61 @@ if $monthlycps == 1 | $maycps == 1 {
 	}
 }
 
+if $marchcps == 1 {
+	if tm(1962m1) <= $date & $date <= tm(1962m12) {
+		replace raceorig = 1 if race == 0 /* White */
+		replace raceorig = 2 if race == 1 /* Black */
+		replace raceorig = 0 if race == 2 /* Amer Indian/Alaskan Native */	
+	}
+	if tm(1963m1) <= $date & $date <= tm(1987m12) {
+		replace raceorig = 1 if race == 1 /* White */
+		replace raceorig = 2 if race == 2 /* Black */
+		replace raceorig = 0 if race == 3 /* Amer Indian/Alaskan Native */
+	}
+	if tm(1988m1) <= $date & $date <= tm(1995m12) {
+		replace raceorig = 1 if race == 1 /* White */
+		replace raceorig = 2 if race == 2 /* Black */
+		replace raceorig = 3 if race == 3 /* Amer Indian/Alaskan Native */
+		replace raceorig = 4 if race == 4 /* Asian/Pacific Islander */
+		replace raceorig = 0 if race == 5 /* Other */
+	}
+	if tm(1996m1) <= $date & $date <= tm(1997m12) {
+		replace raceorig = 1 if race == 1 /* White */
+		replace raceorig = 2 if race == 2 /* Black */
+		replace raceorig = 3 if race == 3 /* American Indian/Alaskan Native */
+		replace raceorig = 4 if race == 4 /* Asian/Pacific Islander */
+	}
+	if tm(1998m1) <= $date & $date <= tm(2002m12) {
+		replace raceorig = 1 if a_race == 1 /* White */
+		replace raceorig = 2 if a_race == 2 /* Black */
+		replace raceorig = 3 if a_race == 3 /* American Indian/Alaskan Native */
+		replace raceorig = 4 if a_race == 4 /* Asian/Pacific Islander */
+	}
+	if tm(2003m1) <= $date  {
+		replace raceorig = 1 if prdtrace == 1 /* White */
+		replace raceorig = 2 if prdtrace == 2 /* Black */
+		replace raceorig = 3 if prdtrace == 3 /* American Indian/Alaskan Native */
+		replace raceorig = 5 if prdtrace == 4 /* Asian only */
+		replace raceorig = 6 if prdtrace == 5 /* Hawaiian/Pacific Islander only */
+		replace raceorig = 10 if prdtrace == 6 /* White-Black */
+		replace raceorig = 11 if prdtrace == 7 /* White-AI */
+		replace raceorig = 12 if prdtrace == 8 /* White-Asian */
+		replace raceorig = 13 if prdtrace == 9 /* White-HP */
+		replace raceorig = 14 if prdtrace == 10 /* Black-AI */
+		replace raceorig = 15 if prdtrace == 11 /* Black-Asian */
+		replace raceorig = 16 if prdtrace == 12 /* Black-HP */
+		replace raceorig = 17 if prdtrace == 13 /* AI-Asian */
+		replace raceorig = 18 if prdtrace == 14 /* Asian-HP */
+		replace raceorig = 19 if prdtrace == 15 /* W-B-AI */
+		replace raceorig = 20 if prdtrace == 16 /* W-B-A */
+		replace raceorig = 21 if prdtrace == 17 /* W-AI-A */
+		replace raceorig = 22 if prdtrace == 18 /* W-A-HP */
+		replace raceorig = 23 if prdtrace == 19 /* W-B-AI-A */
+		replace raceorig = 30 if prdtrace == 20 /* 2 or 3 races */
+		replace raceorig = 31 if prdtrace == 21 /* 4 or 5 races */
+	}
+}
+
 lab var raceorig "Race, minimally recoded, detailed"
 #delimit ;
 lab define raceorig
@@ -123,6 +178,8 @@ lab define raceorig
 lab val raceorig raceorig
 notes raceorig: minimally recoded original race variable on file (mostly reordering)
 notes raceorig: Coding changes in 1989, 1996, 2003, 2012m5
-notes raceorig: 1973-1993 Unicon: race
-notes raceorig: 1994-2002 CPS: perace
-notes raceorig: 2003-present CPS: ptdtrace
+notes raceorig: 1973-1993 Unicon Basic: race
+notes raceorig: 1994-2002 CPS Basic: perace
+notes raceorig: 1973-1997 Unicon March: race
+notes raceorig: 1998-2002 CPS March: a_race
+notes raceorig: 2003-present CPS Basic/March: ptdtrace

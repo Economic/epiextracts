@@ -23,8 +23,18 @@ if $monthlycps == 1 | $maycps == 1 {
 			replace earnhour = pternhly
 		}
 	}
-replace earnhour = . if earnhour < 0
 }
+
+if $marchcps == 1 {
+	if tm(1979m1) <= $date & $date <= tm(1997m12) {
+		replace earnhour = ernhr
+	}
+	if tm(1998m1) <= $date {
+		replace earnhour = a_hrspay
+	}
+}
+
+replace earnhour = . if earnhour < 0
 
 lab var earnhour "Hourly wage (if hourly worker)"
 notes earnhour: Dollars per hour
@@ -34,5 +44,7 @@ notes earnhour: Top-code 1985-2002, < 20 usual hours: 99.99
 notes earnhour: Top-code 1985-2002, 20+ usual hours: 1923.07/(usual hours)
 notes earnhour: Top-code 2003-present, < 29 usual hours: 99.99
 notes earnhour: Top-code 2003-present, 29+ usual hours: 2885.07/(usual hours)
-notes earnhour: 1973-1993 Unicon: hourern,ernhr
-notes earnhour: 1994-present CPS: prernhly
+notes earnhour: 1973-1993 Unicon Basic: hourern,ernhr
+notes earnhour: 1994-present CPS Basic: prernhly
+notes earnhour: 1979-1997 Unicon March: ernhr
+notes earnhour: 1998-present CPS March: a_hrspay

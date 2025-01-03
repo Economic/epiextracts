@@ -10,6 +10,16 @@ if $monthlycps == 1 {
 	}
 }
 
+if $marchcps == 1 {
+	if tm(1994m1) <= $date & $date <= tm(1997m12) {
+		replace citistat = citstat
+	}
+	if tm(1998m1) <= $date {
+		replace citistat = prcitshp
+		assert 1 <= prcitshp & prcitshp <= 5		
+	}
+}
+
 label var citistat "Citizenship status, detailed"
 #delimit ;
 lab def citistat
@@ -21,4 +31,5 @@ lab def citistat
 ;
 #delimit cr;
 lab val citistat citistat
-notes citistat: 1994-present CPS: prcitshp
+notes citistat: 1963-1997 Unicon March: citstat
+notes citistat: 1994/1998-present CPS Basic/March: prcitshp

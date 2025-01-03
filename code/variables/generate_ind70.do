@@ -4,10 +4,11 @@
 capture drop ind70
 gen ind70 = .
 
-if $monthlycps == 1 | $maycps == 1 {
+if $monthlycps == 1 | $maycps == 1 | $marchcps == 1 {
 	if tm(1973m1) <= $date & $date <= tm(1982m12) {
 		replace ind70 = indcode
 	}
+
 }
 
 #delimit ;

@@ -27,3 +27,4 @@ check_*.do
 r_pilot
 
 *.gz
+test*.csv

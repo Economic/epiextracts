@@ -13,6 +13,20 @@ if $monthlycps == 1 {
 }
 
 if $marchcps == 1 {
+	if tm(1962m1) <= $date & $date <= tm(1962m12) {
+		replace famtype = 1 if famtyp == 0
+		replace famtype = 2 if famtyp == 3
+		replace famtype = 3 if famtyp == 1
+		replace famtype = 4 if famtyp == 2
+		replace famtype = 5 if famtyp == 4		
+	}
+	if tm(1963m1) <= $date & $date <= tm(1967m12) {
+		replace famtype = 1 if famtyp == 1
+		replace famtype = 2 if famtyp == 4
+		replace famtype = 3 if famtyp == 2
+		replace famtype = 4 if famtyp == 3
+		replace famtype = 5 if famtyp == 5		
+	}
 	if tm(1976m1) <= $date & $date <= tm(1987m12) {
 		replace famtype = 1 if famtyp == 0
 		replace famtype = 2 if famtyp == 4
@@ -40,7 +54,8 @@ lab def famtype
 lab val famtype famtype
 lab var famtype "Family type (person level)"
 notes famtype: Type of family
-notes famtype: 1984-1993 May/Basic: famtyp
-notes famtype: 1994-present May/Basic: prfamtyp
-notes famtype: 1976-1997 March: famtyp
-notes famtype: 1998-present March a_famtyp
+notes famtype: 1968-1975 Unicon March: famtyp missing data
+notes famtype: 1984-1993 Unicon May/Basic: famtyp
+notes famtype: 1994-present CPS May/Basic: prfamtyp
+notes famtype: 1962-1997 Unicon March: famtyp
+notes famtype: 1998-present CPS March a_famtyp

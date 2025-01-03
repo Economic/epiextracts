@@ -41,7 +41,7 @@ if $marchcps == 1 {
 		* Hispanic ethnicity
 		replace wbhom = 3 if hispanic == 1
 	}
-	if tm(2013m1) {
+	if tm(2013m1) <= $date {
 		replace wbhom = 1 if prdtrace == 1
 		replace wbhom = 2 if prdtrace == 2
 		replace wbhom = 4 if 3 <= prdtrace & prdtrace <= 5

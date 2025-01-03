@@ -9,6 +9,14 @@ if $monthlycps == 1 {
 	replace docc03 = . if docc03 < 0
 }
 
+if $marchcps == 1 {
+	if tm(2003m1) <= $date {
+		replace docc03 = a_dtocc
+	}
+
+	replace docc03 = . if docc03 <= 0
+}
+
 #delimit ;
 label define docc03
 1  "Management occupations"
@@ -40,4 +48,5 @@ label values docc03 docc03;
 label var docc03 "Detailed occupation recode, 2003-present"
 notes docc03: Detailed occupation recode by Census, consistent for 2003-present
 notes docc03: Occupation codes from primary job
-notes docc03: 2003-present: prdtocc1
+notes docc03: 2003-present CPS Basic: prdtocc1
+notes docc03: 2003-present CPS March: a_dtocc

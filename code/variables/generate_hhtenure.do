@@ -4,12 +4,11 @@
 gen byte hhtenure = .
 
 if $marchcps == 1 {
-    if tm(1976m1) <= $date & $date <= tm(1988m12) {
+    if tm(1976m1) <= $date & $date <= tm(1997m12) {
         replace hhtenure = tenure
         replace hhtenure = . if hhtenure == 0
     }
-    *check starting year (1988B or 1989?)
-	if tm(1989m1) <= $date {
+	if tm(1998m1) <= $date {
 		replace hhtenure = h_tenure
         replace hhtenure = . if hhtenure == 0
 	}    

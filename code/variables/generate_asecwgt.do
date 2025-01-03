@@ -9,13 +9,15 @@ if $marchcps == 1 {
         replace asecwgt = wgt
     }
     if tm(1980m1) <= $date & $date <= tm(1997m12) {
-        replace asecwgt = wgt
         * use retroactively calculated weights to account for lag in Census data  
         if tm(1980m1) <= $date & $date <= tm(1980m12) {
             replace asecwgt = wgtalt
         }
-        if tm(1990m1) <= $date & $date <= tm(1990m12) {
+        else if tm(1990m1) <= $date & $date <= tm(1990m12) {
             replace asecwgt = wgtalt
+        }
+        else {
+            replace asecwgt = wgt
         }
     }
     if tm(1998m1) <= $date {

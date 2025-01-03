@@ -3,7 +3,7 @@
 ********************************************************************************
 gen byte manuf = .
 
-if $monthlycps == 1 | $maycps == 1 {
+if $monthlycps == 1 | $maycps == 1 | $marchcps == 1 {
 	replace manuf = 0 if mind16 ~= .
 	replace manuf = 1 if mind16 == 3 | mind16 == 4
 }

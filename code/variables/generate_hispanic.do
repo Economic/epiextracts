@@ -43,6 +43,8 @@ lab val hispanic hispanic
 notes hispanic: Hispanic ethnicity
 notes hispanic: Definition breaks in 1994, 2003, 2014
 notes hispanic: not Hispanic includes nonresponse, missing, etc., in order to be consistent with other race variables like wbho
-notes hispanic: 1973-1993 Unicon: spneth
-notes hispanic: 1994-2002 CPS: prorigin
-notes hispanic: 2003-present CPS: prdthsp
+notes hispanic: 1973-1993 Unicon Basic: spneth
+notes hispanic: 1994-2002 CPS Basic: prorigin
+notes hispanic: 2003-present CPS Basic/March: prdthsp
+notes hispanic: 1973-1993 Unicon March: _spneth
+notes hispanic: 1994-2002 CPS Basic: a_reorgn

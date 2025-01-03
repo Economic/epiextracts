@@ -9,8 +9,9 @@ global censusmarchraw /data/cps/march/census/raw/
 global censusmarchstata /data/cps/march/census/stata/
 global codevars ${code}variables/
 global suppdata suppdata/
+global extracts extracts/
 
-local minyear = 2019
+local minyear = 1979
 local maxyear = 2024
 
 * state codes
@@ -79,19 +80,12 @@ foreach year of numlist `minyear'(1)`maxyear' {
 		do ${code}keep_variables.do
 
 		* save data
-		saveold test_`year', replace
+		compress
+		notes drop _dta
+		notes _dta: EPI CPS March Extracts, Version $dataversion
+		label data "EPI CPS March Extracts, Version $dataversion"
+		saveold ${extracts}epi_cpsmarch_`year'.dta, replace version(13)
 	}
 }
-
-
-
-use test_2019
-append using test_2020
-append using test_2021
-append using test_2022
-append using test_2023
-append using test_2024
-
-save test, replace
 
 

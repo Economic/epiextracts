@@ -1,10 +1,10 @@
 *******************************************************************************
-* Covered by health insurance last year
+* Covered by any health insurance last year
 *******************************************************************************
 gen byte hicov = .
 
 if $marchcps == 1 {
-	if tm(1980m1) <= $date & $date <= tm(2018m12) {
+	if tm(1988m1) <= $date & $date <= tm(2018m12) {
 		replace hicov = 0 if hiown == 2
         replace hicov = 1 if hiown == 1
 		replace hicov = . if hiown == 0
@@ -16,8 +16,8 @@ if $marchcps == 1 {
 	}
 }
 
-lab var hicov "Included in employer group health plan"
-lab def hicov 1 "Included in employer group health plan" 0 "Not included in employer group health plan"
+lab var hicov "Health insurance coverage last year"
+lab def hicov 1 "Covered" 0 "Not covered"
 lab val hicov hicov
 notes hicov: Available 1980-present
 notes hicov: 1980-present universe: All persons (not infants born after calendar year)

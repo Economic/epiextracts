@@ -21,15 +21,10 @@ if $monthlycps == 1 {
 }
 
 if $marchcps == 1 {
-	if tm(1988m1) <= $date & $date <= tm(1997m12) {
-		if tm(1989m1) <= $date & $date <= tm(1989m12) {
-			replace faminc = .
-		}
-		else {
-			replace faminc = hfminc + 1 if hfminc <= 10
-			replace faminc = 12 if 11 <= hfminc & hfminc <= 12
-			replace faminc = hfminc if 13 <= hfminc & hfminc < 19
-		}
+	if tm(1990m1) <= $date & $date <= tm(1997m12) {
+		replace faminc = hfminc + 1 if hfminc <= 10
+		replace faminc = 12 if 11 <= hfminc & hfminc <= 12
+		replace faminc = hfminc if 13 <= hfminc & hfminc < 19
 	}
 	if tm(1998m1) <= $date & $date <= tm(2004m12) {
 		replace faminc = h_faminc + 1 if h_faminc <= 10
@@ -81,15 +76,15 @@ lab def faminc
 ;
 #delimit cr;
 lab val faminc faminc
-lab var faminc "Family income category"
+lab var faminc "Family income"
 notes faminc: Categories 13-15 differ after 2003m9
 notes faminc: Census imputes hefaminc to remove missing — zero or near-zero missing rates reflect Census imputation, not complete reporting
-notes faminc: 1989-1993 Basic: faminc
-notes faminc: 1994-2009 Basic: hufaminc
-notes faminc: 2010-2018 Basic: hefaminc
-notes faminc: 1989-1997 March: hfminc
+notes faminc: 1989-1993 Unicon Basic: faminc
+notes faminc: 1994-2009 CPS Basic: hufaminc
+notes faminc: 2010-present CPS Basic: hefaminc
+notes faminc: 1988-1997 Unicon March: hfminc
 notes faminc: 1989 March: hfminc data missing
-notes faminc: 1998-2004 March: h_faminc
-notes faminc: 2005-2009 March: hufaminc
-notes faminc: 2010-2018: hefaminc
-notes faminc: 2019 March: ftot_r
+notes faminc: 1998-2004 CPS March: h_faminc
+notes faminc: 2005-2009 CPS March: hufaminc
+notes faminc: 2010-2018 CPS March: hefaminc
+notes faminc: 2019-present CPS March: ftot_r

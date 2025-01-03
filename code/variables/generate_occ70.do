@@ -5,7 +5,7 @@
 capture drop occ70
 gen occ70 = .
 
-if $monthlycps == 1 | $maycps == 1 {
+if $monthlycps == 1 | $maycps == 1 | $marchcps == 1 {
 	* 1973-1982: 1970 census occupation codes
 	if tm(1973m1) <= $date & $date <= tm(1982m12) {
 		replace occ70 = occcode 
