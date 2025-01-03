@@ -16,7 +16,7 @@ tempfile cpiurs
 save `cpiurs'
 restore
 merge m:1 year using `cpiurs', keep(3) nogenerate
-sum cpiurs if year == 2023
+sum cpiurs if year == 2024
 local basevalue = r(mean)
 replace wage = wage * `basevalue' / cpiurs
 replace wage_noadj = wage_noadj * `basevalue' / cpiurs
@@ -45,11 +45,11 @@ ylabel(18(2)32 34 "$34", angle(0) gmin gmax) ///
 xtitle("") ytitle("") ///
 lcolor("`color4'" "`color2'") ///
 graphregion(color(white)) plotregion(color(white)) ///
-title("Mean real wages (in 2023`dollar')", size(medium)) ///
+title("Mean real wages (in 2024`dollar')", size(medium)) ///
 text(`wageyvalue' `wagexvalue' "wage (adjusted)", color("`color2'") placement(c)) ///
 text(`wage_noadjyvalue' `wage_noadjxvalue' "wage_noadj (unadjusted)", color("`color4'") placement(c))
 graph export ${variableimages}wage_noadj_titleimage.svg, replace
 
 /***
-The analysis above uses the CPS ORG for 1979-2023 and the CPS May for 1973-1978.
+The analysis above uses the CPS ORG for 1979-2024 and the CPS May for 1973-1978.
 ***/
