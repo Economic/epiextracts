@@ -92,6 +92,8 @@ append using test_2022
 append using test_2023
 append using test_2024
 
+destring hrhhid, replace
+
 save test, replace
 
 

@@ -81,7 +81,7 @@ lab def faminc
 ;
 #delimit cr;
 lab val faminc faminc
-lab var faminc "Family income category"
+lab var faminc "Family income"
 notes faminc: Categories 13-15 differ after 2003m9
 notes faminc: 1989-1993 Basic: faminc
 notes faminc: 1994-2009 Basic: hufaminc

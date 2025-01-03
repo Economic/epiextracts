@@ -42,7 +42,7 @@ keep
   pubhouse hhtenure rentsub
   eitc
   hhstatus famlis 
-  hmcaid now_hmcaid mcaid now_mcaid caid now_caid
   ftotval
+  p_seq h_seq peridnum a_famrel
 ;
 #delimit cr;

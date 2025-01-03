@@ -13,7 +13,14 @@ if $monthlycps == 1 | $maycps == 1 {
 	}
 }
 
+if $marchcps == 1 {
+	if tm(1973m1) <= $date {
+		replace pulineno = a_lineno
+	}
+}
+
 lab var pulineno "CPS: Person line number within household"
 notes pulineno: 1973-1993: Unicon lineno
 notes pulineno: 1994-present: CPS pulineno
+notes pulineno: 1973-present: March pulineno
 notes pulineno: Used for joining EPI extracts to BLS/Census raw data

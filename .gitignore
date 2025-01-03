@@ -14,3 +14,4 @@ master.log
 .Rhistory
 .Rproj.user
 *.gz
+test*.csv
