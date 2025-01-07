@@ -79,18 +79,19 @@ foreach year of numlist `minyear'(1)`maxyear' {
 		do ${code}keep_variables.do
 
 		* save data
-		saveold test_`year', replace
+		tempfile test_`year'
+		save `test_`year''
 	}
 }
 
 
 
-use test_2019
-append using test_2020
-append using test_2021
-append using test_2022
-append using test_2023
-append using test_2024
+use `test_2019'
+append using `test_2020'
+append using `test_2021'
+append using `test_2022'
+append using `test_2023'
+append using `test_2024'
 
 destring hrhhid, replace
 

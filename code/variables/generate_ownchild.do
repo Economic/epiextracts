@@ -11,6 +11,14 @@ if $monthlycps == 1 {
 		replace ownchild = prnmchld if (prfamrel == 1 | prfamrel == 2) & prnmchld >= 0
 	}
 }
+if $marchcps == 1 {
+	if tm(1976m1) <= $date & $date <= tm(1987m12) {
+		replace ownchild = frcode10
+	}
+	if tm(1988m1) <= $date {
+		replace ownchild = fownu18
+	}
+}
 
 lab var ownchild "Number of own children in primary family"
 notes ownchild: Universe: family reference person or spouse

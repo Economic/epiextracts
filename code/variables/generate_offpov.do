@@ -1,23 +1,26 @@
 ********************************************************************************
-* pov_cut: Poverty threshold
+* Official poverty threshold
 ********************************************************************************
+gen byte offpov = .
 
-capture rename povcut oldpovcut
-gen byte povcut = .
-
-if $marchcps = 1 {
+if $marchcps == 1 {
+    * poverty universe excludes secondary individuals under 15
+    gen byte universe = 0 if famtype == 5 & age < 15
+    
     if tm(1988m1) <= $date & $date <= tm(1997m12) {
-        *gen byte universe = 1 if 1 <= famtype & famtype <= 3 & 14 <= age
-        replace povcut = 0 if faminc > oldpovcut
-        replace povcut = 1 if povcut <= faminc 
+        replace offpov = 0 if faminc > povcut & universe != 0
+        replace offpov = 1 if faminc <= povcut & universe != 0
     }
+    
     if tm(1998m1) <= $date {
-        *gen byte universe = 1 if 1 <= famtype & famtype <= 3 & 15 <= age
-        replace povcut = 0 if ftotval > fpovcut
-        replace povcut = 1 if fpovcut <= ftotval
+        replace offpov = 0 if ftotval > fpovcut & universe != 0
+        replace offpov = 1 if ftotval <= fpovcut & universe != 0
     }
 }
 
-lab var povcut "Poverty threshold"
-label def povcut 0 "Family income above poverty threshold" 1 "Family income below poverty threshold"
-label value povcut povcut
+lab var offpov "Offical poverty threshold"
+label def offpov 0 "Above poverty threshold" 1 "Below poverty threshold"
+label value offpov offpov
+notes offpov: Universe definition from 1980-present: all persons except for unrelated individuals under age 15
+notes offpov: 1968-1997: faminc & povcut
+notes offpov: 1998-present: ftotval & fpovcut

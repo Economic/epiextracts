@@ -36,7 +36,7 @@ foreach var in
   famiws
   hhinc_c
   wkslyr wkslyr_binned
-  poverty povrate
+  povlev povrate
   schenrl
   wrkly
   hicov hiemp hipaid
@@ -45,6 +45,11 @@ foreach var in
   medicaid medicaidcov
   pubhouse hhtenure rentsub
   eitc
+  offpov offpovcut
+  spmpov spmpovcut
+  fedtax statetax
+  schlunch snap wic mortgage 
+  spmfamtype
   {;
     do ${codevars}generate_`var'.do;
   };

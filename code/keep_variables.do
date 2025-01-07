@@ -32,7 +32,7 @@ keep
   hhinc_c
   wkslyr wkslyr_binned
 	ownchild famrel agechild 
-  poverty povrate
+  povlev povrate
   schenrl
   wrkly
   hicov hiemp hipaid
@@ -41,8 +41,13 @@ keep
   medicaid medicaidcov
   pubhouse hhtenure rentsub
   eitc
+  offpov offpovcut
+  spmpov spmpovcut
+  fedtax statetax
+  schlunch snap wic mortgage
+  spmfamtype
   hhstatus famlis 
-  ftotval
+  ftotval fpovcut
   p_seq h_seq peridnum a_famrel
 ;
 #delimit cr;
