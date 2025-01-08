@@ -3,7 +3,7 @@
 ********************************************************************************
 gen byte citistat = .
 
-if $monthlycps == 1 {
+if $monthlycps == 1 | $marchcps == 1 {
 	if tm(1994m1) <= $date {
 		replace citistat = prcitshp
 		assert 1 <= prcitshp & prcitshp <= 5

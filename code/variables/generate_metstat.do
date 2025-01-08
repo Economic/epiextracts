@@ -4,7 +4,7 @@
 capture rename metstat orig_metstat
 gen metstat = .
 
-if $monthlycps == 1 | $maycps == 1 {
+if $monthlycps == 1 | $maycps == 1 | $marchcps == 1 {
 	if tm(1973m1) <= $date & $date <= tm(1993m12) {
 		if $monthlycps == 0 & $maycps == 1 & $date <= tm(1976m12) {
 			replace metstat = 1 if citystat == 1 | citystat == 2

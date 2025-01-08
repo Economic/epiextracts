@@ -3,7 +3,7 @@
 *******************************************************************************
 gen byte ptecon = .
 
-if $monthlycps == 1 | $maycps == 1 {
+if $monthlycps == 1 | $maycps == 1 | $marchcps == 1 {
 	if tm(1989m1) <= $date & $date <= tm(1993m12) {
 		replace ptecon = 0 if 2 <= wkstat & wkstat <= 5
 		replace ptecon = 1 if wkstat == 3 | wkstat == 5

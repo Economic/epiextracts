@@ -3,7 +3,7 @@
 *******************************************************************************
 gen byte discwork = .
 
-if $monthlycps == 1 {
+if $monthlycps == 1 | $marchcps == 1 {
 	if tm(1989m1) <= $date & $date <= tm(1993m12) {
 		replace discwork = 0
 		replace discwork = 1 if dscwk == 1

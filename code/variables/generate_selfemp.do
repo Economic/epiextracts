@@ -10,7 +10,7 @@ if $maycps == 1 {
 	}
 }
 
-if $monthlycps == 1 {
+if $monthlycps == 1 |$marchcps == 1 {
 	if tm(1976m1) <= $date & $date <= tm(1978m12) {
 		replace selfemp = 0 if class >= 1 & class != .
 		replace selfemp = 1 if class == 3

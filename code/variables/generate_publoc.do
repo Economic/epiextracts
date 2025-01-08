@@ -3,7 +3,7 @@
 *******************************************************************************
 gen byte publoc = .
 
-if $monthlycps == 1 {
+if $monthlycps == 1 | $marchcps == 1 {
 	if tm(1989m1) <= $date & $date <= tm(1993m12) {
 		replace publoc = 0 if class >= 1 & class ~= .
 		replace publoc = 1 if class == 4

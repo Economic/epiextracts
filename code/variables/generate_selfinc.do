@@ -3,7 +3,7 @@
 *******************************************************************************
 gen byte selfinc = .
 
-if $monthlycps == 1 {
+if $monthlycps == 1 | $marchcps == 1 {
 	if tm(1989m1) <= $date & $date <= tm(1993m12) {
 		replace selfinc = 0 if class >= 1 & class != .
 		replace selfinc = 1 if class == 5

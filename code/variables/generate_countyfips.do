@@ -3,7 +3,7 @@
 ********************************************************************************
 gen countyfips = .
 
-if $monthlycps == 1 {
+if $monthlycps == 1 | $marchcps == 1 {
 	if tm(1995m9) <= $date & $date <= tm(2004m4) {
 		replace countyfips = geco
 	}

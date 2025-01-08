@@ -3,7 +3,7 @@
 ********************************************************************************
 gen byte raceorig = .
 
-if $monthlycps == 1 | $maycps == 1 {
+if $monthlycps == 1 | $maycps == 1 | $marchcps == 1 {
 	if tm(1973m1) <= $date & $date <= tm(1988m12) {
 		replace raceorig = 1 if race == 1 /* White */
 		replace raceorig = 2 if race == 2 /* Black */

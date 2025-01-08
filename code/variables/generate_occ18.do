@@ -4,7 +4,7 @@
 /* 2020m1-present: 2018 census occupation codes */
 gen occ18 = .
 
-if $monthlycps == 1 {
+if $monthlycps == 1 | $marchcps == 1 {
 	if tm(2020m1) <= $date {
 		replace occ18 = occcode
 	}
