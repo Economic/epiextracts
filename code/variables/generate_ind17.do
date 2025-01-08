@@ -6,7 +6,7 @@
 gen ind17 = .
 
 
-if $monthlycps == 1 {
+if $monthlycps == 1 | $marchcps == 1 {
 	if tm(2020m1) <= $date {
 		replace ind17 = indcode
 	}
