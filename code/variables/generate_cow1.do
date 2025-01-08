@@ -4,7 +4,7 @@
 capture rename cow1 orig_cow1
 gen byte cow1 = .
 
-if $monthlycps == 1 {
+if $monthlycps == 1 | $marchcps == 1 {
 	if tm(1994m1) <= $date {
 		replace cow1 = peio1cow
 		replace cow1 = . if peio1cow <= 0
