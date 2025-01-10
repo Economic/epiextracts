@@ -23,8 +23,8 @@ foreach var in
   hoursu1 hoursu2 hoursut hourslw1 hourslw2 hourslwt hoursumay hoursuorg
 	hoursvary hoursuint
   hourslyr
-  ind70 ind80 ind90 ind02 ind07 ind12 mind16 manuf dind03 mind03
-  occ70 occ80 occ90 occ00 occ10 mocc10 mocc03 docc03
+  indcode ind70 ind80 ind90 ind02 ind07 ind12 ind17 mind16 manuf dind03 mind03
+  occcode occ70 occ80 occ90 occ00 occ10 occ18 mocc10 mocc03 docc03
   weekpay_noadj tc_weekpay a_weekpay
 	earnhour a_earnhour
   otcrec
@@ -50,6 +50,11 @@ foreach var in
   fedtax statetax
   schlunch snap wic mortgage 
   spmfamtype
+  cowlj
+  dhhtype famkind 
+  disability parent
+  migarea migstatus migmetro
+  lookdurbin
   {;
     do ${codevars}generate_`var'.do;
   };

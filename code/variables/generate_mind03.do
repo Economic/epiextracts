@@ -10,6 +10,13 @@ if $monthlycps == 1 | $maycps == 1 {
 	replace mind03 = . if mind03 < 0
 }
 
+if $marchcps == 1 {
+	if tm(2003m1) <= $date {
+		replace mind03 = a_mjind
+	}
+	replace mind03 = . if mind03 < 1
+}
+
 #delimit ;
 label define mind03
 1	 "Agriculture, forestry, fishing, and hunting"

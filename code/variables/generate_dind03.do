@@ -10,6 +10,14 @@ if $monthlycps == 1 {
 	replace dind03 = . if dind03 < 0
 }
 
+if $marchcps == 1 {
+	if tm(2003m1) <= $date {
+		replace dind03 = a_dtind
+	}
+
+	replace dind03 = . if dind03 <= 0
+}
+
 #delimit ;
 label define dind03
 1	 "Agriculture"

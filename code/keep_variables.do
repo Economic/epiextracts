@@ -19,8 +19,8 @@ keep
 	hoursu1 hoursu2 hoursut hourslw1 hourslw2 hourslwt hoursumay hoursuorg
 	hoursvary hoursuint
   hourslyr
-  ind70 ind80 ind90 ind02 ind07 ind12 mind16 manuf dind03 mind03
-  occ70 occ80 occ90 occ00 occ10 mocc10 mocc03 docc03
+  ind70 ind80 ind90 ind02 ind07 ind12 ind17 mind16 manuf dind03 mind03
+  occ70 occ80 occ90 occ00 occ10 occ18 mocc10 mocc03 docc03
   weekpay_noadj tc_weekpay a_weekpay
 	earnhour a_earnhour
   otcrec
@@ -46,8 +46,14 @@ keep
   fedtax statetax
   schlunch snap wic mortgage
   spmfamtype
+  cowlj indcode
+  dhhtype famkind 
+  disability parent
+  migarea migstatus migmetro
+  lookdurbin
   hhstatus famlis 
   ftotval fpovcut
   p_seq h_seq peridnum a_famrel
+  a_dtocc a_dtind peioocc occcode
 ;
 #delimit cr;
