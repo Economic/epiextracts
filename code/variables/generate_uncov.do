@@ -29,6 +29,17 @@ if $monthlycps == 1 {
 			replace uncov = 1 if peerncov == 1
 		}
 	}
+
+	if $marchcps == 1 {
+		if tm(1987m1) <= $date & $date <= tm(1987m12) {
+			replace uncov = 0 if laborun == 2
+			replace uncov = 1 if laborun == 1
+		}
+		if tm(2019m1) <= date {
+			replace uncov = 0 if a_uncov == 2
+			replace uncov = 1 if a_uncov == 1
+		}
+	}
 }
 
 lab var uncov "Covered by a union contract (not a member)"

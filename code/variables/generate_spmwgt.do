@@ -1,15 +1,13 @@
 ********************************************************************************
-* Supplemental Poverty Measure unit's poverty rate
+* Supplemental Poverty Measure unit's weight
 ********************************************************************************
-gen byte spmpov = .
+gen byte spmwgt = .
 
 if $marchcps == 1 {
     if tm(2019m1) <= $date {
-        replace spmpov = spm_poor
+        replace spmwgt = spm_weight
     }
 }
 
-lab var spmpov "SPM's poverty rate"
-label def spmpov 0 "Not in poverty" 1 "In poverty"
-label value spmpov spmpov
-
+lab var spmwgt "SPM's weight"
+label value spmwgt spmwgt

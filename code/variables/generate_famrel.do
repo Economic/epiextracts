@@ -11,6 +11,12 @@ if $monthlycps == 1 {
 	}
 }
 
+if $marchcps == 1 {
+	if tm(1988m1) <= $date {
+		replace famrel = a_famrel if a_famrel >= 0
+	}
+}
+
 lab var famrel "Family relationship recode"
 #delimit ;
 lab define famrel

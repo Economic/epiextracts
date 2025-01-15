@@ -22,6 +22,16 @@ if $monthlycps == 1 | $maycps == 1 {
 	}
 }
 
+if $marchcps == 1 {
+	if tm(1986m1) <= $date & $date <= tm(1997m12) {
+		replace tc_weekpay = ernhtc if weekpay ~= .
+	}
+	
+	if tm(1998m1) <= $date {
+		replace tc_weekpay = a_herntf if weekpay ~= .
+	}
+}
+
 lab var tc_weekpay "Weekly pay top-coded by BLS"
 lab def tc_weekpay 0 "Not top-coded" 1 "Top-coded"
 lab val tc_weekpay tc_weekpay

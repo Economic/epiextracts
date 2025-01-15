@@ -20,6 +20,17 @@ if $monthlycps == 1 | $maycps == 1 {
 	}
 }
 
+if $marchcps == 1 {
+	if tm(1979m1) <= $date & $date <= tm(1997m12) {
+		replace paidhre = 0 if ernpdh == 2
+		replace paidhre = 1 if ernpdh == 1		
+	}
+	if tm(1998m1) <= $date {
+		replace paidhre = 0 if a_hrlywk == 2
+		replace paidhre = 1 if a_hrlywk == 1
+	}
+}
+
 lab var paidhre "Paid by hour"
 lab def paidhre 0 "Nonhourly worker" 1 "Hourly worker"
 lab val paidhre paidhre

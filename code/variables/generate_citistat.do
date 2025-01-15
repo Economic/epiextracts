@@ -1,12 +1,23 @@
 ********************************************************************************
 * citistat: Citizenship status, detailed
 ********************************************************************************
+capture rename citistat orig_citistat
 gen byte citistat = .
 
-if $monthlycps == 1 | $marchcps == 1 {
+if $monthlycps == 1 {
 	if tm(1994m1) <= $date {
 		replace citistat = prcitshp
 		assert 1 <= prcitshp & prcitshp <= 5
+	}
+}
+
+if $marchcps == 1 {
+	if tm(1994m1) <= $date & $date <= tm(1997m12) {
+		replace citistat = orig_citistat
+	}
+	if tm(1998m1) <= $date {
+		replace citistat = prcitshp
+		assert 1 <= prcitshp & prcitshp <= 5		
 	}
 }
 
@@ -21,4 +32,6 @@ lab def citistat
 ;
 #delimit cr;
 lab val citistat citistat
-notes citistat: 1994-present CPS: prcitshp
+notes citistat: 1994-present CPS Basic: prcitshp
+notes citistat: 1963-1997 Unicon March: citistat
+notes citistat: 1998-present CPS March: prcitshp

@@ -6,9 +6,11 @@ capture confirm variable weekpay, exact
 if _rc == 0 {
 	drop weekpay
 }
-gen weekpay = .
+
 
 if $monthlycps == 1 | $maycps == 1 {
+	gen weekpay = .
+
 	if $earnerinfo == 1 {
 		* determine top-code thresholds
 		if tm(1973m1) <= $date & $date <= tm(1988m12) {
@@ -56,6 +58,8 @@ if $monthlycps == 1 | $maycps == 1 {
 		replace weekpay = weekpay_noadj if (year == 2023 & month >= 4 | year == 2024) & minsamp == 4 
 	}
 }
+
+
 
 lab var weekpay "Weekly pay (top-code adjusted)"
 notes weekpay: Dollars per week for nonhourly and hourly workers

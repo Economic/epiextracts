@@ -23,8 +23,15 @@ if $monthlycps == 1 | $maycps == 1 {
 			replace earnhour = pternhly
 		}
 	}
-replace earnhour = . if earnhour < 0
 }
+
+if $marchcps == 1 {
+	if tm(2019m1) <= $date {
+		replace earnhour = a_hrspay
+	}
+}
+
+replace earnhour = . if earnhour < 0
 
 lab var earnhour "Hourly wage (if hourly worker)"
 notes earnhour: Dollars per hour

@@ -25,13 +25,14 @@ keep
 	earnhour a_earnhour
   otcrec
   otcamt wage_noadj wageotc_noadj
-	faminc faminc_c
 	telework hourslwtw
-  famern
-  famiws
+  ownchild famrel agechild 
+  income
+  famern famiws
   hhinc_c
   wkslyr wkslyr_binned
-	ownchild famrel agechild 
+	faminc faminc_c
+  earn
   povlev povrate
   schenrl
   wrkly
@@ -50,10 +51,62 @@ keep
   dhhtype famkind 
   disability parent
   migarea migstatus migmetro
-  lookdurbin
+  lookdurbin spmwgt
   hhstatus famlis 
   ftotval fpovcut
   p_seq h_seq peridnum a_famrel
   a_dtocc a_dtind peioocc occcode
 ;
 #delimit cr;
+
+if $monthlycps == 1 | $maycps == 1 {
+  #delimit;
+  drop asecwgt
+  hourslyr
+    famern
+    famiws
+    hhinc_c
+    wkslyr wkslyr_binned
+	  faminc_c
+    earn
+    povlev povrate
+    schenrl
+    wrkly
+    hicov hiemp hipaid
+    penplan penincl
+    foodstamps
+    medicaid medicaidcov
+    pubhouse hhtenure rentsub
+    eitc
+    offpov offpovcut
+    spmpov spmpovcut
+    fedtax statetax
+    schlunch snap wic mortgage
+    spmfamtype
+    cowlj indcode
+    dhhtype famkind 
+    disability parent
+    migarea migstatus migmetro
+    lookdurbin spmwgt
+  ;
+  #delimit cr;
+}
+
+if $marchcps == 1 {
+  #delimit;
+  drop agechild
+    basicwgt cmpwgt orgwgt
+    cow2
+    emphrs gradecom
+    hourslw1 hourslw2 hourslwtw 
+    hoursu2 hoursuint hoursumay
+    hrsample hrsersuf huhhnum
+    lookdur multjobs numjobs
+    otcamt otcrec
+    proxy
+    ptecon samejob telework
+    wage_noadj wageotc_noadj wageotc
+    weekpay weekpay_noadj tc_weekpay
+  ;
+  #delimit cr;
+}

@@ -3,7 +3,7 @@
 ********************************************************************************
 gen cbsafips = .
 
-if $monthlycps == 1 {
+if $monthlycps == 1 | $marchcps == 1 {
 	if tm(2004m5) <= $date {
 		replace cbsafips = gtcbsa
 	}

@@ -31,9 +31,9 @@ foreach var in
   otcamt wage_noadj wageotc_noadj
 	ownchild famrel agechild
   telework hourslwtw
+  earn income
 	faminc faminc_c
-  famern
-  famiws
+  famern famiws
   hhinc_c
   wkslyr wkslyr_binned
   povlev povrate
@@ -54,7 +54,7 @@ foreach var in
   dhhtype famkind 
   disability parent
   migarea migstatus migmetro
-  lookdurbin
+  lookdurbin spmwgt
   {;
     do ${codevars}generate_`var'.do;
   };

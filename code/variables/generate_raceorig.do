@@ -88,24 +88,25 @@ if $monthlycps == 1 | $maycps == 1 {
 }
 
 if $marchcps == 1 {
-	if tm(1973m1) <= $date & $date <= tm(1988m12) {
-		replace raceorig = 1 if race == 1 /* White */
-		replace raceorig = 2 if race == 2 /* Black */
-		replace raceorig = 0 if race == 3 /* Other */
-	}
 	if tm(1963m1) <= $date & $date <= tm(1987m12) {
 		replace raceorig = 1 if race == 1 /* White */
 		replace raceorig = 2 if race == 2 /* Black */
 		replace raceorig = 0 if race == 3 /* Amer Indian/Alaskan Native */
 	}
 	if tm(1988m1) <= $date & $date <= tm(1995m12) {
-		replace raceorig = 1 if a_race == 1 /* White */
-		replace raceorig = 2 if a_race == 2 /* Black */
-		replace raceorig = 3 if a_race == 3 /* Amer Indian/Alaskan Native */
-		replace raceorig = 4 if a_race == 4 /* Asian/Pacific Islander */
-		replace raceorig = 0 if a_race == 5 /* Other */
+		replace raceorig = 1 if race == 1 /* White */
+		replace raceorig = 2 if race == 2 /* Black */
+		replace raceorig = 3 if race == 3 /* Amer Indian/Alaskan Native */
+		replace raceorig = 4 if race == 4 /* Asian/Pacific Islander */
+		replace raceorig = 0 if race == 5 /* Other */
 	}
-	if tm(1996m1) <= $date & $date <= tm(2002m12) {
+	if tm(1996m1) <= $date & $date <= tm(1997m12) {
+		replace raceorig = 1 if race == 1 /* White */
+		replace raceorig = 2 if race == 2 /* Black */
+		replace raceorig = 3 if race == 3 /* American Indian/Alaskan Native */
+		replace raceorig = 4 if race == 4 /* Asian/Pacific Islander */
+	}
+	if tm(1998m1) <= $date & $date <= tm(2002m12) {
 		replace raceorig = 1 if a_race == 1 /* White */
 		replace raceorig = 2 if a_race == 2 /* Black */
 		replace raceorig = 3 if a_race == 3 /* American Indian/Alaskan Native */
@@ -172,6 +173,8 @@ lab define raceorig
 lab val raceorig raceorig
 notes raceorig: minimally recoded original race variable on file (mostly reordering)
 notes raceorig: Coding changes in 1989, 1996, 2003, 2012m5
-notes raceorig: 1973-1993 Unicon: race
-notes raceorig: 1994-2002 CPS: perace
-notes raceorig: 2003-present CPS: ptdtrace
+notes raceorig: 1973-1993 Unicon Basic: race
+notes raceorig: 1994-2002 CPS Basic: perace
+notes raceorig: 1973-1997 Unicon March: race
+notes raceorig: 1998-2002 CPS March: a_race
+notes raceorig: 2003-present CPS Basic/March: ptdtrace

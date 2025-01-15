@@ -22,6 +22,19 @@ if $monthlycps == 1 {
 	}
 }
 
+if $marchcps == 1 {
+	if tm(1987m1) <= $date & $date <= tm(1987m12) {
+		replace unmem = 0 if lumember == 2
+		replace unmem = 1 if lumember == 1
+	}
+
+	if tm(1988m1) <= $date {
+		replace unmem = 0 if a_unmem == 2
+		replace unmem = 1 if a_unmem == 1
+	}
+
+}
+
 lab var unmem "Member of a union"
 lab def unmem 1 "Union member" 0 "Not a union member"
 lab val unmem unmem
