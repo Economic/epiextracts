@@ -83,12 +83,12 @@ lab def faminc
 lab val faminc faminc
 lab var faminc "Family income"
 notes faminc: Categories 13-15 differ after 2003m9
-notes faminc: 1989-1993 Basic: faminc
-notes faminc: 1994-2009 Basic: hufaminc
-notes faminc: 2010-2018 Basic: hefaminc
-notes faminc: 1989-1997 March: hfminc 
+notes faminc: 1989-1993 Unicon Basic: faminc
+notes faminc: 1994-2009 CPS Basic: hufaminc
+notes faminc: 2010-present CPS Basic: hefaminc
+notes faminc: 1988-1997 Unicon March: hfminc 
 notes faminc: 1989 March: hfminc data missing
-notes faminc: 1998-2004 March: h_faminc
-notes faminc: 2005-2009 March: hufaminc
-notes faminc: 2010-2018: hefaminc
-notes faminc: 2019 March: ftot_r
+notes faminc: 1998-2004 CPS March: h_faminc
+notes faminc: 2005-2009 CPS March: hufaminc
+notes faminc: 2010-2018 CPS March: hefaminc
+notes faminc: 2019-present CPS March: ftot_r

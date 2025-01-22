@@ -15,10 +15,15 @@ if $monthlycps == 1 | $maycps == 1 {
 }
 
 if $marchcps == 1 {
-    if tm(1988m1) <= $date {
-        replace indcode = industry
-        replace indcode = . if industry == 0
+    if tm(1962m1) <= $date & $date <= tm(1997m12) {
+        replace indcode = ind
+        replace indcode = . if ind == 0
     }
+
+	if tm(1998m1) <= $date {
+		replace indcode = peioind
+        replace indcode = . if ind == 0
+	}
 }
 
 lab var indcode "Industry recode"

@@ -35,7 +35,7 @@ if $marchcps == 1 {
 	}
 	if tm(1998m1) <= $date & $date <= tm(2006m12) {
 		replace a_earnhour = 0 if earnhour > 0 & earnhour ~= .
-		replace a_earnhour = 1 if a%hrs == 1 & earnhour > 0 & earnhour ~= .
+		replace a_earnhour = 1 if aphrs == 1 & earnhour > 0 & earnhour ~= .
 		assert a_earnhour ~= . if earnhour > 0 & earnhour ~= .
 	}	
 	if tm(2007m1) <= $date & $date <= tm(2010m12) {
@@ -54,4 +54,4 @@ lab var a_earnhour "Hourly earnings allocated by BLS"
 lab def a_earnhour 0 "Not allocated" 1 "Allocated"
 lab val a_earnhour a_earnhour
 notes a_earnhour: Allocation coding inconsistent across time
-notes a_earnhour: No allocation codes available during 1994m1-1995m8
+notes a_earnhour: Basic: No allocation codes available during 1994m1-1995m8

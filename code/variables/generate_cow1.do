@@ -4,8 +4,19 @@
 capture rename cow1 orig_cow1
 gen byte cow1 = .
 
-if $monthlycps == 1 | $marchcps == 1 {
+if $monthlycps == 1 {
 	if tm(1994m1) <= $date {
+		replace cow1 = peio1cow
+		replace cow1 = . if peio1cow <= 0
+	}
+}
+
+if $marchcps == 1 {
+	if tm(1994m1) <= $date & $date <= tm(1997m12) {
+		replace cow1 = cowjob1
+		replace cow1 = . if cowjob1 <= 0
+	}
+	if tm(1998m1) <= $date {
 		replace cow1 = peio1cow
 		replace cow1 = . if peio1cow <= 0
 	}
@@ -26,4 +37,5 @@ lab def cow1
 #delimit cr
 lab val cow1 cow1
 notes cow1: Available 1994-present
-notes cow1: 1994-present CPS: peio1cow
+notes cow1: 1994-1997 Unicon March: cowjob1
+notes cow1: 1994/1998-present CPS Basic/March: peio1cow

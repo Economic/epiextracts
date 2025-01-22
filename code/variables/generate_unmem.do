@@ -23,12 +23,12 @@ if $monthlycps == 1 {
 }
 
 if $marchcps == 1 {
-	if tm(1987m1) <= $date & $date <= tm(1987m12) {
-		replace unmem = 0 if lumember == 2
-		replace unmem = 1 if lumember == 1
+	if tm(1971m1) <= $date & $date <= tm(1997m12) {
+		replace unmem = 0 if unmem == 2
+		replace unmem = 1 if unmem == 1
 	}
 
-	if tm(1988m1) <= $date {
+	if tm(1998m1) <= $date {
 		replace unmem = 0 if a_unmem == 2
 		replace unmem = 1 if a_unmem == 1
 	}
@@ -40,6 +40,7 @@ lab def unmem 1 "Union member" 0 "Not a union member"
 lab val unmem unmem
 notes unmem: Only available in 1973-1981 May, 1983-present ORG
 notes unmem: Not available in 1982
-notes unmem: 1973-1981 Unicon: unmem
-notes unmem: 1983-1993 Unicon: unmem
-notes unmem: 1994-present CPS: peernlab
+notes unmem: 1973-1993 Unicon Basic: unmem
+notes unmem: 1994-present CPS Basic: peernlab
+notes unmem: 1971-1997 Unicon March: unmem
+notes unmem: 1998-present CPS March: a_unmem

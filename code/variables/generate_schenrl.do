@@ -20,12 +20,10 @@ if $marchcps == 1 {
 	if tm(1986m1) <= $date & $date <= tm(1997m12) {
 		replace schenrl = 0 if schenr == 2
 		replace schenrl = 1 if schenr == 1
-		replace schenrl = . if schenr == 0
 	}
 	if tm(1998m1) <= $date {
 		replace schenrl = 0 if a_enrlw == 2
 		replace schenrl = 1 if a_enrlw == 1
-		replace schenrl = . if a_enrlw == 0
 	}
 }
 
@@ -37,6 +35,5 @@ notes schenrl: 1983-2012 universe: ages 16-24
 notes schenrl: 2013-present universe: ages 16-54
 notes schenrl: 1984-1993 Unicon Basic: schenr
 notes schenrl: 1994-present CPS Basic: peschenr
-notes schenrl: 1986-1988 Unicon March: battend
-notes schenrl: 1989-1997 Unicon March: a_enrlw
+notes schenrl: 1986-1997 Unicon March: schenr
 notes schenrl: 1997-present CPS March: a_enrlw

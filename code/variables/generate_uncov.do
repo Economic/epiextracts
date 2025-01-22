@@ -30,17 +30,19 @@ if $monthlycps == 1 {
 		}
 	}
 
-	if $marchcps == 1 {
-		if tm(1987m1) <= $date & $date <= tm(1987m12) {
-			replace uncov = 0 if laborun == 2
-			replace uncov = 1 if laborun == 1
-		}
-		if tm(2019m1) <= date {
-			replace uncov = 0 if a_uncov == 2
-			replace uncov = 1 if a_uncov == 1
-		}
-	}
+	
 }
+
+if $marchcps == 1 {
+	if tm(1987m1) <= $date & $date <= tm(1997m12) {
+		replace uncov = 0 if old_uncov == 2
+		replace uncov = 1 if old_uncov == 1
+	}
+	if tm(1998m1) <= date {
+		replace uncov = 0 if a_uncov == 2
+		replace uncov = 1 if a_uncov == 1
+	}
+	}
 
 lab var uncov "Covered by a union contract (not a member)"
 lab def uncov 1 "Union covered" 0 "Not union covered"
@@ -49,6 +51,8 @@ notes uncov: Defined for non-members of unions
 notes uncov: Only available in 1977-1981 May, 1983-present ORG
 notes uncov: Not available on 1976-1983 basic monthly files
 notes uncov: Not available prior to 1977 or in 1982
-notes uncov: 1977-1981 Unicon: uncov
-notes uncov: 1983-1993 Unicon: uncov
+notes uncov: 1977-1981 Unicon March: uncov
+notes uncov: 1983-1993 Unicon March: uncov
 notes uncov: 1994-present CPS: peerncov
+notes uncov: 1987-1997 Unicon March: uncov
+notes uncov: 1998-present CPS March: a_uncov

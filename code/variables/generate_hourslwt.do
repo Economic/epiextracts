@@ -17,10 +17,7 @@ if $marchcps == 1 {
 		replace hourslwt = 0 if hours == 99
 		replace hourslwt = hours if hours < 99
 	}
-	if tm(1968m1) <= $date & $date <= tm(1993m12) {
-		replace hourslwt = hours
-	}
-	if tm(1994m1) <= $date & $date <= tm(1997m12) {
+	if tm(1968m1) <= $date & $date <= tm(1997m12) {
 		replace hourslwt = hours 
 	}
 	if tm(1998m1) <= $date {

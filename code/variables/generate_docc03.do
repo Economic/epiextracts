@@ -48,4 +48,5 @@ label values docc03 docc03;
 label var docc03 "Detailed occupation recode, 2003-present"
 notes docc03: Detailed occupation recode by Census, consistent for 2003-present
 notes docc03: Occupation codes from primary job
-notes docc03: 2003-present: prdtocc1
+notes docc03: 2003-present CPS Basic: prdtocc1
+notes docc03: 2003-present CPS March: a_dtocc

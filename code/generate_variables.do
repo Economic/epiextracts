@@ -50,11 +50,11 @@ foreach var in
   fedtax statetax
   schlunch snap wic mortgage 
   spmfamtype
-  cowlj
+  cowly
   dhhtype famkind 
   disability parent
   migarea migstatus migmetro
-  lookdurbin spmwgt
+  lookdurly spmwgt
   {;
     do ${codevars}generate_`var'.do;
   };

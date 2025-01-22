@@ -47,11 +47,11 @@ keep
   fedtax statetax
   schlunch snap wic mortgage
   spmfamtype
-  cowlj indcode
+  cowly indcode
   dhhtype famkind 
   disability parent
   migarea migstatus migmetro
-  lookdurbin spmwgt
+  lookdurly spmwgt
   hhstatus famlis 
   ftotval fpovcut
   p_seq h_seq peridnum a_famrel
@@ -83,11 +83,11 @@ if $monthlycps == 1 | $maycps == 1 {
     fedtax statetax
     schlunch snap wic mortgage
     spmfamtype
-    cowlj indcode
+    cowly indcode
     dhhtype famkind 
     disability parent
     migarea migstatus migmetro
-    lookdurbin spmwgt
+    lookdurly spmwgt
   ;
   #delimit cr;
 }

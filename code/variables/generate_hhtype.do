@@ -15,7 +15,7 @@ if $monthlycps == 1 {
 
 if $marchcps == 1 {
 	if tm(1988m1) <= $date & $date <= tm(1997m12) {
-		replace hhtype = hhtype4
+		replace hhtype = hhtype
 	}
 	if tm(1998m1) <= $date {
 		replace hhtype = hrhtype
@@ -40,5 +40,5 @@ lab def hhtype
 lab val hhtype hhtype
 lab var hhtype "Household type"
 notes hhtype: Type of household
-notes hhtype: 1984-1993: Unicon hhtype
-notes hhtype: 1994-present: CPS hrhtype
+notes hhtype: 1984-1993 Unicon: hhtype
+notes hhtype: 1994-present CPS: hrhtype

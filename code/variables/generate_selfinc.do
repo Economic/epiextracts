@@ -29,8 +29,10 @@ lab var selfinc "Incorporated self-employed"
 lab def selfinc 1 "Self-employed (incorp)" 0 "Not self-employed (incorp)"
 lab val selfinc selfinc
 notes selfinc: Incorporated self-employed only
-notes selfinc: 1994-present CPS: peio1cow
+notes selfinc: 1994-present CPS Basic: peio1cow
 notes selfinc: 1994-present: For first job
-notes selfinc: 1989-1993 Unicon: derived from class
+notes selfinc: 1989-1993 Unicon Basic: derived from class
+notes selfinc: 1994-1997 Unicon March: cowjob1
+notes selfinc: 1998-present CPS March: peio1cow
 notes selfinc: Universe: Class of worker assigned (not necessarily employed)
 notes selfinc: Different definitions/universes: 1989-1993, 1994-present

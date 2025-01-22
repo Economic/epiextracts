@@ -48,5 +48,8 @@ lab def lfstat
 ;
 #delimit cr
 lab val lfstat lfstat
-notes lfstat: 1973-1993 Unicon: mlr
-notes lfstat: 1994-present CPS: pemlr
+notes lfstat: 1973-1993 Unicon Basic/May: mlr
+notes lfstat: 1994-present CPS Basic/May: pemlr
+notes lfstat: 1962-1993 Unicon March: _esr
+notes lfstat: 1994-1997 Unicon March: mlr
+notes lfstatL 1998-present CPS March: pemlr

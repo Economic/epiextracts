@@ -14,7 +14,11 @@ if $monthlycps == 1 {
 }
 
 if $marchcps == 1 {
-	if tm(1988m1) <= $date {
+	if tm(1988m1) <= $date & $date <= tm(1997m12) {
+		replace gradeatn = grdatn - 30
+		replace gradeatn = . if gradeatn <= 0
+	}
+	if tm(1998m1) <= $date {
 		replace gradeatn = a_hga - 30
 		replace gradeatn = . if gradeatn <= 0
 
@@ -46,4 +50,5 @@ lab val gradeatn gradeatn
 notes gradeatn: Only available 1992-present
 notes gradeatn: 1992-1993 Unicon Basic: grdatn
 notes gradeatn: 1994-present CPS Basic: peeduca
-notes gradeatn: 1988-present CPS March: a_hga
+notes gradeatn: 1988-1997 Unicon March: grdatn
+notes gradeatn: 1998-present CPS March: a_hga

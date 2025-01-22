@@ -34,4 +34,5 @@ lab def dlfstat
 ;
 #delimit cr
 lab val dlfstat dlfstat
-notes dlfstat: 1994-present CPS: pemlr
+notes dlfstat: 1994-1997 Unicon March: mlr
+notes dlfstat: 1994/1998-present CPS Basic/March: pemlr

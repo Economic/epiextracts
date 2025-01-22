@@ -33,8 +33,8 @@ if $marchcps == 1 {
 
 lab var famwgt "Family weight"
 notes famwgt: Family weight, based on head of family
-notes famwgt: 1984-1993 Basic: famwgt
-notes famwgt: 1994-present Basic: pwfmwgt
-notes famwgt: 1963-1997 March: famwgt
+notes famwgt: 1984-1993 Unicon Basic: famwgt
+notes famwgt: 1994-present CPS Basic: pwfmwgt
+notes famwgt: 1963-1997 Unicon March: famwgt
 notes famwgt: 1976 March: asecwgt (for first person in family)
-notes famwgt: 1998-present March: fsup_wgt
+notes famwgt: 1998-present CPS March: fsup_wgt

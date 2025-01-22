@@ -20,8 +20,8 @@ if $monthlycps == 1 | $maycps == 1 {
 
 if $marchcps == 1 {
 	if tm(1962m1) <= $date & $date <= tm(1962m12) {
-		replace married = 0 if  0 <= marstat & marstat <= 2
-		replace married = 1 if 3 <= marstat <= 6
+		replace married = 1 if  0 <= marstat & marstat <= 2
+		replace married = 0 if 3 <= marstat <= 6
 	}
 	if tm(1963m1) <= $date & $date <= tm(1967m12) {
 		replace married = 0 if 4 <= marstat & marstat <= 7
@@ -29,7 +29,7 @@ if $marchcps == 1 {
 	}
 	if tm(1968m1) <= $date & $date <= tm(1975m12) {
 		replace married = 0 if marstat == 1 | marstat == 3 | 6 <= marstat & marstat <= 7
-		replace married = 1 if marstat == 2 | marstat == 4
+		replace married = 1 if 2 <= marstat & marstat <= 5
 	}
 	if tm(1976m1) <= $date & $date <= tm(1987m12) {
 		replace married = 0 if 5 <= marstat & marstat <= 8
@@ -48,7 +48,9 @@ if $marchcps == 1 {
 label var married "Married"
 lab def married 0 "Not married" 1 "Married"
 lab val married married
-notes married: 1973-1993 May/Basic: marstat
-notes married: 1994-present Basic: prmarsta
-notes married: 1962-1997 March: marstat
-notes married: 1998-present March: a_maritl
+notes married: 1976-1982 March: Not married includes age < 14
+notes married: 1983-1988 March: Not married includes age < 15
+notes married: 1973-1993 Unicon May/Basic: marstat
+notes married: 1994-present CPS Basic: prmarsta
+notes married: 1962-1997 Unicon March: marstat
+notes married: 1998-present CPS March: a_maritl

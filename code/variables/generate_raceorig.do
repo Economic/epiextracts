@@ -88,6 +88,11 @@ if $monthlycps == 1 | $maycps == 1 {
 }
 
 if $marchcps == 1 {
+	if tm(1962m1) <= $date & $date <= tm(1962m12) {
+		replace raceorig = 1 if race == 0 /* White */
+		replace raceorig = 2 if race == 1 /* Black */
+		replace raceorig = 0 if race == 2 /* Amer Indian/Alaskan Native */	
+	}
 	if tm(1963m1) <= $date & $date <= tm(1987m12) {
 		replace raceorig = 1 if race == 1 /* White */
 		replace raceorig = 2 if race == 2 /* Black */

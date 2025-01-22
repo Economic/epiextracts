@@ -26,11 +26,11 @@ if $monthlycps == 1 {
 
 if $marchcps == 1 {
 	if tm(1994m1) <= $date & $date <= tm(1997m12) {
-		replace pubsec = 0 if cowjob1 >= 1 & cowjob1 ~= .
+		replace pubsec = 0 if cowjob1 >= 4 & cowjob1 ~= .
 		replace pubsec = 1 if 1 <= cowjob1 & cowjob1 <= 3
 	}
 	if tm(1998m1) <= $date {
-		replace pubsec = 0 if peio1cow >= 1 & peio1cow ~= .
+		replace pubsec = 0 if peio1cow >= 4 & peio1cow ~= .
 		replace pubsec = 1 if 1 <= peio1cow & peio1cow <= 3
 	}
 }

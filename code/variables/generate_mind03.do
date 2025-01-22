@@ -39,4 +39,5 @@ label values mind03 mind03;
 label var mind03 "Major industry recode, 2003-present"
 notes mind03: Major industry recode by Census, consistent for 2003-present
 notes mind03: Industry codes from primary job
-notes mind03: 2003-present: prmjind1
+notes mind03: 2003-present Basic: prmjind1
+notes mind03: 2003-present March: a_mjind

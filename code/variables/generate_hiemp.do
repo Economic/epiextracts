@@ -5,14 +5,7 @@ capture rename hiemp orig_hiemp
 gen byte hiemp = .
 
 if $marchcps == 1 {
-	if tm(1980m1) <= $date & $date <= tm(1988m12) {
-		replace hiemp = 0 if inclingh == 2
-        replace hiemp = 1 if inclingh == 1
-		replace hiemp = . if inclingh == 0
-	}    
-	*check start and end months
-	*1988 & 1988B have different underlying vars
-	if tm(1989m1) <= $date & $date <= tm(2018m12) {
+	if tm(1980m1) <= $date & $date <= tm(2018m12) {
 		replace hiemp = 0 if orig_hiemp == 2
         replace hiemp = 1 if orig_hiemp == 1
 		replace hiemp = . if orig_hiemp == 0

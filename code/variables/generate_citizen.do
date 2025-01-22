@@ -13,4 +13,4 @@ if $monthlycps == 1 | $marchcps == 1 {
 label var citizen "US citizen"
 lab def citizen 0 "Not a US citizen" 1 "US citizen"
 lab val citizen citizen
-notes citizen: 1994 - present: derived from citistat
+notes citizen: 1962-present: derived from citistat

@@ -17,5 +17,5 @@ if $marchcps == 1 {
 replace hourslyr = . if hourslyr == 0
 label var hourslyr "Hours worked last year"
 label value hourslyr hourslyr
-notes hourslyr: 1968-1997: Unicon hrslyr
-notes hourslyr: 1998-present: CPS hrswk
+notes hourslyr: 1968-1997 Unicon: hrslyr
+notes hourslyr: 1998-present CPS: hrswk

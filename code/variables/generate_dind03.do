@@ -79,4 +79,5 @@ label values dind03 dind03;
 label var dind03 "Detailed industry recode, 2003-present"
 notes dind03: Detailed industry recode by Census, consistent for 2003-present
 notes dind03: Industry codes from primary job
-notes dind03: 2003-present: prdtind1
+notes dind03: 2003-present CPS Basic: prdtind1
+notes dind03: 2003-present CPS March: a_dtind

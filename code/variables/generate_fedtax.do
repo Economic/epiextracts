@@ -11,3 +11,4 @@ if $marchcps == 1 {
 
 lab var fedtax "SPM federal tax"
 label value fedtax fedtax
+notes spm_fedtax: 2019-present CPS: spm_fedtax

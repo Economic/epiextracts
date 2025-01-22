@@ -33,7 +33,7 @@ lab define female
 ;
 #delimit cr
 lab val female female
-notes female: 1976-1993 May/Basic: sex
-notes female: 1994-present May/Basic: pesex
-notes female: 1973-1997 March: sex
-notes female: 1998-present: a_sex
+notes female: 1976-1993 Unicon May/Basic: sex
+notes female: 1994-present CPS May/Basic: pesex
+notes female: 1973-1997 Unicon March: sex
+notes female: 1998-present CPS March: a_sex

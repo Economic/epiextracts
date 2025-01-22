@@ -36,4 +36,5 @@ label values mocc03 mocc03;
 label var mocc03 "Major occupation recode, 2003-present"
 notes mocc03: Major occupation recode by Census, consistent for 2003-present
 notes mocc03: Occupation codes from primary job
-notes mocc03: 2003-present: prmjocc1
+notes mocc03: 2003-present Basic: prmjocc1
+notes mocc03: 2003-present March: a_mjocc
