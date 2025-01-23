@@ -16,7 +16,7 @@ tempfile cpiurs
 save `cpiurs'
 restore
 merge m:1 year using `cpiurs', keep(3) nogenerate
-sum cpiurs if year == 2023
+sum cpiurs if year == 2024
 local basevalue = r(mean)
 replace wage = wage * `basevalue' / cpiurs
 replace wageotc = wageotc * `basevalue' / cpiurs
@@ -45,11 +45,11 @@ ylabel(12(2)24 26 "$24", angle(0) gmin gmax) ///
 xtitle("") ytitle("") ///
 lcolor("`color4'" "`color2'") ///
 graphregion(color(white)) plotregion(color(white)) ///
-title("Median real wages (in 2023`dollar')", size(medium)) ///
+title("Median real wages (in 2024`dollar')", size(medium)) ///
 text(`wageyvalue' `wagexvalue' "wage", color("`color4'") placement(c)) ///
 text(`wageotcyvalue' `wageotcxvalue' "wageotc", color("`color2'") placement(c))
 graph export ${variableimages}wageotc_titleimage.svg, replace
 
 /***
-The analysis above uses the CPS ORG for 1979-2023 and the CPS May for 1973-1978.
+The analysis above uses the CPS ORG for 1979-2024 and the CPS May for 1973-1978.
 ***/
