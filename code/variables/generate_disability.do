@@ -4,7 +4,7 @@
 gen byte disability = .
 
 if $marchcps == 1 {
-    if tm(1988m1) <= $date & $date <= tm(1997m12) {
+    if tm(1989m1) <= $date & $date <= tm(1997m12) {
         replace disability = 0 if hrcpds == 2
         replace disability = 1 if hrcpds == 1
     }

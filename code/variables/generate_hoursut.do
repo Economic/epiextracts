@@ -12,7 +12,7 @@ if $monthlycps == 1 {
 if $marchcps == 1 {
 	if tm(1979m1) <= $date & $date <= tm(1997m12) {
 		replace hoursu1 = ernush
-		replaces hoursu1 = . if hoursu1 == 0
+		replace hoursu1 = . if hoursu1 == 0
 	}
 	if tm(1998m1) <= $date {
 		replace hoursu1 = a_uslhrs

@@ -14,7 +14,8 @@ if $marchcps == 1 {
 	if tm(2003m1) <= $date {
 		replace mocc03 = a_mjocc
 	}
-	replace mocc03 = . if mocc03 < 1
+ 
+	replace mocc03 = . if mocc03 < 0
 }
 
 #delimit ;

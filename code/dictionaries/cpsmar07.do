@@ -1969,8 +1969,8 @@ label values a_dtind  a_dtind;
 label define a_dtind
 	0           "Not in universe or children or"
 ;
-label values mjocc    mjocc;
-label define mjocc
+label values a_mjocc    a_mjocc;
+label define a_mjocc
 	0           "Not in universe or children"
 	1           "Management, business, and"
 	2           "Professional and related"

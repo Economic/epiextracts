@@ -24,5 +24,4 @@ lab val wrkly wrkly
 notes wrkly: Available 1989-present
 notes wrkly: 1988-present universe: age 15+
 notes wrkly: 1989-1997 Unicon: chkwrk
-notes wrkly: 1998-2018 CPS: hiemp
-notes wrkly: 2019-present CPS: owngrp
+notes wrkly: 1998-2018 CPS: wrk_ck

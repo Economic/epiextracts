@@ -2,7 +2,7 @@
 keep
 	year month minsamp
 	hrhhid hrhhid2 hrsample hrsersuf huhhnum pulineno unicon_recnum
-	hhid famid personid proxy hhtype famtype
+	hhid famid personid proxy hhtype asecwgt famtype
 	finalwgt cmpwgt basicwgt orgwgt hhwgt famwgt
 	statefips statecensus division region countyfips cbsafips metstat cbsasize
 	age female hispanic wbho wbhao wbhom wbhaom raceorig wbo_only wbho_only
@@ -18,7 +18,7 @@ keep
 	paidhre
 	hoursu1 hoursu2 hoursut hourslw1 hourslw2 hourslwt hoursumay hoursuorg
 	hoursvary hoursuint
-  hourslyr
+  hoursly
   ind70 ind80 ind90 ind02 ind07 ind12 ind17 mind16 manuf dind03 mind03
   occ70 occ80 occ90 occ00 occ10 occ18 mocc10 mocc03 docc03
   weekpay_noadj tc_weekpay a_weekpay
@@ -30,7 +30,7 @@ keep
   income
   famern famiws
   hhinc_c
-  wkslyr wkslyr_binned
+  wrkly
 	faminc faminc_c
   earn
   povlev povrate
@@ -44,29 +44,26 @@ keep
   eitc
   offpov offpovcut
   spmpov spmpovcut
-  fedtax statetax
+  spm_fedtax spm_statetax
   schlunch snap wic mortgage
   spmfamtype
   cowly indcode
   dhhtype famkind 
   disability parent
   migarea migstatus migmetro
-  lookdurly spmwgt
-  hhstatus famlis 
-  ftotval fpovcut
-  p_seq h_seq peridnum a_famrel
-  a_dtocc a_dtind peioocc occcode
+  lookdurly spmwgt childtaxcredit
+  indcode occcode
 ;
 #delimit cr;
 
 if $monthlycps == 1 | $maycps == 1 {
   #delimit;
   drop asecwgt
-  hourslyr
+  hoursly
     famern
     famiws
     hhinc_c
-    wkslyr wkslyr_binned
+    wrkly
 	  faminc_c
     earn
     povlev povrate
@@ -80,14 +77,14 @@ if $monthlycps == 1 | $maycps == 1 {
     eitc
     offpov offpovcut
     spmpov spmpovcut
-    fedtax statetax
+    spm_fedtax spm_statetax
     schlunch snap wic mortgage
     spmfamtype
     cowly indcode
     dhhtype famkind 
     disability parent
     migarea migstatus migmetro
-    lookdurly spmwgt
+    lookdurly spmwgt childtaxcredit
   ;
   #delimit cr;
 }

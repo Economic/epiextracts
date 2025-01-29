@@ -17,7 +17,7 @@ if $marchcps == 1 {
 		replace famid = famnum
 	}*/
 	if tm(1988m1) <= $date & $date <= tm(1997m12) {
-		replace famid = fanum
+		replace famid = famnum
 	}
 	if tm(1998m1) <= $date {
 		replace famid = a_famnum

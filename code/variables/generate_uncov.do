@@ -38,7 +38,7 @@ if $marchcps == 1 {
 		replace uncov = 0 if old_uncov == 2
 		replace uncov = 1 if old_uncov == 1
 	}
-	if tm(1998m1) <= date {
+	if tm(1998m1) <= $date {
 		replace uncov = 0 if a_uncov == 2
 		replace uncov = 1 if a_uncov == 1
 	}

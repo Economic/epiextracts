@@ -17,15 +17,20 @@ if $monthlycps == 1 | $maycps == 1 {
 if $marchcps == 1 {
     if tm(1962m1) <= $date & $date <= tm(1997m12) {
         replace indcode = ind
-        replace indcode = . if ind == 0
+        replace indcode = . if indcode == 0
     }
-
-	if tm(1998m1) <= $date {
+	if tm(1998m1) <= $date & $date <= tm(2002m12) {
+		replace indcode = a_ind
+        replace indcode = . if indcode == 0
+	}
+	if tm(2003m1) <= $date {
 		replace indcode = peioind
-        replace indcode = . if ind == 0
+        replace indcode = . if indcode == 0
 	}
 }
 
 lab var indcode "Industry recode"
 label value indcode indcode
+notes indcode: 1962-1997 Unicon: ind
+notes indcode: 1998-present CPS: peioind
 

@@ -23,7 +23,7 @@ if $marchcps == 1 {
 	}
 	if tm(1995m1) <= $date & $date <= tm(1997m12) {
 		* ORG hours variable only defined for some hourly workers
-		if a_ernel == 1  {
+		if ernel == 1  {
 			replace hoursuorg = ernush
 		}
 		else {

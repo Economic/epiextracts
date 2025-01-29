@@ -1,14 +1,15 @@
 *******************************************************************************
 * Employer-provided pension plan
 *******************************************************************************
-capture rename penplan orig_penplan
+capture lab drop penplan
+capture rename penplan oldpenplan
 gen byte penplan = .
 
 if $marchcps == 1 {  
 	if tm(1980m1) <= $date {
-		replace penplan = 0 if orig_penplan == 2
-        replace penplan = 1 if orig_penplan == 1
-		replace penplan = . if orig_penplan == 0
+		replace penplan = 0 if oldpenplan == 2
+        replace penplan = 1 if oldpenplan == 1
+		replace penplan = . if oldpenplan == 0
 	} 
 }
 

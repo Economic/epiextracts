@@ -14,7 +14,7 @@ if $monthlycps == 1 {
 }
 
 if $marchcps == 1 {
-	if tm(1988m1) <= $date & $date <= tm(1997m12) {
+	if tm(1992m1) <= $date & $date <= tm(1997m12) {
 		replace gradeatn = grdatn - 30
 		replace gradeatn = . if gradeatn <= 0
 	}

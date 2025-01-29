@@ -1,6 +1,7 @@
 ********************************************************************************
 * Presence of parents indicator
 ********************************************************************************
+capture label drop parent
 capture rename parent orig_parent
 gen byte parent = .
 

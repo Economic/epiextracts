@@ -5,8 +5,17 @@ gen byte migstatus = .
 
 if $marchcps == 1 {
     if tm(1976m1) <= $date & $date <= tm(1987m12) {
-        replace migstatus = 1 if migsam == 1
-        replace migstatus = 4 if migsam == 0
+        if tm(1980m1) <= $date & $date <= tm(1980m12) {
+            replace migstatus = .
+        }
+        else if tm(1985m1) <= $date & $date <= tm(1985m12) {
+            replace migstatus = .
+        }
+        else {
+            replace migstatus = 1 if migsam == 1
+            replace migstatus = 4 if migsam == 0
+        }
+        
     }
     if tm(1988m1) <= $date & $date <= tm(1994m12) {
         replace migstatus = 1 if migsam == 2
@@ -35,3 +44,4 @@ lab def migstatus
 label value migstatus migstatus
 notes migstatus: 1962-1997 Unicon March: migsam
 notes migstatus: 1998-present CPS March: migsame
+notes migstatus: Unicon data missing for 1980 and 1985

@@ -17,6 +17,7 @@ if $marchcps == 1 {
 	if tm(1963m1) <= $date & $date <= tm(1997m12) {
 		if tm(1976m1) <= $date & $date <= tm(1976m12) {
 			egen firstperson = min(perid), by(hhid famid)
+			gen famwgt2 = .
 			replace famwgt2 = asecwgt / 100 if perid == firstperson
 			egen famwgt3 = mean(famwgt2), by(hhid famid)
 			replace famwgt = famwgt3

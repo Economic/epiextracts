@@ -1,8 +1,7 @@
 *******************************************************************************
 * Family relationship recode
 *******************************************************************************
-cap drop famrel
-cap lab drop famrel
+capture lab drop famrel
 capture rename famrel oldfamrel
 
 gen byte famrel = .
@@ -39,7 +38,7 @@ lab define famrel
 #delimit cr
 lab val famrel famrel
 notes famrel: Census recode of family relationship
-notes famrel 1976-1987 March: famrel only breaksdown sub- and secondary families, excluded
+notes famrel: 1976-1987 March: famrel only breaksdown sub- and secondary families, excluded
 notes famrel: 1994-present CPS Basic: prfamrel
 notes famrel: 1962-1997 Unicon March: famrel
 notes famrel: 1998-present CPS March: a-famrel

@@ -4,7 +4,7 @@
 gen byte hicov = .
 
 if $marchcps == 1 {
-	if tm(1980m1) <= $date & $date <= tm(2018m12) {
+	if tm(1988m1) <= $date & $date <= tm(2018m12) {
 		replace hicov = 0 if hiown == 2
         replace hicov = 1 if hiown == 1
 		replace hicov = . if hiown == 0

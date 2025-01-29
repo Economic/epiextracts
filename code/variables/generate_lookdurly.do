@@ -5,7 +5,7 @@ gen int lookdurly = .
 
 if $marchcps == 1 {
 	if tm(1968m1) <= $date & $date <= tm(1997m12) {
-		replace lookdurly = wklnw - 1
+		replace lookdurly = wklknw - 1
 		replace lookdurly = . if lookdurly < 0 | lookdurly == 7
 	}
 	if tm(1998m1) <= $date {

@@ -1,7 +1,8 @@
 *******************************************************************************
 * Included in employer-provided pension plan
 *******************************************************************************
-capture rename penincl orig_penincl
+capture lab drop penincl
+capture rename penincl oldpenincl
 gen byte penincl = .
 
 if $marchcps == 1 {
@@ -11,9 +12,9 @@ if $marchcps == 1 {
 		replace penincl = . if pensincl == 0
 	}    
 	if tm(1998m1) <= $date {
-		replace penincl = 0 if orig_penincl == 2
-        replace penincl = 1 if orig_penincl == 1
-		replace penincl = . if orig_penincl == 0
+		replace penincl = 0 if oldpenincl == 2
+        replace penincl = 1 if oldpenincl == 1
+		replace penincl = . if oldpenincl == 0
 	} 
 }
 

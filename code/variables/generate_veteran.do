@@ -54,4 +54,4 @@ notes veteran: 1973-1993 Unicon Basic: vet
 notes veteran: 1994-2005m7 CPS Basic: peafwhen
 notes veteran: 2005m8-present CPS: peafever, peafwhn1
 notes veteran: 1962-1997 Unicon March: vet
-notes vetern: 1998-present CPS March: peafever, peafwhn1
+notes veteran: 1998-present CPS March: peafever, peafwhn1

@@ -4,7 +4,7 @@
 gen byte medicaid = .
 
 if $marchcps == 1 {
-	if tm(1988m1) <= $date & $date <= tm(2018m12) {
+	if tm(1989m1) <= $date & $date <= tm(2018m12) {
 		replace medicaid = 0 if hmcaid == 2
         replace medicaid = 1 if hmcaid == 1
 	}    

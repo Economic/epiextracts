@@ -1,6 +1,7 @@
 *******************************************************************************
 * Employer-paid health insurance
 *******************************************************************************
+capture label drop hipaid
 capture rename hipaid orig_hipaid
 gen byte hipaid = .
 
@@ -8,24 +9,20 @@ if $marchcps == 1 {
 	if tm(1980m1) <= $date & $date <= tm(1980m12) {
 		replace hipaid = 0 if orig_hipaid == 2
 		replace hipaid = 3 if orig_hipaid == 1
-		replace hipaid = . if orig_hipaid == 0
 	}    
 	if tm(1981m1) <= $date & $date <= tm(1994m12) {
 		replace hipaid = 0 if orig_hipaid == 3
 		replace hipaid = 2 if orig_hipaid == 2
         replace hipaid = 1 if orig_hipaid == 1
-		replace hipaid = . if orig_hipaid == 0
 	}    
 	if tm(1995m1) <= $date & $date <= tm(1995m12) {
 		replace hipaid = 0 if orig_hipaid == 2
 		replace hipaid = 3 if orig_hipaid == 1
-		replace hipaid = . if orig_hipaid == 0
 	}   
 	if tm(1996m1) <= $date {
 		replace hipaid = 0 if orig_hipaid == 3
 		replace hipaid = 2 if orig_hipaid == 2
         replace hipaid = 1 if orig_hipaid == 1
-		replace hipaid = . if orig_hipaid == 0
 	}
 }
 
