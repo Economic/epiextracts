@@ -12,8 +12,209 @@ if $monthlycps == 1 | $maycps == 1 | $marchcps == 1 {;
 	CPS ORG 1979-1982
 	CPS May 1973-1982
 	*/
-	if tm(1973m1) <= $date & $date <= tm(1982m12){;
+
+	if tm(1962m1) <= $date & $date <= tm(1962m12) & $marchcps == 1 {;
+		/* NIU */
+		replace mind16 = . if
+			(indcode == 44); /*armed forces */
+			
+		/* Agriculture, mining, forestry and fisheries */
+		replace mind16 = 1 if (
+			(indcode == 0) | /* Agriculture */
+			(indcode == 1) | /* Forestry */
+			(indcode == 2) /* Fisheries */
+		);
+		/* Construction */
+		replace mind16 = 2 if
+			(indcode == 3);
+		/* Manufacturing, durable goods */
+		replace mind16 = 3 if
+			(indcode >= 4 & indcode <= 14);
+		/* Manufacturing, nondurable goods (incl publishing 338, 339) */
+		replace mind16 = 4 if
+			(indcode >= 15 & indcode <= 20);
+		/* Transportation */
+		replace mind16 = 5 if
+			(indcode >= 21 & indcode <= 22);
+		/* Communications and utilities */
+		replace mind16 = 6 if
+			(indcode >= 23 & indcode <= 24);
+		/* Wholesale trade */
+		replace mind16 = 7 if
+			(indcode == 25);
+		/* Retail trade (excl eating and drinking 669) */
+		replace mind16 = 8 if
+			(indcode == 27);
+		/* Finance, insurance and real estate. Business, auto and repair services, and other professional. */
+		replace mind16 = 9 if (
+			(indcode >= 28 & indcode <= 31) |
+			(indcode == 39)
+		);
+		/* Personal services, including household */
+		replace mind16 = 10 if (
+			(indcode == 32) | /* private households */
+			(indcode == 33) /* personal services excl priv households (excl hotels and lodging) */
+		);
+		/* Entertainment and recreation */
+		replace mind16 = 11 if (
+			(indcode == 26) |
+			(indcode == 34)
+		);
+		/* Hospital */
+		replace mind16 = 12 if
+			(indcode == 36);
+		/* Medical, except hospital */
+		replace mind16 = 13 if
+			(indcode == 35);
+		/* Educational */
+		replace mind16 = 14 if
+			(indcode == 38);
+		/* Social services */ /* changed to just welfare and res welfare- moved membership/rel to other prof */
+		replace mind16 = 15 if
+			(indcode == 37);
+		/* Public administration */
+		replace mind16 = 16 if
+			(indcode >= 40 & indcode <= 43);
+	};
+
+
+	if tm(1963m1) <= $date & $date <= tm(1967m12) & $marchcps == 1 {;
+		/* armed forces & NIU */
+		replace mind16 = . if
+			(indcode == 99); /*armed forces */
+
+		/* Agriculture, mining, forestry and fisheries */
+		replace mind16 = 1 if (
+			(indcode == 1) | /* Agriculture */
+			(indcode == 2) | /* Forestry */
+			(indcode == 3) /* Fisheries */
+		);
+		/* Construction */
+		replace mind16 = 2 if
+			(indcode == 4);
+		/* Manufacturing, durable goods */
+		replace mind16 = 3 if
+			(indcode >= 5 & indcode <= 16);
+		/* Manufacturing, nondurable goods (incl publishing 338, 339) */
+		replace mind16 = 4 if
+			(indcode >= 17 & indcode <= 21);
+		/* Transportation */
+		replace mind16 = 5 if
+			(indcode >= 22 & indcode <= 23);
+		/* Communications and utilities */
+		replace mind16 = 6 if
+			(indcode >= 24 & indcode <= 25);
+		/* Wholesale trade */
+		replace mind16 = 7 if
+			(indcode == 26);
+		/* Retail trade (excl eating and drinking 669) */
+		replace mind16 = 8 if
+			(indcode == 28);
+		/* Finance, insurance and real estate. Business, auto and repair services, and other professional. */
+		replace mind16 = 9 if (
+			(indcode >= 29 & indcode <= 32) |
+			(indcode == 40)
+		);
+		/* Personal services, including household */
+		replace mind16 = 10 if (
+			(indcode == 33) | /* private households */
+			(indcode == 34) /* personal services excl priv households (excl hotels and lodging) */
+		);
+		/* Entertainment and recreation */
+		replace mind16 = 11 if (
+			(indcode == 27) |
+			(indcode == 35)
+		);
+		/* Hospital */
+		replace mind16 = 12 if
+			(indcode == 37);
+		/* Medical, except hospital */
+		replace mind16 = 13 if
+			(indcode == 36);
+		/* Educational */
+		replace mind16 = 14 if
+			(indcode == 39);
+		/* Social services */ /* changed to just welfare and res welfare- moved membership/rel to other prof */
+		replace mind16 = 15 if
+			(indcode == 38);
+		/* Public administration */
+		replace mind16 = 16 if
+			(indcode >= 41 & indcode <= 44);
+	};
+
+	if tm(1968m1) <= $date & $date <= tm(1970m12) & $marchcps == 1 {;
 		/* There are no "-1" or "military" observations during this period */
+
+
+		/* Agriculture, mining, forestry and fisheries */
+		replace mind16 = 1 if (
+			(indcode == 16) | /* Agriculture */
+			(indcode == 17) | /* Forestry */
+			(indcode == 18) | /* Fisheries */
+			(indcode >= 126 & indcode <= 156) /* mining */
+		);
+		/* Construction */
+		replace mind16 = 2 if
+			(indcode == 196);
+		/* Manufacturing, durable goods */
+		replace mind16 = 3 if
+			(indcode >= 206 & indcode <= 296);
+		/* Manufacturing, nondurable goods (incl publishing 338, 339) */
+		replace mind16 = 4 if
+			(indcode >= 306 & indcode <= 459);
+		/* Transportation */
+		replace mind16 = 5 if
+			(indcode >= 506 & indcode <= 526);
+		/* Communications and utilities */
+		replace mind16 = 6 if	(
+			(indcode >= 536 & indcode <= 539) | /* communications (excl publishing 338, 339) */
+			(indcode >= 567 & indcode <= 579) /* utilities */
+		);
+		/* Wholesale trade */
+		replace mind16 = 7 if
+			(indcode >= 606 & indcode <= 629);
+		/* Retail trade (excl eating and drinking 659) */
+		replace mind16 = 8 if (
+			(indcode >= 636 & indcode <= 658) |
+			(indcode >= 666 & indcode <= 696)
+		);
+		/* Finance, insurance and real estate. Business, auto and repair services, and other professional. */
+		replace mind16 = 9 if (
+			(indcode >= 706 & indcode <= 736) |
+			(indcode >= 806 & indcode <= 809) |
+			(indcode == 869) |
+			(indcode >= 888 & indcode <= 898)
+		);
+		/* Personal services, including household */
+		replace mind16 = 10 if (
+			(indcode == 816) | /* private households */
+			(indcode >= 826 & indcode <= 839) /* personal services excl priv households (excl hotels and lodging) */
+		);
+		/* Entertainment and recreation */
+		replace mind16 = 11 if (
+			(indcode == 659) |
+			(indcode >= 846 & indcode <= 849)
+		);
+		/* Hospital */
+		replace mind16 = 12 if
+			(indcode == 868);
+		/* Medical, except hospital */
+		replace mind16 = 13 if
+			(indcode == 867);
+		/* Educational */
+		replace mind16 = 14 if
+			(indcode == 876);
+		/* Social services */ /* changed to just welfare and res welfare- moved membership/rel to other prof */
+		replace mind16 = 15 if
+			(indcode == 879);
+		/* Public administration */
+		replace mind16 = 16 if
+			(indcode >= 906 & indcode <= 936);
+	};
+
+	if tm(1971m1) <= $date & $date <= tm(1982m12){;
+		/* There are no "-1" or "military" observations during this period */
+
 
 		/* Agriculture, mining, forestry and fisheries */
 		replace mind16 = 1 if (

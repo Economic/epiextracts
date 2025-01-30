@@ -15,7 +15,16 @@ if $monthlycps == 1 | $maycps == 1 {
 }
 
 if $marchcps == 1 {
-    if tm(1962m1) <= $date & $date <= tm(1997m12) {
+    if tm(1962m1) <= $date & $date <= tm(1962m12) {
+        replace indcode = ind
+        replace indcode = . if indcode == 44
+    }
+
+	if tm(1963m1) <= $date & $date <= tm(1967m12) {
+        replace indcode = ind
+        replace indcode = . if indcode == 45 | indcode == 99
+    }
+	if tm(1968m1) <= $date & $date <= tm(1997m12) {
         replace indcode = ind
         replace indcode = . if indcode == 0
     }

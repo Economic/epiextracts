@@ -14,7 +14,7 @@ if $marchcps == 1 {
     }
 }
 
-lab var migarea "Migration status"
+lab var migarea "Migration status, area"
 #delimit ;
 lab def migarea
 1 "Nonmover"

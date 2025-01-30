@@ -22,7 +22,6 @@ foreach var in
 	paidhre
   hoursu1 hoursu2 hoursut hourslw1 hourslw2 hourslwt hoursumay hoursuorg
 	hoursvary hoursuint
-  hoursly
   indcode ind70 ind80 ind90 ind02 ind07 ind12 ind17 mind16 manuf dind03 mind03
   occcode occ70 occ80 occ90 occ00 occ10 occ18 mocc10 mocc03 docc03
   weekpay_noadj tc_weekpay a_weekpay
@@ -31,13 +30,13 @@ foreach var in
   otcamt wage_noadj wageotc_noadj
 	ownchild famrel agechild
   telework hourslwtw
+  schenrl
   earn income
 	faminc faminc_c
   famern famiws
   hhinc_c
   povlev povrate
-  schenrl
-  wrkly
+  hoursly wrkly
   hicov hiemp hipaid
   penplan penincl
   foodstamps

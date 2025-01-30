@@ -34,7 +34,7 @@ if $marchcps == 1 {
     }
 }
 
-lab var migmetro "Migration status"
+lab var migmetro "Migration status, metro"
 #delimit ;
 lab def migmetro
 1 "Nonmover"
