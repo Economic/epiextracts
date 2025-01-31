@@ -16,7 +16,7 @@ if $marchcps == 1 {
     }
 }
 
-lab var parent "Detailed household type"
+lab var parent "Parent present"
 #delimit ;
 lab def parent
 1 "Both parents present"

@@ -4,7 +4,7 @@
 gen byte migarea = .
 
 if $marchcps == 1 {
-    if tm(1998m1) <= $date & $date <= tm(1997m12) {
+    if tm(1989m1) <= $date & $date <= tm(1997m12) {
         replace migarea = migmtr3
         replace migarea = . if migarea >= 8
     }
@@ -27,5 +27,5 @@ lab def migarea
 ;
 #delimit cr;
 label value migarea migarea
-notes migarea: 1988-1997 Unicon: migmtr3
+notes migarea: 1989-1997 Unicon: migmtr3
 notes migarea: 1998-present CPS: mig_mtr3

@@ -14,7 +14,7 @@ if $monthlycps == 1 {
 }
 
 if $marchcps == 1 {
-	if tm(1963m1) <= $date & $date <= tm(1997m12) {
+	if tm(1962m1) <= $date & $date <= tm(1997m12) {
 		if tm(1976m1) <= $date & $date <= tm(1976m12) {
 			egen firstperson = min(perid), by(hhid famid)
 			gen famwgt2 = .

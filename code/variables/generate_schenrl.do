@@ -15,8 +15,6 @@ if $monthlycps == 1 {
 }
 
 if $marchcps == 1 {
-	*check start and end months
-	*1988 & 1988B have different underlying vars
 	if tm(1986m1) <= $date & $date <= tm(1997m12) {
 		replace schenrl = 0 if schenr == 2
 		replace schenrl = 1 if schenr == 1

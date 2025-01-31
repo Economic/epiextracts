@@ -5,7 +5,7 @@
 gen byte asecwgt = .
 
 if $marchcps == 1 {
-    if tm(1963m1) <= $date & $date <= tm(1979m12) {
+    if tm(1962m1) <= $date & $date <= tm(1979m12) {
         replace asecwgt = wgt
     }
     if tm(1980m1) <= $date & $date <= tm(1997m12) {

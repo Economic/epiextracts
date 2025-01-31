@@ -13,7 +13,7 @@ if $monthlycps == 1 | $maycps == 1 {
 }
 
 if $marchcps == 1 {
-	if tm(1963m1) <= $date & $date <= tm(1967m12) {
+	if tm(1962m1) <= $date & $date <= tm(1967m12) {
 		replace hourslwt = 0 if hours == 99
 		replace hourslwt = hours if hours < 99
 	}
