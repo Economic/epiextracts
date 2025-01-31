@@ -1,0 +1,1 @@
+`offpov` is the offical Census poverty rate. In contrast to [`povrate`] (povrate.md), `offpov` is adjusted for poverty universe restrictions and will match official poverty levels. See also [`spmpov`](spmpov.md).

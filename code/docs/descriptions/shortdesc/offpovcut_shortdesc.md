@@ -1,0 +1,1 @@
+`offpovcut` is the offical Census poverty threshold used to produce [`offpov`] (offpov.md). See also [`spmpovcut`](spmpovcut.md).

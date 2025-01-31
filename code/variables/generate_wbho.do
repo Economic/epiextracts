@@ -73,7 +73,7 @@ if $monthlycps == 1 | $maycps == 1 {
 }
 
 if $marchcps == 1 {
-	if tm(1973m1) <= $date & $date <= tm(1987m12) {
+	if tm(1962m1) <= $date & $date <= tm(1988m12) {
 		replace wbho = 1 if race == 1
 		replace wbho = 2 if race == 2
 		replace wbho = 4 if race == 3
@@ -81,7 +81,7 @@ if $marchcps == 1 {
 		replace wbho = 3 if hispanic == 1
 	}
 
-	if tm(1988m1) <= $date & $date <= tm(1997m12) {
+	if tm(1989m1) <= $date & $date <= tm(1997m12) {
 		replace wbho = 1 if race == 1
 		replace wbho = 2 if race == 2
 		replace wbho = 4 if 3 <= race

@@ -25,9 +25,21 @@ if $monthlycps == 1 {
 }
 
 if $marchcps == 1 {
-	if tm(1994m1) <= $date & $date <= tm(1997m12) {
-		replace pubsec = 0 if cowjob1 >= 4 & cowjob1 ~= .
-		replace pubsec = 1 if 1 <= cowjob1 & cowjob1 <= 3
+	if tm(1962m1) <= $date & $date <= tm(1962m12) {
+		replace pubsec = class if 0 <= class & class <= 1
+		replace pubsec = 0 if 2 <= class & class <= 3
+	}
+	if tm(1963m1) <= $date & $date <= tm(1967m12) {
+		replace pubsec = 1 if class == 2
+		replace pubsec = 0 if class == 1 | 3 <= class & class <= 4
+	}
+	if tm(1976m1) <= $date & $date <= tm(1988m12) {
+		replace pubsec = 1 if class == 2
+		replace pubsec = 0 if class == 1 | 3 <= class & class <= 5
+	}
+	if tm(1989m1) <= $date & $date <= tm(1997m12) {
+		replace pubsec = 0 if class == 1 | 5 <= class & class <= 8
+		replace pubsec = 1 if 2 <= class & class <= 4
 	}
 	if tm(1998m1) <= $date {
 		replace pubsec = 0 if peio1cow >= 4 & peio1cow ~= .
@@ -44,5 +56,5 @@ notes pubsec: 1994-present: For first job only
 notes pubsec: 1973-1981 Unicon May: class4
 notes pubsec: 1976-1993 Unicon Basic: class
 notes pubsec: 1994-present CPS Basic: peio1cow
-notes pubsec: 1994-1997 Unicon March: cowjob1
+notes pubsec: 1962-1997 Unicon March: class
 notes pubsec: 1998-present CPS March: peio1cow
