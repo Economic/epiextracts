@@ -1,0 +1,1 @@
+`indcode` is the recode of Census-based industry code for the primary job of the respondent. See also [`ind70`](ind70.md), [`ind80`](ind80.md), [`ind90`](ind90.md), [`ind02`](ind02.md), [`ind07`](ind90.md), [`ind12`](ind12.md), and [`ind17`](ind17.md).

@@ -1,0 +1,1 @@
+`occcode` is the recode of Census-based occupational code for the primary job of the respondent. See also [`occ70`](occ70.md), [`occ80`](occ80.md), [`occ90`](occ90.md), [`occ00`](occ00.md), [`occ10`](occ10.md), and [`occ18`](occ18.md).

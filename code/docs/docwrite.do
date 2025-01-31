@@ -58,6 +58,7 @@ webdoc put -------|------
 if "`basicyears'" ~= "" webdoc put Basic | `basicyears'
 if "`mayyears'" ~= "" webdoc put May | `mayyears'
 if "`orgyears'" ~= "" webdoc put ORG | `orgyears'
+if "`marchyear'" ~= "" webdoc put March | `marchyears'
 webdoc put
 capture confirm file ${variableavailability}`1'_availability.md
 if _rc == 0 webdoc append ${variableavailability}`1'_availability.md

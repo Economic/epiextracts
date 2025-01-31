@@ -1,0 +1,1 @@
+`povlev` is the Census ratio of family income to the poverty threshold. In contrast to [`offpov`] (offpov.md), `povlev` is not adjusted for poverty universe restrictions and will not match official poverty levels.
