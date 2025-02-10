@@ -1,13 +1,12 @@
 ********************************************************************************
 * Family income: continuous
 ********************************************************************************
-
 gen byte faminc_c = .
 
 if $marchcps == 1 {
     
     if tm(1968m1) <= $date & $date <= tm(1997m12) {
-        replace faminc_c = faminc
+        replace faminc_c = oldfaminc
     }
 
     if tm(1998m1) <= $date {

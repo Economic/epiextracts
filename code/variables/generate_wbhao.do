@@ -90,7 +90,7 @@ if $marchcps == 1 {
         replace wbhao = 3 if hispanic == 1
         
     }
-    if tm(2003m1) <= $date & $date <= tm(2012m1) {
+    if tm(2003m1) <= $date & $date <= tm(2012m12) {
         replace wbhao = 1 if prdtrace == 1 /* white only */
         replace wbhao = 2 if prdtrace == 2 /* black only */
         replace wbhao = 2 if prdtrace == 6 /* black-white */ | prdtrace == 10 /*
