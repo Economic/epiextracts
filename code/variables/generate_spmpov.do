@@ -4,7 +4,7 @@
 gen byte spmpov = .
 
 if $marchcps == 1 {
-    if tm(2010m1) <= $date & $date <= tm(2018m1) {
+    if tm(2010m1) <= $date & $date <= tm(2018m12) {
         replace spmpov = spmu_poor
     }
     

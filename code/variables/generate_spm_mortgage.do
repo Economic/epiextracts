@@ -1,25 +1,25 @@
 ********************************************************************************
 * Supplemental Poverty Measure unit's tenure/mortgage status
 ********************************************************************************
-gen byte mortgage = .
+gen byte spm_mortgage = .
 
 if $marchcps == 1 {
     if tm(2010m1) <= $date & $date <= tm(2018m12) {
-        replace mortgage = spmu_tenmortstatus
+        replace spm_mortgage = spmu_tenmortstatus
     }
     if tm(2019m1) <= $date {
-        replace mortgage = spm_tenmortstatus
+        replace spm_mortgage = spm_tenmortstatus
     }
 }
 
-lab var mortgage "SPM's mortgage status"
+lab var spm_mortgage "SPM's mortgage status"
 #delimit ;
-lab def mortgage
+lab def spm_mortgage
 1 "Owner with mortgage"
 2 "Owner w/o mortgage"
 3 "Renter"
 ;
 #delimit cr;
-label value mortgage mortgage
-notes mortgage: 2010-2018 SPM: spmu_tenmortstatus
-notes mortgage: 2019-present CPS: spm_tenmortstatus
+label value spm_mortgage spm_mortgage
+notes spm_mortgage: 2010-2018 SPM: spmu_tenmortstatus
+notes spm_mortgage: 2019-present CPS: spm_tenmortstatus

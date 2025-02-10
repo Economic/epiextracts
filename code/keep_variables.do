@@ -1,5 +1,5 @@
 #delimit;
-keep
+keepifexist
 	year month minsamp
 	hrhhid hrhhid2 hrsample hrsersuf huhhnum pulineno unicon_recnum
 	hhid famid personid proxy hhtype asecwgt famtype
@@ -32,12 +32,11 @@ keep
 	famern
 	famiws
 	hhinc_c
-	wkslyr_binned
 	povlev povrate
 	schenrl schenrl_type
 	earn income
-	hoursly wrkly
-	hicov hiemp hipaid
+	hoursly wrkly wksly_binned
+	hicovly hicov
 	penplan penincl
 	foodstamps
 	medicaid medicaidcov
@@ -47,15 +46,16 @@ keep
 	hmcaid now_hmcaid mcaid now_mcaid caid now_caid
 	ftotval
 	offpov offpovcut
-	spmpov spmpovcut
+	spmpov spmpovcut spmeitc
 	spm_fedtax spm_statetax
-	schlunch snap wic mortgage
+	spm_schlunch schlunch spm_snap spm_wic spm_mortgage
 	spmfamtype
 	cowly
 	dhhtype famkind
 	disability parent
 	migarea migstatus migmetro
 	lookdurly spmwgt childtaxcredit
+	redesign hiyn mcare champ
 ;
 #delimit cr;
 
@@ -66,28 +66,28 @@ if $monthlycps == 1 | $maycps == 1 {
     famern
     famiws
     hhinc_c
-    wrkly
+    wrkly wksly_binned
 	  faminc_c
     earn
     povlev povrate
     schenrl
-    wrkly
-    hicov hiemp hipaid
+    hicovly hicov
     penplan penincl
     foodstamps
     medicaid medicaidcov
     pubhouse hhtenure rentsub
     eitc
     offpov offpovcut
-    spmpov spmpovcut
+    spmpov spmpovcut spmeitc
     spm_fedtax spm_statetax
-    schlunch snap wic mortgage
+    spm_schlunch schlunch spm_snap spm_wic spm_mortgage
     spmfamtype
     cowly indcode
     dhhtype famkind 
     disability parent
     migarea migstatus migmetro
     lookdurly spmwgt childtaxcredit
+    redesign
   ;
   #delimit cr;
 }
