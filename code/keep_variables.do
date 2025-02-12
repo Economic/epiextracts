@@ -27,5 +27,7 @@ keep
 	faminc
 	ownchild famrel agechild
 	telework hourslwtw
+	difficat difficult
+	*disability
 ;
 #delimit cr;

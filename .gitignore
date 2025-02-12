@@ -2,6 +2,7 @@
 *.sas7bdat
 *.zip
 *.txt
+*.xlsx
 
 test.do
 test.R

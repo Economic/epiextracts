@@ -31,6 +31,8 @@ foreach var in
 	faminc
 	ownchild famrel agechild
   telework hourslwtw
+  difficat difficult
+  *disability
   {;
     do ${codevars}generate_`var'.do;
   };
