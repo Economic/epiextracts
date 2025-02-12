@@ -6,7 +6,17 @@ If you use the EPI extracts for your research, please cite them as
     Economic Policy Institute. {{ year }}. Current Population Survey Extracts, Version {{ version }}, https://microdata.epi.org.
 
 ## Recent changes
-### Version 1.0.60 -- 2025-01-
+### Version 1.0.61 -- 2025-02-13
+#### Added
+* January 2025 extracts
+* `diffdress` : diffulty dressing or bathing
+* `differrands` : difficulty running errands alone
+* `diffhear` : deaf or hearing difficulty
+* `diffmemory` : difficulty remembering, concentrating, or making decisions
+* `diffphysical` : difficulty walking or climbing stairs
+* `diffvision` : blind or difficulty seeing
+* `difficulty` : difficulty indicator
+### Version 1.0.60 -- 2025-01-15
 #### Added 
 * December 2024 extracts
 ### Version 1.0.59 -- 2024-12-12
