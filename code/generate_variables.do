@@ -31,8 +31,8 @@ foreach var in
 	faminc
 	ownchild famrel agechild
   telework hourslwtw
-  difficat difficult
-  *disability
+  diffdress differrands diffhear diffmemory diffphysical diffvision
+  difficulty
   {;
     do ${codevars}generate_`var'.do;
   };
