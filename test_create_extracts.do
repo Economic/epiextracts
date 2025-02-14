@@ -301,10 +301,8 @@ foreach year of numlist `minyear'(1)`maxyear' {
 
 			do ${code}adjust_wages.do
 				
-			notes drop _dta
-			notes _dta: EPI CPS Basic Monthly Extracts, Version $dataversion
-			label data "EPI CPS Basic Monthly Extracts, Version $dataversion"
-			saveold ${extracts}epi_cpsbasic_`year'.dta, replace version(13)
+			tempfile basicadjusted
+			save `basicadjusted'
 
 			if `orgexists' == 1 {
 				* create full calendar year of ORG to adjust wages
@@ -319,16 +317,14 @@ foreach year of numlist `minyear'(1)`maxyear' {
                 
 				do ${code}adjust_wages.do
 				
-				notes drop _dta
-				notes _dta: EPI CPS ORG Extracts, Version $dataversion
-				label data "EPI CPS ORG Extracts, Version $dataversion"
-				saveold ${extracts}epi_cpsorg_`year'.dta, replace version(13)
+				tempfile orgadjusted
+				save `orgadjusted'
 			}
 
 			*take mean above topcode and apply it to all topcoded observations (regardless minsamp)
 			* create full calendar year of Basic with new tc procedure to adjust wages
 			load_epiextracts, begin(2024m1) end(2024m3) sample(basic) version(local)
-			foreach month of numlist `monthlist`year'' {
+			foreach month of numlist 4 / 12 {
 				append using `basic_month`month''
 			}
 			global earnerinfo = 0
@@ -343,7 +339,9 @@ foreach year of numlist `minyear'(1)`maxyear' {
             * date will be 2023m12, so don't have to do anything about date
 
 			do ${code}adjust_wages.do
-				
+			
+			append using `basicadjusted'
+
 			notes drop _dta
 			notes _dta: EPI CPS Basic Monthly Extracts, Version $dataversion
 			label data "EPI CPS Basic Monthly Extracts, Version $dataversion"
@@ -366,6 +364,8 @@ foreach year of numlist `minyear'(1)`maxyear' {
 
 
 				do ${code}adjust_wages.do
+
+				append using `orgadjusted'
 					
 				notes drop _dta
 				notes _dta: EPI CPS ORG Extracts, Version $dataversion
