@@ -9,6 +9,8 @@ If you use the EPI extracts for your research, please cite them as
 ### Version 1.0.61 -- 2025-02-13
 #### Added
 * January 2025 extracts
+* `ind22` : 2022 Census industry recodes (changes apply to data starting in 2025)
+* `occ25` : 2025 Census occupational recodes (changes apply to data starting in 2025)
 * `diffdress` : diffulty dressing or bathing
 * `differrands` : difficulty running errands alone
 * `diffhear` : deaf or hearing difficulty
@@ -16,6 +18,8 @@ If you use the EPI extracts for your research, please cite them as
 * `diffphysical` : difficulty walking or climbing stairs
 * `diffvision` : blind or difficulty seeing
 * `difficulty` : difficulty indicator
+#### Modified
+* Fixed labeling errors in `ind17` to be consistent with the relevant [census codebook](https://www2.census.gov/programs-surveys/cps/datasets/2024/basic/2024_Basic_CPS_Public_Use_Record_Layout_plus_IO_Code_list.txt), Industry and Occupation appendix. See [commit]() for details.
 ### Version 1.0.60 -- 2025-01-15
 #### Added 
 * December 2024 extracts
@@ -289,8 +293,8 @@ If you use the EPI extracts for your research, please cite them as
 
 * January 2020 extracts
 * February 2020 extracts
-* `ind17` - 2017 census industry recodes (changes apply to data starting in 2020)
-* `occ18` - 2018 Cencus occupational classification (changes apply to data starting in 2020)
+* `ind17` - 2017 Census industry recodes (changes apply to data starting in 2020)
+* `occ18` - 2018 Census occupational classification (changes apply to data starting in 2020)
 
 #### Modified
 
