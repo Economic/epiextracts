@@ -29,18 +29,13 @@ if $monthlycps == 1 | $maycps == 1 {
 
 
 		* Do top-code adjustment
-		* account for topcoding change after April 2024
-		if tm(2024m4) <= $date {
-			replace weekpay = weekpay_noadj
-		}
-
-		* there seems to be something wrong with ernwk and ernwkc in 1980 may data
-		* coding weekpay in these data as missing for now
-		else if $maycps == 1 & tm(1980m1) <= $date & $date <= tm(1980m12) {
-			replace weekpay = .
-		}
-
-		else {
+		if tm(1973m1) <= $date & $date <= tm(2023m3) {
+			* there seems to be something wrong with ernwk and ernwkc in 1980 may data
+			* coding weekpay in these data as missing for now
+			if $maycps == 1 & tm(1980m1) <= $date & $date <= tm(1980m12) {
+				replace weekpay = .
+			}
+			
 			* males: generate top-code adjusted weekly earnings
 			topcode_impute weekpay_noadj if weekpay_noadj ~= . & female == 0 & age >= 16 & age ~= . [pw=`weightvar'], generate(weekpay_male) method(Pareto) threshold(80) topcodeval(`topcodeval')
 
@@ -52,8 +47,29 @@ if $monthlycps == 1 | $maycps == 1 {
 
 			drop weekpay_male weekpay_female
 		}
+
 		*account for topcoding change in 2023/2024 where outgoing rotation groups are making their way through the changed procedure
-		replace weekpay = weekpay_noadj if (year == 2023 & month >= 4 | year == 2024) & minsamp == 4 
+		if tm(2023m4) <= $date & $date <= tm(2024m3) {
+			replace weekpay = weekpay_noadj if minsamp == 4
+
+			* males: generate top-code adjusted weekly earnings
+			topcode_impute weekpay_noadj if weekpay_noadj ~= . & female == 0 & age >= 16 & age ~= . & minsamp == 8 [pw=`weightvar'], generate(weekpay_male) method(Pareto) threshold(80) topcodeval(`topcodeval')
+
+			* females: generate top-code adjusted weekly earnings
+			topcode_impute weekpay_noadj if weekpay_noadj ~= . & female == 1 & age >= 16 & age ~= . & minsamp == 8 [pw=`weightvar'], generate(weekpay_female) method(pareto) threshold(80) topcodeval(`topcodeval')
+
+			replace weekpay = weekpay_male if female == 0 & minsamp == 8
+			replace weekpay = weekpay_female if female == 1 & minsamp == 8
+
+			drop weekpay_male weekpay_female
+		}
+
+		* account for topcoding change after April 2024
+		if tm(2024m4) <= $date {
+			replace weekpay = weekpay_noadj
+		}
+
+
 	}
 }
 
