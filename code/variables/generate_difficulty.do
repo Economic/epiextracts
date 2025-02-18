@@ -4,7 +4,7 @@
 gen byte difficulty = .
 
 if $monthlycps == 1 {
-	if tm(2008m6) <= $date {
+	if tm(2009m1) <= $date {
 		replace difficulty = 0 if prdisflg == 2
 		replace difficulty = 1 if prdisflg == 1
 	}

@@ -4,7 +4,7 @@
 gen byte diffdress = .
 
 if $monthlycps == 1 {
-	if tm(2008m6) <= $date {
+	if tm(2009m1) <= $date {
 		replace diffdress = 0 if pedisdrs == 2
 		replace diffdress = 1 if pedisdrs == 1
 	}

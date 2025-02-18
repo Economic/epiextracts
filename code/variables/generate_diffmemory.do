@@ -4,7 +4,7 @@
 gen byte diffmemory = .
 
 if $monthlycps == 1 {
-	if tm(2008m6) <= $date {
+	if tm(2009m1) <= $date {
 		replace diffmemory = 0 if pedisrem == 2
 		replace diffmemory = 1 if pedisrem == 1
 	}

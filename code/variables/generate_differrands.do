@@ -4,7 +4,7 @@
 gen byte differrands = .
 
 if $monthlycps == 1 {
-	if tm(2008m6) <= $date {
+	if tm(2009m1) <= $date {
 		replace differrands = 0 if pedisout == 2
 		replace differrands = 1 if pedisout == 1
 	}

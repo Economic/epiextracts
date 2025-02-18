@@ -4,7 +4,7 @@
 gen byte diffphysical = .
 
 if $monthlycps == 1 {
-	if tm(2008m6) <= $date {
+	if tm(2009m1) <= $date {
 		replace diffphysical = 0 if pedisphy == 2
 		replace diffphysical = 1 if pedisphy == 1
 	}

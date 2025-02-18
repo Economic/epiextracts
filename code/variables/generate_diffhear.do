@@ -4,7 +4,7 @@
 gen byte diffhear = .
 
 if $monthlycps == 1 {
-	if tm(2008m6) <= $date {
+	if tm(2009m1) <= $date {
 		replace diffhear = 0 if pedisear == 2
 		replace diffhear = 1 if pedisear == 1
 	}
