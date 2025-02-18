@@ -20,6 +20,7 @@ If you use the EPI extracts for your research, please cite them as
 * `difficulty` : difficulty indicator
 #### Modified
 * Fixed labeling errors in `ind17` to be consistent with the relevant [census codebook](https://www2.census.gov/programs-surveys/cps/datasets/2024/basic/2024_Basic_CPS_Public_Use_Record_Layout_plus_IO_Code_list.txt), Industry and Occupation appendix. See [commit]() for details.
+* Fixed topcoding errors in `weekpay` to employ new wage methodology for topcoded individuals. See [wage methodology]() for details.
 ### Version 1.0.60 -- 2025-01-15
 #### Added 
 * December 2024 extracts
