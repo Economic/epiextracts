@@ -14,3 +14,5 @@ master.log
 .Rhistory
 .Rproj.user
 test*.csv
+
+*.smcl
