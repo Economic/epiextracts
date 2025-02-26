@@ -33,7 +33,7 @@ foreach sample in "org" "basic" {
     * 2023m4-2024m3 follow new TC procedure, replace all TC with new procedure
     foreach month of numlist 4 / 12 {
         * minsamp == 4
-        sum weekpay_noadj [w=`sample'wgt] if month == `month' 
+        sum weekpay_noadj if month == `month' 
         replace weekpay = r(max) if tc_weekpay == 1 & minsamp == 4 & month == `month'
 
         * minsamp == 8 ~ mean above old TC value
