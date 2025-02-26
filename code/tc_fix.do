@@ -37,7 +37,7 @@ foreach sample in "org" "basic" {
         replace weekpay = r(max) if tc_weekpay == 1 & minsamp == 4 & month == `month'
 
         * minsamp == 8 ~ mean above old TC value
-        sum weekpay_noadj [w=`sample'wgt] if weekpay_noadj >= 2884.6 & minsamp == 4 & month == `month'
+        sum weekpay_noadj [w=orgwgt] if weekpay_noadj >= 2884.6 & minsamp == 4 & month == `month'
         replace weekpay = r(mean) if tc_weekpay == 1 & minsamp == 8 & month == `month'
 
     }
@@ -85,7 +85,7 @@ foreach sample in "org" "basic" {
         sum weekpay_noadj if month == `month'
         replace weekpay = r(max) if tc_weekpay == 1 & minsamp == 4 & month == `month'
 
-        sum weekpay_noadj [w=`sample'wgt] if weekpay_noadj >= 2884.6 & minsamp == 4 & month == `month'
+        sum weekpay_noadj [w=orgwgt] if weekpay_noadj >= 2884.6 & minsamp == 4 & month == `month'
         replace weekpay = r(mean) if tc_weekpay == 1 & minsamp == 8 & month == `month'
     }
 
