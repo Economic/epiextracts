@@ -25,7 +25,7 @@ foreach sample in "org" "basic" {
     * remove weekpay and wage variables and reassign with corrected methodology
     drop weekpay 
     gen weekpay = . 
-    
+    replace weekpay = weekpay_noadj
     * 2023m1-2023m3 follow old TC procedure, use imputed value
     replace weekpay = `male_tc' if female == 0 & tc_weekpay == 1 & month <= 3
     replace weekpay = `female_tc' if female == 1 & tc_weekpay == 1 & month <= 3
@@ -79,7 +79,7 @@ foreach sample in "org" "basic" {
     * remove weekpay and wage variables and reassign with corrected methodology
     drop weekpay 
     gen weekpay = . 
-    
+    replace weekpay = weekpay_noadj
     * replace all TC with new procedure in 2024
     foreach month of numlist 1 / 3 {
         sum weekpay_noadj if month == `month'
