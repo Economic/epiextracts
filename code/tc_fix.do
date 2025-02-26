@@ -17,6 +17,13 @@ local male_tc = r(max)
 sum weekpay_female
 local female_tc = r(max)
 
+*import extreme wages csv for later use (so that it does not rely on the global macro from createextracts)
+import delimited using ${docs}misc/extremewages.csv, clear
+rename lowerwagelimit wage_lower
+rename upperwagelimit wage_upper
+tempfile extremewages
+save `extremewages'
+
 * apply old TC procedure
 foreach sample in "org" "basic" {
     * load 2023 file and fix topcode
@@ -60,7 +67,7 @@ foreach sample in "org" "basic" {
 	replace wageotc = wage if paidhre == 0
 
    	* trim wage values according to extreme values
-	merge m:1 year using $extremewages, assert(2 3) keepusing(wage_lower wage_upper)
+	merge m:1 year using `extremewages', assert(2 3) keepusing(wage_lower wage_upper)
 	keep if _merge == 3
 	replace wage = . if wage < wage_lower
 	replace wage = . if wage > wage_upper
@@ -112,7 +119,7 @@ foreach sample in "org" "basic" {
 	replace wageotc = wage if paidhre == 0
 
    	* trim wage values according to extreme values
-	merge m:1 year using $extremewages, assert(2 3) keepusing(wage_lower wage_upper)
+	merge m:1 year using `extremewages', assert(2 3) keepusing(wage_lower wage_upper)
 	keep if _merge == 3
 	replace wage = . if wage < wage_lower
 	replace wage = . if wage > wage_upper
