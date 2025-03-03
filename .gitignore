@@ -8,7 +8,7 @@ test.do
 test.R
 
 nohup.out
-master.log
+*.log
 *.Rproj.user
 *.Rproj
 .Rhistory

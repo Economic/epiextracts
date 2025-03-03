@@ -23,7 +23,7 @@ keep
 	weekpay_noadj tc_weekpay a_weekpay
 	earnhour a_earnhour
 	otcrec
-	otcamt wage_noadj wageotc_noadj
+	otcamt wage_noadj wageotc_noadj tc_earnhour
 	faminc
 	ownchild famrel agechild
 	telework hourslwtw
