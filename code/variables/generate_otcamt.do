@@ -5,8 +5,11 @@ gen byte otcamt = .
 
 if $monthlycps == 1 | $maycps == 1 {
 	if $earnerinfo == 1 {
-		if tm(1994m1) <= $date {
+		if tm(1994m1) <= $date & $date <= tm(2024m5) {
 			replace otcamt = peern if paidhre == 1 & otcrec == 1
+		}
+		if tm(2024m6) <= $date {
+			replace otcamt = ptern if paidhre == 1 & otcrec == 1
 		}
 	}
 }
