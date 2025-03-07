@@ -25,4 +25,4 @@ if $monthlycps == 1 | $maycps == 1 {
 lab var tc_weekpay "Weekly pay top-coded by BLS"
 lab def tc_weekpay 0 "Not top-coded" 1 "Top-coded"
 lab val tc_weekpay tc_weekpay
-notes tc_weekpay: Top-code for weekpay: 1973-88: 999; 1989-97: 1923; 1998-: 2884.61
+notes tc_weekpay: Top-code for weekpay: 1973-88: 999; 1989-97: 1923; 1998-2023m3: 2884.61

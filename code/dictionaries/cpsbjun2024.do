@@ -253,13 +253,13 @@ note peernrt: U PRERELG = 1
 note peernhry: U PEERNPER = 2-7
 note pternh1c: U PRERELG = 1
 note pternh2: U PRERELG = 1
-note peernh1o: U PEERNRT = 1
+note pternh1o: U PEERNRT = 1
 note pternhly: U PEERNPER = 1
 note pthr: U PEERNPER = 1 OR PEERNRT = 1
 note peernhro: U PEERNPER = 1 OR PEERNRT = 1
 note pternwa: U PEERNH1O = ENTRY
 note ptwk: U PRERELG = 1
-note peern: U PRERELG = 1
+note ptern: U PRERELG = 1
 note ptern2: U PEERNUOT = 1 AND PEERNPER = 1
 note ptot: U PEERNUOT = 1 AND PEERNPER = 1
 note peernwkp: U PEERNUOT = 1 AND PEERNPER = 1

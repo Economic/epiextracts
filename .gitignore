@@ -2,14 +2,17 @@
 *.sas7bdat
 *.zip
 *.txt
+*.xlsx
 
 test.do
 test.R
 
 nohup.out
-master.log
+*.log
 *.Rproj.user
 *.Rproj
 .Rhistory
 .Rproj.user
 test*.csv
+
+*.smcl

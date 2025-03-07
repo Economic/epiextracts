@@ -17,7 +17,7 @@ if $monthlycps == 1 | $maycps == 1 {
 		if tm(1989m1) <= $date & $date <= tm(1997m12) {
 			local topcodeval 1923
 		}
-		if tm(1998m1) <= $date & $date <= tm(2024m3) {
+		if tm(1998m1) <= $date & $date <= tm(2024m12) {
 			* going to use 2884.60 instead of actual topcode of 2884.61 to avoid precision issues
 			local topcodeval 2884.60
 		}
@@ -29,31 +29,31 @@ if $monthlycps == 1 | $maycps == 1 {
 
 
 		* Do top-code adjustment
+		if tm(1973m1) <= $date & $date <= tm(2024m12) {
+			* there seems to be something wrong with ernwk and ernwkc in 1980 may data
+			* coding weekpay in these data as missing for now
+			if $maycps == 1 & tm(1980m1) <= $date & $date <= tm(1980m12) {
+				replace weekpay = .
+			}
+			
+			else {
+				* males: generate top-code adjusted weekly earnings
+				topcode_impute weekpay_noadj if weekpay_noadj ~= . & female == 0 & age >= 16 & age ~= . [pw=`weightvar'], generate(weekpay_male) method(Pareto) threshold(80) topcodeval(`topcodeval')
+
+				* females: generate top-code adjusted weekly earnings
+				topcode_impute weekpay_noadj if weekpay_noadj ~= . & female == 1 & age >= 16 & age ~= . [pw=`weightvar'], generate(weekpay_female) method(pareto) threshold(80) topcodeval(`topcodeval')
+
+				replace weekpay = weekpay_male if female == 0
+				replace weekpay = weekpay_female if female == 1
+
+				drop weekpay_male weekpay_female
+			}
+		}
+
 		* account for topcoding change after April 2024
-		if tm(2024m4) <= $date {
+		if tm(2025m1) <= $date {
 			replace weekpay = weekpay_noadj
 		}
-
-		* there seems to be something wrong with ernwk and ernwkc in 1980 may data
-		* coding weekpay in these data as missing for now
-		else if $maycps == 1 & tm(1980m1) <= $date & $date <= tm(1980m12) {
-			replace weekpay = .
-		}
-
-		else {
-			* males: generate top-code adjusted weekly earnings
-			topcode_impute weekpay_noadj if weekpay_noadj ~= . & female == 0 & age >= 16 & age ~= . [pw=`weightvar'], generate(weekpay_male) method(Pareto) threshold(80) topcodeval(`topcodeval')
-
-			* females: generate top-code adjusted weekly earnings
-			topcode_impute weekpay_noadj if weekpay_noadj ~= . & female == 1 & age >= 16 & age ~= . [pw=`weightvar'], generate(weekpay_female) method(pareto) threshold(80) topcodeval(`topcodeval')
-
-			replace weekpay = weekpay_male if female == 0
-			replace weekpay = weekpay_female if female == 1
-
-			drop weekpay_male weekpay_female
-		}
-		*account for topcoding change in 2023/2024 where outgoing rotation groups are making their way through the changed procedure
-		replace weekpay = weekpay_noadj if (year == 2023 & month >= 4 | year == 2024) & minsamp == 4 
 	}
 }
 
@@ -64,4 +64,5 @@ notes weekpay: Original top-code values replaced with Pareto-distribution implie
 notes weekpay: Separate imputations for men and women
 notes weekpay: Original top-code: 1973-88: 999; 1986-97: 1923; 1998-2023: 2884.61
 notes weekpay: Beginning in 2023, top-code value is the weighted average of the top 3% of earners in a given month
+notes weekpay: Data 2023m4-2024m3 replace final ORG (minsamp == 8) topcoded value with average full-year topcoded value for first ORG (minsamp == 4)
 notes weekpay: Derived from weekpay_noadj and tc_weekpay

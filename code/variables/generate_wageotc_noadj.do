@@ -10,7 +10,6 @@ if $monthlycps == 1 {
 		if tm(1994m1) <= $date {
 			* for hourly workers
 			replace wageotc_noadj = earnhour if paidhre == 1
-			replace wageotc_noadj = (weekpay_noadj/hoursu1) if paidhre == 1 & earnhour < (weekpay_noadj/hoursu1) & (weekpay/hoursu1) ~= .
 			replace wageotc_noadj = earnhour + (otcamt/hoursuorg) if paidhre == 1 & otcrec == 1 & 0 < otcamt & otcamt ~= . & 0 < peernhro & peernhro <= 99
 
 			* for nonhourly

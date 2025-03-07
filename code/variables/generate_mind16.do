@@ -281,7 +281,7 @@ if $monthlycps == 1 | $maycps == 1 {;
 		/* Manufacturing, nondurable goods (incl publishing)  */
 		replace mind16 = 4 if	(
 			(indcode >= 1070 & indcode <= 2390) |
-			(indcode >= 6470 & indcode <= 6480) /* publishing (excl software*/
+			(indcode >= 6470 & indcode <= 6481) /* publishing (excl software*/
 		);
 		/* Transportation */
 		replace mind16 = 5 if
@@ -297,7 +297,7 @@ if $monthlycps == 1 | $maycps == 1 {;
 			(indcode >= 4070 & indcode <= 4590);
 		/* Retail trade */
 		replace mind16 = 8 if
-			(indcode >= 4670 & indcode <= 5790);
+			(indcode >= 4670 & indcode <= 5791);
 		/* Finance, insurance and real estate. Business, auto and repair services, and other professional. */
 		replace mind16 = 9 if	(
 			(indcode >= 6870 & indcode <= 7190) | /* finance, insurance, and real estate */
@@ -373,4 +373,5 @@ notes mind16: 1992-2002: ind90
 notes mind16: 2003-2008: ind02
 notes mind16: 2009-2013: ind07
 notes mind16: 2014-2019: ind12
-notes mind16: 2020-present: ind17
+notes mind16: 2020-2024: ind17
+notes mind16: 2025-present: ind22

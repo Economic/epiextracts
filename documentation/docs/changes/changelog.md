@@ -6,7 +6,23 @@ If you use the EPI extracts for your research, please cite them as
     Economic Policy Institute. {{ year }}. Current Population Survey Extracts, Version {{ version }}, https://microdata.epi.org.
 
 ## Recent changes
-### Version 1.0.60 -- 2025-01-
+### Version 1.0.61 -- 2025-02-13
+#### Added
+* January 2025 extracts
+* `ind22` : 2022 Census industry recodes (changes apply to data starting in 2025)
+* `occ25` : 2025 Census occupational recodes (changes apply to data starting in 2025)
+* `diffdress` : diffulty dressing or bathing
+* `differrands` : difficulty running errands alone
+* `diffhear` : deaf or hearing difficulty
+* `diffmemory` : difficulty remembering, concentrating, or making decisions
+* `diffphysical` : difficulty walking or climbing stairs
+* `diffvision` : blind or difficulty seeing
+* `difficulty` : difficulty indicator
+* `tc_earnhour` : flag for hourly topcode status
+#### Modified
+* Fixed error that mishandled the topcoding change for weekly and hourly pay introduced to the CPS basic monthly files starting in April 2023. This error exists in the EPI CPS extracts from version 1.0.41 to version 1.0.60. Users relying on estimates for 2023 or 2024 using `wage`, `wageotc`, or `weekpay` in these versions should redownload the latest version of the data. See [wage methodology](../methodology/wagevariables.md) for more details.
+* Fixed labeling errors in `ind17` to be consistent with the relevant [census codebook](https://www2.census.gov/programs-surveys/cps/datasets/2024/basic/2024_Basic_CPS_Public_Use_Record_Layout_plus_IO_Code_list.txt), Industry and Occupation appendix. See [commit](https://github.com/Economic/epiextracts/commit/d796e8d062b37835f2cee045b05fffd1db6d10e0) for details.
+### Version 1.0.60 -- 2025-01-15
 #### Added 
 * December 2024 extracts
 ### Version 1.0.59 -- 2024-12-12
@@ -279,8 +295,8 @@ If you use the EPI extracts for your research, please cite them as
 
 * January 2020 extracts
 * February 2020 extracts
-* `ind17` - 2017 census industry recodes (changes apply to data starting in 2020)
-* `occ18` - 2018 Cencus occupational classification (changes apply to data starting in 2020)
+* `ind17` - 2017 Census industry recodes (changes apply to data starting in 2020)
+* `occ18` - 2018 Census occupational classification (changes apply to data starting in 2020)
 
 #### Modified
 

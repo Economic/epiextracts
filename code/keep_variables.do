@@ -18,14 +18,17 @@ keep
 	paidhre
 	hoursu1 hoursu2 hoursut hourslw1 hourslw2 hourslwt hoursumay hoursuorg
 	hoursvary hoursuint
-	ind70 ind80 ind90 ind02 ind07 ind12 ind17 mind16 manuf dind03 mind03
+	ind70 ind80 ind90 ind02 ind07 ind12 ind17 ind22 mind16 manuf dind03 mind03
 	occcode occ70 occ80 occ90 occ00 occ10 occ18 mocc10 docc03 mocc03
 	weekpay_noadj tc_weekpay a_weekpay
 	earnhour a_earnhour
 	otcrec
-	otcamt wage_noadj wageotc_noadj
+	otcamt wage_noadj wageotc_noadj tc_earnhour
 	faminc
 	ownchild famrel agechild
 	telework hourslwtw
+	diffdress differrands diffhear diffmemory diffphysical diffvision
+    difficulty
 ;
 #delimit cr;
+ 
