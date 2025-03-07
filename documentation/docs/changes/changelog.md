@@ -18,9 +18,10 @@ If you use the EPI extracts for your research, please cite them as
 * `diffphysical` : difficulty walking or climbing stairs
 * `diffvision` : blind or difficulty seeing
 * `difficulty` : difficulty indicator
+* `tc_earnhour` : flag for hourly topcode status
 #### Modified
-* Fixed labeling errors in `ind17` to be consistent with the relevant [census codebook](https://www2.census.gov/programs-surveys/cps/datasets/2024/basic/2024_Basic_CPS_Public_Use_Record_Layout_plus_IO_Code_list.txt), Industry and Occupation appendix. See [commit]() for details.
-* Fixed topcoding errors in `weekpay` to employ new wage methodology for topcoded individuals. See [wage methodology]() for details.
+* Fixed error that mishandled the topcoding change for weekly and hourly pay introduced to the CPS basic monthly files starting in April 2023. This error exists in the EPI CPS extracts from version 1.0.41 to version 1.0.60. Users relying on estimates for 2023 or 2024 using `wage`, `wageotc`, or `weekpay` in these versions should redownload the latest version of the data. See [wage methodology](../methodology/wagevariables.md) for more details.
+* Fixed labeling errors in `ind17` to be consistent with the relevant [census codebook](https://www2.census.gov/programs-surveys/cps/datasets/2024/basic/2024_Basic_CPS_Public_Use_Record_Layout_plus_IO_Code_list.txt), Industry and Occupation appendix. See [commit](https://github.com/Economic/epiextracts/commit/d796e8d062b37835f2cee045b05fffd1db6d10e0) for details.
 ### Version 1.0.60 -- 2025-01-15
 #### Added 
 * December 2024 extracts

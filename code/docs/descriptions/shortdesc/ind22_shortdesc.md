@@ -1,0 +1,1 @@
+`ind22` is the 2022 Census industry classification the primary job of the respondent. See also [`mind16`](mind16.md).
