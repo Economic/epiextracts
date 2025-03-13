@@ -6,16 +6,16 @@ gen faminc = .
 
 if $monthlycps == 1 {
 	if tm(1989m1) <= $date & $date <= tm(1993m12) {
-		replace faminc = oldfaminc + 1 if oldfaminc <= 5
+		replace faminc = oldfaminc + 1 if oldfaminc <= 5 & oldfaminc >= 0
 		replace faminc = oldfaminc if 5 < oldfaminc & oldfaminc < 19
 		replace faminc = . if oldfaminc == 19
 	}
 	if tm(1994m1) <= $date & $date <= tm(2009m12) {
-		replace faminc = hufaminc if hufaminc <= 12
+		replace faminc = hufaminc if hufaminc <= 12 & hufaminc >= 0
 		replace faminc = hufaminc - 1 if hufaminc > 12
 	}
 	if tm(2010m1) <= $date {
-		replace faminc = hefaminc if hefaminc <= 12
+		replace faminc = hefaminc if hefaminc <= 12 & hefaminc >= 0
 		replace faminc = hefaminc - 1 if hefaminc > 12
 	}
 }
