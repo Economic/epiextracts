@@ -24,7 +24,7 @@ keep
 	earnhour a_earnhour
 	otcrec
 	otcamt wage_noadj wageotc_noadj tc_earnhour
-	faminc
+	faminc faminc_det
 	ownchild famrel agechild
 	telework hourslwtw
 	diffdress differrands diffhear diffmemory diffphysical diffvision
