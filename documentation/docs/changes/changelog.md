@@ -6,6 +6,10 @@ If you use the EPI extracts for your research, please cite them as
     Economic Policy Institute. {{ year }}. Current Population Survey Extracts, Version {{ version }}, https://microdata.epi.org.
 
 ## Recent changes
+### Version 1.0.63 -- 2025-04-
+#### Added
+* March 2025 extracts
+* `faminc_det` : Family income with detailed grouping
 ### Version 1.0.62 -- 2025-03-13
 #### Added
 * February 2025 extracts
