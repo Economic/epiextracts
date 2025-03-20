@@ -8,7 +8,7 @@ replace wgt = orgwgt if year >= 1979
 gcollapse (p50) wage_ = wage [pw=wgt], by(year female) fast
 * inflation-adjust wages
 preserve
-sysuse cpi_annual, clear
+import delimited using ${suppdata}cpiurs_extended.csv, clear varnames(1)
 keep year cpiurs
 keep if year > = 1973
 tempfile cpiurs

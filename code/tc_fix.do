@@ -30,8 +30,7 @@ foreach sample in "org" "basic" {
     use ${extracts}epi_cps`sample'_2023.dta, clear
 
     * remove weekpay and wage variables and reassign with corrected methodology
-    drop weekpay 
-    gen weekpay = . 
+    replace weekpay = . 
     replace weekpay = weekpay_noadj
     * 2023m1-2023m3 follow old TC procedure, use imputed value
     replace weekpay = `male_tc' if female == 0 & tc_weekpay == 1 & month <= 3
@@ -50,8 +49,7 @@ foreach sample in "org" "basic" {
     }
     
     * replace wage variable in all months based on new weekpay var (using standared calculation from generate_weekpay.do)
-    drop wage
-    gen wage = .
+    replace wage = .
     replace wage = wage_noadj if paidhre == 1
     replace wage = weekpay/hoursu1 if paidhre == 0
     
@@ -59,8 +57,7 @@ foreach sample in "org" "basic" {
 	replace wage = weekpay/hoursu1i if paidhre == 0 & hoursvary == 1
 
     * apply changes to wageotc
-    drop wageotc
-    gen wageotc = .
+    replace wageotc = .
 	* for hourly workers
 	replace wageotc = wageotc_noadj if paidhre == 1
 	* for nonhourly
@@ -84,8 +81,7 @@ foreach sample in "org" "basic" {
     use ${extracts}epi_cps`sample'_2024.dta, clear
 
     * remove weekpay and wage variables and reassign with corrected methodology
-    drop weekpay 
-    gen weekpay = . 
+    replace weekpay = . 
     replace weekpay = weekpay_noadj
     * replace all TC with new procedure in 2024
     foreach month of numlist 1 / 3 {
@@ -102,8 +98,7 @@ foreach sample in "org" "basic" {
     }
 
     * replace wage variable in all months based on new weekpay var
-    drop wage
-    gen wage = .
+    replace wage = .
     replace wage = wage_noadj if paidhre == 1
     replace wage = weekpay/hoursu1 if paidhre == 0
     
@@ -111,8 +106,7 @@ foreach sample in "org" "basic" {
 	replace wage = weekpay/hoursu1i if paidhre == 0 & hoursvary == 1
     
     * apply changes to wageotc
-    drop wageotc
-    gen wageotc = .
+    replace wageotc = .
 	* for hourly workers
 	replace wageotc = wageotc_noadj if paidhre == 1
 	* for nonhourly
