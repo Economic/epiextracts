@@ -9,7 +9,7 @@ test.R
 *.txt
 
 nohup.out
-master.log
+*.log
 *.Rproj.user
 *.Rproj
 .Rhistory
