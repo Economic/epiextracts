@@ -41,7 +41,7 @@ set trace off
 * DATA VERSION
 *******************************************************************************
 * The version is saved in the dataset labels and notes
-global dataversion 1.0.62
+global dataversion 1.0.63
 
 
 *******************************************************************************
