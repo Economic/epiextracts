@@ -30,12 +30,11 @@ keep
   income
   famern famiws
   hhinc_c
-  wrkly
+  wrkly wrkly_binned
 	faminc faminc_c
   earn
   povlev povrate
   schenrl
-  wrkly
   hicov hiemp hipaid
   penplan penincl
   foodstamps
@@ -63,12 +62,11 @@ if $monthlycps == 1 | $maycps == 1 {
     famern
     famiws
     hhinc_c
-    wrkly
+    wrkly wrkly_binned
 	  faminc_c
     earn
     povlev povrate
     schenrl
-    wrkly
     hicov hiemp hipaid
     penplan penincl
     foodstamps

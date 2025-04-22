@@ -36,7 +36,7 @@ foreach var in
   famern famiws
   hhinc_c
   povlev povrate
-  hoursly wrkly
+  hoursly wrkly wrkly_binned
   hicov hiemp hipaid
   penplan penincl
   foodstamps

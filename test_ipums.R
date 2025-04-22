@@ -4,10 +4,16 @@ library(epiextractr)
 library(epidatatools)
 library(openxlsx)
 
+### DATA SOURCE ####
 epi_march <- read_dta("epi_march.dta")
-ipums_march <- read_dta("cps_00044.dta")
+ipums_march <- read_dta("cps_00047.dta")
 
+# set workbooks
+round_green_wb <- createWorkbook()
+round_light_green_wb <- createWorkbook()
+round_dark_green_wb <- createWorkbook()
 
+### FUNCTIONS ####
 # function to write worksheet to excel 
 sheets_fun <- function(data, wb, s) {
   
@@ -24,7 +30,7 @@ sheets_fun <- function(data, wb, s) {
 }
 
 
-# function to perform different measurement types for different groups 
+# function to perform different methods for different groups 
 mfun <- function(data, x, m = NULL) {
   
   # cross-tabulation for indicator variables
@@ -53,93 +59,146 @@ mfun <- function(data, x, m = NULL) {
       summarise(!!paste0(x, "_mean") := mean(!!rlang::parse_expr(x), na.rm = TRUE), .by = year)
   }
   
-  #df %>% sheets_fun(wb = wb, s = paste0(deparse(substitute(x))))
+  else {
+    message("Invalid method: ", m)
+    return(tibble())
+  }
+  
+  return(df)
   
 }
 
+# testing function to handle list input
+testing_fun <- function(x, wb) {
+  
+  # iterate across each list item
+  imap(x, ~ {
+    
+    s <- .y  # full name of the list item/group, e.g., "ipums_tab"
+    m <- str_sub(.y, start = 7)  # extract method (e.g., "tab")
+    
+    # dynamically assign data
+    data_source <- if (str_detect(s, "ipums")) ipums_march else epi_march
+    
+    
+    # iterate across vector of var names
+    df <- map(.x, ~ mfun(data = data_source, x = .x, m = m)) %>%
+      # df of variables across a list item
+      reduce(full_join, by = "year")
+    
+    # map to workbook
+    sheets_fun(wb = wb, s = s, data = df) 
+    
+    # return df
+    return(df)
+  })
+  
+}
+
+### VAR LISTS ####
+## Categories based on Microsoft Planner
+
+# corresponds to vars tagged "green"
+#note: mostly agnostic variables
+round_green_list <- list(
+  ipums_tab = c("vetstat", "classwkr", "paidhour",
+                "rotate", "marst", "labforce",
+                "hispan","wkstat", "sex", "empstat",
+                "citizen"),
+  ipums_count = c("hrhhid", "hrhhid2"),
+  epimd_tab = c("veteran", "unemp", "pubst", "pubsec",
+              "publoc", "pubfed", "paidhre", "minsamp",
+              "married", "lfstat", "hispanic", "ftptstat",
+              "female", "emp", "cow1", "citizen"),
+  epimd_count = c("hrhhid", "hrhhid2")
+)
 
 
+# corresponds to vars tagged "light green"
+round_light_green_list <- list(
+  ipums_tab = c("whyunemp", "whyabsnt", "union", 
+                "classwkr","schlcoll", "labforce", 
+                "metro", "educ", "spmpov", "spmfamunit",
+                "rentsub", "poverty", "pension",
+                "offpov", "caidly", "himcaidly",
+                "grpownly", "dpownly", "phiown", 
+                "gqtype", "classwly"),
+  ipums_sum = c("spmeitc", "spmwic", "schllunch", "spmmort", "foodstamp",
+                "eitcred", "crccrd", "actccrd"),
+  ipums_count = c("famid"),
+  ipums_mean = c("spmwic", "spmthresh", "schllunch", 
+                 "spmmort", "offpovcut", "foodstamp", "eitcred", 
+                 "crccrd", "actccrd"),
+  epimd_tab = c("whyunemp", "whyabsent", "unmem", "union",
+                "uncov", "selfinc", "selfemp", "schenrl",
+                "nilf", "metstat", "educ", "spmpov",
+                "spmfamtype", "rentsub", "povrate", "povlev",
+                "penplan", "penincl", "offpov", "medicaid",
+                "hiemp", "hicov", "dhhtype", "cowly"),
+  epimd_sum = c("spmeitc", "spmwic", "schlunch",
+                "spmfamtype", "mortgage", "foodstamps", "eitc",
+                "childtaxcredit"),
+  epimd_count = c("famid"),
+  epimd_mean = c("spmeitc", "spmwic", "spmpovcut", "schlunch",
+                 "offpovcut", "mortgage", "foodstamps", "eitc",
+                 "childtaxcredit")
+)
+
+# corresponds to vars tagged "dark green"
+round_dark_green_list <- list(
+  ipums_tab = c("durunemp", "race", "nchild", "higrade", "ftype",
+                "famrel", "migrate1", "nwlookwk"),
+  ipums_sum = c("spmwt", "spmsttax", "spmfedtaxac",
+                "spmsnap", "asecwt"),
+  ipums_mean = c("spmsttax", "spmfedtaxac",
+                 "spmsnap", "uhrsworkly"),
+  epi_tab = c("unempdur", "raceorig", "ownchild",
+              "gradehi", "famtype", "famrel",
+              "migarea", "lookdurly"),
+  epi_sum = c("spmwgt", "spm_statetax", "spm_fedtax", 
+              "snap", "asecwgt"),
+  epi_mean = c("spm_statetax", "spm_fedtax", 
+               "snap", "hoursly")
+)
 
 
-ipums_wb <- createWorkbook()
+# list of variable lists for mapping
+all_lists <- list(round_green_list,
+                  round_light_green_list,
+                  round_dark_green_list)
 
-ipums_count_vars <- c("hrhhid", "hrhhid2", "hseq", "lineno", "famid", "spmfamunit")
+# list of files to map to
+all_files <- c("round_green_wb.xlsx",
+               "round_light_green_wb.xlsx",
+               "round_dark_green_wb.xlsx")
 
-ipums_sum_vars <- c("asecwth", "asecwt", "asecfwt", "ftotval", "inctot", "incwage", 
-                    "ctccrd", "actccrd", "eitcred", "schllunch", "spmthresh", "cutoff",
-                    "spmlunch", "spmsttax", "spmfedtaxac", "spmeitc", "spmwic", "spmsnap",
-                    "foodstamp")
+# quietly iterate over the two parallel vectors
+pwalk(
+  .l = list(lst  = all_lists,
+            file = all_files),
+  .f = function(lst, file) {
+    # create wb
+    wb <- createWorkbook()
+    
+    # fill wb with the variables and methods specified
+    #note: data source, variables, and methods defined by list item
+    #      (e.g., "ipums_tab")
+    testing_fun(x = lst, wb = wb)
+    
+    # save wb
+    saveWorkbook(wb, file, overwrite = TRUE)
+  }
+)
 
-ipums_mean_vars <- c("ftotval", "inctot", "incwage", "foodstamp", "offcutoff", "cutoff", "spmthresh")
+break
 
-ipums_tab_vars <- c("ftype", "classwkr", "educ", "schlcoll", "pension", 
-                    "offpov", "poverty", "spmpov", 
-                    "spmmort", "migsta1", "himcaidly", "caidly", "grpcovly", "grpownly", "dpownly")
-
-ipums_mean <- map(ipums_mean_vars, ~ mfun(ipums_march, x = .x, m = "mean")) %>% 
-  reduce(full_join, by = "year") %>% 
-  sheets_fun(wb = ipums_wb, s = "ipums_mean")
-
-ipums_count <- map(ipums_count_vars, ~ mfun(ipums_march, x = .x, m = "count")) %>% 
-  reduce(full_join, by = "year") %>% 
-  sheets_fun(wb = ipums_wb, s = "ipums_count")
-
-ipums_sum <- map(ipums_sum_vars, ~ mfun(ipums_march, x = .x, m = "sum")) %>% 
-  reduce(full_join, by = "year") %>% 
-  sheets_fun(wb = ipums_wb, s = "ipums_sum")
-
-ipums_tab <- map(ipums_tab_vars, ~ mfun(ipums_march, x = .x, m = "tab")) %>% 
-  reduce(full_join, by = "year") %>% 
-  sheets_fun(wb = ipums_wb, s = "ipums_tab")
-
-saveWorkbook(wb = ipums_wb, file = "ipums_wb.xlsx")
-
-
-epi_wb <- createWorkbook()
-
-epi_count_vars <- c("hrhhid", "hrhhid2", "pulineno", "famid")
-
-epi_sum_vars <- c("asecwgt", "hhwgt", "famwgt", "spmwgt", "earn", "income", 
-                  "faminc_c", "famern", "famiws", "hhinc_c", "eitc", "childtaxcredit",
-                  "spm_fedtax", "spm_statetax", "snap", "wic", "schlunch")
-
-epi_mean_vars <- c("earn", "income", "offpovcut", "spmpovcut",
-                   "faminc_c", "famern", "famiws", "hhinc_c", "eitc", "childtaxcredit")
-
-epi_tab_vars1 <- c("nilf", "emp", "female", "wbho", "wbhao", "married", "citizen", 
-                  "famtype", "cow1", "educ", "schenrl", "penplan", "penincl")
-
-epi_tab_vars2 <- c("offpov", "povrate", "povlev", "hipaid", "hiemp", "hicov", #spmpov,
-                  "foodstamps", "medicaid", "medicaidcov")
-
-
-epi_tab_vars3 <- c("pubhouse", "hhtenure", "rentsub", "mortgage", "cowly", "dhhtype",
-                  "famkind", "disability", "parent", "migarea", "migstatus", "migmetro", 
-                  "lookdurly", "wrkly", "ownchild")
-
-epi_mean <- map(epi_mean_vars, ~ mfun(epi_march, x = .x, m = "mean")) %>% 
-  reduce(full_join, by = "year") %>% 
-  sheets_fun(wb = epi_wb, s = "epi_mean")
-
-epi_count <- map(epi_count_vars, ~ mfun(epi_march, x = .x, m = "count")) %>% 
-  reduce(full_join, by = "year") %>% 
-  sheets_fun(wb = epi_wb, s = "epi_count")
-
-epi_sum <- map(epi_sum_vars, ~ mfun(epi_march, x = .x, m = "sum")) %>% 
-  reduce(full_join, by = "year") %>% 
-  sheets_fun(wb = epi_wb, s = "epi_sum")
-
-epi_tab1 <- map(epi_tab_vars1, ~ mfun(epi_march, x = .x, m = "tab")) %>% 
-  reduce(full_join, by = "year")
-
-epi_tab2 <- map(epi_tab_vars2, ~ mfun(epi_march, x = .x, m = "tab")) %>% 
-  reduce(full_join, by = "year")
-
-epi_tab3 <- map(epi_tab_vars3, ~ mfun(epi_march, x = .x, m = "tab")) %>% 
-  reduce(full_join, by = "year")
-
-epi_tab <- full_join(epi_tab1, epi_tab2, by = "year") %>% 
-  full_join(epi_tab3, by = "year") %>% 
-  sheets_fun(wb = epi_wb, s = "epi_tab")
-
-saveWorkbook(epi_wb, file = "epi_wb.xlsx")
+round_pink_list <- list(
+  ipums_tab = c(),
+  ipums_sum = c(),
+  ipums_count = c(),
+  ipums_mean = c(),
+  epimd_tab = c(),
+  epimd_sum = c(),
+  epimd_count = c(),
+  epimd_mean = c()
+)
