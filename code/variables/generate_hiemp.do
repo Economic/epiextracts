@@ -11,8 +11,8 @@ if $marchcps == 1 {
         replace hiemp = 1 if orig_hiemp == 1
 	} 
 	if tm(2019m1) <= $date {
-		replace hiemp = 0 if owngrp == 2
-        replace hiemp = 1 if owngrp == 1
+		replace hiemp = 0 if now_owngrp == 2
+        replace hiemp = 1 if now_owngrp == 1
 	}
 }
 

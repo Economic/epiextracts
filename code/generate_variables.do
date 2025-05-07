@@ -46,7 +46,7 @@ foreach var in
   offpov offpovcut
   spmpov spmpovcut
   spm_fedtax spm_statetax
-  schlunch snap wic mortgage 
+  spm_schlunch schlunch spm_snap snap spm_wic spm_mortgage 
   spmfamtype
   cowly
   dhhtype famkind 

@@ -15,7 +15,7 @@ if $monthlycps == 1 {
 if $marchcps == 1 {
 	if tm(1962m1) <= $date & $date <= tm(1967m12) {
 		replace famrel = 0 if oldfamrel == 4
-		replace famrel = oldfamrel + 1
+		replace famrel = oldfamrel + 1 if oldfamrel < 4
 	}
 	if tm(1988m1) <= $date & $date <= tm(1997m12) {
 		replace famrel = oldfamrel

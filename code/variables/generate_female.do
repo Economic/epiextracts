@@ -20,8 +20,8 @@ if $marchcps == 1 {
 		replace female = 1 if sex == 2
 	}
 	if tm(1998m1) <= $date {
-		replace female = 0 if a_sex == 2
-		replace female = 1 if a_sex == 1
+		replace female = 0 if a_sex == 1
+		replace female = 1 if a_sex == 2
 	}
 }
 

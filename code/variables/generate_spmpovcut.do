@@ -5,7 +5,7 @@ gen byte spmpovcut = .
 
 if $marchcps == 1 {
     if tm(2010m1) <= $date & $date <= tm(2018m1) {
-        replace spmpov = spmu_povthreshold
+        replace spmpovcut = spmu_povthreshold
     }
     if tm(2019m1) <= $date {
         replace spmpovcut = spm_povthreshold

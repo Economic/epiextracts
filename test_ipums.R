@@ -6,12 +6,8 @@ library(openxlsx)
 
 ### DATA SOURCE ####
 epi_march <- read_dta("epi_march.dta")
-ipums_march <- read_dta("cps_00047.dta")
+ipums_march <- read_dta("cps_00047.dta") 
 
-# set workbooks
-round_green_wb <- createWorkbook()
-round_light_green_wb <- createWorkbook()
-round_dark_green_wb <- createWorkbook()
 
 ### FUNCTIONS ####
 # function to write worksheet to excel 
@@ -116,33 +112,33 @@ round_green_list <- list(
 
 # corresponds to vars tagged "light green"
 round_light_green_list <- list(
-  ipums_tab = c("whyunemp", "whyabsnt", "union", 
-                "classwkr","schlcoll", "labforce", 
-                "metro", "educ", "spmpov", "spmfamunit",
-                "rentsub", "poverty", "pension",
-                "offpov", "caidly", "himcaidly",
-                "grpownly", "dpownly", "phiown", 
-                "gqtype", "classwly"),
-  ipums_sum = c("spmeitc", "spmwic", "schllunch", "spmmort", "foodstamp",
-                "eitcred", "crccrd", "actccrd"),
+  ipums_sum = c("spmmort"),
   ipums_count = c("famid"),
-  ipums_mean = c("spmwic", "spmthresh", "schllunch", 
-                 "spmmort", "offpovcut", "foodstamp", "eitcred", 
-                 "crccrd", "actccrd"),
-  epimd_tab = c("whyunemp", "whyabsent", "unmem", "union",
-                "uncov", "selfinc", "selfemp", "schenrl",
-                "nilf", "metstat", "educ", "spmpov",
-                "spmfamtype", "rentsub", "povrate", "povlev",
-                "penplan", "penincl", "offpov", "medicaid",
-                "hiemp", "hicov", "dhhtype", "cowly"),
-  epimd_sum = c("spmeitc", "spmwic", "schlunch",
-                "spmfamtype", "mortgage", "foodstamps", "eitc",
-                "childtaxcredit"),
+  ipums_mean = c("spmthresh", "spmmort", "offcutoff"),
+  epimd_sum = c("mortgage"),
   epimd_count = c("famid"),
-  epimd_mean = c("spmeitc", "spmwic", "spmpovcut", "schlunch",
-                 "offpovcut", "mortgage", "foodstamps", "eitc",
-                 "childtaxcredit")
+  epimd_mean = c("spmpovcut", "offpovcut", "mortgage")
 )
+
+# corresponds to vars tagged "light green"
+round_light_green2_list <- list(
+  ipums_tab = c(#"whyunemp", "whyabsnt", "union", 
+                #"classwkr","schlcoll", 
+                #"labforce", "metro", 
+                #"spmpov"), 
+                #"rentsub", "poverty", "pension",
+                #"offpov", "caidly", "himcaidly",
+                "classwly", "spmfamunit"),
+  epimd_tab = c(#"whyunemp", "whyabsent", "unmem", "union",
+                #"uncov", "selfinc", "selfemp", "schenrl",
+                #"nilf", "metstat",
+                #"spmpov")
+                #"rentsub", "povrate", "povlev",
+                #"penplan", "penincl", "offpov", "medicaid",
+                "cowly")
+)
+
+
 
 # corresponds to vars tagged "dark green"
 round_dark_green_list <- list(
@@ -151,25 +147,42 @@ round_dark_green_list <- list(
   ipums_sum = c("spmwt", "spmsttax", "spmfedtaxac",
                 "spmsnap", "asecwt"),
   ipums_mean = c("spmsttax", "spmfedtaxac",
-                 "spmsnap", "uhrsworkly"),
-  epi_tab = c("unempdur", "raceorig", "ownchild",
+                 "spmsnap", "uhrsworkly", "age"),
+  epimd_tab = c("unempdur", "raceorig", "ownchild",
               "gradehi", "famtype", "famrel",
               "migarea", "lookdurly"),
-  epi_sum = c("spmwgt", "spm_statetax", "spm_fedtax", 
+  epimd_sum = c("spmwgt", "spm_statetax", "spm_fedtax", 
               "snap", "asecwgt"),
-  epi_mean = c("spm_statetax", "spm_fedtax", 
-               "snap", "hoursly")
+  epimd_mean = c("spm_statetax", "spm_fedtax", 
+               "snap", "hoursly", "age")
 )
 
+round_dark_green_list <- list(
+  ipums_tab = "citizen",
+  epimd_tab = "citistat"
+)
+
+round_light_gray_list <- list(
+  ipums_sum = c("schllunch", "spmlunch",
+                "eitcred", "spmeitc", "ctccrd"),
+  ipums_mean = c("schllunch", "spmlunch",
+                 "eitcred", "ctccrd"),
+  ipums_tab = c("i_foodstamp", "i_educ"),
+  epimd_sum = c("schlunch", "spm_schlunch", 
+                "eitc", "spm_eitc", "childtaxcredit"),
+  epimd_mean = c("schlunch", "spm_schlunch",
+                 "eitc", "childtaxcredit"),
+  epimd_tab = c("foodstamps", "educ")
+)
 
 # list of variable lists for mapping
-all_lists <- list(round_green_list,
-                  round_light_green_list,
+all_lists <- list(#round_green_list,
+                  #round_light_green2_list,
                   round_dark_green_list)
 
 # list of files to map to
-all_files <- c("round_green_wb.xlsx",
-               "round_light_green_wb.xlsx",
+all_files <- c(#"round_green_wb.xlsx",
+               #"round_light_green2_wb.xlsx",
                "round_dark_green_wb.xlsx")
 
 # quietly iterate over the two parallel vectors
@@ -183,7 +196,7 @@ pwalk(
     # fill wb with the variables and methods specified
     #note: data source, variables, and methods defined by list item
     #      (e.g., "ipums_tab")
-    testing_fun(x = lst, wb = wb)
+    testing_fun(x = lst, wb = wb) 
     
     # save wb
     saveWorkbook(wb, file, overwrite = TRUE)
@@ -193,12 +206,16 @@ pwalk(
 break
 
 round_pink_list <- list(
-  ipums_tab = c(),
-  ipums_sum = c(),
+  ipums_tab = c("spmpov", "poverty", "offpov", "offpovcut",
+                "inclugh", "paidgh", "anycovnw", "spmfamunit"),
+  ipums_sum = c("incwage", "ftotval", "faminc"),
   ipums_count = c(),
-  ipums_mean = c(),
-  epimd_tab = c(),
-  epimd_sum = c(),
+  ipums_mean = c("incwage", "ftotval"),
+  epimd_tab = c("spmpov", "povrate", "povlev", "offpov", "offpovcut",
+                "hiemp", "hicov", "spmfamunit"),
+  epimd_sum = c("income", "faminc_c", "faminc"),
   epimd_count = c(),
-  epimd_mean = c()
+  epimd_mean = c("income", "faminc_c", "faminc")
 )
+
+other_ipums_vars <- c("grpownly", "dpownly", "phiown",)
