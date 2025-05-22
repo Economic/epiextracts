@@ -11,8 +11,8 @@ global codevars ${code}variables/
 global suppdata suppdata/
 global extracts extracts/
 
-local minyear = 1979
-local maxyear = 2024
+local minyear = 2019
+local maxyear = 2019
 
 * state codes
 import delimited using ${suppdata}state_geocodes.csv, clear varnames(1)
@@ -74,7 +74,7 @@ foreach year of numlist `minyear'(1)`maxyear' {
 			use `tmpdat', clear
 		}
 
-		* run key programs
+		/* run key programs
 		do ${code}sample_cpsbasic.do
 		do ${code}generate_variables.do
 		do ${code}keep_variables.do
@@ -84,7 +84,7 @@ foreach year of numlist `minyear'(1)`maxyear' {
 		notes drop _dta
 		notes _dta: EPI CPS March Extracts, Version $dataversion
 		label data "EPI CPS March Extracts, Version $dataversion"
-		saveold ${extracts}epi_cpsmarch_`year'.dta, replace version(13)
+		saveold ${extracts}epi_cpsmarch_`year'.dta, replace version(13)*/
 	}
 }
 

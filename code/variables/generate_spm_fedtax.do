@@ -9,7 +9,7 @@ if $marchcps == 1 {
         replace spm_fedtax = spmu_fedtax
     }
     if tm(2019m1) <= $date {
-        replace spm_fedtax = spm_fedtax
+        replace spm_fedtax = oldspm_fedtax
     }
 }
 

@@ -6,8 +6,17 @@ library(openxlsx)
 
 ### DATA SOURCE ####
 epi_march <- read_dta("epi_march.dta")
-ipums_march <- read_dta("cps_00047.dta") 
+ipums_march <- read_dta("cps_00051.dta") 
 
+test <- ipums_march %>% 
+  mutate(i_foodstamp = if_else(!is.na(foodstamp), 1, 0),
+         i_educ = case_when(
+           educ <= 72 ~ "Less than high school",
+           educ == 73 ~ "High school",
+           educ %in% c(80:110) ~  "Some college",
+           educ == 111 ~ "College",
+           educ %in% c(120:125) ~ "Advanced"
+         ))
 
 ### FUNCTIONS ####
 # function to write worksheet to excel 
@@ -162,28 +171,47 @@ round_dark_green_list <- list(
   epimd_tab = "citistat"
 )
 
-round_light_gray_list <- list(
-  ipums_sum = c("schllunch", "spmlunch",
-                "eitcred", "spmeitc", "ctccrd"),
-  ipums_mean = c("schllunch", "spmlunch",
-                 "eitcred", "ctccrd"),
-  ipums_tab = c("i_foodstamp", "i_educ"),
-  epimd_sum = c("schlunch", "spm_schlunch", 
-                "eitc", "spm_eitc", "childtaxcredit"),
-  epimd_mean = c("schlunch", "spm_schlunch",
-                 "eitc", "childtaxcredit"),
-  epimd_tab = c("foodstamps", "educ")
+round_dark_gray_list <- list(
+  ipums_sum = c(#"schllunch", "spmlunch",
+                #"eitcred", 
+                "spmeitc", 
+                "ctccrd",
+                "spmfedtaxac"), #"spmwt",
+                #"spmwic"),
+  #ipums_mean = c("schllunch", "spmlunch",
+  #               "eitcred", "ctccrd"),
+  ipums_tab = c(#"i_foodstamp", "i_educ", 
+                "grpcovly", "dpownly", "phiown",
+                "inclugh", "paidgh"),
+                #"race", "sex", "famrel",
+                #"nwlookwk", "himcaidly", "caidly",
+                #"spmpov"),
+  epimd_sum = c(#"schlunch", "spm_schlunch", 
+                #"eitc", 
+                "spmeitc", 
+                "childtaxcredit",
+                "spm_fedtax"), #"spmwgt",
+                #"spm_wic"),
+  #epimd_mean = c("schlunch", "spm_schlunch",
+  #               "eitc", "childtaxcredit"),
+  epimd_tab = c(#"foodstamps", "educ", 
+                "hicov", "hiemp") 
+                #"raceorig", "female", "famrel",
+                #"lookdurly", "medicaid",
+                #"spmpov")
 )
 
 # list of variable lists for mapping
 all_lists <- list(#round_green_list,
                   #round_light_green2_list,
-                  round_dark_green_list)
+                  #round_dark_green_list,
+                  round_dark_gray_list)
 
 # list of files to map to
 all_files <- c(#"round_green_wb.xlsx",
                #"round_light_green2_wb.xlsx",
-               "round_dark_green_wb.xlsx")
+               #"round_dark_green_wb.xlsx",
+               "round_dark_gray_wb.xlsx")
 
 # quietly iterate over the two parallel vectors
 pwalk(

@@ -4,9 +4,16 @@
 gen byte migarea = .
 
 if $marchcps == 1 {
-    if tm(1989m1) <= $date & $date <= tm(1997m12) {
-        replace migarea = migmtr3
-        replace migarea = . if migarea >= 8
+    if tm(1989m1) <= $date & $date <= tm(1994m12) {
+        * variable missing for 1995
+        if tm(1995m1) <= $date & $date <= tm(1995m12) {
+            migarea = .
+        }
+        else {
+            replace migarea = migmtr3
+            replace migarea = . if migarea >= 8
+        }
+        
     }
     if tm(1998m1) <= $date {
         replace migarea = mig_mtr3

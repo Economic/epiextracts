@@ -30,21 +30,21 @@ keep
   income
   famern famiws
   hhinc_c
-  wrkly wrkly_binned
+  wrkly wksly_binned
 	faminc faminc_c
   earn
   povlev povrate
   schenrl
-  hicov hiemp hipaid
+  hicovly hiemply hipaidly
   penplan penincl
   foodstamps
   medicaid medicaidcov
   pubhouse hhtenure rentsub
   eitc
   offpov offpovcut
-  spmpov spmpovcut
+  spmpov spmpovcut spmeitc
   spm_fedtax spm_statetax
-  spm_schlunch schlunch spm_snap snap spm_wic spm_mortgage
+  spm_schlunch schlunch spm_snap spm_wic spm_mortgage
   spmfamtype
   cowly indcode
   dhhtype famkind 
@@ -62,21 +62,21 @@ if $monthlycps == 1 | $maycps == 1 {
     famern
     famiws
     hhinc_c
-    wrkly wrkly_binned
+    wrkly wksly_binned
 	  faminc_c
     earn
     povlev povrate
     schenrl
-    hicov hiemp hipaid
+    hicovly hiemply hipaidly
     penplan penincl
     foodstamps
     medicaid medicaidcov
     pubhouse hhtenure rentsub
     eitc
     offpov offpovcut
-    spmpov spmpovcut
+    spmpov spmpovcut spmeitc
     spm_fedtax spm_statetax
-    spm_schlunch schlunch spm_snap snap spm_wic spm_mortgage
+    spm_schlunch schlunch spm_snap spm_wic spm_mortgage
     spmfamtype
     cowly indcode
     dhhtype famkind 

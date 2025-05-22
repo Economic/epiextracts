@@ -36,17 +36,17 @@ foreach var in
   famern famiws
   hhinc_c
   povlev povrate
-  hoursly wrkly wrkly_binned
-  hicov hiemp hipaid
+  hoursly wrkly wksly_binned
+  hicovly hiemply hipaidly
   penplan penincl
   foodstamps
   medicaid medicaidcov
   pubhouse hhtenure rentsub
   eitc
   offpov offpovcut
-  spmpov spmpovcut
+  spmpov spmpovcut spmeitc
   spm_fedtax spm_statetax
-  spm_schlunch schlunch spm_snap snap spm_wic spm_mortgage 
+  spm_schlunch schlunch spm_snap spm_wic spm_mortgage 
   spmfamtype
   cowly
   dhhtype famkind 
