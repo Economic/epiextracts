@@ -6,17 +6,19 @@ library(openxlsx)
 
 ### DATA SOURCE ####
 epi_march <- read_dta("epi_march.dta")
-ipums_march <- read_dta("cps_00051.dta") 
+ipums_march <- read_dta("cps_00053.dta") 
 
 test <- ipums_march %>% 
-  mutate(i_foodstamp = if_else(!is.na(foodstamp), 1, 0),
-         i_educ = case_when(
-           educ <= 72 ~ "Less than high school",
-           educ == 73 ~ "High school",
-           educ %in% c(80:110) ~  "Some college",
-           educ == 111 ~ "College",
-           educ %in% c(120:125) ~ "Advanced"
-         ))
+  mutate(i_educ = case_when(
+           educ %in% c(73,72) ~ "High school",
+           educ %in% c(0, 1, 999) ~ NA,
+           educ %in% c(2:71) ~ "Less than high school",
+           educ %in% c(80:92) ~  "Some college",
+           educ %in% c(100:111) ~ "College",
+           educ %in% c(120:125) ~ "Advanced"),
+         i_uhrsworkly = case_when(
+           uhrsworkly == 999 ~ NA,
+           TRUE ~ uhrsworkly))
 
 ### FUNCTIONS ####
 # function to write worksheet to excel 
@@ -112,9 +114,9 @@ round_green_list <- list(
                 "citizen"),
   ipums_count = c("hrhhid", "hrhhid2"),
   epimd_tab = c("veteran", "unemp", "pubst", "pubsec",
-              "publoc", "pubfed", "paidhre", "minsamp",
-              "married", "lfstat", "hispanic", "ftptstat",
-              "female", "emp", "cow1", "citizen"),
+                "publoc", "pubfed", "paidhre", "minsamp",
+                "married", "lfstat", "hispanic", "ftptstat",
+                "female", "emp", "cow1", "citizen"),
   epimd_count = c("hrhhid", "hrhhid2")
 )
 
@@ -132,19 +134,19 @@ round_light_green_list <- list(
 # corresponds to vars tagged "light green"
 round_light_green2_list <- list(
   ipums_tab = c(#"whyunemp", "whyabsnt", "union", 
-                #"classwkr","schlcoll", 
-                #"labforce", "metro", 
-                #"spmpov"), 
-                #"rentsub", "poverty", "pension",
-                #"offpov", "caidly", "himcaidly",
-                "classwly", "spmfamunit"),
+    #"classwkr","schlcoll", 
+    #"labforce", "metro", 
+    #"spmpov"), 
+    #"rentsub", "poverty", "pension",
+    #"offpov", "caidly", "himcaidly",
+    "classwly", "spmfamunit"),
   epimd_tab = c(#"whyunemp", "whyabsent", "unmem", "union",
-                #"uncov", "selfinc", "selfemp", "schenrl",
-                #"nilf", "metstat",
-                #"spmpov")
-                #"rentsub", "povrate", "povlev",
-                #"penplan", "penincl", "offpov", "medicaid",
-                "cowly")
+    #"uncov", "selfinc", "selfemp", "schenrl",
+    #"nilf", "metstat",
+    #"spmpov")
+    #"rentsub", "povrate", "povlev",
+    #"penplan", "penincl", "offpov", "medicaid",
+    "cowly")
 )
 
 
@@ -158,12 +160,12 @@ round_dark_green_list <- list(
   ipums_mean = c("spmsttax", "spmfedtaxac",
                  "spmsnap", "uhrsworkly", "age"),
   epimd_tab = c("unempdur", "raceorig", "ownchild",
-              "gradehi", "famtype", "famrel",
-              "migarea", "lookdurly"),
+                "gradehi", "famtype", "famrel",
+                "migarea", "lookdurly"),
   epimd_sum = c("spmwgt", "spm_statetax", "spm_fedtax", 
-              "snap", "asecwgt"),
+                "snap", "asecwgt"),
   epimd_mean = c("spm_statetax", "spm_fedtax", 
-               "snap", "hoursly", "age")
+                 "snap", "hoursly", "age")
 )
 
 round_dark_green_list <- list(
@@ -172,25 +174,23 @@ round_dark_green_list <- list(
 )
 
 round_dark_gray_list <- list(
-  ipums_sum = c(#"schllunch", "spmlunch",
+  #ipums_sum = c(#"schllunch", "spmlunch",
                 #"eitcred", 
-                "spmeitc", 
-                "ctccrd",
-                "spmfedtaxac"), #"spmwt",
+                #"spmeitc", 
+                #"spmfedtaxac", "spmwt",
                 #"spmwic"),
   #ipums_mean = c("schllunch", "spmlunch",
   #               "eitcred", "ctccrd"),
   ipums_tab = c(#"i_foodstamp", "i_educ", 
-                "grpcovly", "dpownly", "phiown",
-                "inclugh", "paidgh"),
+                "phiown",
+                "inclugh", "grpownly", "grpcovly"),
                 #"race", "sex", "famrel",
                 #"nwlookwk", "himcaidly", "caidly",
                 #"spmpov"),
-  epimd_sum = c(#"schlunch", "spm_schlunch", 
+  #epimd_sum = c(#"schlunch", "spm_schlunch", 
                 #"eitc", 
-                "spmeitc", 
-                "childtaxcredit",
-                "spm_fedtax"), #"spmwgt",
+                #"spmeitc", 
+                #"spm_fedtax", "spmwgt",
                 #"spm_wic"),
   #epimd_mean = c("schlunch", "spm_schlunch",
   #               "eitc", "childtaxcredit"),
@@ -201,17 +201,30 @@ round_dark_gray_list <- list(
                 #"spmpov")
 )
 
+round_light_gray_list <- list(
+  ipums_tab = c(#"statefip", 
+                "region",
+                "i_educ"),
+  #ipums_mean = c("i_uhrsworkly"),
+  epimd_tab = c(#"statefips", 
+                "region",
+                "educ")
+ # epimd_mean = c("hoursly")
+)
+
 # list of variable lists for mapping
 all_lists <- list(#round_green_list,
                   #round_light_green2_list,
                   #round_dark_green_list,
-                  round_dark_gray_list)
+                  #round_dark_gray_list,
+                  round_light_gray_list)
 
 # list of files to map to
 all_files <- c(#"round_green_wb.xlsx",
-               #"round_light_green2_wb.xlsx",
-               #"round_dark_green_wb.xlsx",
-               "round_dark_gray_wb.xlsx")
+              #"round_light_green2_wb.xlsx",
+              #"round_dark_green_wb.xlsx",
+              #"round_dark_gray_wb.xlsx",
+              "round_light_gray_wb.xlsx")
 
 # quietly iterate over the two parallel vectors
 pwalk(
@@ -233,15 +246,17 @@ pwalk(
 
 break
 
+
+
 round_pink_list <- list(
   ipums_tab = c("spmpov", "poverty", "offpov", "offpovcut",
                 "inclugh", "paidgh", "anycovnw", "spmfamunit"),
-  ipums_sum = c("incwage", "ftotval", "faminc"),
+  ipums_sum = c("incwage", "ftotval", "faminc", "ctccrd"),
   ipums_count = c(),
   ipums_mean = c("incwage", "ftotval"),
   epimd_tab = c("spmpov", "povrate", "povlev", "offpov", "offpovcut",
                 "hiemp", "hicov", "spmfamunit"),
-  epimd_sum = c("income", "faminc_c", "faminc"),
+  epimd_sum = c("income", "faminc_c", "faminc", "childtaxcredit"),
   epimd_count = c(),
   epimd_mean = c("income", "faminc_c", "faminc")
 )
