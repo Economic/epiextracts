@@ -14,5 +14,6 @@ nohup.out
 .Rhistory
 .Rproj.user
 test*.csv
+pension_health.R
 
 *.smcl
