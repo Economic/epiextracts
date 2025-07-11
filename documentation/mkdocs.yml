@@ -45,6 +45,6 @@ plugins:
 dev_addr: '127.0.0.1:8282'
 
 extra:
-  version: 2025.6.
-  latestdata: 2025m5
+  version: 2025.7.10
+  latestdata: 2025m6
   year: 2025
