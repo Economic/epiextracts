@@ -1,0 +1,7 @@
+infile dictionary  {
+* Prepare health coverage supplemental variable
+_column(1   )   byte h_seq       %5f                                         
+_column(6   )   byte ppposold    %2f "Trailer portion of unique household id"
+_column(8   )   byte now_anycov  %1f "Recode: Health insurance coverage"                
+      
+}
