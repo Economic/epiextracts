@@ -37,7 +37,7 @@ foreach var in
   hhinc_c
   povlev povrate
   hoursly wrkly wksly_binned
-  hicovly hiemply hipaidly
+  hicovly hicov
   penplan penincl
   foodstamps
   medicaid medicaidcov

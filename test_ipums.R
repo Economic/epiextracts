@@ -6,7 +6,7 @@ library(openxlsx)
 
 ### DATA SOURCE ####
 epi_march <- read_dta("epi_march.dta")
-ipums_march <- read_dta("cps_00053.dta") 
+ipums_march <- read_dta("cps_00054.dta") 
 
 test <- ipums_march %>% 
   mutate(i_educ = case_when(
@@ -19,6 +19,23 @@ test <- ipums_march %>%
          i_uhrsworkly = case_when(
            uhrsworkly == 999 ~ NA,
            TRUE ~ uhrsworkly))
+
+epi_basic <- load_basic(1979:2024, year, basicwgt, mind16, mocc10)
+
+### MIND/MOCC ####
+march_mind16 <- crosstab(epi_march, year, mind16, percent = "row", w = asecwgt) |> filter(year >= 1979) |> 
+  sheets_fun(wb, s = "march_mind16")
+basic_mind16 <- crosstab(epi_basic, year, mind16, percent = "row", w = basicwgt) |> 
+  sheets_fun(wb, s = "basic_mind16")
+comp_mind16 <- march_mind16 - basic_mind16 )
+
+march_mocc10 <- crosstab(epi_march, year, mocc10, percent = "row", w = asecwgt) |> filter(year >= 1979) |> 
+  sheets_fun(wb, s = "march_mocc10")
+basic_mocc10 <- crosstab(epi_basic, year, mocc10, percent = "row", w = basicwgt) |> 
+  sheets_fun(wb, s = "basic_mocc10")
+comp_mocc10 <- march_mocc10 - basic_mocc10 
+
+saveWorkbook(wb, file = "./mind16_mocc10.xlsx", overwrite = TRUE)
 
 ### FUNCTIONS ####
 # function to write worksheet to excel 
@@ -143,7 +160,7 @@ round_light_green2_list <- list(
   epimd_tab = c(#"whyunemp", "whyabsent", "unmem", "union",
     #"uncov", "selfinc", "selfemp", "schenrl",
     #"nilf", "metstat",
-    #"spmpov")
+    #"spmpov",
     #"rentsub", "povrate", "povlev",
     #"penplan", "penincl", "offpov", "medicaid",
     "cowly")
@@ -181,9 +198,7 @@ round_dark_gray_list <- list(
                 #"spmwic"),
   #ipums_mean = c("schllunch", "spmlunch",
   #               "eitcred", "ctccrd"),
-  ipums_tab = c(#"i_foodstamp", "i_educ", 
-                "phiown",
-                "inclugh", "grpownly", "grpcovly"),
+  #ipums_tab = c(#"i_foodstamp", "i_educ", 
                 #"race", "sex", "famrel",
                 #"nwlookwk", "himcaidly", "caidly",
                 #"spmpov"),
@@ -194,8 +209,7 @@ round_dark_gray_list <- list(
                 #"spm_wic"),
   #epimd_mean = c("schlunch", "spm_schlunch",
   #               "eitc", "childtaxcredit"),
-  epimd_tab = c(#"foodstamps", "educ", 
-                "hicov", "hiemp") 
+  #epimd_tab = c(#"foodstamps", "educ", 
                 #"raceorig", "female", "famrel",
                 #"lookdurly", "medicaid",
                 #"spmpov")
@@ -212,19 +226,25 @@ round_light_gray_list <- list(
  # epimd_mean = c("hoursly")
 )
 
+health_insurance_list <- list(
+  ipums_tab = c("anycovnw", "anycovly"),
+  epimd_tab = c("hicov", "hicovly")
+)
+
 # list of variable lists for mapping
 all_lists <- list(#round_green_list,
                   #round_light_green2_list,
                   #round_dark_green_list,
                   #round_dark_gray_list,
-                  round_light_gray_list)
+                  #round_light_gray_list
+                  health_insurance_list)
 
 # list of files to map to
 all_files <- c(#"round_green_wb.xlsx",
               #"round_light_green2_wb.xlsx",
               #"round_dark_green_wb.xlsx",
               #"round_dark_gray_wb.xlsx",
-              "round_light_gray_wb.xlsx")
+              "health_insurance_coverage.xlsx")
 
 # quietly iterate over the two parallel vectors
 pwalk(
@@ -250,15 +270,13 @@ break
 
 round_pink_list <- list(
   ipums_tab = c("spmpov", "poverty", "offpov", "offpovcut",
-                "inclugh", "paidgh", "anycovnw", "spmfamunit"),
+                "spmfamunit"),
   ipums_sum = c("incwage", "ftotval", "faminc", "ctccrd"),
   ipums_count = c(),
   ipums_mean = c("incwage", "ftotval"),
   epimd_tab = c("spmpov", "povrate", "povlev", "offpov", "offpovcut",
-                "hiemp", "hicov", "spmfamunit"),
+                "spmfamunit"),
   epimd_sum = c("income", "faminc_c", "faminc", "childtaxcredit"),
   epimd_count = c(),
   epimd_mean = c("income", "faminc_c", "faminc")
 )
-
-other_ipums_vars <- c("grpownly", "dpownly", "phiown",)

@@ -5,24 +5,23 @@ gen byte hicovly = .
 
 if $marchcps == 1 {
 	if tm(1988m1) <= $date & $date <= tm(1994m12) {
-		replace hicovly = 1 if mcaid == 1 /* medicaid coverage */
-		replace hicovly = 1 if mcare == 1 /* medicare coverage */
-		replace hicovly = 1 if hiyn == 1 /* private health insurace */
-		replace hicovly = 1 if champ == 1 /* miltary/veteran health insurance */
-		replace hicovly = 0 if mcaid == 2 
-		replace hicovly = 0 if mcare == 2 
-		replace hicovly = 0 if hiyn == 2 
-		replace hicovly = 0 if champ == 2 
+		replace hicovly = mcaid == 1 /* medicaid coverage *//*
+		*/ | mcare == 1 /* medicare coverage *//*
+		*/ | hiyn == 1 /* private health insurace *//*
+		 */| champ == 1 /* military/veteran health insurance */
+
 	}
-	if tm(1995m1) <= $date & $date <= tm(2018m12) {
-		replace hicovly = 1 if mcaid == 1 /* medicaid coverage */
-		replace hicovly = 1 if mcare == 1 /* medicare coverage */
-		replace hicovly = 1 if hiyn == 1 /* private health insurace */
-		replace hicovly = 1 if oth == 1 /* other type of health insurance */
-		replace hicovly = 0 if mcaid == 2 
-		replace hicovly = 0 if mcare == 2 
-		replace hicovly = 0 if hiyn == 2 
-		replace hicovly = 0 if oth == 2 
+	if tm(1995m1) <= $date & $date <= tm(1997m12) {
+		replace hicovly = mcaid == 1 /* medicaid coverage *//*
+		*/ | mcare == 1 /* medicare coverage *//*
+		*/ | hiyn == 1 /* private health insurace *//*
+		 */| oth == 1 /* other types of health insurance */
+	}
+	if tm(1998m1) <= $date & $date <= tm(2018m12) {
+		replace hicovly = mcaid == 1 /* medicaid coverage *//*
+		*/ | mcare == 1 /* medicare coverage *//*
+		*/ | hi_yn == 1 /* private health insurace *//*
+		 */| oth == 1 /* other types of health insurance */
 	}    
 	if tm(2019m1) <= $date {
 		replace hicovly = 0 if cov == 2
@@ -38,5 +37,5 @@ notes hicovly: Available 1988-present
 notes hicovly: 1988-present universe: All persons (not infants born after calendar year)
 notes hicovly: 1988-1994 Unicon: mcaid, mcare, hiyn, champ
 notes hicovly: 1995-1997 Unicon: mcaid, mcare, hiyn, oth
-notes hicovly: 1997-2018 CPS: mcaid, mcare, hiyn, oth
+notes hicovly: 1998-2018 CPS: mcaid, mcare, hi_yn, oth
 notes hicovly: 2019-present CPS: cov

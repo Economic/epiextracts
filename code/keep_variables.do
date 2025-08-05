@@ -35,7 +35,7 @@ keep
   earn
   povlev povrate
   schenrl
-  hicovly hiemply hipaidly
+  hicovly hicov
   penplan penincl
   foodstamps
   medicaid medicaidcov
@@ -67,7 +67,7 @@ if $monthlycps == 1 | $maycps == 1 {
     earn
     povlev povrate
     schenrl
-    hicovly hiemply hipaidly
+    hicovly hicov
     penplan penincl
     foodstamps
     medicaid medicaidcov

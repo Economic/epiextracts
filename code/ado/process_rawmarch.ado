@@ -80,6 +80,18 @@ if `year' < 2019 {
   if `year' == 2017 local archivename asec2017_pubuse.zip
   if `year' == 2018 local archivename asec2018_pubuse.zip
 
+  if 2014 <= `year' & `year' <= 2018 {
+    local inputpath ${censusmarchraw}
+    local anycovfile asec`shortyear'_currcov_extract.dat
+
+    local anycovprogname asec`year'_currcov
+
+    clear 
+    tempfile anycovdat_`year'
+    do ${dictionaries}`anycovprogname'.do ${censusmarchraw}`anycovfile' ${dictionaries}`anycovprogname'.dct
+    save `anycovdat_`year'', replace
+  }
+  
   tempfile rawdat
   !unzip -p ${censusmarchraw}`archivename' > `rawdat'
 
@@ -89,6 +101,8 @@ if `year' < 2019 {
   clear
   do ${dictionaries}`nberprogname'.do `rawdat' ${dictionaries}`nberprogname'.dct
 
+  * supplemental datasets
+  *note: SPM and Current Coverage
   if 2010 <= `year' & `year' <= 2018 {
       * spm files based on reference year
 			local spmyear = `year'-1
@@ -97,6 +111,13 @@ if `year' < 2019 {
 			local spmfile spmresearch`spmyear'.dta
 
 			merge 1:1 h_seq pppos using "`inputpath'`spmfile'", assert(3) nogenerate
+
+      * post-2014 redesign
+      if 2014 <= `year' {
+        merge 1:1 h_seq ppposold using `anycovdat_`year'', assert(3) nogenerate
+      }
+
+
 	}
  
   * save, compress, clean up
@@ -112,16 +133,31 @@ if `year' < 2019 {
     local nberprogname cpsmar2014t
     local archivename asec2014_pubuse_tax_fix_5x8_2017.zip
 
+    * Current Coverage dataset
+    local inputpath ${censusmarchraw}
+    *note: file renamed after download
+    local anycovfile asec14_currcov_extract_trad.dat
+
+    local anycovprogname asec`year'_currcov_trad
+
+    tempfile anycovdat_`year'
+    do ${dictionaries}`anycovprogname'.do ${censusmarchraw}`anycovfile' ${dictionaries}`anycovprogname'.dct
+    save `anycovdat_`year'', replace
+
+    * read in raw CPS
     tempfile rawdat
     !unzip -p ${censusmarchraw}`archivename' > `rawdat'
 
     clear
     do ${dictionaries}`nberprogname'.do `rawdat' ${dictionaries}`nberprogname'.dct
 
-		local inputpath ${censusmarchraw}
-		local spmfile spmresearch2013_redes_new.dta
+    * SPM dataset
+    *note: file renamed after download
+		local spmfile spmresearch2013_trad.dta
 
-		merge 1:1 h_seq pppos using "`inputpath'`spmfile'", assert(3) nogenerate
+    * merge supplemental datasets
+		merge 1:1 h_seq pppos using "`inputpath'`spmfile'", assert(3) nogenerate /* SPM */
+    merge 1:1 h_seq ppposold using `anycovdat_`year'', assert(3) nogenerate /* Current Coverage */
 
     * save, compress, clean up
     compress
@@ -137,10 +173,10 @@ if `year' < 2019 {
   if `year' >= 2019 {
     local shortyear = substr("`year'",3,2)
 
-    *local archivename asecpub`year'csv.zip
+    local archivename asecpub`shortyear'csv.zip
 
-    *!unzip ${censusmarchraw}`archivename' -d ${censusmarchraw}tempfolder
-    *clear
+    !unzip -j ${censusmarchraw}`archivename' -d ${censusmarchraw}tempfolder
+    clear
 
     tempfile pppub
     import delimited "${censusmarchraw}tempfolder/pppub`shortyear'.csv"
