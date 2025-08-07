@@ -6,7 +6,7 @@ library(openxlsx)
 
 ### DATA SOURCE ####
 epi_march <- read_dta("epi_march.dta")
-ipums_march <- read_dta("cps_00054.dta") 
+ipums_march <- read_dta("cps_00055.dta") 
 
 test <- ipums_march %>% 
   mutate(i_educ = case_when(
@@ -226,9 +226,19 @@ round_light_gray_list <- list(
  # epimd_mean = c("hoursly")
 )
 
+# health insurance
 health_insurance_list <- list(
   ipums_tab = c("anycovnw", "anycovly"),
   epimd_tab = c("hicov", "hicovly")
+)
+
+round_pink_list <- list(
+  ipums_tab = c("spmpov", "poverty", "offpov", "offcutoff"),
+  ipums_sum = c("incwage", "ftotval", "faminc", "ctccrd"),
+  ipums_mean = c("incwage", "ftotval"),
+  epimd_tab = c("spmpov", "povrate", "povlev", "offpov", "offpovcut"),
+  epimd_sum = c("income", "faminc_c", "faminc", "childtaxcredit"),
+  epimd_mean = c("income", "faminc_c", "faminc")
 )
 
 # list of variable lists for mapping
@@ -237,14 +247,16 @@ all_lists <- list(#round_green_list,
                   #round_dark_green_list,
                   #round_dark_gray_list,
                   #round_light_gray_list
-                  health_insurance_list)
+                  #health_insurance_list,
+                  round_pink_list)
 
 # list of files to map to
 all_files <- c(#"round_green_wb.xlsx",
               #"round_light_green2_wb.xlsx",
               #"round_dark_green_wb.xlsx",
               #"round_dark_gray_wb.xlsx",
-              "health_insurance_coverage.xlsx")
+              #"health_insurance_coverage.xlsx",
+              "round_pink_wb.xlsx")
 
 # quietly iterate over the two parallel vectors
 pwalk(
@@ -262,21 +274,4 @@ pwalk(
     # save wb
     saveWorkbook(wb, file, overwrite = TRUE)
   }
-)
-
-break
-
-
-
-round_pink_list <- list(
-  ipums_tab = c("spmpov", "poverty", "offpov", "offpovcut",
-                "spmfamunit"),
-  ipums_sum = c("incwage", "ftotval", "faminc", "ctccrd"),
-  ipums_count = c(),
-  ipums_mean = c("incwage", "ftotval"),
-  epimd_tab = c("spmpov", "povrate", "povlev", "offpov", "offpovcut",
-                "spmfamunit"),
-  epimd_sum = c("income", "faminc_c", "faminc", "childtaxcredit"),
-  epimd_count = c(),
-  epimd_mean = c("income", "faminc_c", "faminc")
 )

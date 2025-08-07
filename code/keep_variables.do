@@ -1,5 +1,5 @@
 #delimit;
-keep
+keepifexist
 	year month minsamp
 	hrhhid hrhhid2 hrsample hrsersuf huhhnum pulineno unicon_recnum
 	hhid famid personid proxy hhtype asecwgt famtype
@@ -52,6 +52,7 @@ keep
   migarea migstatus migmetro
   lookdurly spmwgt childtaxcredit
   indcode occcode
+  redesign hiyn mcare mcaid champ
 ;
 #delimit cr;
 
@@ -83,6 +84,7 @@ if $monthlycps == 1 | $maycps == 1 {
     disability parent
     migarea migstatus migmetro
     lookdurly spmwgt childtaxcredit
+    redesign
   ;
   #delimit cr;
 }
