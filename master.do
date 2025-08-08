@@ -26,7 +26,7 @@
 * you also need the python module tabulate: https://pypi.org/project/tabulate/
 *
 * The extracts and documentation use the CPI-U-RS to adjust for inflation when 
-* trimming wage variables. EPI's CPI stata package is called on to load this data.
+* trimming wage variables. EPIs CPI stata package is called on to load this data.
 * This package is available here: https://github.com/Economic/cpi
 
 *******************************************************************************
@@ -41,7 +41,7 @@ set trace off
 * DATA VERSION
 *******************************************************************************
 * The version is saved in the dataset labels and notes
-global dataversion 2025.7.10
+global dataversion 2025.8.8
 
 
 *******************************************************************************
@@ -85,11 +85,11 @@ adopath ++ ${code}ado
 * process the raw data and convert it to Stata format
 * this is only necessary for additional months of data
 * process_rawmarch, begin(1998) end(2018)
-*process_rawbasic, begin(2024m5) end(2025m6)
+process_rawbasic, begin(2024m6) end(2025m7)
 
-* create EPI's extracts from the processed raw data
+* create EPIs extracts from the processed raw data
 * creates both basic monthly and ORG subsample
-create_extracts, begin(1962m1) end(2025m6)
+create_extracts, begin(1962m1) end(2025m7)
 do ${code}tc_fix.do
 
 * create documentation
