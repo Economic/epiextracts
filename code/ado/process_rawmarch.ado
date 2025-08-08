@@ -140,24 +140,26 @@ if `year' < 2019 {
 
     local anycovprogname asec`year'_currcov_trad
 
-    tempfile anycovdat_`year'
+    tempfile anycovdattrad_`year'
+    * drop label defined for redesign
+    capture label drop now_anycov
     do ${dictionaries}`anycovprogname'.do ${censusmarchraw}`anycovfile' ${dictionaries}`anycovprogname'.dct
-    save `anycovdat_`year'', replace
+    save `anycovdattrad_`year'', replace
 
     * read in raw CPS
-    tempfile rawdat
-    !unzip -p ${censusmarchraw}`archivename' > `rawdat'
+    tempfile rawdat2014trad
+    !unzip -p ${censusmarchraw}`archivename' > `rawdat2014trad'
 
     clear
-    do ${dictionaries}`nberprogname'.do `rawdat' ${dictionaries}`nberprogname'.dct
+    do ${dictionaries}`nberprogname'.do `rawdat2014trad' ${dictionaries}`nberprogname'.dct
 
     * SPM dataset
     *note: file renamed after download
-		local spmfile spmresearch2013_trad.dta
+		local spmfiletrad spmresearch2013_trad.dta
 
     * merge supplemental datasets
-		merge 1:1 h_seq pppos using "`inputpath'`spmfile'", assert(3) nogenerate /* SPM */
-    merge 1:1 h_seq ppposold using `anycovdat_`year'', assert(3) nogenerate /* Current Coverage */
+		merge 1:1 h_seq pppos using "`inputpath'`spmfiletrad'", assert(3) nogenerate /* SPM */
+    merge 1:1 h_seq ppposold using `anycovdattrad_`year'', assert(3) nogenerate /* Current Coverage */
 
     * save, compress, clean up
     compress
@@ -168,9 +170,9 @@ if `year' < 2019 {
     erase cpsmarch_`year'_traditional.dta.zip
   }  
 } 
-  * 2019 redesign does not have dictionary, use labelled CSV data
-  *note: create dictionary files in the future 
-  if `year' >= 2019 {
+* 2019 redesign does not have dictionary, use labelled CSV data
+*note: create dictionary files in the future 
+if `year' >= 2019 {
     local shortyear = substr("`year'",3,2)
 
     local archivename asecpub`shortyear'csv.zip
