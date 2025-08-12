@@ -26,7 +26,7 @@
 * you also need the python module tabulate: https://pypi.org/project/tabulate/
 *
 * The extracts and documentation use the CPI-U-RS to adjust for inflation when 
-* trimming wage variables. EPIs CPI stata package is called on to load this data.
+* trimming wage variables. EPI's CPI stata package is called on to load this data.
 * This package is available here: https://github.com/Economic/cpi
 
 *******************************************************************************
