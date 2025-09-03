@@ -28,3 +28,5 @@ r_pilot
 
 *.gz
 test*.csv
+cps_00063.feather
+epi_march.feather

@@ -4,11 +4,9 @@ library(epiextractr)
 library(epidatatools)
 library(openxlsx)
 
-### DATA SOURCE ####
-epi_march <- read_dta("epi_march.dta")
-ipums_march <- read_dta("cps_00055.dta") 
 
-test <- ipums_march %>% 
+### DATA SOURCE ####
+ipums_march <- arrow::read_feather("cps_00063.feather") %>% 
   mutate(i_educ = case_when(
            educ %in% c(73,72) ~ "High school",
            educ %in% c(0, 1, 999) ~ NA,
@@ -18,24 +16,71 @@ test <- ipums_march %>%
            educ %in% c(120:125) ~ "Advanced"),
          i_uhrsworkly = case_when(
            uhrsworkly == 999 ~ NA,
-           TRUE ~ uhrsworkly))
+           TRUE ~ uhrsworkly),
+          offtotval = case_when(offtotval == 9999999999 ~ NA, TRUE ~ offtotval),
+          offcutoff = case_when(offcutoff == 999999 ~ NA, TRUE ~ offcutoff),
+          ftotval = case_when(ftotval == 9999999999 ~ NA, TRUE ~ ftotval),
+          incwage = case_when(incwage == 9999999999 ~ NA,
+                              incwage == 9999999998 ~ NA, 
+                              TRUE ~ incwage),
+          ctccrd = case_when(ctccrd == 999999 ~ NA, TRUE ~ ctccrd),
+          offpov = case_when(offpov == 1 ~ 1,
+                             offpov == 2 ~ 0,
+                             TRUE ~ NA),
+          asecwgt = asecwt, 
+          hrhhid = as.character(hrhhid), hrhhid2 = as.character(hrhhid2),
+          # epi extracts hrhhid is consistent, IPUMS is not, pad with zeros to see if this is a fix
+          hrhhid = str_pad(hrhhid, width = 15, pad = "0", side = "left"),
+          hserial = hseq,
+          statefips = statefip,
+          statefips = case_when(
+            year %in% c(1973:1976) & statefip == 25 ~ 14,
+            year %in% c(1973:1976) & statefip == 9 ~ 16,
+            year %in% c(1968:1972) & statefip == 9 ~ 11,
+            year %in% c(1973:1976) & statefip == 81 ~ 19,
+            year %in% c(1968:1972) & statefip == 70 ~ 19,
+            year <= 1975 & statefip == 36 ~ 21,
+            year <= 1975 & statefip == 34 ~ 22,
+            year <= 1975 & statefip == 42 ~ 23,
+            year <= 1975 & statefip == 39 ~ 31,
+            year <= 1975 & statefip == 18 ~ 32,
+            year <= 1975 & statefip == 17 ~ 33,
+            year <= 1975 & statefip == 71 ~ 39,
+            year %in% c(1973:1976) & statefip == 87 ~ 49,
+            year %in% c(1968:1972) & statefip == 11 ~ 51,
+            year %in% c(1973:1976) & statefip == 11 ~ 53,
+            year %in% c(1968:1972) & statefip == 11 ~ 51,
+            year %in% c(1973:1976) & statefip == 37 ~ 56,
+            year %in% c(1973:1976) & statefip == 90 ~ 57,
+            year %in% c(1973:1976) & statefip == 83 ~ 58,
+            year %in% c(1973:1976) & statefip == 12 ~ 59,
+            year %in% c(1968:1972) & statefip == 12 ~ 55,
+            year %in% c(1973:1976) & statefip == 84 ~ 67,
+            year <= 1975 & statefip == 76 ~ 69,
+            year <= 1975 & statefip == 48 ~ 72,
+            year %in% c(1973:1976) & statefip == 85 ~ 79,
+            year %in% c(1973:1976) & statefip == 89 ~ 89,
+            year <= 1975 & statefip == 6 ~ 92,
+            year %in% c(1973:1976) & statefip == 88 ~ 99,
+            year %in% c(1968:1972) & statefip == 24 ~ 52,
+            year %in% c(1968:1972) & statefip == 54 ~ 53,
+            year %in% c(1968:1972) & statefip == 13 ~ 54,
+            year %in% c(1968:1972) & statefip == 75 ~ 57,
+            year %in% c(1968:1972) & statefip == 74 ~ 59,
+            year %in% c(1968:1972) & statefip == 21 ~ 61,
+            year %in% c(1968:1972) & statefip == 47 ~ 62,
+            year %in% c(1968:1972) & statefip ==  22 ~ 71,
+            year %in% c(1968:1972) & statefip == 77 ~ 79,
+            year %in% c(1968:1972) & statefip == 78 ~ 81,
+            year %in% c(1968:1972) & statefip == 79 ~ 89,
+            year %in% c(1968:1972) & statefip == 41 ~ 91,
+            year %in% c(1968:1972) & statefip == 6 ~ 92,
+            year %in% c(1968:1972) & statefip == 80 ~ 99)) |> 
+  rename(pulineno = lineno)
 
-epi_basic <- load_basic(1979:2024, year, basicwgt, mind16, mocc10)
-
-### MIND/MOCC ####
-march_mind16 <- crosstab(epi_march, year, mind16, percent = "row", w = asecwgt) |> filter(year >= 1979) |> 
-  sheets_fun(wb, s = "march_mind16")
-basic_mind16 <- crosstab(epi_basic, year, mind16, percent = "row", w = basicwgt) |> 
-  sheets_fun(wb, s = "basic_mind16")
-comp_mind16 <- march_mind16 - basic_mind16 )
-
-march_mocc10 <- crosstab(epi_march, year, mocc10, percent = "row", w = asecwgt) |> filter(year >= 1979) |> 
-  sheets_fun(wb, s = "march_mocc10")
-basic_mocc10 <- crosstab(epi_basic, year, mocc10, percent = "row", w = basicwgt) |> 
-  sheets_fun(wb, s = "basic_mocc10")
-comp_mocc10 <- march_mocc10 - basic_mocc10 
-
-saveWorkbook(wb, file = "./mind16_mocc10.xlsx", overwrite = TRUE)
+epi_march <- read_dta("extracts/epi_cpsmarch_1988.dta") |> mutate(hrhhid = str_pad(hrhhid, width = 15, side = "left", pad = 0)) #|> arrow::write_feather("epi_march.feather")
+#epi_march <- read_dta("epi_march_2000_2002.dta") |> mutate(hrhhid = str_pad(hrhhid, width = 15, side = "left", pad = 0)) #|> arrow::write_feather("epi_march.feather")
+#epi_march <- arrow::read_feather("epi_march.feather")
 
 ### FUNCTIONS ####
 # function to write worksheet to excel 
@@ -52,7 +97,6 @@ sheets_fun <- function(data, wb, s) {
            rows = 1, 2:ncol(data))
   
 }
-
 
 # function to perform different methods for different groups 
 mfun <- function(data, x, m = NULL) {
@@ -81,6 +125,11 @@ mfun <- function(data, x, m = NULL) {
   else if (m == "mean") {
     df <- data %>% 
       summarise(!!paste0(x, "_mean") := mean(!!rlang::parse_expr(x), na.rm = TRUE), .by = year)
+  }
+
+  else if (m == "rate") {
+    df <- data %>%
+      summarise(!!paste0(x, "_rate") := weighted.mean(!!rlang::parse_expr(x), w = asecwgt, na.rm = TRUE), .by = year)
   }
   
   else {
@@ -120,126 +169,8 @@ testing_fun <- function(x, wb) {
 }
 
 ### VAR LISTS ####
-## Categories based on Microsoft Planner
-
-# corresponds to vars tagged "green"
-#note: mostly agnostic variables
-round_green_list <- list(
-  ipums_tab = c("vetstat", "classwkr", "paidhour",
-                "rotate", "marst", "labforce",
-                "hispan","wkstat", "sex", "empstat",
-                "citizen"),
-  ipums_count = c("hrhhid", "hrhhid2"),
-  epimd_tab = c("veteran", "unemp", "pubst", "pubsec",
-                "publoc", "pubfed", "paidhre", "minsamp",
-                "married", "lfstat", "hispanic", "ftptstat",
-                "female", "emp", "cow1", "citizen"),
-  epimd_count = c("hrhhid", "hrhhid2")
-)
-
-
-# corresponds to vars tagged "light green"
-round_light_green_list <- list(
-  ipums_sum = c("spmmort"),
-  ipums_count = c("famid"),
-  ipums_mean = c("spmthresh", "spmmort", "offcutoff"),
-  epimd_sum = c("mortgage"),
-  epimd_count = c("famid"),
-  epimd_mean = c("spmpovcut", "offpovcut", "mortgage")
-)
-
-# corresponds to vars tagged "light green"
-round_light_green2_list <- list(
-  ipums_tab = c(#"whyunemp", "whyabsnt", "union", 
-    #"classwkr","schlcoll", 
-    #"labforce", "metro", 
-    #"spmpov"), 
-    #"rentsub", "poverty", "pension",
-    #"offpov", "caidly", "himcaidly",
-    "classwly", "spmfamunit"),
-  epimd_tab = c(#"whyunemp", "whyabsent", "unmem", "union",
-    #"uncov", "selfinc", "selfemp", "schenrl",
-    #"nilf", "metstat",
-    #"spmpov",
-    #"rentsub", "povrate", "povlev",
-    #"penplan", "penincl", "offpov", "medicaid",
-    "cowly")
-)
-
-
-
-# corresponds to vars tagged "dark green"
-round_dark_green_list <- list(
-  ipums_tab = c("durunemp", "race", "nchild", "higrade", "ftype",
-                "famrel", "migrate1", "nwlookwk"),
-  ipums_sum = c("spmwt", "spmsttax", "spmfedtaxac",
-                "spmsnap", "asecwt"),
-  ipums_mean = c("spmsttax", "spmfedtaxac",
-                 "spmsnap", "uhrsworkly", "age"),
-  epimd_tab = c("unempdur", "raceorig", "ownchild",
-                "gradehi", "famtype", "famrel",
-                "migarea", "lookdurly"),
-  epimd_sum = c("spmwgt", "spm_statetax", "spm_fedtax", 
-                "snap", "asecwgt"),
-  epimd_mean = c("spm_statetax", "spm_fedtax", 
-                 "snap", "hoursly", "age")
-)
-
-round_dark_green_list <- list(
-  ipums_tab = "citizen",
-  epimd_tab = "citistat"
-)
-
-round_dark_gray_list <- list(
-  #ipums_sum = c(#"schllunch", "spmlunch",
-                #"eitcred", 
-                #"spmeitc", 
-                #"spmfedtaxac", "spmwt",
-                #"spmwic"),
-  #ipums_mean = c("schllunch", "spmlunch",
-  #               "eitcred", "ctccrd"),
-  #ipums_tab = c(#"i_foodstamp", "i_educ", 
-                #"race", "sex", "famrel",
-                #"nwlookwk", "himcaidly", "caidly",
-                #"spmpov"),
-  #epimd_sum = c(#"schlunch", "spm_schlunch", 
-                #"eitc", 
-                #"spmeitc", 
-                #"spm_fedtax", "spmwgt",
-                #"spm_wic"),
-  #epimd_mean = c("schlunch", "spm_schlunch",
-  #               "eitc", "childtaxcredit"),
-  #epimd_tab = c(#"foodstamps", "educ", 
-                #"raceorig", "female", "famrel",
-                #"lookdurly", "medicaid",
-                #"spmpov")
-)
-
-round_light_gray_list <- list(
-  ipums_tab = c(#"statefip", 
-                "region",
-                "i_educ"),
-  #ipums_mean = c("i_uhrsworkly"),
-  epimd_tab = c(#"statefips", 
-                "region",
-                "educ")
- # epimd_mean = c("hoursly")
-)
-
-# health insurance
-health_insurance_list <- list(
-  ipums_tab = c("anycovnw", "anycovly"),
-  epimd_tab = c("hicov", "hicovly")
-)
-
-round_pink_list <- list(
-  ipums_tab = c("spmpov", "poverty", "offpov", "offcutoff"),
-  ipums_sum = c("incwage", "ftotval", "faminc", "ctccrd"),
-  ipums_mean = c("incwage", "ftotval"),
-  epimd_tab = c("spmpov", "povrate", "povlev", "offpov", "offpovcut"),
-  epimd_sum = c("income", "faminc_c", "faminc", "childtaxcredit"),
-  epimd_mean = c("income", "faminc_c", "faminc")
-)
+# read in variable lists
+source("rounds_list.R", echo = TRUE)
 
 # list of variable lists for mapping
 all_lists <- list(#round_green_list,
@@ -248,7 +179,8 @@ all_lists <- list(#round_green_list,
                   #round_dark_gray_list,
                   #round_light_gray_list
                   #health_insurance_list,
-                  round_pink_list)
+                  #round_pink_list,
+                  offpov_list)
 
 # list of files to map to
 all_files <- c(#"round_green_wb.xlsx",
@@ -256,7 +188,7 @@ all_files <- c(#"round_green_wb.xlsx",
               #"round_dark_green_wb.xlsx",
               #"round_dark_gray_wb.xlsx",
               #"health_insurance_coverage.xlsx",
-              "round_pink_wb.xlsx")
+              "offpov_wb.xlsx")
 
 # quietly iterate over the two parallel vectors
 pwalk(
@@ -275,3 +207,5 @@ pwalk(
     saveWorkbook(wb, file, overwrite = TRUE)
   }
 )
+
+

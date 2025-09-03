@@ -27,6 +27,13 @@ if $marchcps == 1 {
 		replace famtype = 4 if famtyp == 3
 		replace famtype = 5 if famtyp == 5		
 	}
+	if tm(1968m1) <= $date & $date <= tm(1975m12) {
+		replace famtype = 1 if inlist(famdesc, 1, 2)
+		replace famtype = 2 if famdesc == 5
+		replace famtype = 3 if famdesc == 4
+		replace famtype = 4 if famdesc == 3
+		replace famtype = 5 if famdesc >= 6
+	}
 	if tm(1976m1) <= $date & $date <= tm(1988m12) {
 		replace famtype = 1 if famtyp == 0
 		replace famtype = 2 if famtyp == 4

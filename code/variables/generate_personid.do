@@ -13,8 +13,8 @@ if $monthlycps == 1 {
 if $marchcps == 1 {
 	* data 2003-2004 can't be forced to float
 	if tm(2005m1) <= $date {
-		destring peridnum, replace
-		replace personid = peridnum
+		destring peridnum, gen(peridnum_)
+		replace personid = peridnum_
 	}
 }
 

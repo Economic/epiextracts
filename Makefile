@@ -36,7 +36,6 @@ deploywebdata:
 	rm extracts/epi_cps*.zip
 
 	cd extracts && tar cf - epi_cpsbasic_*.feather | pigz > epi_cpsbasic.tar.gz
-	cd extracts && tar cf - epi_cpsmarch_*.feather | pigz > epi_cpsmarch.tar.gz
 	cd extracts && tar cf - epi_cpsmay_*.feather | pigz > epi_cpsmay.tar.gz
 	cd extracts && tar cf - epi_cpsorg_*.feather | pigz > epi_cpsorg.tar.gz
 	cd extracts && aws s3 sync . s3://microdata.epi.org/ --exclude "*" --include "epi_cps*.tar.gz" --delete
