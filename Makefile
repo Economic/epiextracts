@@ -28,15 +28,13 @@ deploywebcode:
 
 deploywebdata:
 	cd extracts && zip epi_cpsbasic_1976_1999.zip epi_cpsbasic_19*.dta
-	cd extracts && zip epi_cpsbasic_2000_2024.zip epi_cpsbasic_20*.dta
-	cd extracts && zip epi_cpsmarch_1962_2018.zip epi_cpsmarch_*.dta
+	cd extracts && zip epi_cpsbasic_2000_2025.zip epi_cpsbasic_20*.dta
 	cd extracts && zip epi_cpsmay_1973_1981.zip epi_cpsmay_*.dta
-	cd extracts && zip epi_cpsorg_1979_2024.zip epi_cpsorg_*.dta
+	cd extracts && zip epi_cpsorg_1979_2025.zip epi_cpsorg_*.dta
 	cd extracts && aws s3 sync . s3://microdata.epi.org/ --exclude "*" --include "epi_cps*.zip" --delete
 	rm extracts/epi_cps*.zip
 
 	cd extracts && tar cf - epi_cpsbasic_*.feather | pigz > epi_cpsbasic.tar.gz
-	cd extracts && tar cf - epi_cpsmarch_*.feather | pigz > epi_cpsmarch.tar.gz
 	cd extracts && tar cf - epi_cpsmay_*.feather | pigz > epi_cpsmay.tar.gz
 	cd extracts && tar cf - epi_cpsorg_*.feather | pigz > epi_cpsorg.tar.gz
 	cd extracts && aws s3 sync . s3://microdata.epi.org/ --exclude "*" --include "epi_cps*.tar.gz" --delete
