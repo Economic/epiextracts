@@ -15,15 +15,12 @@ if $marchcps == 1 {
         * presence of related subfamily by household
         bysort hhid: egen rsubfam = max(related) 
 
-        * primary householder with related subfamily
+        * primary householder with related subfamily income
         bysort hhid: egen ftotval_rsubfam = max(cond(famtype == 1 & rsubfam == 1, ftotval, .))
 
-        * related subfamily famic
-        *bysort hhid (famtype): egen ftotval_rsubfam = max(cond(famtype == 3 & rsubfam == 1 & related == 1, ftotval, .))
-
         * official family income
-        replace offfaminc = ftotval_rsubfam if offpovuniverse == 1 & ftotval_rsubfam != .
-        replace offfaminc = ftotval if offpovuniverse == 1
+        replace offfaminc = ftotval_rsubfam if offpovuniverse == 1 & rsubfam == 1 & inlist(famtype, 1, 3)
+        replace offfaminc = ftotval if offpovuniverse == 1 & offfaminc == .
     }
 }
 

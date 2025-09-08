@@ -43,7 +43,7 @@ foreach var in
   medicaid medicaidcov
   pubhouse hhtenure rentsub
   eitc
-  offpov offpovcut
+  offpovuniverse offfaminc offpov offpovcut 
   spmpov spmpovcut spmeitc
   spm_fedtax spm_statetax
   spm_schlunch schlunch spm_snap spm_wic spm_mortgage 

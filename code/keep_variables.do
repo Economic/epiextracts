@@ -41,7 +41,7 @@ keepifexist
   medicaid medicaidcov
   pubhouse hhtenure rentsub
   eitc
-  offpov offpovcut
+  offpovuniverse offpov offpovcut offfaminc rsubfam ftotval ftotval_rsubfam
   spmpov spmpovcut spmeitc
   spm_fedtax spm_statetax
   spm_schlunch schlunch spm_snap spm_wic spm_mortgage
@@ -74,7 +74,7 @@ if $monthlycps == 1 | $maycps == 1 {
     medicaid medicaidcov
     pubhouse hhtenure rentsub
     eitc
-    offpov offpovcut
+    offpovuniverse offpov offpovcut offfaminc rsubfam ftotval_primary ftotval_rsubfam
     spmpov spmpovcut spmeitc
     spm_fedtax spm_statetax
     spm_schlunch schlunch spm_snap spm_wic spm_mortgage

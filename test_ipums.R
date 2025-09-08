@@ -4,8 +4,9 @@ library(epiextractr)
 library(epidatatools)
 library(openxlsx)
 
+
 ### DATA SOURCE ####
-ipums_march <- arrow::read_feather("cps_00063.feather") %>% 
+ipums_march <- arrow::read_feather("cps_00063_2018.feather") %>% 
   mutate(i_educ = case_when(
            educ %in% c(73,72) ~ "High school",
            educ %in% c(0, 1, 999) ~ NA,
@@ -55,6 +56,12 @@ filter(ipums_march, year == 2018) |> mutate(dummy = case_when(offpovuniv == 0 ~ 
    crosstab(dummy, ftype)
 
 filter(ipums_march, year == 2018) |> mutate(dummy = case_when(offpovuniv == 0 ~ NA,
+                                                               # related subfamily with ftotval already adjusted
+                                                               ftotval == max(offtotval) ~ "Adjusted already",
+                                                               TRUE ~ "Not adjusted"), .by = hrhhid) |> 
+   crosstab(dummy, ftype)
+
+filter(ipums_march, year == 2018) |> mutate(dummy = case_when(offpovuniv == 0 ~ NA,
                                                               # some subfamilies aren't being assigned properly in IPUMS
                                                               max(ftype) == 3 & offtotval != max(offtotval) ~ "Related subfamily, but not getting picked up",
                                                               TRUE ~ "Everyone else"), .by = hrhhid) |> 
@@ -94,6 +101,9 @@ rprifam <- ipums_march |>
 
 # details of multi-householder households
 filter(ipums_march, year == 2018)  |> left_join(rprifam, by = "hrhhid")  |> filter(sum == 2)
+
+# count of households
+hh_has_rel  |> filter(dummy == 1, famrel == 0)  |> count(hrhhid)  |> filter(!is.na(n), n > 0)
 
 break
 
