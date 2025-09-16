@@ -26,7 +26,7 @@ ipums_march <- arrow::read_feather("cps_00063.feather") %>%
           ctccrd = case_when(ctccrd == 999999 ~ NA, TRUE ~ ctccrd))
 
 #epi_march <- read_dta("epi_march.dta") |> arrow::write_feather("epi_march.feather")
-epi_march <- arrow::write_feather("epi_march.feather")
+epi_march <- arrow::read_feather("epi_march.feather")
 
 ### FUNCTIONS ####
 # function to write worksheet to excel 
@@ -71,6 +71,11 @@ mfun <- function(data, x, m = NULL) {
   else if (m == "mean") {
     df <- data %>% 
       summarise(!!paste0(x, "_mean") := mean(!!rlang::parse_expr(x), na.rm = TRUE), .by = year)
+  }
+
+  else if (m == "rate") {
+    df <- data %>%
+      summarise(!!paste0(x, "_rate") := weighted.mean(!!rlang::parse_expr(x), w = asecwgt, na.rm = TRUE), .by = year)
   }
   
   else {

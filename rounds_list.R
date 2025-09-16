@@ -112,10 +112,11 @@ health_insurance_list <- list(
 )
 
 round_pink_list <- list(
-  ipums_tab = c("spmpov", "poverty", "offpov"),
-  ipums_sum = c("incwage", "ftotval", "faminc", "ctccrd"),
-  ipums_mean = c("incwage", "ftotval", "offcutoff"),
-  epimd_tab = c("spmpov", "povrate", "povlev", "offpov"),
-  epimd_sum = c("income", "faminc_c", "faminc", "childtaxcredit"),
-  epimd_mean = c("income", "faminc_c", "faminc", "offcutoff")
+  ipums_tab = c("offpov", "poverty", "spmpov"),
+  #ipums_sum = c("incwage", "ftotval", "ctccrd"),
+  #ipums_mean = c("incwage", "ftotval", "offcutoff"),
+  epimd_tab = c("offpov", "povlev", "spmpov"),
+  #epimd_sum = c("income", "faminc_c", "childtaxcredit"),
+  #epimd_mean = c("income", "faminc_c", "offpovcut")
+  epimd_rate = c("offpov")
 )
