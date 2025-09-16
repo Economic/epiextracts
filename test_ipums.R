@@ -6,7 +6,7 @@ library(openxlsx)
 
 
 ### DATA SOURCE ####
-ipums_march <- arrow::read_feather("cps_00063_2018.feather") %>% 
+ipums_march <- arrow::read_feather("cps_00063.feather") %>% 
   mutate(i_educ = case_when(
            educ %in% c(73,72) ~ "High school",
            educ %in% c(0, 1, 999) ~ NA,
@@ -18,113 +18,15 @@ ipums_march <- arrow::read_feather("cps_00063_2018.feather") %>%
            uhrsworkly == 999 ~ NA,
            TRUE ~ uhrsworkly),
           offtotval = case_when(offtotval == 9999999999 ~ NA, TRUE ~ offtotval),
-          offcutoff = case_when(offcutoff == 999999 ~ NA, TRUE ~ offcutoff))
+          offcutoff = case_when(offcutoff == 999999 ~ NA, TRUE ~ offcutoff),
+          ftotval = case_when(ftotval == 9999999999 ~ NA, TRUE ~ ftotval),
+          incwage = case_when(incwage == 9999999999 ~ NA,
+                              incwage == 9999999998 ~ NA, 
+                              TRUE ~ incwage),
+          ctccrd = case_when(ctccrd == 999999 ~ NA, TRUE ~ ctccrd))
 
-# check how offtotval is being assigned
-#note: documentation says it should be ftotval (prim) + ftotval (rsub), 
-#      but it's actually just the max(ftotval(prim))
-filter(ipums_march, year == 2018) |> 
-  # identify presence of related subfamilies within household
-  mutate(hh_has_rel = any(ftype == 3), .by = hrhhid) |>
-  # list households with related subfamilies incomes + compare
-  filter(hh_has_rel == TRUE) |> select(ftype, hrhhid, offtotval, ftotval, year)
-
-# create summary table to benchmark EPI microdata
-summarize(ipums_march |> filter(between(year, 2000, 2018)), 
-                    obs = sum(!is.na(offtotval)), 
-                    mean = mean(offtotval, na.rm = TRUE), 
-                    std_dev = sd(offtotval, na.rm = TRUE), 
-                    min = min(offtotval, na.rm = TRUE), 
-                    max = max(offtotval, na.rm = TRUE), 
-                    .by = year)
-
-
-# figure out how to assign offtotval to epi microdata
-#note: some ftotval == offtotval DO have related subfamily, so ftotval already adjusted
-ftotval_adj <- filter(ipums_march, year == 2018) |> mutate(dummy = case_when(offpovuniv == 0 ~ NA,
-                                                               ftotval == offtotval ~ "Not related subfamily",
-                                                               ftotval != offtotval ~ "Related subfamily")) |> 
-  # any related subfamily that has dummy value already has income adjusted in ftotval
-   filter(dummy == "Not related subfamily", ftype == 3) |> select(ftype, hrhhid, offtotval, ftotval, everything())
-
-
-# figure out the rest of the misaligned related subfamily observations
-filter(ipums_march, year == 2018) |> mutate(dummy = case_when(offpovuniv == 0 ~ NA,
-                                                               # related subfamily with ftotval already adjusted
-                                                               ftype == 3 & ftotval == max(offtotval) ~ "Adjusted already",
-                                                               TRUE ~ "Not adjusted"), .by = hrhhid) |> 
-   crosstab(dummy, ftype)
-
-filter(ipums_march, year == 2018) |> mutate(dummy = case_when(offpovuniv == 0 ~ NA,
-                                                               # related subfamily with ftotval already adjusted
-                                                               ftotval == max(offtotval) ~ "Adjusted already",
-                                                               TRUE ~ "Not adjusted"), .by = hrhhid) |> 
-   crosstab(dummy, ftype)
-
-filter(ipums_march, year == 2018) |> mutate(dummy = case_when(offpovuniv == 0 ~ NA,
-                                                              # some subfamilies aren't being assigned properly in IPUMS
-                                                              max(ftype) == 3 & offtotval != max(offtotval) ~ "Related subfamily, but not getting picked up",
-                                                              TRUE ~ "Everyone else"), .by = hrhhid) |> 
-    crosstab(dummy, ftype)
-
-# more robust test for subfamily indicator tests
-hh_has_rel <- filter(ipums_march, year == 2018) |> 
-  # household maximum offtotval
-  mutate(hh_max_offtotval = max(offtotval, na.rm = TRUE), .by = hrhhid) |>
-  mutate(
-    # presence of related subfamily
-    hh_has_rel = any(ftype == 3),
-    # indicate whether household w/ rsub has offtotval different than the maximum value
-    dummy = case_when(
-      offpovuniv == 0 ~ NA_real_,
-      hh_has_rel & (offtotval != hh_max_offtotval) ~ 1,
-      TRUE ~ 0),
-    .by = hrhhid)
-
-# look at specific households that fit criteria
-# i.e related subfamily that has different offtotval than the max(offtotval(prim))
-filter(ipums_march, hrhhid == 21650059271105, year == 2018)  |> 
-  # sploc, momloc, poploc are used by IPUMS to establish subfamily
-  select(famrel, ftype, offtotval, ftotval, sploc, momloc, poploc, famkind)
-
-# look at that household by newly created subfamily indicator tests
-filter(hh_has_rel, hrhhid == 21650059271105)  |> 
-  # what are the different income values
-  select(ftype, dummy, offtotval, hh_max_offtotval, ftotval, year)
-
-# do households have more than one primary family reference person?
-rprifam <- ipums_march |> 
-  # sum the number of primary householders within a houshold
-  filter(year == 2018, famrel == 1, ftype == 1)  |> mutate(sum = sum(famrel), .by = hrhhid)  |> 
-  # show households with multiple householders
-  filter(sum > 1) |> select(hrhhid, sum)
-
-# details of multi-householder households
-filter(ipums_march, year == 2018)  |> left_join(rprifam, by = "hrhhid")  |> filter(sum == 2)
-
-# count of households
-hh_has_rel  |> filter(dummy == 1, famrel == 0)  |> count(hrhhid)  |> filter(!is.na(n), n > 0)
-
-break
-
-#epi_march <- read_dta("epi_march.dta")
-
-epi_basic <- load_basic(1979:2024, year, basicwgt, mind16, mocc10)
-
-### MIND/MOCC ####
-march_mind16 <- crosstab(epi_march, year, mind16, percent = "row", w = asecwgt) |> filter(year >= 1979) |> 
-  sheets_fun(wb, s = "march_mind16")
-basic_mind16 <- crosstab(epi_basic, year, mind16, percent = "row", w = basicwgt) |> 
-  sheets_fun(wb, s = "basic_mind16")
-comp_mind16 <- march_mind16 - basic_mind16 
-
-march_mocc10 <- crosstab(epi_march, year, mocc10, percent = "row", w = asecwgt) |> filter(year >= 1979) |> 
-  sheets_fun(wb, s = "march_mocc10")
-basic_mocc10 <- crosstab(epi_basic, year, mocc10, percent = "row", w = basicwgt) |> 
-  sheets_fun(wb, s = "basic_mocc10")
-comp_mocc10 <- march_mocc10 - basic_mocc10 
-
-saveWorkbook(wb, file = "./mind16_mocc10.xlsx", overwrite = TRUE)
+#epi_march <- read_dta("epi_march.dta") |> arrow::write_feather("epi_march.feather")
+epi_march <- arrow::write_feather("epi_march.feather")
 
 ### FUNCTIONS ####
 # function to write worksheet to excel 
@@ -141,7 +43,6 @@ sheets_fun <- function(data, wb, s) {
            rows = 1, 2:ncol(data))
   
 }
-
 
 # function to perform different methods for different groups 
 mfun <- function(data, x, m = NULL) {
@@ -209,126 +110,8 @@ testing_fun <- function(x, wb) {
 }
 
 ### VAR LISTS ####
-## Categories based on Microsoft Planner
-
-# corresponds to vars tagged "green"
-#note: mostly agnostic variables
-round_green_list <- list(
-  ipums_tab = c("vetstat", "classwkr", "paidhour",
-                "rotate", "marst", "labforce",
-                "hispan","wkstat", "sex", "empstat",
-                "citizen"),
-  ipums_count = c("hrhhid", "hrhhid2"),
-  epimd_tab = c("veteran", "unemp", "pubst", "pubsec",
-                "publoc", "pubfed", "paidhre", "minsamp",
-                "married", "lfstat", "hispanic", "ftptstat",
-                "female", "emp", "cow1", "citizen"),
-  epimd_count = c("hrhhid", "hrhhid2")
-)
-
-
-# corresponds to vars tagged "light green"
-round_light_green_list <- list(
-  ipums_sum = c("spmmort"),
-  ipums_count = c("famid"),
-  ipums_mean = c("spmthresh", "spmmort", "offcutoff"),
-  epimd_sum = c("mortgage"),
-  epimd_count = c("famid"),
-  epimd_mean = c("spmpovcut", "offpovcut", "mortgage")
-)
-
-# corresponds to vars tagged "light green"
-round_light_green2_list <- list(
-  ipums_tab = c(#"whyunemp", "whyabsnt", "union", 
-    #"classwkr","schlcoll", 
-    #"labforce", "metro", 
-    #"spmpov"), 
-    #"rentsub", "poverty", "pension",
-    #"offpov", "caidly", "himcaidly",
-    "classwly", "spmfamunit"),
-  epimd_tab = c(#"whyunemp", "whyabsent", "unmem", "union",
-    #"uncov", "selfinc", "selfemp", "schenrl",
-    #"nilf", "metstat",
-    #"spmpov",
-    #"rentsub", "povrate", "povlev",
-    #"penplan", "penincl", "offpov", "medicaid",
-    "cowly")
-)
-
-
-
-# corresponds to vars tagged "dark green"
-round_dark_green_list <- list(
-  ipums_tab = c("durunemp", "race", "nchild", "higrade", "ftype",
-                "famrel", "migrate1", "nwlookwk"),
-  ipums_sum = c("spmwt", "spmsttax", "spmfedtaxac",
-                "spmsnap", "asecwt"),
-  ipums_mean = c("spmsttax", "spmfedtaxac",
-                 "spmsnap", "uhrsworkly", "age"),
-  epimd_tab = c("unempdur", "raceorig", "ownchild",
-                "gradehi", "famtype", "famrel",
-                "migarea", "lookdurly"),
-  epimd_sum = c("spmwgt", "spm_statetax", "spm_fedtax", 
-                "snap", "asecwgt"),
-  epimd_mean = c("spm_statetax", "spm_fedtax", 
-                 "snap", "hoursly", "age")
-)
-
-round_dark_green_list <- list(
-  ipums_tab = "citizen",
-  epimd_tab = "citistat"
-)
-
-round_dark_gray_list <- list(
-  #ipums_sum = c(#"schllunch", "spmlunch",
-                #"eitcred", 
-                #"spmeitc", 
-                #"spmfedtaxac", "spmwt",
-                #"spmwic"),
-  #ipums_mean = c("schllunch", "spmlunch",
-  #               "eitcred", "ctccrd"),
-  #ipums_tab = c(#"i_foodstamp", "i_educ", 
-                #"race", "sex", "famrel",
-                #"nwlookwk", "himcaidly", "caidly",
-                #"spmpov"),
-  #epimd_sum = c(#"schlunch", "spm_schlunch", 
-                #"eitc", 
-                #"spmeitc", 
-                #"spm_fedtax", "spmwgt",
-                #"spm_wic"),
-  #epimd_mean = c("schlunch", "spm_schlunch",
-  #               "eitc", "childtaxcredit"),
-  #epimd_tab = c(#"foodstamps", "educ", 
-                #"raceorig", "female", "famrel",
-                #"lookdurly", "medicaid",
-                #"spmpov")
-)
-
-round_light_gray_list <- list(
-  ipums_tab = c(#"statefip", 
-                "region",
-                "i_educ"),
-  #ipums_mean = c("i_uhrsworkly"),
-  epimd_tab = c(#"statefips", 
-                "region",
-                "educ")
- # epimd_mean = c("hoursly")
-)
-
-# health insurance
-health_insurance_list <- list(
-  ipums_tab = c("anycovnw", "anycovly"),
-  epimd_tab = c("hicov", "hicovly")
-)
-
-round_pink_list <- list(
-  ipums_tab = c("spmpov", "poverty", "offpov", "offcutoff"),
-  ipums_sum = c("incwage", "ftotval", "faminc", "ctccrd"),
-  ipums_mean = c("incwage", "ftotval"),
-  epimd_tab = c("spmpov", "povrate", "povlev", "offpov", "offpovcut"),
-  epimd_sum = c("income", "faminc_c", "faminc", "childtaxcredit"),
-  epimd_mean = c("income", "faminc_c", "faminc")
-)
+# read in variable lists
+source("rounds_list.R", echo = TRUE)
 
 # list of variable lists for mapping
 all_lists <- list(#round_green_list,
