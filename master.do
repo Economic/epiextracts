@@ -84,7 +84,7 @@ adopath ++ ${code}ado
 *******************************************************************************
 * process the raw data and convert it to Stata format
 * this is only necessary for additional months of data
-process_rawmarch, begin(1962) end(2024)
+process_rawmarch, begin(2024) end(2025)
 *process_rawbasic, begin(2022m11) end(2024m11)
 
 * create EPI's extracts from the processed raw data
