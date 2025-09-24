@@ -115,6 +115,7 @@ round_pink_list <- list(
   ipums_tab = c("offpov", "poverty", "spmpov"),
   #ipums_sum = c("incwage", "ftotval", "ctccrd"),
   #ipums_mean = c("incwage", "ftotval", "offcutoff"),
+  ipums_rate = c("offpov"),
   epimd_tab = c("offpov", "povlev", "spmpov"),
   #epimd_sum = c("income", "faminc_c", "childtaxcredit"),
   #epimd_mean = c("income", "faminc_c", "offpovcut")
