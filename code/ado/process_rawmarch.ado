@@ -181,7 +181,7 @@ if `year' >= 2019 {
     clear
 
     tempfile pppub
-    import delimited "${censusmarchraw}tempfolder/pppub`shortyear'.csv"
+    import delimited "${censusmarchraw}tempfolder/pppub`shortyear'.csv", stringcols(1)
     gen id = ph_seq
     gen id2 = pf_seq
     save `pppub'
@@ -189,7 +189,7 @@ if `year' >= 2019 {
     clear 
 
     tempfile hhpub
-    import delimited "${censusmarchraw}tempfolder/hhpub`shortyear'.csv"
+    import delimited "${censusmarchraw}tempfolder/hhpub`shortyear'.csv", stringcols(1)
     gen id = h_seq
     save `hhpub'
     
