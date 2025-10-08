@@ -108,3 +108,33 @@ filter(ipums_march, year == 2018)  |> left_join(rprifam, by = "hrhhid")  |> filt
 
 # count of households
 hh_has_rel  |> filter(dummy == 1, famrel == 0)  |> count(hrhhid)  |> filter(!is.na(n), n > 0)
+
+# epi extracts hrhhid is consistent, IPUMS is not, pad with zeros to see if this is a fix
+ipums_march_test <- filter(ipums_march, year %in% c(2020:2024))  |>  
+  mutate(hrhhid = str_pad(hrhhid, width = 7, pad = "0", side = "left"))
+
+epi_march_test <- epi_march_2020_2024 |> 
+  mutate(hrhhid_ = str_sub(peridnum, start = 1, end = -8))
+
+test7 <- merge_status(select(filter(ipums_march, year %in% c(2020:2024)), hrhhid, hserial, year, month, statefips, offpov, offtotval, ftotval, ftype, famrel), 
+                     select(epi_march_test, hrhhid_, hserial, year, month, statefips, offpov, offfaminc, ftotval, faminc_c, famtype, famrel, related), 
+                     by = c("hrhhid" = "hrhhid_", "hserial", "year", "month", "statefips", "famrel")) |> 
+  mutate(test = (offpov.x == offpov.y)) |> filter(test == FALSE) |> 
+  select(hrhhid, related, famrel, ftype, famtype, offtotval, ftotval.x, offfaminc, ftotval.y, faminc_c, offpov.x, offpov.y) |> 
+  mutate(test = (offtotval == ftotval.x))
+
+# found something off about the way offfaminc is being assigned, 
+#  assigned to non-related families
+
+# list the files inside the zip
+zipfile <- "/data/cps/march/census/raw/asecpub19csv.zip"
+csv_name <- unzip(zipfile, list = TRUE)$Name[3]  # assuming first file is your CSV
+
+# read only the header (names) without loading all data
+col_names <- names(read.csv(unz(zipfile, csv_name), nrows = 1))
+
+# print with position numbers
+data.frame(
+  position = seq_along(col_names),
+  name = col_names
+)
