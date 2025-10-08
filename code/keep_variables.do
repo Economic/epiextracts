@@ -2,7 +2,7 @@
 keepifexist
 	year month minsamp
 	hrhhid hrhhid2 hrsample hrsersuf huhhnum pulineno unicon_recnum
-	hhid famid personid proxy hhtype asecwgt famtype
+	hserial hhid famid personid proxy hhtype asecwgt famtype
 	finalwgt cmpwgt basicwgt orgwgt hhwgt famwgt
 	statefips statecensus division region countyfips cbsafips metstat cbsasize
 	age female hispanic wbho wbhao wbhom wbhaom raceorig wbo_only wbho_only
@@ -58,8 +58,8 @@ keepifexist
 
 if $monthlycps == 1 | $maycps == 1 {
   #delimit;
-  drop asecwgt
-  hoursly
+  drop asecwgt hserial
+    hoursly
     famern
     famiws
     hhinc_c
@@ -91,7 +91,7 @@ if $monthlycps == 1 | $maycps == 1 {
 
 if $marchcps == 1 {
   #delimit;
-  drop agechild
+  drop hrsersuf agechild
     basicwgt cmpwgt orgwgt
     cow2
     emphrs gradecom

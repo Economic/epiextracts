@@ -6,7 +6,7 @@ assert $earnerinfo == 1 | $earnerinfo == 0
 foreach var in
   year month minsamp
   hrhhid hrhhid2 hrsample hrsersuf huhhnum pulineno unicon_recnum
-  hhid famid personid proxy hhtype famtype
+  hserial hhid famid personid proxy hhtype famtype
   finalwgt cmpwgt basicwgt orgwgt asecwgt hhwgt famwgt
   statefips statecensus division region countyfips cbsafips metstat cbsasize
   age female hispanic wbho wbhao wbhom wbhaom raceorig wbo_only wbho_only
