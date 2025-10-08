@@ -121,3 +121,14 @@ round_pink_list <- list(
   #epimd_mean = c("income", "faminc_c", "offpovcut")
   epimd_rate = c("offpov")
 )
+
+offpov_list <- list(
+  ipums_tab = c("offpov"),
+  #ipums_sum = c("incwage", "ftotval", "ctccrd"),
+  #ipums_mean = c("incwage", "ftotval", "offcutoff"),
+  ipums_rate = c("offpov"),
+  epimd_tab = c("offpov"),
+  #epimd_sum = c("income", "faminc_c", "childtaxcredit"),
+  #epimd_mean = c("income", "faminc_c", "offpovcut")
+  epimd_rate = c("offpov")
+)

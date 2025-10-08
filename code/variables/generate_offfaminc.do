@@ -13,10 +13,10 @@ if $marchcps == 1 {
         * related subfamily indicator
         gen related = famtype == 3
         * presence of related subfamily by household
-        bysort hhid: egen rsubfam = max(related) 
+        bysort hrhhid: egen rsubfam = max(related) 
 
         * primary householder with related subfamily income
-        bysort hhid: egen ftotval_rsubfam = max(cond(famtype == 1 & rsubfam == 1, ftotval, .))
+        bysort hrhhid: egen ftotval_rsubfam = max(cond(famtype == 1 & rsubfam == 1, ftotval, .))
 
         * official family income
         replace offfaminc = ftotval_rsubfam if offpovuniverse == 1 & rsubfam == 1 & inlist(famtype, 1, 3)

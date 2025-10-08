@@ -27,12 +27,15 @@ ipums_march <- arrow::read_feather("cps_00063.feather") %>%
           offpov = case_when(offpov == 1 ~ 1,
                              offpov == 2 ~ 0,
                              TRUE ~ NA),
-          asecwgt = asecwt) |> 
+          asecwgt = asecwt, 
+          hrhhid = as.character(hrhhid), hrhhid2 = as.character(hrhhid2),
+          hserial = hseq,
+          statefips = statefip) |> 
   rename(pulineno = lineno)
 
 #epi_march <- read_dta("epi_march.dta") |> arrow::write_feather("epi_march.feather")
-epi_march <- arrow::read_feather("epi_march.feather") |> 
-epi_march_test <- epi_march |> mutate(across(hrhhid | hrhhid2, as.numeric)) 
+epi_march <- arrow::read_feather("epi_march.feather")
+#epi_march_2020_2024 <- read_dta("epi_march_2020_2024.dta")
 
 ### FUNCTIONS ####
 # function to write worksheet to excel 
@@ -131,7 +134,8 @@ all_lists <- list(#round_green_list,
                   #round_dark_gray_list,
                   #round_light_gray_list
                   #health_insurance_list,
-                  round_pink_list)
+                  #round_pink_list,
+                  offpov_list)
 
 # list of files to map to
 all_files <- c(#"round_green_wb.xlsx",
@@ -139,7 +143,7 @@ all_files <- c(#"round_green_wb.xlsx",
               #"round_dark_green_wb.xlsx",
               #"round_dark_gray_wb.xlsx",
               #"health_insurance_coverage.xlsx",
-              "round_pink_wb.xlsx")
+              "offpov_wb.xlsx")
 
 # quietly iterate over the two parallel vectors
 pwalk(
@@ -158,16 +162,3 @@ pwalk(
     saveWorkbook(wb, file, overwrite = TRUE)
   }
 )
-
-break
-
-ipums_march_test <- ipums_march |> mutate(hrhhid = as.character(hrhhid))
-
-test <- merge_status(filter(ipums_march_test, year == 2018), 
-                     filter(epi_march, year == 2018), 
-                     by = c("hrhhid", "year", "month", "age"))
-
-%>% 
-  left_join(epi_march, ipums_march_test, by = c("year", "month", "hrhhid", "hrhhid2",
-                                       "hrsersuf", "hrsample", "huhhnum", "pulineno"), 
-            relationship = "many-to-many")
