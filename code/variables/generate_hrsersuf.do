@@ -15,6 +15,6 @@ if $monthlycps == 1 | $maycps == 1 {
 		* not available
 	}
 }
-lab var hrsersuf "CPS: Household serial suffix"
+lab var hrsersuf "May/Basic: Household serial suffix"
 notes hrsersuf: 1994-2004m4: CPS household serial suffix
 notes hrsersuf: Used for joining EPI extracts to BLS/Census raw data
