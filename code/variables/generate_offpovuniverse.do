@@ -5,6 +5,9 @@ gen byte offpovuniverse = .
 
 if $marchcps == 1 {
     * poverty universe excludes secondary individuals under 15
+    if tm(1962m1) <= $date & $date <= tm(1987m12) {
+        replace offpovuniverse = !(famdesc > 5 & age < 15)
+    }
     if tm(1988m1) <= $date {
         replace offpovuniverse = !(famtype == 5 & age < 15)
         *replace offpovuniverse = 1 if offpovuniverse != 0
