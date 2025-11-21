@@ -29,13 +29,14 @@ ipums_march <- arrow::read_feather("cps_00063.feather") %>%
                              TRUE ~ NA),
           asecwgt = asecwt, 
           hrhhid = as.character(hrhhid), hrhhid2 = as.character(hrhhid2),
+          # epi extracts hrhhid is consistent, IPUMS is not, pad with zeros to see if this is a fix
+          hrhhid = str_pad(hrhhid, width = 15, pad = "0", side = "left"),
           hserial = hseq,
           statefips = statefip) |> 
   rename(pulineno = lineno)
 
-#epi_march <- read_dta("epi_march.dta") |> arrow::write_feather("epi_march.feather")
-epi_march <- arrow::read_feather("epi_march.feather")
-#epi_march_2020_2024 <- read_dta("epi_march_2020_2024.dta")
+epi_march <- read_dta("epi_march_1968_2024.dta") |> mutate(hrhhid = str_pad(hrhhid, width = 15, side = "left", pad = 0)) #|> arrow::write_feather("epi_march.feather")
+#epi_march <- arrow::read_feather("epi_march.feather")
 
 ### FUNCTIONS ####
 # function to write worksheet to excel 

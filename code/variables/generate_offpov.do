@@ -6,8 +6,8 @@ gen byte offpov = .
 if $marchcps == 1 {
     
     if tm(1968m1) <= $date & $date <= tm(1997m12) {
-        replace offpov = 0 if offfaminc > povcut & offpovuniverse == 1
-        replace offpov = 1 if offfaminc <= povcut & offpovuniverse == 1
+        replace offpov = 0 if offfaminc >= offpovcut & offpovuniverse == 1
+        replace offpov = 1 if offfaminc < offpovcut & offpovuniverse == 1
     }
     
     if tm(1998m1) <= $date {

@@ -109,19 +109,89 @@ filter(ipums_march, year == 2018)  |> left_join(rprifam, by = "hrhhid")  |> filt
 # count of households
 hh_has_rel  |> filter(dummy == 1, famrel == 0)  |> count(hrhhid)  |> filter(!is.na(n), n > 0)
 
-# epi extracts hrhhid is consistent, IPUMS is not, pad with zeros to see if this is a fix
-ipums_march_test <- filter(ipums_march, year %in% c(2020:2024))  |>  
-  mutate(hrhhid = str_pad(hrhhid, width = 7, pad = "0", side = "left"))
+## run ipums_march in test_ipums.R
+epi_march_2020_2024 <- read_dta("epi_march_2020_2024.dta")
 
-epi_march_test <- epi_march_2020_2024 |> 
-  mutate(hrhhid_ = str_sub(peridnum, start = 1, end = -8))
 
-test7 <- merge_status(select(filter(ipums_march, year %in% c(2020:2024)), hrhhid, hserial, year, month, statefips, offpov, offtotval, ftotval, ftype, famrel), 
-                     select(epi_march_test, hrhhid_, hserial, year, month, statefips, offpov, offfaminc, ftotval, faminc_c, famtype, famrel, related), 
-                     by = c("hrhhid" = "hrhhid_", "hserial", "year", "month", "statefips", "famrel")) |> 
-  mutate(test = (offpov.x == offpov.y)) |> filter(test == FALSE) |> 
-  select(hrhhid, related, famrel, ftype, famtype, offtotval, ftotval.x, offfaminc, ftotval.y, faminc_c, offpov.x, offpov.y) |> 
-  mutate(test = (offtotval == ftotval.x))
+
+test8 <- filter(epi_march, year %in% c(2004))  |> 
+  summarize(n = n_distinct(offpovcut), .by = c(hrhhid, hserial, year, month, statefips)) |> 
+  select(year, hrhhid, hserial, n) |> 
+  filter(n > 1) 
+
+test9 <- filter(ipums_march, year %in% c(2002))  |> 
+  summarize(n = n_distinct(offcutoff), .by = c(hrhhid, hserial, year, month, statefips)) |> 
+  select(year, hrhhid, hserial, n) |> 
+  filter(n > 1) 
+
+test10 <- filter(test7, year %in% c(2002))  |> 
+  mutate(offpovcut = case_when(is.na(offfaminc) ~ NA, TRUE ~ offpovcut)) |> 
+  summarize(n_epi = n_distinct(offpovcut, na.rm = TRUE),
+            n_ipums = n_distinct(offcutoff, na.rm = TRUE), 
+            .by = c(hrhhid, hserial, year, month, statefips)) |> 
+  select(hrhhid, hserial, year, month, statefips, starts_with("n")) |> 
+  mutate(n = n_epi == n_ipums)
+
+filter(test7, year == 2002, hrhhid == "133020820680205")  |> 
+  select(offfaminc, faminc_c, ftotval.x, offpovcut, offcutoff, rsubfam, offpov.x, offpov.y, everything())
+
+test11 <- inner_join(test7, test10, 
+                      by = c("hrhhid", "hserial", "year", "month", "statefips")) |> 
+  filter(n == FALSE) |> 
+  select(hrhhid, offfaminc, faminc_c, ftotval.x, offpovcut, offcutoff, rsubfam, offpov.x, offpov.y)
+
+# merges ipums and EPI extracts and tests if the official poverty cut offs differ across organizations
+# note: IPUMS replaces official poverty cutoffs with NA for those with official family income == NA
+merge_epi_ipums <- function(x) {
+  epi_ipums <- merge_status(select(filter(ipums_march, year %in% c(x)) |> 
+                                            mutate(statefips = as.numeric(as_factor(statefips)),
+                                                   hrhhid = str_pad(hrhhid, width = 15, side = "left", pad = 0),
+                                                  famtype = as.numeric(ftype)),  
+                                           hrhhid, hserial, pulineno, year, month, statefips, 
+                                           offpov, offtotval, ftype, famrel, offcutoff, famtype, sex, race, asecwth), 
+                                    select(filter(epi_march, year %in% c(x)) |> mutate(famtype = as.numeric(famtype)), 
+                                           hrhhid, hserial, pulineno, year, month, 
+                                           statefips, offpov, offfaminc, faminc_c, famtype, famrel, 
+                                           offpovcut, rsubfam, offpovuniverse, female, wbho, asecwgt), 
+                     by = c("hrhhid", "year", "month", "pulineno", "famtype")) #, "hserial", "statefips"))
+}
+
+test_fun <- function(x) {     
+  merge_epi_ipums(x) |> 
+    mutate(offpovcut = case_when(is.na(offfaminc) ~ NA, TRUE ~ offpovcut)) |> 
+    summarize(n_epi = n_distinct(offpovcut, na.rm = TRUE),
+              n_ipums = n_distinct(offcutoff, na.rm = TRUE), 
+              .by = c(hrhhid, hserial, year, month, statefips)) |> 
+    select(hrhhid, hserial, year, month, statefips, starts_with("n")) |> 
+    mutate(n = n_epi == n_ipums)|> 
+    inner_join(epi_ipums, by = c("hrhhid", "hserial", "year", "month", "statefips")) |> 
+    filter(n == FALSE) |> 
+    select(hrhhid, rsubfam, famtype, offpovcut, offcutoff, offfaminc, faminc_c, ftotval.x,  offpov.x, offpov.y, n, n_epi, n_ipums)
+}
+
+test <- map(2004:2024, ~ test_fun(.x) |> filter(n == FALSE))
+
+
+test12 <- test_fun(2002) |> filter(n == FALSE)
+
+
+test_n_epi_ipums <- map(2004:2010, ~ filter(test_fun(.x), n_ipums > 1) |> count() == filter(test_fun(.x), n_epi > 1) |> count())
+
+test_fun(2004) |> filter(rsubfam == 1 & n_epi > 1) |> count()
+test_fun(2004) |> filter(rsubfam == 1 & n_ipums > 1) |> count()
+
+
+tester <- map(c(1968:1979), ~ merge_epi_ipums(.x)) # |> 
+                            mutate(test = (offpov.x == offpov.y)) |> filter(test == FALSE) |> 
+                            select(hrhhid, pulineno, offpovuniverse, offcutoff, offpovcut, 
+                              offtotval, offfaminc, faminc_c, offpov.x, offpov.y, famtype, sex, female, race, wbho))
+  
+test <- merge_epi_ipums(1988) |> filter(`_merge` != "both", !is.na(famtype))
+filter(epi_march, year == 1987) |> count()
+filter(ipums_march, year == 1987) |> count()
+test2 <- map(1968:1979, ~ filter(epi_march, year == .x))
+test3 <- map(1968:1979, ~ filter(epi_march, year == .x))
+test5 <- merge_epi_ipums(1988) 
 
 # found something off about the way offfaminc is being assigned, 
 #  assigned to non-related families
