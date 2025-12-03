@@ -12,7 +12,7 @@ global suppdata suppdata/
 global extracts extracts/
 
 local minyear = 1968
-local maxyear = 1979
+local maxyear = 1978
 
 * state codes
 import delimited using ${suppdata}state_geocodes.csv, clear varnames(1)

@@ -35,7 +35,7 @@ ipums_march <- arrow::read_feather("cps_00063.feather") %>%
           statefips = statefip) |> 
   rename(pulineno = lineno)
 
-epi_march <- read_dta("epi_march_1968_2024.dta") |> mutate(hrhhid = str_pad(hrhhid, width = 15, side = "left", pad = 0)) #|> arrow::write_feather("epi_march.feather")
+epi_march <- read_dta("epi_march_1968_1979.dta") |> mutate(hrhhid = str_pad(hrhhid, width = 15, side = "left", pad = 0)) #|> arrow::write_feather("epi_march.feather")
 #epi_march <- arrow::read_feather("epi_march.feather")
 
 ### FUNCTIONS ####
@@ -163,3 +163,5 @@ pwalk(
     saveWorkbook(wb, file, overwrite = TRUE)
   }
 )
+
+

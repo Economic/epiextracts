@@ -208,3 +208,23 @@ data.frame(
   position = seq_along(col_names),
   name = col_names
 )
+
+# pre-1980 missing and below threshold not matching ipums
+
+epi_ipums <- merge_status(select(filter(ipums_march, year == 1979) |> 
+                                 mutate(statefips = as.numeric(as_factor(statefips)), 
+                                        hrhhid = str_pad(hrhhid, width = 15, side = "left", pad = 0),
+                                        famtype = as.numeric(ftype)),
+                                 age, hrhhid, pulineno, year, month, statefips, offpovuniv,
+                                 offpov, offtotval, ftype, famtype, sex, race, asecwth), 
+                          select(filter(epi_march, year == 1979) |> 
+                                 mutate(famtype = as.numeric(famtype), 
+                                        offpovuniverse = as.numeric(offpovuniverse)), 
+                                 age, hrhhid, pulineno, year, month, statefips, offpov, famtype, famrel, 
+                                 offpovcut, offpovuniverse, famdesc, female, wbho, asecwgt), 
+                     by = c("hrhhid", "year", "month", "pulineno", "famtype"))  |> 
+  select(famtype, offpovuniv,`age.x`, famdesc, offpovuniverse, `age.y`, everything())
+
+test <- filter(epi_ipums, offpovuniv != offpovuniverse)
+
+test2 <- filter(epi_march, year == 1979, !(famdesc > 5 & age < 14), offpovuniverse != 1) 
