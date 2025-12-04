@@ -177,7 +177,7 @@ qui {
 			foreach month of numlist `monthlist`year'' {
 				local counter = `counter' + 1
 			}
-			if `counter' == 12 local fullyear = 1
+			if `counter' == 12 | (`year' == 2024 & `counter' == 11) local fullyear = 1
 			else if "`lowersample'" == "march" local fullyear = 1
 			else if "`lowersample'" == "may" local fullyear = 1
 

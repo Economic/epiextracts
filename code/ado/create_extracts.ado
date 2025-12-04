@@ -24,9 +24,9 @@ foreach date of numlist `begindate'(1)`enddate' {
 	local year = year(dofm(`date'))
 	local month = month(dofm(`date'))
 
-	* skip the 11th month of 2025
-	*note: prevents 11 from being added to monthlist
-	if `year' == 2024 & `month' == 11 {
+	* skip the 10th month of 2025
+	*note: prevents 10 from being added to monthlist
+	if `year' == 2025 & `month' == 10 {
 		continue
 	}
 
@@ -198,10 +198,6 @@ foreach year of numlist `minyear'(1)`maxyear' {
 		global earnerinfo = 0
 		global basicfile = 0
 
-		if `year' == 2024 {
-
-		}
-
 		* start a counter to help determine if we have a full year of data
 		local counter = 0
 		foreach month of numlist `monthlist`year'' {
@@ -296,52 +292,10 @@ foreach year of numlist `minyear'(1)`maxyear' {
 				save `org_month`month''
 
 			}
-
-			di `counter'
-			di `monthlist`year''
 		}
 
 		* if complete year, combine all months into one year dataset
-		if `counter' == 12 {
-			* Basic monthly
-			forvalues month = 1 / 12 {
-				if `month' == 1 use `basic_month`month'', clear
-				else append using `basic_month`month''
-			}
-			compress
-
-			* adjust wage variables (top-codes, hours, extreme values)
-			if `year' >= 1982 global earnerinfo = 1
-			else global earnerinfo = 0
-			global basicfile = 1
-			do ${code}adjust_wages.do
-
-			notes drop _dta
-			notes _dta: EPI CPS Basic Monthly Extracts, Version $dataversion
-			label data "EPI CPS Basic Monthly Extracts, Version $dataversion"
-			saveold ${extracts}epi_cpsbasic_`year'.dta, replace version(13)
-
-			* ORG, if exists
-			if `orgexists' == 1 {
-				forvalues month = 1 / 12 {
-					if `month' == 1 use `org_month`month'', clear
-					else append using `org_month`month''
-				}
-				compress
-
-				* adjust wage variables (top-codes, hours, extreme values)
-				global earnerinfo = 1
-				global basicfile = 0
-				do ${code}adjust_wages.do
-
-				notes drop _dta
-				notes _dta: EPI CPS ORG Extracts, Version $dataversion
-				label data "EPI CPS ORG Extracts, Version $dataversion"
-				saveold ${extracts}epi_cpsorg_`year'.dta, replace version(13)
-			}
-		}
-
-		else if (`year' == 2024 & `counter' == 11) {
+		if `counter' == 12 | (`year' == 2025 & `counter' == 11) {
 			* Basic monthly
 			foreach month of numlist `monthlist`year'' {
 				if `month' == 1 use `basic_month`month'', clear
@@ -350,7 +304,8 @@ foreach year of numlist `minyear'(1)`maxyear' {
 			compress
 
 			* adjust wage variables (top-codes, hours, extreme values)
-			global earnerinfo = 1
+			if `year' >= 1982 global earnerinfo = 1
+			else global earnerinfo = 0
 			global basicfile = 1
 			do ${code}adjust_wages.do
 
