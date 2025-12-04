@@ -38,6 +38,10 @@ if `begindate' >= tm(1994m1) | `enddate' >= tm(1994m1) {
   if `begindate' >= tm(1994m1) local tempbegindate = `begindate'
   else local tempbegindate = tm(1994m1)
   foreach date of numlist `tempbegindate'/`enddate' {
+	# skip the 10th month of 2025
+	if `date' == tm(2025m10) {
+		continue
+	}
     di "Census CPS " %tm `date' " ... converting to Stata"
 		* Use process_censusbasic function to convert the data to Stata
     qui process_censusbasic, datenum(`date')
