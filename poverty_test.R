@@ -210,7 +210,6 @@ data.frame(
 )
 
 # pre-1980 missing and below threshold not matching ipums
-
 epi_ipums <- merge_status(select(filter(ipums_march, year == 1979) |> 
                                  mutate(statefips = as.numeric(as_factor(statefips)), 
                                         hrhhid = str_pad(hrhhid, width = 15, side = "left", pad = 0),
@@ -228,3 +227,21 @@ epi_ipums <- merge_status(select(filter(ipums_march, year == 1979) |>
 test <- filter(epi_ipums, offpovuniv != offpovuniverse)
 
 test2 <- filter(epi_march, year == 1979, !(famdesc > 5 & age < 14), offpovuniverse != 1) 
+
+# pre-1976 data, issue with poverty cutoff?
+epi_ipums <- merge_status(select(filter(ipums_march, year == 1975) |> 
+                                 mutate(statefips = as.numeric(as_factor(statefips)), 
+                                        hrhhid = str_pad(hrhhid, width = 15, side = "left", pad = 0),
+                                        famtype = as.numeric(ftype)),
+                                 hrhhid, pulineno, year, month, statefips, offpovuniv, famrel,
+                                 offpov, offtotval, ftype, famtype, sex, race, asecwth, offcutoff), 
+                          select(filter(epi_march, year == 1975) |> 
+                                 mutate(famtype = as.numeric(famtype), 
+                                        offpovuniverse = as.numeric(offpovuniverse)), 
+                                 hrhhid, pulineno, year, month, statefips, offpov, famtype, famrel, 
+                                 offpovcut, offpovuniverse, famdesc, female, wbho, asecwgt, offfaminc), 
+                     by = c("hrhhid", "year", "month", "pulineno", "statefips"))
+
+test <- filter(epi_ipums, `_merge` == "both", `offpov.x` != `offpov.y`) |> 
+  select(hrhhid, pulineno, famdesc, offpovuniverse, offpovuniv, 
+          offpovcut, offcutoff, offtotval, offfaminc, `offpov.x`, `offpov.y`)

@@ -32,10 +32,53 @@ ipums_march <- arrow::read_feather("cps_00063.feather") %>%
           # epi extracts hrhhid is consistent, IPUMS is not, pad with zeros to see if this is a fix
           hrhhid = str_pad(hrhhid, width = 15, pad = "0", side = "left"),
           hserial = hseq,
-          statefips = statefip) |> 
+          statefips = statefip,
+          statefips = case_when(
+            year %in% c(1973:1976) & statefip == 25 ~ 14,
+            year %in% c(1973:1976) & statefip == 9 ~ 16,
+            year %in% c(1968:1972) & statefip == 9 ~ 11,
+            year %in% c(1973:1976) & statefip == 81 ~ 19,
+            year %in% c(1968:1972) & statefip == 70 ~ 19,
+            year <= 1975 & statefip == 36 ~ 21,
+            year <= 1975 & statefip == 34 ~ 22,
+            year <= 1975 & statefip == 42 ~ 23,
+            year <= 1975 & statefip == 39 ~ 31,
+            year <= 1975 & statefip == 18 ~ 32,
+            year <= 1975 & statefip == 17 ~ 33,
+            year <= 1975 & statefip == 71 ~ 39,
+            year %in% c(1973:1976) & statefip == 87 ~ 49,
+            year %in% c(1968:1972) & statefip == 11 ~ 51,
+            year %in% c(1973:1976) & statefip == 11 ~ 53,
+            year %in% c(1968:1972) & statefip == 11 ~ 51,
+            year %in% c(1973:1976) & statefip == 37 ~ 56,
+            year %in% c(1973:1976) & statefip == 90 ~ 57,
+            year %in% c(1973:1976) & statefip == 83 ~ 58,
+            year %in% c(1973:1976) & statefip == 12 ~ 59,
+            year %in% c(1968:1972) & statefip == 12 ~ 55,
+            year %in% c(1973:1976) & statefip == 84 ~ 67,
+            year <= 1975 & statefip == 76 ~ 69,
+            year <= 1975 & statefip == 48 ~ 72,
+            year %in% c(1973:1976) & statefip == 85 ~ 79,
+            year %in% c(1973:1976) & statefip == 89 ~ 89,
+            year <= 1975 & statefip == 6 ~ 92,
+            year %in% c(1973:1976) & statefip == 88 ~ 99,
+            year %in% c(1968:1972) & statefip == 24 ~ 52,
+            year %in% c(1968:1972) & statefip == 54 ~ 53,
+            year %in% c(1968:1972) & statefip == 13 ~ 54,
+            year %in% c(1968:1972) & statefip == 75 ~ 57,
+            year %in% c(1968:1972) & statefip == 74 ~ 59,
+            year %in% c(1968:1972) & statefip == 21 ~ 61,
+            year %in% c(1968:1972) & statefip == 47 ~ 62,
+            year %in% c(1968:1972) & statefip ==  22 ~ 71,
+            year %in% c(1968:1972) & statefip == 77 ~ 79,
+            year %in% c(1968:1972) & statefip == 78 ~ 81,
+            year %in% c(1968:1972) & statefip == 79 ~ 89,
+            year %in% c(1968:1972) & statefip == 41 ~ 91,
+            year %in% c(1968:1972) & statefip == 6 ~ 92,
+            year %in% c(1968:1972) & statefip == 80 ~ 99)) |> 
   rename(pulineno = lineno)
 
-epi_march <- read_dta("epi_march_1968_1979.dta") |> mutate(hrhhid = str_pad(hrhhid, width = 15, side = "left", pad = 0)) #|> arrow::write_feather("epi_march.feather")
+epi_march <- read_dta("epi_march_1968_1975.dta") |> mutate(hrhhid = str_pad(hrhhid, width = 15, side = "left", pad = 0)) #|> arrow::write_feather("epi_march.feather")
 #epi_march <- arrow::read_feather("epi_march.feather")
 
 ### FUNCTIONS ####

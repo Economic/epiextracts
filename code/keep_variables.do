@@ -52,7 +52,7 @@ keepifexist
   migarea migstatus migmetro
   lookdurly spmwgt childtaxcredit
   indcode occcode
-  redesign hiyn mcare mcaid champ peridnum famdesc
+  redesign hiyn mcare mcaid champ peridnum famdesc state
 ;
 #delimit cr;
 

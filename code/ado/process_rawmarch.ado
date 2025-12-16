@@ -128,6 +128,17 @@ if `year' < 2019 {
   erase cpsmarch_`year'.dta
   erase cpsmarch_`year'.dta.zip
 
+  * run CHIP file
+  if `year' == 2001 {
+    local archivename chip2001pub.zip
+    local a cpsmar01.do
+
+    tempfile rawdat
+    !unzip -p ${censusrawmarch}`archivename' > `rawdat'
+    do ${dictionaries}cpsmar01.do" `rawdat' ${dictionaries}cpsmar01.dct
+
+  }
+
   * run traditional file as well
   if `year' == 2014 {
     local nberprogname cpsmar2014t
