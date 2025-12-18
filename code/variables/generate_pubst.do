@@ -4,6 +4,10 @@
 gen byte pubst = .
 
 if $monthlycps == 1 {
+	if tm(1983m1) <= $date & $date <= tm(1988m12) {
+		replace pubst = 0 if class8 >= 1 & class8 ~= .
+		replace pubst = 1 if class8 == 3
+	}
 	if tm(1989m1) <= $date & $date <= tm(1993m12) {
 		replace pubst = 0 if class >= 1 & class ~= .
 		replace pubst = 1 if class == 3
