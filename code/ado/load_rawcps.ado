@@ -111,6 +111,12 @@ foreach year of numlist `begin'(1)`end' {
 				local inputfile unicon_basic_`year'_`month'.dta
 			}
 			else if ("`lowersample'" == "basic" | "`lowersample'" == "org") & `year' >= 1994 {
+				* skip the 10th month of 2025
+	            *note: prevents 10 from being added to monthlist
+	            if `year' == 2025 & `month' == 10 {
+	            	continue
+	            }
+				
 				local inputfile cps_`year'_`month'.dta
 			}
 			qui {
@@ -127,6 +133,13 @@ foreach year of numlist `begin'(1)`end' {
 				else local keeplist "_all"
 				cap drop month
 				gen byte month = `month'
+
+	            * skip the 10th month of 2025
+	            *note: prevents 10 from being added to monthlist
+	            if `year' == 2025 & `month' == 10 {
+	            	continue
+	            }
+
 				noi di "Processing CPS `samplename', `year'-`month': `keeplist'"
 				tempfile monthlydata`month'
 				save `monthlydata`month''
