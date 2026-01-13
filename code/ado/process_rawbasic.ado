@@ -38,6 +38,10 @@ if `begindate' >= tm(1994m1) | `enddate' >= tm(1994m1) {
   if `begindate' >= tm(1994m1) local tempbegindate = `begindate'
   else local tempbegindate = tm(1994m1)
   foreach date of numlist `tempbegindate'/`enddate' {
+	# skip the 10th month of 2025
+	if `date' == tm(2025m10) {
+		continue
+	}
     di "Census CPS " %tm `date' " ... converting to Stata"
 		* Use process_censusbasic function to convert the data to Stata
     qui process_censusbasic, datenum(`date')
@@ -124,7 +128,7 @@ if `datenum' >= tm(2022m10) & `datenum' <= tm(2024m5) {
 
 * determine dictionary/NBER do-file to use
 * June 2024 - present
-if tm(2024m6) <= `datenum' & `datenum' <= tm(2025m9) local nberprogname cpsbjun2024
+if tm(2024m6) <= `datenum' & `datenum' <= tm(2025m11) local nberprogname cpsbjun2024
 * March 2021 - May 2024
 if  tm(2021m3) <= `datenum' & `datenum' <= tm(2024m5) local nberprogname cpsbmar2021
 * January 2020 - February 2021

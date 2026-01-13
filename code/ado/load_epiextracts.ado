@@ -53,7 +53,7 @@ if "`sourcedir'" == "" {
 	if "`dataversion'" == "old" & ("`lowersample'" == "basic" | "`lowersample'" == "march") local inputpath /data/cps/`lowersample'/epiold/stata/
 	if "`dataversion'" == "local" local inputpath extracts/
 }
-
+ 
 * deal with dates
 local begindate = tm(`begin')
 local enddate = tm(`end')
@@ -103,9 +103,17 @@ if "`dataversion'" == "old" & ("`lowersample'" == "org" | "`lowersample'" == "sw
 
 * create list of months for each year to process
 foreach date of numlist `begindate'(1)`enddate' {
-  local year = year(dofm(`date'))
-  local month = month(dofm(`date'))
-  local monthlist`year' `monthlist`year'' `month'
+  	local year = year(dofm(`date'))
+	local month = month(dofm(`date'))
+	
+	* skip the 10th month of 2025
+	*note: prevents 10 from being added to monthlist
+	if `year' == 2025 & `month' == 10 {
+		continue
+	}
+
+	local monthlist`year' `monthlist`year'' `month'
+	
 }
 
 * keep varlists for datasets
@@ -177,7 +185,7 @@ qui {
 			foreach month of numlist `monthlist`year'' {
 				local counter = `counter' + 1
 			}
-			if `counter' == 12 local fullyear = 1
+			if `counter' == 12 | (`year' == 2025 & `counter' == 11) local fullyear = 1
 			else if "`lowersample'" == "march" local fullyear = 1
 			else if "`lowersample'" == "may" local fullyear = 1
 

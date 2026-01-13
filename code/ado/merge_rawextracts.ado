@@ -98,6 +98,13 @@ qui if "`lowersample'" == "basic" | "`lowersample'" == "org" {
 	foreach date of numlist `begindate'(1)`enddate' {
 		local year = year(dofm(`date'))
 		local month = month(dofm(`date'))
+
+		*skip the 10th month of 2025
+	    *note: prevents 10 from being added to monthlist
+	    if `year' == 2025 & `month' == 10 {
+	    	continue
+	    }
+
 		local monthlist`year' `monthlist`year'' `month'
 	}
 	forvalues year = `minyear'/`maxyear' {
@@ -239,6 +246,13 @@ qui if "`lowersample'" == "basic" | "`lowersample'" == "org" {
 		local counter = `counter' + 1
 		local year = year(dofm(`date'))
 		local month = month(dofm(`date'))
+
+		* skip the 10th month of 2025
+		*note: prevents 10 from being added to monthlist
+		if `year' == 2025 & `month' == 10 {
+			continue
+		}
+		
 		noi di "Loading merged raw and EPI CPS `samplename' `year'm`month' "
 		if `counter' == 1 use `finalm`date'', clear
 		else append using `finalm`date''

@@ -23,6 +23,13 @@ if `begindate' > `enddate' {
 foreach date of numlist `begindate'(1)`enddate' {
 	local year = year(dofm(`date'))
 	local month = month(dofm(`date'))
+
+	* skip the 10th month of 2025
+	*note: prevents 10 from being added to monthlist
+	if `year' == 2025 & `month' == 10 {
+		continue
+	}
+
 	local monthlist`year' `monthlist`year'' `month'
 }
 
@@ -288,9 +295,9 @@ foreach year of numlist `minyear'(1)`maxyear' {
 		}
 
 		* if complete year, combine all months into one year dataset
-		if `counter' == 12 {
+		if `counter' == 12 | (`year' == 2025 & `counter' == 11) {
 			* Basic monthly
-			forvalues month = 1 / 12 {
+			foreach month of numlist `monthlist`year'' {
 				if `month' == 1 use `basic_month`month'', clear
 				else append using `basic_month`month''
 			}
@@ -309,7 +316,7 @@ foreach year of numlist `minyear'(1)`maxyear' {
 
 			* ORG, if exists
 			if `orgexists' == 1 {
-				forvalues month = 1 / 12 {
+				foreach month of numlist `monthlist`year'' {
 					if `month' == 1 use `org_month`month'', clear
 					else append using `org_month`month''
 				}

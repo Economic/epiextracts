@@ -7,11 +7,15 @@ title: Home
 ## Download the data
 The latest EPI CPS extracts are available in Stata format:
 
+!!! note
+     Due to the 2025 U.S federal government shutdown, October data was not collected and is not available in the EPI CPS extracts.
+
 Extract     | Years   | File | Version
 ------------|---------|------|---------------------------------
 CPS Basic monthly | 1976 - {{ latestdata}} | [epi_cpsbasic_2000_2025.zip](epi_cpsbasic_2000_2025.zip) <br/> [epi_cpsbasic_1976_1999.zip](epi_cpsbasic_1976_1999.zip) | {{ version }}
 CPS May           | 1973 - 1981            | [epi_cpsmay_1973_1981.zip](epi_cpsmay_1973_1981.zip) | {{ version }}
 CPS ORG           | 1979 - {{ latestdata}} | [epi_cpsorg_1979_2025.zip](epi_cpsorg_1979_2025.zip) | {{ version }}
+
 
 ## View the documentation
 * [Variables](variables/) available in the EPI extracts
