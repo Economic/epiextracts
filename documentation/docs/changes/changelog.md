@@ -7,8 +7,9 @@ If you use the EPI extracts for your research, please cite them as
 
 ## Recent changes
 ### Version 2026.1.6 -- 2026-01-06
-* December 2025 extracts. Note that due to the 2025 government shutdown a full-year of 2025 data will consist of 11 months.
-### Version 2025.12. -- 2025-12-18
+#### Added
+* December 2025 extracts. Note that due to the 2025 government shutdown a full-year of 2025 data will consist of 11 months as data was not collected in October 2025.
+### Version 2025.12.18 -- 2025-12-18
 #### Added
 * November 2025 extracts. Note that due to the 2025 government shutdown, October data were not collected.
 #### Modified
