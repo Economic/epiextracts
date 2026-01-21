@@ -19,7 +19,6 @@ if $monthlycps == 1 | $maycps == 1 {;
 		replace mind16 = 1 if (
 			(indcode == 17) |
 			(indcode == 18) |
-			(indcode == 19) |
 			(indcode == 29) |
 			(indcode >= 27 & indcode <= 28) | /* forestry and fisheries*/
 			(indcode >= 47 & indcode <= 58) /* mining */
@@ -53,6 +52,7 @@ if $monthlycps == 1 | $maycps == 1 {;
 		replace mind16 = 9 if	(
 			(indcode >= 707 & indcode <= 719) | /*finance, insurance, and real estate */
 			(indcode >= 727 & indcode <= 767) | /* business and repair services */
+			(indcode == 19) | /* horticultural services */
 			(indcode == 849) | /* legal services */
 			(indcode == 877) | /* religious orgs */
 			(indcode == 887) | /* nonprofit membership orgs */
@@ -103,7 +103,7 @@ if $monthlycps == 1 | $maycps == 1 {;
 		);
 		/* Agriculture, mining, forestry and fisheries*/
 		replace mind16 = 1 if	(
-			(indcode >= 10 & indcode <= 21) |
+			(indcode >= 10 & indcode <= 20) |
 			(indcode >= 30 & indcode <= 31) | /* forestry and fishing */
 			(indcode >= 40 & indcode <= 50) /* mining */
 		);
@@ -136,8 +136,9 @@ if $monthlycps == 1 | $maycps == 1 {;
 		replace mind16 = 9 if	(
 			(indcode == 841) | /* legal services */
 			(indcode >= 700 & indcode <= 712) | /* finance, insurance and real estate */
-			(indcode >= 721 & indcode <= 760) | /* business and repaire services */
-			(indcode >= 873 & indcode <= 892) /* professional and related serivces (incl religious, membership) */
+			(indcode >= 721 & indcode <= 760) | /* business and repair services */
+			(indcode == 21) | /* horticultural services */
+			(indcode >= 873 & indcode <= 892) /* professional and related services (incl religious, membership) */
 		);
 		/* Personal services, including household */
 		replace mind16 = 10 if	(
@@ -186,7 +187,8 @@ if $monthlycps == 1 | $maycps == 1 {;
 
 		/* Agriculture, mining, forestry and fisheries */
 		replace mind16 = 1 if	(
-			(indcode >= 10 & indcode <= 30) |
+			(indcode >= 10 & indcode <= 19) |
+			(indcode >= 21 & indcode <= 30) |
 			(indcode >= 31 & indcode <= 32) | /* forestry and fishing */
 			(indcode >= 40 & indcode <= 50) /* mining */
 		);
@@ -220,6 +222,7 @@ if $monthlycps == 1 | $maycps == 1 {;
 			(indcode == 841) | /* legal services */
 			(indcode >= 700 & indcode <= 712) | /* finance, insurance, and real estate */
 			(indcode >= 721 & indcode <= 760) | /* business and repair services */
+			(indcode == 20) | /* landscape and horticultural services */
 			(indcode >= 873 & indcode <= 893) /* professional and related services (incl religious and membership) */
 		);
 		/* Personal services, including household */
