@@ -46,13 +46,13 @@ assert year ~= .
 
 * for 2025, temporarily use 2025-2024 CBO projected growth rate
 * from https://www.cbo.gov/system/files/2025-01/51135-2025-01-Economic-Projections.xlsx
-local cbo2024 = 313.6
-local cbo2025 = 320.6
-sum cpiurs_extended if year == 2024
-local cpi2024 = r(mean)
+local cbo2025 = 322.4
+local cbo2026 = 331.8
+sum cpiurs_extended if year == 2025
+local cpi2025 = r(mean)
 moreobs 1
-replace year = 2025 if year == .
-replace cpiurs_extended = `cpi2024' * (`cbo2025' / `cbo2024') if year == 2025
+replace year = 2026 if year == .
+replace cpiurs_extended = `cpi2025' * (`cbo2026' / `cbo2025') if year == 2026
 
 replace cpiurs_extended = round(cpiurs_extended,0.1)
 sum cpiurs_extended if year == 1989

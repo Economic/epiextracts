@@ -6,6 +6,11 @@ If you use the EPI extracts for your research, please cite them as
     Economic Policy Institute. {{ year }}. Current Population Survey Extracts, Version {{ version }}, https://microdata.epi.org.
 
 ## Recent changes
+### Version 2026.2.12 -- 2026-02-12
+#### Added
+* January 2026 extracts
+#### Modified
+* Modified `mind16` to recode horticulture/landscaping services in pre-2003 data as a Business Services. 
 ### Version 2026.1.6 -- 2026-01-06
 #### Added
 * December 2025 extracts. Note that due to the 2025 government shutdown a full-year of 2025 data will consist of 11 months as data was not collected in October 2025.
