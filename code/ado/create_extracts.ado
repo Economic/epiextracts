@@ -107,8 +107,14 @@ foreach year of numlist `minyear'(1)`maxyear' {
 		global date = tm(`year'm3)
 
 		if 1962 <= `year' & `year' <= 1997 {
-			local inputpath ${uniconmarch}
-			local inputfile unicon_march_`year'.dta
+			if 1988 == `year' {
+				local inputpath ${uniconmarch}
+				local inputfile unicon_march_`year'b.dta
+			}
+			else {
+				local inputpath ${uniconmarch}
+				local inputfile unicon_march_`year'.dta
+			}
 		}
 		if 1998 <= `year' {
 			local inputpath ${censusmarchstata}
