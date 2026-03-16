@@ -62,7 +62,7 @@ foreach year of numlist `minyear'(1)`maxyear' {
 		global basicfile = 1
 
         local inputpath ${censusbasicstata}
-		local inputfile cps_`year'_`month'b.dta
+		local inputfile cps_`year'_`month'_revision_archive.dta
 		
 
 		* unzip and load source data into memory
@@ -83,7 +83,7 @@ foreach year of numlist `minyear'(1)`maxyear' {
 		notes drop _dta
 		notes _dta: EPI CPS Basic Monthly Extracts, Version $dataversion
 		label data "EPI CPS Basic Monthly Extracts, Version $dataversion"
-		saveold ${extracts}epi_cpsbasic_`year'_`month'b.dta, replace version(13)
+		saveold ${extracts}epi_cpsbasic_`year'_`month'_revision_archive.dta, replace version(13)
 	}
 }
 
