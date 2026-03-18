@@ -209,18 +209,4 @@ copy cps_`year'_`month'.dta.zip ${censusbasicstata}cps_`year'_`month'.dta.zip, r
 erase cps_`year'_`month'.dta
 erase cps_`year'_`month'.dta.zip
 
-* process jan26pub_revision_archive.zip separately, saved with "b" tag
-if `datenum' == tm(2026m1) {
-	tempfile rawdat_revision_archive
-	!unzip -p ${censusbasicraw}`monthname'`shortyear'pub_revision_archive.zip > `rawdat_revision_archive'
-	clear
-	do ${dictionaries}`nberprogname'.do `rawdat_revision_archive' ${dictionaries}`nberprogname'.dct
-	compress
-	save cps_`year'_`month'_revision_archive.dta, replace
-	zipfile cps_`year'_`month'_revision_archive.dta, saving(cps_`year'_`month'_revision_archive.dta.zip, replace)
-	copy cps_`year'_`month'_revision_archive.dta.zip ${censusbasicstata}cps_`year'_`month'_revision_archive.dta.zip, replace
-	erase cps_`year'_`month'_revision_archive.dta
-	erase cps_`year'_`month'_revision_archive.dta.zip
-}
-
 end
