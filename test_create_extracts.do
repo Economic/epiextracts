@@ -11,8 +11,8 @@ global codevars ${code}variables/
 global suppdata suppdata/
 global extracts extracts/
 
-local minyear = 1988
-local maxyear = 1989
+local minyear = 2017
+local maxyear = 2017
 
 * state codes
 import delimited using ${suppdata}state_geocodes.csv, clear varnames(1)

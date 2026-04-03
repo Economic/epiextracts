@@ -57,6 +57,7 @@ foreach var in
   disability parent
   migarea migstatus migmetro
   lookdurly spmwgt childtaxcredit
+  hiemp hiemply
   {;
     do ${codevars}generate_`var'.do;
   };
