@@ -21,4 +21,4 @@ lab val famid famid
 lab var famid "Family identifer (unique within household)"
 notes famid: Family ID unique within year X month X hhid
 notes famid: 1984-1993: Unicon famnum
-notes famid: 1994-present: CPS famnum
+notes famid: 1994-present: CPS prfamnum
