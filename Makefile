@@ -42,12 +42,6 @@ deploywebdata:
 	cd extracts && aws s3 sync . s3://microdata.epi.org/ --exclude "*" --include "epi_cps*.tar.gz" --delete
 	rm extracts/epi_cps*.tar.gz
 
-deploywindata:
-	rsync -avPh /data/cps/basic/epi/epi_cpsbasic_*.dta ~/mount/data/cps/basic/epi/
-	rsync -avPh /data/cps/march/epi/epi_cpsmarch_*.dta ~/mount/data/cps/march/epi/
-	rsync -avPh /data/cps/may/epi/epi_cpsmay_*.dta ~/mount/data/cps/may/epi/
-	rsync -avPh /data/cps/org/epi/epi_cpsorg_*.dta ~/mount/data/cps/org/epi/
-
 deployado:
 	cp code/ado/load_rawcps.ado /usr/local/ado/
 	cp code/ado/load_rawcps.sthlp /usr/local/ado/
