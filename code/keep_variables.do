@@ -53,6 +53,7 @@ keepifexist
   lookdurly spmwgt childtaxcredit
   indcode occcode
   redesign hiyn mcare mcaid champ peridnum famdesc state
+  hiemp hiemply
 ;
 #delimit cr;
 
@@ -85,6 +86,7 @@ if $monthlycps == 1 | $maycps == 1 {
     migarea migstatus migmetro
     lookdurly spmwgt childtaxcredit
     redesign
+    hiemp hiemply
   ;
   #delimit cr;
 }
