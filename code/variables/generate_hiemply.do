@@ -5,8 +5,8 @@ gen byte hiemply = .
 
 if $marchcps == 1 {
 	if tm(1998m1) <= $date & $date <= tm(2018m12) {
-		replace hiemp = 2 if cov_gh == 2
-        replace hiemp = 1 if cov_gh == 1
+		replace hiemply = 2 if cov_gh == 2
+        replace hiemply = 1 if cov_gh == 1
 	}
 	if tm(2019m1) <= $date {
 		replace hiemply = 0 if grp == 2
