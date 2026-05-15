@@ -6,11 +6,13 @@
 gen byte veteran = .
 
 if $monthlycps == 1 | $maycps == 1 {
+	* vet is a basic questionnaire item in the Unicon era, not ORG-specific,
+	* so this block does not require $earnerinfo
+	if tm(1973m1) <= $date & $date <= tm(1993m12) {
+		replace veteran = 0 if vet == 6
+		replace veteran = 1 if 1 <= vet & vet <= 5
+	}
 	if $earnerinfo == 1 {
-		if tm(1973m1) <= $date & $date <= tm(1993m12) {
-			replace veteran = 0 if vet == 6
-			replace veteran = 1 if 1 <= vet & vet <= 5
-		}
 		if tm(1994m12) <= $date & $date <= tm(2005m7) {
 			replace veteran = 0 if peafwhen == 6
 			replace veteran = 1 if 1 <= peafwhen & peafwhen <= 5

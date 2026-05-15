@@ -19,3 +19,6 @@ pension_health.R
 *.smcl
 *.feather
 tmpdata.do
+
+test_veteran_change.do
+check_vet_raw.do
