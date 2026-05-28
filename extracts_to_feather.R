@@ -41,9 +41,10 @@ dta_to_feather <- function(x) {
   return(NULL)
 }
 
-# grab filenames to convert
+# grab filenames to convert, skipping any that already have a .feather file
 extractsdir <- "extracts"
-files <- list.files(extractsdir, pattern = "*.dta", full.names = TRUE)
+files <- list.files(extractsdir, pattern = "*.dta", full.names = TRUE) |>
+  Filter(\(x) !file.exists(gsub("\\.dta$", ".feather", x)), x = _)
 
 # process files in parallel
 registerDoParallel(cores=6)
