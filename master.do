@@ -89,7 +89,7 @@ process_rawbasic, begin(2025m5) end(2026m4)
 
 * create EPI's extracts from the processed raw data
 * creates both basic monthly and ORG subsample
-create_extracts, begin(1962m1) end(2026m4)
+create_extracts, begin(1962m1) end(2026m5)
 do ${code}tc_fix.do
 
 * create documentation
