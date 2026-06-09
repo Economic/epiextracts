@@ -5,13 +5,13 @@ gen int occcode = .
 
 if $monthlycps == 1 | $maycps == 1 {
 	if tm(1973m1) <= $date & $date <= tm(1993m12)	{
-		replace occcode = occ
+		replace occcode = occ if occ >= 0
 	}
 	if tm(1994m1) <= $date & $date <= tm(2021m2) {
-		replace occcode = peio1ocd
+		replace occcode = peio1ocd if peio1ocd >= 0
 	}
 	if tm(2021m3) <= $date {
-		replace occcode = ptio1ocd
+		replace occcode = ptio1ocd if ptio1ocd >= 0
 	}
 }
 
