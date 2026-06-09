@@ -62,7 +62,7 @@ notes weekpay: Dollars per week for nonhourly and hourly workers
 notes weekpay: Includes overtime, tips, commissions
 notes weekpay: Original top-code values replaced with Pareto-distribution implied mean above top-code
 notes weekpay: Separate imputations for men and women
-notes weekpay: Original top-code: 1973-88: 999; 1986-97: 1923; 1998-2023: 2884.61
+notes weekpay: Original top-code: 1973-88: 999; 1989-97: 1923; 1998-2023: 2884.61
 notes weekpay: Beginning in 2023, top-code value is the weighted average of the top 3% of earners in a given month
 notes weekpay: Data 2023m4-2024m3 replace final ORG (minsamp == 8) topcoded value with average full-year topcoded value for first ORG (minsamp == 4)
 notes weekpay: Derived from weekpay_noadj and tc_weekpay
