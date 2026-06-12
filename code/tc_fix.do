@@ -54,7 +54,7 @@ foreach sample in "org" "basic" {
     replace wage = weekpay/hoursu1 if paidhre == 0
     
     * use imputed hours for hours vary respondents
-	replace wage = weekpay/hoursu1i if paidhre == 0 & hoursvary == 1
+	replace wage = weekpay/hoursu1i if paidhre == 0 & hoursvary1 == 1
 
     * apply changes to wageotc
     replace wageotc = .
@@ -103,7 +103,7 @@ foreach sample in "org" "basic" {
     replace wage = weekpay/hoursu1 if paidhre == 0
     
     * use imputed hours for hours vary respondents
-	replace wage = weekpay/hoursu1i if paidhre == 0 & hoursvary == 1
+	replace wage = weekpay/hoursu1i if paidhre == 0 & hoursvary1 == 1
     
     * apply changes to wageotc
     replace wageotc = .

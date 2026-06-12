@@ -6,9 +6,14 @@ If you use the EPI extracts for your research, please cite them as
     Economic Policy Institute. {{ year }}. Current Population Survey Extracts, Version {{ version }}, https://microdata.epi.org.
 
 ## Recent changes
-### Version 2026.6. -- 2026-06-
+### Version 2026.6.10 -- 2026-06-10
 #### Added
 * May 2026 extracts
+#### Modified
+* `hoursvary` has been renamed to `hoursvary1` (hours vary, main job). Two new variables have been added: `hoursvary2` (hours vary, other job) and `hoursvaryt` (hours vary, all jobs combined). Users relying on `hoursvary` should update references to `hoursvary1`.
+* Fixed `occcode` to replace negative source values with missing. Negative values in the underlying CPS variables indicate "not in universe" and were previously stored as invalid occupation codes.
+* Corrected availability of `union`, `unmem`, and `uncov` — these variables are not available in the CPS Basic Monthly sample and were erroneously listed as such.
+* Fixed a documentation error in `weekpay`: the original top-code value of $1,923/week applied from 1989–1997, not 1986–1997 as previously noted.
 ### Version 2026.5.14 -- 2026-05-14
 #### Added
 * April 2026 extracts
