@@ -44,7 +44,6 @@ dta_to_feather <- function(x) {
 # grab filenames to convert, skipping any that already have a .feather file
 extractsdir <- "extracts"
 files <- list.files(extractsdir, pattern = "*.dta", full.names = TRUE) |>
-  Filter(\(x) grepl("_(202[3-6])\\.dta$", x), x = _) |>
   Filter(\(x) !file.exists(gsub("\\.dta$", ".feather", x)), x = _)
 
 # process files in parallel
