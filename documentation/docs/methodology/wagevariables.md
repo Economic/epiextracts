@@ -38,7 +38,7 @@ For data from 1994 to the present, respondents can report that their usual weekl
     --8<-- "misc/generate_hoursu1i.do"
     ```
 
-The imputed usual weekly hours is used when calculating hourly wages for nonhourly workers in [`wage`](../variables/income/wage.md) and [`wageotc`](../variables/income/wageotc.md). If you do not want to include these hours imputations in your wage analysis, you can simply set wage values to missing for nonhourly (`paidhre == 0`) workers whose hours vary (`hoursvary == 1`).
+The imputed usual weekly hours is used when calculating hourly wages for nonhourly workers in [`wage`](../variables/income/wage.md) and [`wageotc`](../variables/income/wageotc.md). If you do not want to include these hours imputations in your wage analysis, you can simply set wage values to missing for nonhourly (`paidhre == 0`) workers whose hours vary (`hoursvary1 == 1`).
 
 ## Trimming outliers
 

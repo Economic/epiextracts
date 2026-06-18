@@ -11,6 +11,28 @@ You probably just want the data and documentation available [here](https://micro
 
 3. A Makefile deploys the data, code, and documentation to public and internal EPI servers.
 
+### Install dependencies
+
+**Stata packages:**
+```stata
+ssc install gtools
+ssc install webdoc, replace
+ssc install ashell, replace
+ssc install moreobs, replace
+ssc install maptile, replace
+ssc install spmap, replace
+ssc install labutil, replace
+maptile_install using "http://files.michaelstepner.com/geo_statehex.zip"
+maptile_install using "http://files.michaelstepner.com/geo_cbsa2013.zip"
+maptile_install using "http://files.michaelstepner.com/geo_state.zip"
+maptile_install using "http://files.michaelstepner.com/geo_county2014.zip"
+```
+
+**Python packages** (for building documentation):
+```
+pip install mkdocs mkdocs-material mkdocs-markdownextradata-plugin mkdocs-awesome-pages-plugin mkdocs-exclude
+```
+
 ### Convert raw source data into Stata datasets
 For 1994-present, use the `process_rawbasic` program to convert the BLS/Census raw data into Stata files. For example,
 

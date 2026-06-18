@@ -42,6 +42,7 @@ lab def faminc
 lab val faminc faminc
 lab var faminc "Family income category"
 notes faminc: Categories 13-15 differ after 2003m9
+notes faminc: Census imputes hefaminc to remove missing — zero or near-zero missing rates reflect Census imputation, not complete reporting
 notes faminc: 1989-1993: Unicon faminc
 notes faminc: 1994-2009: CPS hufaminc
 notes faminc: 2010-present: CPS hefaminc

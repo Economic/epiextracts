@@ -21,4 +21,4 @@ pension_health.R
 tmpdata.do
 
 test_veteran_change.do
-check_vet_raw.do
+check_*.do
