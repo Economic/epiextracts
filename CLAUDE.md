@@ -37,7 +37,8 @@ suppdata/
 code/
   ado/                       # Stata programs loaded via adopath
     create_extracts.ado      # Main workhorse — month-by-month extract creation
-    process_rawbasic.ado     # Converts Census/BLS raw ASCII to Stata (1994+)
+    process_rawbasic.ado     # Converts Census/BLS Basic Monthly raw ASCII to Stata (1994+)
+    process_rawmarch.ado     # Converts Census March/ASEC raw ASCII to Stata (1998+)
     load_epiextracts.ado     # Public user-facing utility to load extracts
     load_rawcps.ado          # Dev utility to load raw CPS data
     merge_rawextracts.ado    # Dev utility: merge raw + processed for testing
@@ -96,12 +97,13 @@ global uniconorg        "/data/cps/org/unicon/"
 
 ## Pipeline: Creating Extracts
 
-### 1. Convert raw ASCII to Stata (Census data, 1994+)
+### 1. Convert raw ASCII to Stata (Census data)
 ```stata
 do master.do
-process_rawbasic, begin(2025m5) end(2026m4)
+process_rawbasic, begin(2025m5) end(2026m4)   /* Basic Monthly/ORG, 1994+ */
+process_rawmarch, begin(1998) end(2018)       /* March/ASEC, 1998+ */
 ```
-Uses NBER dictionaries in `code/dictionaries/` to parse fixed-width ASCII files from Census.
+Uses NBER dictionaries in `code/dictionaries/` (~107 files, including `reweights/`) to parse fixed-width ASCII files from Census.
 
 ### 2. Create EPI extracts (all samples, all years)
 ```stata
@@ -145,7 +147,7 @@ all: createdocs deploywebdocs createfeather deploydata deploywebcode deploywebda
 
 ## Variable System
 
-### 139 variables across 10 categories
+### 141 variables across 10 categories
 
 Each variable has its own `code/variables/generate_{varname}.do` script. The master list with group assignments is `code/docs/variables_groups.csv`.
 
@@ -251,7 +253,7 @@ Also requires: Python `tabulate` module, EPI CPI Stata package (`github.com/Econ
 
 ## Development & Testing
 
-- **Test template:** `code/variables/test_variable.do` — loads a date range, merges raw+processed via `merge_rawextracts.ado`, runs crosstabs
+- **Test template:** `code/test_variable.do` — loads a date range, merges raw+processed via `merge_rawextracts.ado`, runs crosstabs
 - **No automated test suite** — testing is manual spot-checks and crosstab review
 - **Log file:** `test_create_extracts.log` — generated during test runs
 - **Dev workflow:** use `merge_rawextracts.ado` to load a processed extract and merge back specific raw Census variables for comparison
