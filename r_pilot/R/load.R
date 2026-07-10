@@ -2,8 +2,19 @@
 # file missing a column (e.g. no nwcmpwgt after 2002) simply omits it instead
 # of erroring, since column names/positions shift across dictionary vintages.
 raw_cols_needed <- c(
+  # identifiers / core demographics / basic weight (Phase 1)
   "hrhhid", "hryear4", "hrmonth", "qstnum", "occurnum",
-  "pesex", "pemlr", "peage", "prtage", "pwcmpwgt", "nwcmpwgt"
+  "pesex", "pemlr", "peage", "prtage", "pwcmpwgt", "nwcmpwgt",
+  # ORG membership + weight
+  "hrmis", "pworwgt", "nworwgt",
+  # wage_noadj / weekpay_noadj dependency chain
+  "peernhry", "pehrusl1", "prhrusl", "peernhro",
+  "prernhly", "pternhly", "prernwa", "pternwa",
+  # tc_fix.do topcode flag (2023m4+)
+  "ptwk",
+  # 8 internal-only regressors feeding hoursu1i's imputation
+  "peeduca", "perace", "ptdtrace", "prdtrace", "prorigin", "prdthsp",
+  "prcitshp", "prmarsta", "gestfips", "peernlab", "peerncov", "peio1cow", "peio1icd"
 )
 
 #' Read one year's 12 monthly .dta.zip files and stack them into one table.
@@ -23,8 +34,14 @@ read_raw_year <- function(year, raw_source_dir) {
   })
 
   # backfill columns that are entirely absent for this year (e.g. nwcmpwgt
-  # outside 2000-2002) so recode_year() never has to check column existence
-  for (col in c("peage", "prtage", "nwcmpwgt")) {
+  # outside 2000-2002, or an era-split column whose sibling covers the whole
+  # year) so recode_year()/downstream code never has to check column existence
+  backfill_cols <- c(
+    "peage", "prtage", "nwcmpwgt", "nworwgt",
+    "prernhly", "pternhly", "prernwa", "pternwa", "ptwk",
+    "perace", "ptdtrace", "prdtrace", "prorigin", "prdthsp"
+  )
+  for (col in backfill_cols) {
     if (!col %in% names(raw)) raw[[col]] <- NA_real_
   }
 

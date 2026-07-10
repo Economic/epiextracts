@@ -15,4 +15,5 @@ suppressPackageStartupMessages({
   library(haven)
   library(arrow)
   library(fs)
+  library(realtalk)
 })
