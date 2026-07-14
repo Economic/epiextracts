@@ -87,9 +87,15 @@ recode_statefips <- function(gestfips) as.numeric(gestfips)
 # `replace x = y if cond` (which leaves x unchanged when cond is missing/false)
 # -- every sequential replace-if here MUST pass missing = <current value>,
 # or NA condition values silently corrupt rows instead of leaving them as-is.
-recode_union <- function(peernlab, peerncov) {
-  unmem <- dplyr::case_when(peernlab == 2 ~ 0, peernlab == 1 ~ 1, TRUE ~ NA_real_)
-  uncov <- dplyr::case_when(peerncov == 2 ~ 0, peerncov == 1 ~ 1, TRUE ~ NA_real_)
+recode_unmem <- function(peernlab) {
+  dplyr::case_when(peernlab == 2 ~ 0, peernlab == 1 ~ 1, TRUE ~ NA_real_)
+}
+
+recode_uncov <- function(peerncov) {
+  dplyr::case_when(peerncov == 2 ~ 0, peerncov == 1 ~ 1, TRUE ~ NA_real_)
+}
+
+recode_union <- function(unmem, uncov) {
   union <- dplyr::case_when(!is.na(unmem) | !is.na(uncov) ~ 0, TRUE ~ NA_real_)
   union <- dplyr::if_else(unmem == 1, 1, union, missing = union)
   union <- dplyr::if_else(uncov == 1, 1, union, missing = union)

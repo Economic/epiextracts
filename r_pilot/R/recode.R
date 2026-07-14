@@ -196,7 +196,9 @@ recode_year <- function(raw_year, reweight_years, state_geocodes) {
       citistat  = recode_citistat(prcitshp),
       married   = recode_married(prmarsta),
       statefips = recode_statefips(gestfips),
-      union     = recode_union(peernlab, peerncov),
+      unmem     = recode_unmem(peernlab),
+      uncov     = recode_uncov(peerncov),
+      union     = recode_union(unmem, uncov),
       pubsec    = recode_pubsec(peio1cow),
       indcode   = recode_indcode(peio1icd),
       mind16    = recode_mind16(indcode, year),
@@ -213,7 +215,7 @@ recode_year <- function(raw_year, reweight_years, state_geocodes) {
       hrhhid, hhid, personid, year, month, age, female, emp, basicwgt,
       minsamp, orgwgt, paidhre, hoursu1, hoursvary1, hoursuint, hoursuorg,
       earnhour, weekpay_noadj, wage_noadj, ptwk,
-      educ, wbho, citistat, married, statefips, union, pubsec, mind16,
+      educ, wbho, citistat, married, statefips, unmem, uncov, union, pubsec, mind16,
       statecensus, division, region, countyfips, cbsafips, cbsasize, metstat
     )
 }
