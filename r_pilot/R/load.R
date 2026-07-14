@@ -14,7 +14,9 @@ raw_cols_needed <- c(
   "ptwk",
   # 8 internal-only regressors feeding hoursu1i's imputation
   "peeduca", "perace", "ptdtrace", "prdtrace", "prorigin", "prdthsp",
-  "prcitshp", "prmarsta", "gestfips", "peernlab", "peerncov", "peio1cow", "peio1icd"
+  "prcitshp", "prmarsta", "gestfips", "peernlab", "peerncov", "peio1cow", "peio1icd",
+  # geography (countyfips/cbsafips/cbsasize/metstat) -- gestfips already listed above
+  "geco", "gtco", "gtcbsa", "gtcbsasz", "gemetsta", "gtmetsta"
 )
 
 #' Read one year's 12 monthly .dta.zip files and stack them into one table.
@@ -39,7 +41,8 @@ read_raw_year <- function(year, raw_source_dir) {
   backfill_cols <- c(
     "peage", "prtage", "nwcmpwgt", "nworwgt",
     "prernhly", "pternhly", "prernwa", "pternwa", "ptwk",
-    "perace", "ptdtrace", "prdtrace", "prorigin", "prdthsp"
+    "perace", "ptdtrace", "prdtrace", "prorigin", "prdthsp",
+    "geco", "gtco", "gtcbsa", "gtcbsasz", "gemetsta", "gtmetsta"
   )
   for (col in backfill_cols) {
     if (!col %in% names(raw)) raw[[col]] <- NA_real_

@@ -160,7 +160,7 @@ recode_wage_noadj <- function(paidhre, earnhour, weekpay_noadj, hoursu1) {
 #' (not just the ORG subset), mirroring how basicwgt is computed unconditionally
 #' -- ORG membership is an orthogonal downstream row filter, not a separate
 #' source of these columns.
-recode_year <- function(raw_year, reweight_years) {
+recode_year <- function(raw_year, reweight_years, state_geocodes) {
   raw_year |>
     dplyr::mutate(raw_age = recode_raw_age(peage, prtage)) |>
     dplyr::filter(raw_age >= 0) |>
@@ -199,12 +199,21 @@ recode_year <- function(raw_year, reweight_years) {
       union     = recode_union(peernlab, peerncov),
       pubsec    = recode_pubsec(peio1cow),
       indcode   = recode_indcode(peio1icd),
-      mind16    = recode_mind16(indcode, year)
+      mind16    = recode_mind16(indcode, year),
+      # geography: countyfips/cbsafips/cbsasize/metstat are direct raw-column
+      # passthroughs (no crosswalk); statecensus/division/region come from a
+      # left-join below since they live in a separate lookup table, not a raw column
+      countyfips = recode_countyfips(year, month, geco, gtco),
+      cbsafips   = recode_cbsafips(year, month, gtcbsa),
+      cbsasize   = recode_cbsasize(year, month, gtcbsasz),
+      metstat    = recode_metstat(year, month, gemetsta, gtmetsta)
     ) |>
+    dplyr::left_join(state_geocodes, by = "statefips") |>
     dplyr::select(
       hrhhid, hhid, personid, year, month, age, female, emp, basicwgt,
       minsamp, orgwgt, paidhre, hoursu1, hoursvary1, hoursuint, hoursuorg,
       earnhour, weekpay_noadj, wage_noadj, ptwk,
-      educ, wbho, citistat, married, statefips, union, pubsec, mind16
+      educ, wbho, citistat, married, statefips, union, pubsec, mind16,
+      statecensus, division, region, countyfips, cbsafips, cbsasize, metstat
     )
 }
