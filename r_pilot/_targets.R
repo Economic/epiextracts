@@ -7,8 +7,9 @@ reference_dir    <- "/projects/jkandra/epiextracts/extracts"
 pilot_output_dir <- "output"
 reweight_years   <- 2000:2002 # Census-2000-based reweight window for cmpwgt/orgwgt
 
-basic_variables <- c("age", "female", "emp", "basicwgt")
-org_variables   <- c("age", "female", "emp", "basicwgt", "orgwgt", "hoursu1i", "weekpay", "wage")
+demographic_variables <- c("educ", "wbho", "citistat", "married", "statefips", "union", "pubsec", "mind16")
+basic_variables <- c("age", "female", "emp", "basicwgt", demographic_variables)
+org_variables   <- c("age", "female", "emp", "basicwgt", "orgwgt", "hoursu1i", "weekpay", "wage", demographic_variables)
 
 lapply(list.files("./R", full.names = TRUE), source)
 
@@ -49,8 +50,8 @@ tar_assign({
   tc_constants = compute_tc_constants(org_2023_pretopcode) |>
     tar_target()
 
-  recoded_org_year = recode_org_year(recoded_year, raw_year, wage_bounds, tc_constants) |>
-    tar_target(pattern = map(recoded_year, raw_year))
+  recoded_org_year = recode_org_year(recoded_year, wage_bounds, tc_constants) |>
+    tar_target(pattern = map(recoded_year))
 
   parity_year = compare_year(recoded_year, reference_dta, basic_variables, sample = "basic") |>
     tar_target(pattern = map(recoded_year, reference_dta))

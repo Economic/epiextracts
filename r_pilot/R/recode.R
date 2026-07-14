@@ -185,11 +185,26 @@ recode_year <- function(raw_year, reweight_years) {
       earnhour      = recode_earnhour(year, month, prernhly, pternhly),
       weekpay_noadj = recode_weekpay_noadj(year, month, prernwa, pternwa),
       wage_noadj    = recode_wage_noadj(paidhre, earnhour, weekpay_noadj, hoursu1),
-      ptwk          = as.numeric(ptwk)  # BLS-supplied topcode flag, tc_fix.do 2023m4+ only
+      ptwk          = as.numeric(ptwk),  # BLS-supplied topcode flag, tc_fix.do 2023m4+ only
+      # 8 demographic/employment/industry covariates -- computed at the basic
+      # level (not just ORG) since Stata generates them identically regardless
+      # of sample; union/unmem/uncov end up mostly NA outside the ORG-eligible
+      # rotation groups, matching actual Stata behavior, not a gap to fix.
+      educ      = recode_educ(peeduca),
+      hispanic  = recode_hispanic(year, prorigin, prdthsp),
+      wbho      = recode_wbho(year, month, perace, ptdtrace, prdtrace, hispanic),
+      citistat  = recode_citistat(prcitshp),
+      married   = recode_married(prmarsta),
+      statefips = recode_statefips(gestfips),
+      union     = recode_union(peernlab, peerncov),
+      pubsec    = recode_pubsec(peio1cow),
+      indcode   = recode_indcode(peio1icd),
+      mind16    = recode_mind16(indcode, year)
     ) |>
     dplyr::select(
       hrhhid, hhid, personid, year, month, age, female, emp, basicwgt,
       minsamp, orgwgt, paidhre, hoursu1, hoursvary1, hoursuint, hoursuorg,
-      earnhour, weekpay_noadj, wage_noadj, ptwk
+      earnhour, weekpay_noadj, wage_noadj, ptwk,
+      educ, wbho, citistat, married, statefips, union, pubsec, mind16
     )
 }

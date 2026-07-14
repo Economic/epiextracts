@@ -12,9 +12,9 @@ filter_org_universe <- function(recoded_year) {
 #' Full per-year ORG pipeline: universe filter -> hoursu1i regression
 #' imputation -> weekpay (Pareto top-code) -> wage (assemble + CPI trim) ->
 #' tc_fix retroactive correction (no-op outside 2023/2024).
-recode_org_year <- function(recoded_year, raw_year, wage_bounds, tc_constants) {
+recode_org_year <- function(recoded_year, wage_bounds, tc_constants) {
   filter_org_universe(recoded_year) |>
-    compute_hoursu1i(raw_year) |>
+    compute_hoursu1i() |>
     add_weekpay() |>
     add_wage(wage_bounds) |>
     apply_tc_fix(tc_constants, wage_bounds)
