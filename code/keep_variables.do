@@ -24,14 +24,14 @@ keepifexist
 	earnhour a_earnhour
 	otcrec
 	otcamt wage_noadj wageotc_noadj tc_earnhour
-	faminc faminc_det faminc_c
+	faminc faminc_det faminci
 	ownchild famrel agechild
 	telework hourslwtw
 	diffdress differrands diffhear diffmemory diffphysical diffvision
     difficulty
 	famern
 	famiws
-	hhinc_c
+	hhinc hhpct
 	povlev povrate
 	schenrl schenrl_type
 	earn income
@@ -65,9 +65,9 @@ if $monthlycps == 1 | $maycps == 1 {
     hoursly
     famern
     famiws
-    hhinc_c
+    hhinc hhpct
     wrkly wksly_binned
-	  faminc_c
+	  faminc
     earn
     povlev povrate
     schenrl

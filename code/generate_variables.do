@@ -33,10 +33,10 @@ foreach var in
   telework hourslwtw
   diffdress differrands diffhear diffmemory diffphysical diffvision
   difficulty
-	faminc faminc_c
+	faminci
   famern
   famiws
-  hhinc_c
+  hhinc hhpct
   povlev povrate
   schenrl schenrl_type
   earn income
