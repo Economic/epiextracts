@@ -28,17 +28,17 @@ foreach var in
 	earnhour a_earnhour
   otcrec
   otcamt wage_noadj wageotc_noadj tc_earnhour
+	faminci
 	faminc faminc_det
 	ownchild famrel agechild
   telework hourslwtw
   diffdress differrands diffhear diffmemory diffphysical diffvision
   difficulty
-	faminci
   famern
   famiws
   hhinc hhpct
   povlev povrate
-  schenrl schenrl_type
+  schenrl
   earn income
   hoursly wrkly wksly_binned
   hicovly hicov

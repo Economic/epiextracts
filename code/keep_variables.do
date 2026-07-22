@@ -33,7 +33,7 @@ keepifexist
 	famiws
 	hhinc hhpct
 	povlev povrate
-	schenrl schenrl_type
+	schenrl
 	earn income
 	hoursly wrkly wksly_binned
 	hicovly hicov
@@ -77,7 +77,7 @@ if $monthlycps == 1 | $maycps == 1 {
     medicaid medicaidcov
     pubhouse hhtenure rentsub
     eitc
-    offpovuniverse offpov offpovcut offfaminc rsubfam ftotval_primary ftotval_rsubfam
+    offpovuniverse offpov offpovcut offfaminc
     spmpov spmpovcut spmeitc
     spm_fedtax spm_statetax
     spm_schlunch schlunch spm_snap spm_wic spm_mortgage
@@ -87,7 +87,6 @@ if $monthlycps == 1 | $maycps == 1 {
     disability parent
     migarea migstatus migmetro
     lookdurly spmwgt childtaxcredit
-    redesign
     hiemp hiemply
   ;
   #delimit cr;
