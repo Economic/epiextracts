@@ -6,7 +6,6 @@
 
 test.do
 test.R
-*.txt
 
 nohup.out
 *.log
@@ -27,7 +26,8 @@ check_*.do
 r_pilot
 
 *.gz
-test*.csv
-cps_00063.feather
-epi_march.feather
+
 r_pilot
+hilary-hhpct.R
+census_benchmark_hinc05.csv
+
