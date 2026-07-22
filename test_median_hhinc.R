@@ -32,12 +32,20 @@ hhinc_consistency <- epi_march |>
 epi_median_hh_income <- epi_march |> 
   filter(
     hhrecord == 1, 
-    hhinc > 0 & hhinc < 99999999
+    hhinc < 99999999
   ) |> 
   mutate(year = year - 1) |> 
   left_join(c_cpi_u_extended_annual) |> 
   mutate(hhinc = hhinc * (cpi_base/c_cpi_u_extended)) |> 
-  summarize(epi_hhinc = epidatatools::averaged_median(hhinc, w = hhwgt), .by = year)
+  summarize(
+    epi_hhinc = 
+      MetricsWeighted::weighted_quantile(
+        hhinc, 
+        w = hhwgt, 
+        probs = 0.5, 
+        na.rm = TRUE), 
+    .by = year
+  )
 
 ### IPUMS Household income ####
 ipums_march <- haven::read_dta("./cps_00078.dta") 
@@ -46,12 +54,21 @@ ipums_march <- haven::read_dta("./cps_00078.dta")
 ipums_median_hh_income <- ipums_march |>
   filter(
     pernum == 1,
-    hhincome > 0 & hhincome < 99999999
+    hhincome < 99999999
   ) |>
   mutate(year = year - 1) |> 
   left_join(c_cpi_u_extended_annual) |>
   mutate(hhincome = hhincome * (cpi_base/c_cpi_u_extended)) |>
-  summarize(ipums_hhinc = epidatatools::averaged_median(hhincome, w = asecwth), .by = year)
+  summarize(
+    ipums_hhinc = 
+      MetricsWeighted::weighted_quantile(
+        hhincome, 
+        w = asecwth,
+        probs = 0.5,
+        na.rm = TRUE
+      ), 
+    .by = year
+  )
 
 ### Census benchmark ####
 census_benchmark <- read.csv("./census_benchmark.csv")
