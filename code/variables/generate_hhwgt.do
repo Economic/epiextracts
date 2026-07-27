@@ -17,7 +17,14 @@ if $marchcps == 1 {
 	if tm(1977m1) <= $date & $date <= tm(1997m12) {
 		replace hhwgt = oldhhwgt / 100
 	}
-	if tm(1998m1) <= $date & $date <= tm(2018m12) {
+	if tm(1998m1) <= $date & $date <= tm(2013m12) {
+		replace hhwgt = hsup_wgt
+	}
+	if tm(2014m1) <= $date & $date <= tm(2014m12) {
+		replace hhwgt = hsup_wgt * (3/8) if redesign == 1
+		replace hhwgt = hsup_wgt * (5/8) if redesign == 0
+	}
+	if tm(2015m1) <= $date & $date <= tm(2018m12) {
 		replace hhwgt = hsup_wgt
 	}
 	if tm(2019m1) <= $date {
