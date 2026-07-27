@@ -42,9 +42,7 @@ keepifexist
 	medicaid medicaidcov
 	pubhouse hhtenure rentsub
 	eitc
-	hhstatus famlis
-	hmcaid now_hmcaid mcaid now_mcaid caid now_caid
-	offpovuniverse offpov offpovcut offfaminc rsubfam ftotval ftotval_rsubfam
+	offpovuniverse offpov offpovcut offfaminc
 	spmpov spmpovcut spmeitc
 	spm_fedtax spm_statetax
 	spm_schlunch schlunch spm_snap spm_wic spm_mortgage
@@ -54,7 +52,7 @@ keepifexist
 	disability parent
 	migarea migstatus migmetro
 	lookdurly spmwgt childtaxcredit
-	redesign hiyn mcare champ peridnum famdesc state
+	redesign 
 	hiemp hiemply
 ;
 #delimit cr;
@@ -67,7 +65,8 @@ if $monthlycps == 1 | $maycps == 1 {
     famiws
     hhinc hhpct
     wrkly wksly_binned
-	  faminc
+	income
+	faminc
     earn
     povlev povrate
     schenrl
@@ -88,6 +87,7 @@ if $monthlycps == 1 | $maycps == 1 {
     migarea migstatus migmetro
     lookdurly spmwgt childtaxcredit
     hiemp hiemply
+	redesign
   ;
   #delimit cr;
 }
