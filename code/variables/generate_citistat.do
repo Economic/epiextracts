@@ -31,5 +31,5 @@ lab def citistat
 ;
 #delimit cr;
 lab val citistat citistat
-notes citistat: 1963-1997 Unicon March: citstat
+notes citistat: 1994-1997 Unicon March: citstat
 notes citistat: 1994/1998-present CPS Basic/March: prcitshp

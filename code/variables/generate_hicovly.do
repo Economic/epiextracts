@@ -36,9 +36,9 @@ if $marchcps == 1 {
 lab var hicovly "Health insurance coverage last year"
 lab def hicovly 1 "Covered" 0 "Not covered"
 lab val hicovly hicovly
-notes hicovly: Available 1980 & 1982-present
-notes hicovly: 1980 & 1982-present universe: All persons (not infants born after calendar year)
-notes hicovly: 1980 & 1982-1994 Unicon: mcaid, mcare, hiyn, champ
+notes hicovly: Available 1988-present
+notes hicovly: 1988-present universe: All persons (not infants born after calendar year)
+notes hicovly: 1988-1994 Unicon: mcaid, mcare, hiyn, champ
 notes hicovly: 1995-1997 Unicon: mcaid, mcare, hiyn, oth
 notes hicovly: 1998-2018 CPS: mcaid, mcare, hi_yn, oth
 notes hicovly: 2019-present CPS: cov

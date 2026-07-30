@@ -30,7 +30,7 @@ if $marchcps == 1 {
 		replace metstat = 0 if orig_metstat == 2
 		replace metstat = 1 if orig_metstat == 1
 	}
-	if tm(1998m1) <= $date & $date <= tm(2003m12) {
+	if tm(1998m1) <= $date & $date <= tm(2004m12) {
 		replace metstat = 0 if hmsa_r == 2
 		replace metstat = 1 if hmsa_r == 1
 	}

@@ -12,6 +12,6 @@ if $marchcps == 1 {
 	}
 }
 lab var hserial "ASEC: Household serial suffix"
-notes hserial: 1962-1997 Unicon March: hhseq
+notes hserial: 1976-1997 Unicon March: hhseq
 notes hserial: 1998-present CPS March: h_seq
 notes hrsersuf: Used for joining EPI extracts to BLS/Census raw data
