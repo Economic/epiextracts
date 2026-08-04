@@ -44,17 +44,11 @@ tar_assign({
   wage_bounds = build_wage_bounds() |>
     tar_target() # shared, non-branched -- built once from realtalk, consumed by every year
 
-  # tc_fix's 2023 reference constants need 2023's own ORG-filtered data
-  # regardless of which year is currently being processed elsewhere in the
-  # DAG; recomputed directly here (cheap, one year) rather than fragile
-  # indexing into a specific branch of the dynamic raw_year/recoded_year targets.
-  org_2023_pretopcode = filter_org_universe(recode_year(read_raw_year(2023, raw_source_dir), reweight_years, state_geocodes)) |>
-    tar_target()
-
-  tc_constants = compute_tc_constants(org_2023_pretopcode) |>
-    tar_target()
-
-  recoded_org_year = recode_org_year(recoded_year, wage_bounds, tc_constants) |>
+  # add_weekpay() is era-aware (pre-2023 / 2023-2024 dynamic top-code
+  # phase-in / 2025+ passthrough) in a single pass per year branch -- the
+  # 2023 Jan-Mar reference constants are computed inline from that branch's
+  # own data, so no separate pre-fetch of 2023 is needed here.
+  recoded_org_year = recode_org_year(recoded_year, wage_bounds) |>
     tar_target(pattern = map(recoded_year))
 
   parity_year = compare_year(recoded_year, reference_dta, basic_variables, sample = "basic") |>
