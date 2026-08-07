@@ -19,34 +19,13 @@ raw_cols_needed <- c(
   "geco", "gtco", "gtcbsa", "gtcbsasz", "gemetsta", "gtmetsta"
 )
 
-#' Read one year's 12 monthly .dta.zip files and stack them into one table.
-#'
-#' peage/prtage never co-occur within a single month's file (the raw variable
-#' was renamed circa May 2012), but do co-occur across a year that spans the
-#' boundary -- bind_rows() naturally fills the absent column with NA for the
-#' months where it wasn't present, so no special-casing is needed here.
-read_raw_year <- function(year, raw_source_dir) {
-  month_paths <- file.path(raw_source_dir, sprintf("cps_%d_%d.dta.zip", year, 1:12))
-
-  raw <- purrr::map_dfr(month_paths, function(path) {
-    d <- haven::read_dta(path, col_select = dplyr::any_of(raw_cols_needed))
-    # sanity check: file's own year should match the requested batch
-    stopifnot(all(d$hryear4 == year))
-    d
-  })
-
-  # backfill columns that are entirely absent for this year (e.g. nwcmpwgt
-  # outside 2000-2002, or an era-split column whose sibling covers the whole
-  # year) so recode_year()/downstream code never has to check column existence
-  backfill_cols <- c(
-    "peage", "prtage", "nwcmpwgt", "nworwgt",
-    "prernhly", "pternhly", "prernwa", "pternwa", "ptwk",
-    "perace", "ptdtrace", "prdtrace", "prorigin", "prdthsp",
-    "geco", "gtco", "gtcbsa", "gtcbsasz", "gemetsta", "gtmetsta"
-  )
-  for (col in backfill_cols) {
-    if (!col %in% names(raw)) raw[[col]] <- NA_real_
-  }
-
-  raw
-}
+# Columns that are structurally absent for an entire year (era-split columns
+# whose sibling covers that year instead, e.g. nwcmpwgt outside 2000-2002).
+# Used by read_raw_ascii_year() in raw_ascii.R so downstream code never has
+# to check column existence itself.
+backfill_cols <- c(
+  "peage", "prtage", "nwcmpwgt", "nworwgt",
+  "prernhly", "pternhly", "prernwa", "pternwa", "ptwk",
+  "perace", "ptdtrace", "prdtrace", "prorigin", "prdthsp",
+  "geco", "gtco", "gtcbsa", "gtcbsasz", "gemetsta", "gtmetsta"
+)

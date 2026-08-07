@@ -2,8 +2,9 @@ source("./packages.R")
 
 ## CONFIGURATION
 years            <- 2000:2024
-raw_source_dir   <- "/data/cps/basic/census/stata"
-reference_dir    <- "/projects/jkandra/epiextracts/extracts"
+raw_ascii_dir    <- "/data/cps/basic/census/raw"
+dictionaries_dir <- "/projects/jkandra/epiextracts/code/dictionaries"
+reference_dir    <- "/data/cps" # deployed Stata reference extracts, see year_to_reference_path()
 pilot_output_dir <- "output"
 reweight_years   <- 2000:2002 # Census-2000-based reweight window for cmpwgt/orgwgt
 
@@ -30,16 +31,20 @@ tar_assign({
     tar_target(pattern = map(basic_years), format = "file")
 
   #########################
-  # INTERMEDIATE OUTPUTS  #
+  # PROCESS RAW DATA      #
   #########################
-  raw_year = read_raw_year(basic_years, raw_source_dir) |>
+  # Raw Census ASCII parsed directly in R -- no Stata step anywhere upstream
+  # of this target. Validated (925 checks, 0 mismatches, full 2000-2024)
+  # against the Stata-converted intermediate before that intermediate was
+  # retired from the pipeline; it's recode_year()'s sole raw-data source now.
+  raw_ascii_year = read_raw_ascii_year(basic_years, raw_ascii_dir, dictionaries_dir) |>
     tar_target(pattern = map(basic_years))
 
   state_geocodes = build_state_geocodes() |>
     tar_target() # shared, non-branched -- 51-row state->division/region/statecensus lookup
 
-  recoded_year = recode_year(raw_year, reweight_years, state_geocodes) |>
-    tar_target(pattern = map(raw_year))
+  recoded_year = recode_year(raw_ascii_year, reweight_years, state_geocodes) |>
+    tar_target(pattern = map(raw_ascii_year))
 
   wage_bounds = build_wage_bounds() |>
     tar_target() # shared, non-branched -- built once from realtalk, consumed by every year

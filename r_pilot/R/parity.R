@@ -1,5 +1,11 @@
+#' Path to the published Stata reference extract for a given year/sample.
+#'
+#' Points at the deployed copies under reference_dir/<sample>/epi/ (the
+#' Makefile's `deploydata` target rsyncs extracts/ there after each release)
+#' rather than the project-local extracts/ directory, which isn't guaranteed
+#' to be populated on every machine this pipeline runs on.
 year_to_reference_path <- function(year, reference_dir, sample = "basic") {
-  file.path(reference_dir, sprintf("epi_cps%s_%d.dta", sample, year))
+  file.path(reference_dir, sample, "epi", sprintf("epi_cps%s_%d.dta", sample, year))
 }
 
 read_reference_year <- function(reference_path, variables) {
