@@ -1,5 +1,5 @@
 *******************************************************************************
-* Employer-provided health insurance coverage
+* Policyholder of employer-provided health insurance
 *******************************************************************************
 capture lab drop hiemp
 capture rename hiemp orig_hiemp
@@ -8,13 +8,13 @@ gen byte hiemp = .
 
 if $marchcps == 1 {
     if tm(2019m1) <= $date {
-        replace hiemp = 0 if now_grp == 2
-        replace hiemp = 1 if now_grp == 1
-		replace hiemp = . if now_grp == 0
+        replace hiemp = 0 if now_owngrp == 2
+        replace hiemp = 1 if now_owngrp == 1
+		replace hiemp = . if now_owngrp == 0
     }
 }
 
-lab var hiemp "Employer-provided health insurance coverage last year"
+lab var hiemp "Policyholder of employer-provided health insurance"
 lab def hiemp 1 "Covered" 0 "Not covered"
 lab val hiemp hiemp
 notes hiemp: Available 2019-present
