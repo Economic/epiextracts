@@ -41,7 +41,7 @@ set trace off
 * DATA VERSION
 *******************************************************************************
 * The version is saved in the dataset labels and notes
-global dataversion 2026.8.s
+global dataversion 2026.8.13
 
 
 *******************************************************************************
@@ -89,7 +89,7 @@ process_rawbasic, begin(2025m8) end(2026m7)
 
 * create EPI's extracts from the processed raw data
 * creates both basic monthly and ORG subsample
-create_extracts, begin(1962m1) end(2026m6)
+create_extracts, begin(1962m1) end(2026m7)
 do ${code}tc_fix.do
 
 * create documentation
