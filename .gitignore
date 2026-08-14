@@ -24,3 +24,5 @@ test_veteran_change.do
 check_*.do
 
 r_pilot
+hilary-hhpct.R
+census_benchmark_hinc05.csv
