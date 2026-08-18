@@ -122,6 +122,8 @@ do code/docs/createdocs.do
 ```
 Uses `webdoc` to create MkDocs markdown from variable descriptions and analysis scripts.
 
+For variables ported to R (see `r_pilot/`), the "## Code" section shows the R recode instead of the Stata `generate_<var>.do` — run `Rscript code/docs/generate_r_snippets.R` first (reads `code/docs/r_snippets_map.csv`, extracts the relevant function(s) from `r_pilot/R/*.R` into `code/docs/r_snippets/<var>_rcode.R`). `docwrite.do` falls back to the Stata snippet automatically for any variable without an `r_snippets/` file, so not-yet-ported variables are unaffected.
+
 ---
 
 ## Pipeline: Release
@@ -244,8 +246,9 @@ Also requires: Python `tabulate` module, EPI CPI Stata package (`github.com/Econ
 3. `process_rawbasic, begin(...) end(...)` for new months
 4. `create_extracts, begin(1962m1) end(...)` (or targeted date range)
 5. `do ${code}tc_fix.do` if applicable
-6. `do code/docs/createdocs.do`
-7. `make` (or individual make targets as needed)
+6. `Rscript code/docs/generate_r_snippets.R` — regenerates `code/docs/r_snippets/<var>_rcode.R` for variables ported to R (see `r_pilot/`); run before step 7 so `docwrite.do` picks up current snippets
+7. `do code/docs/createdocs.do`
+8. `make` (or individual make targets as needed)
 
 ---
 
