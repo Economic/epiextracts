@@ -10,10 +10,10 @@ global censusmarchstata /data/cps/march/census/stata/
 global codevars ${code}variables/
 global suppdata suppdata/
 global extracts extracts/
-global dataversion 1.0.59
+global dataversion 2025.9.11
 
-local minyear = 1998
-local maxyear = 2018
+local minyear = 1988
+local maxyear = 2025
 
 * state codes
 import delimited using ${suppdata}state_geocodes.csv, clear varnames(1)

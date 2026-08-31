@@ -6,18 +6,18 @@ gen byte asecwgt = .
 
 if $marchcps == 1 {
     if tm(1962m1) <= $date & $date <= tm(1979m12) {
-        replace asecwgt = wgt
+        replace asecwgt = wgt/100
     }
     if tm(1980m1) <= $date & $date <= tm(1997m12) {
         * use retroactively calculated weights to account for lag in Census data  
         if tm(1980m1) <= $date & $date <= tm(1980m12) {
-            replace asecwgt = wgtalt
+            replace asecwgt = wgtalt/100
         }
         else if tm(1990m1) <= $date & $date <= tm(1990m12) {
-            replace asecwgt = wgtalt
+            replace asecwgt = wgtalt/100
         }
         else {
-            replace asecwgt = wgt
+            replace asecwgt = wgt/100
         }
     }
     if tm(1998m1) <= $date {

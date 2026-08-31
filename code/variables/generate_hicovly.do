@@ -7,24 +7,25 @@ if $marchcps == 1 {
 	if tm(1988m1) <= $date & $date <= tm(1994m12) {
 		replace hicovly = mcaid == 1 /* medicaid coverage *//*
 		*/ | mcare == 1 /* medicare coverage *//*
-		*/ | hiyn == 1 /* private health insurace *//*
-		*/| champ == 1 /* military/veteran health insurance */
-		replace hicovly = . if hiyn == 0
+		*/ | covhi == 1 /* private health insurace *//*
+		*/ | champ == 1 /* military/veteran health insurance *//*
+		*/ | chmc == 1 /*
+		*/ | chhi == 1 | chhi == 2
 
 	}
 	if tm(1995m1) <= $date & $date <= tm(1997m12) {
 		replace hicovly = mcaid == 1 /* medicaid coverage *//*
 		*/ | mcare == 1 /* medicare coverage *//*
-		*/ | hiyn == 1 /* private health insurace *//*
-		*/| oth == 1 /* other types of health insurance */
-		replace hicovly = . if hiyn == 0
+		*/ | covhi == 1 /* private health insurace *//*
+		*/ | oth == 1 /* other types of health insurance *//*
+		*/ | othstper == 1
 	}
 	if tm(1998m1) <= $date & $date <= tm(2018m12) {
 		replace hicovly = mcaid == 1 /* medicaid coverage *//*
 		*/ | mcare == 1 /* medicare coverage *//*
-		*/ | hi_yn == 1 /* private health insurace *//*
-		*/| oth == 1 /* other types of health insurance */
-		replace hicovly = . if hi_yn == 0
+		*/ | cov_hi == 1 /* private health insurace *//*
+		*/ | oth == 1 /* other types of health insurance *//*
+		*/ | othstper == 1
 	}    
 	if tm(2019m1) <= $date {
 		replace hicovly = 0 if cov == 2

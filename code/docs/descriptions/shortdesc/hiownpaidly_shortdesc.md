@@ -1,0 +1,1 @@
+`hiownpaidly` indicates how much (all, some, or none) of the premium the employer/union paid for a respondent's own employer-provided health insurance last year. Universe is policyholders of employer/union-provided health insurance in their own name last year (`hiownemply` == 1). See also [`hiownemply`](hiownemply.md) and [`hicovly`](hicovly.md).

@@ -36,7 +36,7 @@ keepifexist
 	schenrl
 	earn income
 	hoursly wrkly wksly_binned
-	hicovly hicov
+	hicovly hicov hicovlyi
 	penplan penincl
 	foodstamps
 	medicaid medicaidcov
@@ -52,8 +52,8 @@ keepifexist
 	disability parent
 	migarea migstatus migmetro
 	lookdurly spmwgt childtaxcredit
-	redesign 
-	hiemp hiemply
+	redesign
+	hiownemp hiownemply hiownpaidly
 ;
 #delimit cr;
 
@@ -86,7 +86,7 @@ if $monthlycps == 1 | $maycps == 1 {
     disability parent
     migarea migstatus migmetro
     lookdurly spmwgt childtaxcredit
-    hiemp hiemply
+    hiemp hiownemply hiownpaidly
 	redesign
   ;
   #delimit cr;

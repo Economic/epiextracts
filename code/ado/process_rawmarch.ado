@@ -66,7 +66,7 @@ if `year' < 2019 {
   if 1998 <= `year' & `year' <= 2012 local nberprogname cpsmar`shortyear'
   if 2013 <= `year' & `year' <= 2018 local nberprogname cpsmar`year'
 
-  * determine archive name
+  * determine archive name for raw files
   if 1998 <= `year' & `year' <= 2002 local archivename mar`shortyear'supp.zip
   if `year' == 2003 local archivename asec2003.zip
   if `year' == 2004 local archivename asec2004.zip
@@ -80,6 +80,7 @@ if `year' < 2019 {
   if `year' == 2017 local archivename asec2017_pubuse.zip
   if `year' == 2018 local archivename asec2018_pubuse.zip
 
+  * determine archive names for current health insurance coverage supplement 
   if 2014 <= `year' & `year' <= 2018 {
     local inputpath ${censusmarchraw}
     local anycovfile asec`shortyear'_currcov_extract.dat
@@ -92,6 +93,7 @@ if `year' < 2019 {
     save `anycovdat_`year'', replace
   }
   
+  * unzip archived files
   tempfile rawdat
   !unzip -p ${censusmarchraw}`archivename' > `rawdat'
 
@@ -101,7 +103,29 @@ if `year' < 2019 {
   clear
   do ${dictionaries}`nberprogname'.do `rawdat' ${dictionaries}`nberprogname'.dct
 
-  * supplemental datasets
+  * combine datasets for additional detail 
+  *note: files already in .dta format
+
+  * combine with revised health insurance datasets (in .dta)
+  *note: 1997-1999, use March 2007 revision
+  if 1997 <= `year' & `year' <= 1999 {
+			local inputpath ${censusmarchraw}
+			local revhifile hi_pu_xtrct`shortyear'.dta
+
+			merge 1:1 h_seq using "`inputpath'`revhifile'", assert(3) nogenerate    
+
+  }
+
+  *note: 2000-2010, use September 2011
+    if 2000 <= `year' & `year' <= 2010 {
+			local inputpath ${censusmarchraw}
+			local revhifile hlthins_sy`year'_rev.dta
+
+			merge 1:1 ph_seq pppos using "`inputpath'`revhifile'", assert(3) nogenerate    
+
+  }
+
+  * combine with 2014 redesign supplemental datasets
   *note: SPM and Current Coverage
   if 2010 <= `year' & `year' <= 2018 {
       * spm files based on reference year
@@ -131,11 +155,18 @@ if `year' < 2019 {
   * run CHIP file
   if `year' == 2001 {
     local archivename chip2001pub.zip
-    local a cpsmar01.do
 
     tempfile rawdat
-    !unzip -p ${censusrawmarch}`archivename' > `rawdat'
-    do ${dictionaries}cpsmar01.do" `rawdat' ${dictionaries}cpsmar01.dct
+    !unzip -p ${censusmarchraw}`archivename' > `rawdat'
+    do ${dictionaries}cpsmar01.do `rawdat' ${dictionaries}cpsmar01.dct
+
+    * save, compress, clean up
+    compress
+    saveold cpsmarch_`year'_schip.dta, replace version(13)
+    zipfile cpsmarch_`year'_schip.dta, saving(cpsmarch_`year'_schip.dta.zip, replace)
+    copy cpsmarch_`year'_schip.dta.zip ${censusmarchstata}cpsmarch_`year'_schip.dta.zip, replace
+    erase cpsmarch_`year'_schip.dta
+    erase cpsmarch_`year'_schip.dta.zip
 
   }
 

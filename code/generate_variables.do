@@ -41,7 +41,7 @@ foreach var in
   schenrl
   earn income
   hoursly wrkly wksly_binned
-  hicovly hicov
+  hicovly hicov hicovlyi
   penplan penincl
   foodstamps
   medicaid medicaidcov
@@ -57,7 +57,8 @@ foreach var in
   disability parent
   migarea migstatus migmetro
   lookdurly spmwgt childtaxcredit
-  hiemp hiemply
+  hiownemp hiownemply hiownpaidly
+  redesign
   {;
     do ${codevars}generate_`var'.do;
   };
