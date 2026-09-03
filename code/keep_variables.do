@@ -24,7 +24,7 @@ keepifexist
 	earnhour a_earnhour
 	otcrec
 	otcamt wage_noadj wageotc_noadj tc_earnhour
-	faminc faminc_det faminci
+	faminc faminci faminc_det
 	ownchild famrel agechild
 	telework hourslwtw
 	diffdress differrands diffhear diffmemory diffphysical diffvision
@@ -35,7 +35,7 @@ keepifexist
 	povlev povrate
 	schenrl
 	earn income
-	hoursly wrkly wksly_binned
+	hoursly wrkly wkswrklyi
 	hicovly hicov hicovlyi
 	penplan penincl
 	foodstamps
@@ -44,8 +44,8 @@ keepifexist
 	eitc
 	offpovuniverse offpov offpovcut offfaminc
 	spmpov spmpovcut spmeitc
-	spm_fedtax spm_statetax
-	spm_schlunch schlunch spm_snap spm_wic spm_mortgage
+	spmfedtax spmstatetax
+	spmschlunch schlunch spmsnap spmwic spmmortgage
 	spmfamtype
 	cowly
 	dhhtype famkind
@@ -64,7 +64,7 @@ if $monthlycps == 1 | $maycps == 1 {
     famern
     famiws
     hhinc hhpct
-    wrkly wksly_binned
+    wrkly wkswrklyi
 	income
 	faminc
     earn
@@ -78,8 +78,8 @@ if $monthlycps == 1 | $maycps == 1 {
     eitc
     offpovuniverse offpov offpovcut offfaminc
     spmpov spmpovcut spmeitc
-    spm_fedtax spm_statetax
-    spm_schlunch schlunch spm_snap spm_wic spm_mortgage
+    spmfedtax spmstatetax
+    spmschlunch schlunch spmsnap spmwic spmmortgage
     spmfamtype
     cowly indcode
     dhhtype famkind 
