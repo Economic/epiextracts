@@ -113,19 +113,30 @@ foreach year of numlist `minyear'(1)`maxyear' {
 		* for March CPS, use month=3 (march)
 		global date = tm(`year'm3)
 
+		* define file path to data
 		if 1962 <= `year' & `year' <= 1997 {
+
+			local inputpath ${uniconmarch}
+
+			* use bridge file for 1988
 			if 1988 == `year' {
-				local inputpath ${uniconmarch}
 				local inputfile unicon_march_`year'b.dta
 			}
 			else {
-				local inputpath ${uniconmarch}
 				local inputfile unicon_march_`year'.dta
 			}
 		}
 		if 1998 <= `year' {
+
 			local inputpath ${censusmarchstata}
-			local inputfile cpsmarch_`year'.dta
+
+			* use expanded CHIP file for 2001
+			if `year' == 2001 {
+				local inputfile cpsmarch_`year'_schip.dta
+			}
+			else {
+				local inputfile cpsmarch_`year'.dta
+			}
 		}
 
 		* unzip and load source data into memory
