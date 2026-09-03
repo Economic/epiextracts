@@ -14,11 +14,19 @@ if $monthlycps == 1 {
 }
 
 if $marchcps == 1 {
+	if tm(1962m1) <= $date & $date <= tm(1976m12) {
+
+		* weight of primary householder
+        bysort _hhid: egen hhwgt_primhh = max(cond(_relhd == 1, asecwgt, .))
+
+        replace hhwgt = hhwgt_primhh
+
+	}
 	if tm(1977m1) <= $date & $date <= tm(1997m12) {
 		replace hhwgt = oldhhwgt / 100
 	}
 	if tm(1998m1) <= $date & $date <= tm(2013m12) {
-		replace hhwgt = hsup_wgt
+		replace hhwgt = hsup_wgt if hsup_wgt > 0
 	}
 	if tm(2014m1) <= $date & $date <= tm(2014m12) {
 		replace hhwgt = hsup_wgt * (3/8) if redesign == 1
