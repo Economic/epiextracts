@@ -28,7 +28,7 @@ foreach var in
 	earnhour a_earnhour
   otcrec
   otcamt wage_noadj wageotc_noadj tc_earnhour
-	faminci faminc_det
+	faminci faminci_det
 	faminc
 	ownchild famrel agechild
   telework hourslwtw

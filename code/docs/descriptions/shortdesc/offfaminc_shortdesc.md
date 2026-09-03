@@ -1,0 +1,1 @@
+`offfaminc` is family income, continuous, treating primary and related subfamilies as one household in accordance with the official poverty measure. See also [`offpov`](offpov.md) and [`offpovcut`](offpovcut.md).
