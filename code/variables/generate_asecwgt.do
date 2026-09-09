@@ -9,7 +9,7 @@ if $marchcps == 1 {
         replace asecwgt = wgt/100
     }
     if tm(1963m1) <= $date & $date <= tm(1963m12) {
-        replace asecwgt = (wgt/100) * 1.3262
+        replace asecwgt = (wgt/100) * 1.3675
     }
     if tm(1964m1) <= $date & $date <= tm(1965m12) {
         replace asecwgt = wgt/100
