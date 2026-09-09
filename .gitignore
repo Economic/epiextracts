@@ -20,11 +20,6 @@ pension_health.R
 *.feather
 tmpdata.do
 
-test_veteran_change.do
-check_*.do
-
-r_pilot
-
 *.gz
 
 r_pilot
@@ -32,4 +27,9 @@ hilary-hhpct.R
 census_benchmark_hinc05.csv
 esi_pension.R
 scratch*
+poverty_test.R
+rounds_list.R
+test_ipums.R
+test_create_extracts.do
+
 
