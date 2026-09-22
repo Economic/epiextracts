@@ -5,7 +5,7 @@ gen byte faminc = .
 
 if $marchcps == 1 {
 
-    if tm(1968m1) <= $date & $date <= tm(1997m12) {
+    if tm(1963m1) <= $date & $date <= tm(1997m12) {
         replace faminc = _faminc
     }
 

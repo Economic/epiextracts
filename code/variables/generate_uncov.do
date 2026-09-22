@@ -34,7 +34,7 @@ if $monthlycps == 1 {
 }
 
 if $marchcps == 1 {
-	if tm(1987m1) <= $date & $date <= tm(1997m12) {
+	if tm(1983m1) <= $date & $date <= tm(1997m12) {
 		replace uncov = 0 if old_uncov == 2
 		replace uncov = 1 if old_uncov == 1
 	}

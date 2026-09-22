@@ -121,7 +121,7 @@ if $marchcps == 1 {
 		replace raceorig = 1 if prdtrace == 1 /* White */
 		replace raceorig = 2 if prdtrace == 2 /* Black */
 		replace raceorig = 3 if prdtrace == 3 /* American Indian/Alaskan Native */
-		replace raceorig = 4 if prdtrace == 4 /* Asian only */
+		replace raceorig = 5 if prdtrace == 4 /* Asian only */
 		replace raceorig = 6 if prdtrace == 5 /* Hawaiian/Pacific Islander only */
 		replace raceorig = 10 if prdtrace == 6 /* White-Black */
 		replace raceorig = 11 if prdtrace == 7 /* White-AI */
@@ -140,11 +140,11 @@ if $marchcps == 1 {
 		replace raceorig = 30 if prdtrace == 20 /* 2 or 3 races */
 		replace raceorig = 31 if prdtrace == 21 /* 4 or 5 races */
 	}
-	if tm(2003m1) <= $date  {
+	if tm(2013m1) <= $date  {
 		replace raceorig = 1 if prdtrace == 1 /* White */
 		replace raceorig = 2 if prdtrace == 2 /* Black */
 		replace raceorig = 3 if prdtrace == 3 /* American Indian/Alaskan Native */
-		replace raceorig = 4 if prdtrace == 4 /* Asian only */
+		replace raceorig = 5 if prdtrace == 4 /* Asian only */
 		replace raceorig = 6 if prdtrace == 5 /* Hawaiian/Pacific Islander only */
 		replace raceorig = 10 if prdtrace == 6 /* White-Black */
 		replace raceorig = 11 if prdtrace == 7 /* White-AI */

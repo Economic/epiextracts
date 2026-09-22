@@ -12,6 +12,16 @@ if $monthlycps == 1 {
 }
 
 if $marchcps == 1 {
+	if tm(1988m1) <= $date & $date <= tm(1993m12) {
+		replace cow1 = 1 if class == 2
+		replace cow1 = 2 if class == 3
+		replace cow1 = 3 if class == 4
+		replace cow1 = 6 if class == 5
+		replace cow1 = 7 if class == 6
+		replace cow1 = 8 if class == 7
+		replace cow1 = 9 if class == 1
+
+	}
 	if tm(1994m1) <= $date & $date <= tm(1997m12) {
 		replace cow1 = cowjob1
 		replace cow1 = . if cowjob1 <= 0
@@ -33,6 +43,7 @@ lab def cow1
 6 "Self-employed, incorporated"
 7 "Self-employed, unincorporated"
 8 "Without pay"
+9 "Private"
 ;
 #delimit cr
 lab val cow1 cow1

@@ -8,8 +8,8 @@ if $marchcps == 1 {
         replace povrate = povlev
     }
     if tm(1976m1) <= $date {
-        replace povrate = 0 if povlev == 0     
-        replace povrate = 1 if povlev > 0
+        replace povrate = 0 if povlev == 0 & povlev != .    
+        replace povrate = 1 if povlev > 0 & povlev != .
     }
 }
 

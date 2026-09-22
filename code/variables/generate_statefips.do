@@ -84,16 +84,16 @@ if $marchcps == 1 {
 	}
 
 	if tm(1998m1) <= $date & $date <= tm(2000m12) {
-		cap drop region statefips
+		cap drop statefips
 		rename hg_st60 statecensus
 		* we want the missing values and the full value labels, so do the following merge
 		merge m:1 statecensus using $stategeocodes, assert(2 3) keep(3) nogenerate
-		cap rename hg_reg gereg
+		/*cap rename hg_reg gereg
 		assert region == gereg
 		* ridiculous hack to pull in value labels for statefips
 		* which are not merged above
 		drop statecensus
-		rename statecensus_alt statecensus
+		rename statecensus_alt statecensus*/
 	}
 
 	if tm(2001m1) <= $date {

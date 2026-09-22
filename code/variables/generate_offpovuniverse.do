@@ -26,4 +26,4 @@ label def offpovuniverse 0 "Not in poverty universe" 1 "In poverty universe"
 label value offpovuniverse offpovuniverse
 notes offpovuniverse: Universe definition from 1980-present: all persons except for unrelated individuals under age 15
 notes offpovuniverse: 1963-1987: famdesc & age
-notes offpovuniverse: 1989-present: famtype & age
+notes offpovuniverse: 1988-present: famtype & age

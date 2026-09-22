@@ -13,9 +13,14 @@ if $marchcps == 1 {
         replace povlev = orig_povlev if orig_povlev > 1
         replace povlev = 0 if orig_povlev == 1   
     }
-    if tm(1998m1) <= $date {
+    if tm(1998m1) <= $date & $date <= tm(2019m12) {
         replace povlev = famlis if famlis > 1
         replace povlev = 0 if famlis == 1
+    }
+        if tm(2020m1) <= $date {
+        replace povlev = famlis if famlis > 1
+        replace povlev = 0 if famlis == 1
+        replace povlev = . if famlis == -1
     }
 }
 

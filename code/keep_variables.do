@@ -36,22 +36,22 @@ keepifexist
 	schenrl
 	earn income
 	hoursly wrkly wkswrklyi
-	hicovly hicov hicovlyi
+	hicovly hicov
 	penplan penincl
 	foodstamps
-	medicaid medicaidcov
+  	himcaidly himcarely 
+  	hiprivly higotherly
 	pubhouse hhtenure rentsub
-	eitc
 	offpovuniverse offpov offpovcut offfaminc
 	spmpov spmpovcut spmeitc
 	spmfedtax spmstatetax
-	spmschlunch schlunch spmsnap spmwic spmmortgage
+	spmschlunch spmsnap spmwic spmmortgage
 	spmfamtype
 	cowly
 	dhhtype famkind
 	disability parent
 	migarea migstatus migmetro
-	lookdurly spmwgt childtaxcredit
+	lookdurly spmwgt
 	redesign
 	hiownemp hiownemply hiownpaidly
 ;
@@ -73,19 +73,19 @@ if $monthlycps == 1 | $maycps == 1 {
     hicovly hicov
     penplan penincl
     foodstamps
-    medicaid medicaidcov
+    himcaidly himcarely 
+    hiprivly higotherly
     pubhouse hhtenure rentsub
-    eitc
     offpovuniverse offpov offpovcut offfaminc
     spmpov spmpovcut spmeitc
     spmfedtax spmstatetax
-    spmschlunch schlunch spmsnap spmwic spmmortgage
+    spmschlunch spmsnap spmwic spmmortgage
     spmfamtype
     cowly indcode
     dhhtype famkind 
     disability parent
     migarea migstatus migmetro
-    lookdurly spmwgt childtaxcredit
+    lookdurly spmwgt
     hiemp hiownemply hiownpaidly
 	redesign
   ;

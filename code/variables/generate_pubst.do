@@ -19,7 +19,7 @@ if $monthlycps == 1 {
 }
 
 if $marchcps == 1 {
-	if tm(1989m1) <= $date & $date <= tm(1997m12) {
+	if tm(1988m1) <= $date & $date <= tm(1997m12) {
 		replace pubst = 0 if class >= 1 & class ~= .
 		replace pubst = 1 if class == 3
 	}

@@ -26,18 +26,18 @@ if $monthlycps == 1 {
 
 if $marchcps == 1 {
 	if tm(1962m1) <= $date & $date <= tm(1962m12) {
-		replace pubsec = class if 0 <= class & class <= 1
+		replace pubsec = 1 if class == 1
 		replace pubsec = 0 if 2 <= class & class <= 3
 	}
 	if tm(1963m1) <= $date & $date <= tm(1967m12) {
 		replace pubsec = 1 if class == 2
 		replace pubsec = 0 if class == 1 | 3 <= class & class <= 4
 	}
-	if tm(1976m1) <= $date & $date <= tm(1988m12) {
+	if tm(1968m1) <= $date & $date <= tm(1987m12) {
 		replace pubsec = 1 if class == 2
 		replace pubsec = 0 if class == 1 | 3 <= class & class <= 5
 	}
-	if tm(1989m1) <= $date & $date <= tm(1997m12) {
+	if tm(1988m1) <= $date & $date <= tm(1997m12) {
 		replace pubsec = 0 if class == 1 | 5 <= class & class <= 8
 		replace pubsec = 1 if 2 <= class & class <= 4
 	}

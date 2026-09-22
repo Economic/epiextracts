@@ -15,9 +15,9 @@ if $monthlycps == 1 {
 }
 
 if $marchcps == 1 {
-	if tm(1994m1) <= $date & $date <= tm(1997m12) {
+	if tm(1988m1) <= $date & $date <= tm(1997m12) {
 		replace selfinc = 0 if class >= 1 & class != .
-		replace selfinc = 1 if cowjob1 == 5
+		replace selfinc = 1 if class == 5
 	}
 	if tm(1998m1) <= $date {
 		replace selfinc = 0 if peio1cow >= 1 & peio1cow != .

@@ -26,7 +26,7 @@ if $marchcps == 1 {
 	if tm(1963m1) <= $date & $date <= tm(1991m12) {
 		* none - 11th
 		*note: Unicon recodes NIU/NA & None or K as 0
-		replace educ = 1 if 0 <= _grdhi & _grdhi <= 11
+		replace educ = 1 if 1 <= _grdhi & _grdhi <= 11
 		* did not complete 12th
 		replace educ = 1 if _grdhi == 12 & grdcom == 2
 		* did complete 12th
@@ -38,7 +38,7 @@ if $marchcps == 1 {
 		* did complete college
 		replace educ = 4 if _grdhi == 16 & grdcom == 1
 		* 4-5 years of college
-		replace educ = 4 if _grdhi == 17 & grdcom == 2
+		replace educ = 4 if _grdhi >= 17 & grdcom == 2
 		* more than 5 years of college
 		replace educ = 5 if 17 <= _grdhi & _grdhi <= 18 & grdcom == 1
 	}

@@ -31,14 +31,14 @@ if $monthlycps == 1 {
 
 if $marchcps == 1 {
 	if tm(1962m1) <= $date & $date <= tm(1962m12) {
+		replace selfemp = 0 if class >= 0 & class != .
+		replace selfemp = 1 if class == 2
+	}
+	if tm(1963m1) <= $date & $date <= tm(1987m12) {
 		replace selfemp = 0 if class >= 1 & class != .
 		replace selfemp = 1 if class == 3
 	}
-	if tm(1963m1) <= $date & $date <= tm(1988m12) {
-		replace selfemp = 0 if class >= 1 & class != .
-		replace selfemp = 1 if class == 3
-	}
-	if tm(1989m1) <= $date & $date <= tm(1997m12) {
+	if tm(1988m1) <= $date & $date <= tm(1997m12) {
 		replace selfemp = 0 if class >= 1 & class != .
 		replace selfemp = 1 if class == 6
 	}

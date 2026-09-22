@@ -25,17 +25,9 @@ if $monthlycps == 1 | $maycps == 1 {
 }
 
 if $marchcps == 1 {
-	if tm(1962m1) <= $date & $date <= tm(1962m12) {
-		replace veteran = 0 if vet == 5
-		replace veteran = 1 if 0 <= vet & vet <= 4
-	}
-	if tm(1963m1) <= $date & $date <= tm(1967m12) {
-		replace veteran = 1 if 1 <= vet & vet <= 9
-		replace veteran = 0 if vet == 6
-	}
-	if tm(1968m1) <= $date & $date <= tm(1997m12) {
-		replace veteran = 0 if vet == 6
-		replace veteran = 1 if 1 <= vet & vet <= 5
+	if tm(1962m1) <= $date & $date <= tm(1997m12) {
+		replace veteran = 1 if 1 <= _vet & _vet <= 8
+		replace veteran = 0 if _vet == 6
 	}
 	if tm(1998m1) <= $date & $date <= tm(2005m12) {
 		replace veteran = 0 if a_vet == 6

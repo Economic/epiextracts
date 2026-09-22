@@ -10,6 +10,16 @@ if $monthlycps == 1 {
     }
 }
 if $marchcps == 1 {
+    if tm(1976m1) <= $date & $date <= tm(1987m12) {
+        replace ftptstat = 11 if _wkstat == 3
+        replace ftptstat = 12 if _wkstat == 5
+    }
+    if tm(1988m1) <= $date & $date <= tm(1993m12) {
+        replace ftptstat = 3 if wkstat == 3
+        replace ftptstat = 6 if wkstat == 5
+        replace ftptstat = 11 if wksch == 3
+        replace ftptstat = 12 if wksch == 4
+    }
     if tm(1994m1) <= $date & $date <= tm(1997m12) {
         replace ftptstat = rwkstat
         replace ftptstat = . if ftptstat <= 0 

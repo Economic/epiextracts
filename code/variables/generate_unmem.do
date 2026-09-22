@@ -23,9 +23,9 @@ if $monthlycps == 1 {
 }
 
 if $marchcps == 1 {
-	if tm(1971m1) <= $date & $date <= tm(1997m12) {
-		replace unmem = 0 if unmem == 2
-		replace unmem = 1 if unmem == 1
+	if tm(1983m1) <= $date & $date <= tm(1997m12) {
+		replace unmem = 0 if old_unmem == 2
+		replace unmem = 1 if old_unmem == 1
 	}
 
 	if tm(1998m1) <= $date {

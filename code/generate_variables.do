@@ -41,22 +41,22 @@ foreach var in
   schenrl
   earn income
   hoursly wrkly wkswrklyi
-  hicovly hicov hicovlyi
+  hicovly hicov
   penplan penincl
   foodstamps
-  medicaid medicaidcov
+  himcaidly himcarely 
+  hiprivly higotherly
   pubhouse hhtenure rentsub
-  eitc
   offpovuniverse offfaminc offpovcut offpov 
   spmpov spmpovcut spmeitc
   spmfedtax spmstatetax
-  spmschlunch schlunch spmsnap spmwic spmmortgage 
+  spmschlunch spmsnap spmwic spmmortgage 
   spmfamtype
   cowly
   dhhtype famkind 
   disability parent
   migarea migstatus migmetro
-  lookdurly spmwgt childtaxcredit
+  lookdurly spmwgt
   hiownemp hiownemply hiownpaidly
   redesign
   {;

@@ -4,7 +4,28 @@
 gen byte migarea = .
 
 if $marchcps == 1 {
-    if tm(1989m1) <= $date & $date <= tm(1994m12) {
+    if tm(1968m1) <= $date & $date <= tm(1971m12) {
+        replace migarea = 1 if miggen == 1
+        replace migarea = 2 if miggen == 2
+        replace migarea = 3 if miggen == 3 
+        replace migarea = 7 if miggen == 8
+        replace migarea = 8 if 4 <= miggen & miggen <= 7
+    }
+    if tm(1976m1) <= $date & $date <= tm(1976m12) {
+        replace migarea = 1 if miggen == 1
+        replace migarea = 2 if miggen == 2
+        replace migarea = 3 if inlist(miggen, 3, 4)
+        replace migarea = 7 if miggen == 8
+        replace migarea = 8 if 5 <= miggen & miggen <= 7
+    }
+    if tm(1977m1) <= $date & $date <= tm(1987m12) {
+        replace migarea = 1 if miggen == 1
+        replace migarea = 2 if miggen == 2
+        replace migarea = 3 if inlist(miggen, 3, 4, 9)
+        replace migarea = 7 if miggen == 7
+        replace migarea = 8 if 5 <= miggen & miggen <= 6
+    }
+    if tm(1988m1) <= $date & $date <= tm(1994m12) {
         * variable missing for 1995
         if tm(1995m1) <= $date & $date <= tm(1995m12) {
             migarea = .
@@ -31,6 +52,7 @@ lab def migarea
 5 "Different divion, same region"
 6 "Different region"
 7 "Abroad"
+8 "Moved between states"
 ;
 #delimit cr;
 label value migarea migarea

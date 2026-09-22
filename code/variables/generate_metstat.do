@@ -26,6 +26,14 @@ if $monthlycps == 1 | $maycps == 1 {
 }
 
 if $marchcps == 1 {
+	if tm(1962m1) <= $date & $date <= tm(1967m12) {
+		replace metstat = 0 if citystat == 2
+		replace metstat = 1 if citystat == 0 | citystat == 1
+	}
+	if tm(1968m1) <= $date & $date <= tm(1976m12) {
+		replace metstat = 0 if citystat == 3
+		replace metstat = 1 if citystat == 1 | citystat == 2
+	}
 	if tm(1977m1) <= $date & $date <= tm(1997m12) {
 		replace metstat = 0 if orig_metstat == 2
 		replace metstat = 1 if orig_metstat == 1
