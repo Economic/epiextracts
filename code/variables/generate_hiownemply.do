@@ -21,5 +21,5 @@ lab val hiownemply hiownemply
 notes hiownemply: Available 1980-present
 notes hiownemply: Universe 1998-2018: those who worked last year
 notes hiownemply: Universe 2019-present: all persons with employment-based coverage
-notes hiownemply: 1998-2018 CPS: hiemp
+notes hiownemply: 1980-2018 CPS: hiemp
 notes hiownemply: 2019-present CPS: owngrp

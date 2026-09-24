@@ -48,6 +48,6 @@ if $marchcps == 1 {
 
 lab val offfaminc offfaminc
 lab var offfaminc "Official family income"
-notes offfaminc: faminc treats primary and related subfamilies as one household in accordance with the official poverty rate measure
+notes offfaminc: offfaminc treats primary and related subfamilies as one household in accordance with the official poverty rate measure
 notes offfaminc: 1968-1997: Unicon faminc
 notes offfaminc: 1998-present: CPS ftotval

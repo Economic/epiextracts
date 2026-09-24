@@ -24,7 +24,7 @@ keepifexist
 	earnhour a_earnhour
 	otcrec
 	otcamt wage_noadj wageotc_noadj tc_earnhour
-	faminc faminci faminci_det
+	faminc i_faminc i_faminc_det
 	ownchild famrel agechild
 	telework hourslwtw
 	diffdress differrands diffhear diffmemory diffphysical diffvision
@@ -35,7 +35,7 @@ keepifexist
 	povlev povrate
 	schenrl
 	earn income
-	hoursly wrkly wkswrklyi
+	hoursly wrkly i_wrkly
 	hicovly hicov
 	penplan penincl
 	foodstamps
@@ -54,7 +54,7 @@ keepifexist
 	migarea migstatus migmetro
 	lookdurly spmwgt
 	redesign
-	hiownemp hiownemply hiownpaidly
+	hiownemp hiownemply hiownpaid hiownpaidly
 ;
 #delimit cr;
 
@@ -65,7 +65,7 @@ if $monthlycps == 1 | $maycps == 1 {
     famern
     famiws
     hhinc hhpct
-    wrkly wkswrklyi
+    wrkly i_wrkly
 	income
 	faminc
     earn
@@ -88,7 +88,7 @@ if $monthlycps == 1 | $maycps == 1 {
     disability parent
     migarea migstatus migmetro
     lookdurly spmwgt
-    hiemp hiownemply hiownpaidly
+    hiownemp hiownemply hiownpaid hiownpaidly
 	redesign
   ;
   #delimit cr;

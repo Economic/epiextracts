@@ -28,7 +28,7 @@ foreach var in
 	earnhour a_earnhour
   otcrec
   otcamt wage_noadj wageotc_noadj tc_earnhour
-	faminci faminci_det
+	i_faminc i_faminc_det
 	faminc
 	ownchild famrel agechild
   telework hourslwtw
@@ -40,7 +40,7 @@ foreach var in
   povlev povrate
   schenrl
   earn income
-  hoursly wrkly wkswrklyi
+  hoursly wrkly i_wrkly
   hicovly hicov
   penplan penincl
   foodstamps
@@ -58,7 +58,7 @@ foreach var in
   disability parent
   migarea migstatus migmetro
   lookdurly spmwgt
-  hiownemp hiownemply hiownpaidly
+  hiownemp hiownemply hiownpaid hiownpaidly
   redesign
   {;
     do ${codevars}generate_`var'.do;

@@ -1,1 +1,1 @@
-`hicov` indicates whether a respondent was covered by health insurance last year. See also [`hiemp`](hiemp.md) and [`hipaid`](hipaid.md).
+`hicov` indicates whether the respondent is currently covered by health insurance at the time of the survey. See also [`hicovly`](hicovly.md), [`hiownemp`](hiownemp.md), and [`hiownpaid`](hiownpaid.md).

@@ -1,16 +1,16 @@
 ********************************************************************************
-* Family income, detailed
+* Intervalled family income, detailed
 ********************************************************************************
-gen faminci_det = .
+gen i_faminc_det = .
 
 if $monthlycps == 1 {
 	if tm(2010m1) <= $date {
-		replace faminci_det = hefaminc
+		replace i_faminc_det = hefaminc
 	}
 }
 
 #delimit ;
-lab def faminci_det
+lab def i_faminc_det
 1 "Less than $5,000"
 2 "$5,000 - $7,499"
 3 "$7,500 - $9,999"
@@ -29,6 +29,6 @@ lab def faminci_det
 16 "$150,000+"
 ;
 #delimit cr;
-lab val faminci_det faminci_det
-lab var faminci_det "Family income category, detailed"
-notes faminci_det: 2010-present: CPS hefaminc
+lab val i_faminc_det i_faminc_det
+lab var i_faminc_det "Intervalled family income, detailed"
+notes i_faminc_det: 2010-present: CPS hefaminc

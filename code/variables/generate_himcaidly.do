@@ -22,7 +22,7 @@ if $marchcps == 1 {
 lab var himcaidly "Medicaid coverage last year"
 lab def himcaidly 1 "Covered" 0 "Not covered"
 lab val himcaidly himcaidly
-notes himcaidly: Available 1988-present
-notes himcaidly: 1988-present universe: All persons (not infants born after calendar year)
-notes himcaidly: 1988-1997 Unicon: mcaid
+notes himcaidly: Available 1980-present
+notes himcaidly: 1980-present universe: All persons (not infants born after calendar year)
+notes himcaidly: 1980-1997 Unicon: mcaid
 notes himcaidly: 1998-present CPS: mcaid

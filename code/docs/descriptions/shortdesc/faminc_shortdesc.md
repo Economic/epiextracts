@@ -1,1 +1,1 @@
-`faminc` is a binned total family income category.
+`faminc` is continuous total family income. See also [`i_faminc`](i_faminc.md) for binned family income categories and [`offfaminc`](offfaminc.md) for family income as defined for the official poverty measure.
