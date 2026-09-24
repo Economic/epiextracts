@@ -34,7 +34,9 @@ vars <- c(
   # "UNION", 
   "HIMCAIDLY", 
   #"EARNWEEK", "UH_NOWANYCOV_A1",
-  "OCC", "IND", "OCCLY", "INDLY"
+  "OCC", "IND", "OCCLY", "INDLY",
+  "COVERPI", "PRVTCOVLY", "HIMCARELY", "HICHAMP",
+  "TRCCOVLY", "CHAMPVALY", "INHCOVLY"
 )
 
 ipums_raw <- dl_ipums_asec(
@@ -76,8 +78,8 @@ ipums_march <- ipums_raw %>%
           hrhhid = as.character(hrhhid), hrhhid2 = as.character(hrhhid2),
           # epi extracts hrhhid is consistent, IPUMS is not, pad with zeros to see if this is a fix
           hrhhid = str_pad(hrhhid, width = 15, pad = "0", side = "left"),
-          hserial = hseq
-          # ,statefips = statefip,
+          hserial = hseq,
+          # statefips = statefip,
           # statefips = case_when(
           #   year %in% c(1973:1976) & statefip == 25 ~ 14,
           #   year %in% c(1973:1976) & statefip == 9 ~ 16,
@@ -120,7 +122,13 @@ ipums_march <- ipums_raw %>%
           #   year %in% c(1968:1972) & statefip == 79 ~ 89,
           #   year %in% c(1968:1972) & statefip == 41 ~ 91,
           #   year %in% c(1968:1972) & statefip == 6 ~ 92,
-          #   year %in% c(1968:1972) & statefip == 80 ~ 99)
+          #   year %in% c(1968:1972) & statefip == 80 ~ 99),
+          hiother = 
+            case_when(
+              hichamp == 2 ~ 1,
+              inhcovly == 2 ~ 1,
+              TRUE ~ 0
+            )
           ) |> 
   rename(pulineno = lineno)
 
@@ -221,12 +229,12 @@ all_lists <- list(
                   #id_list, # all difference explained
                   #geo_list,
                   #demo_list, # all differences explained
-                  educ_list,
+                  #educ_list,
                   #lf_list,
                   #spm_list, # spm can go back further in time?
                   #public_benefits_list, # removing some variables from list
-                  #hi_pension_list
-                  offpov_list
+                  hi_pension_list
+                  #offpov_list
                   )
 
 # list of files to map to
@@ -234,12 +242,12 @@ all_files <- c(
               #"id.xlsx",
               #"geo.xlsx",
               #"demo.xlsx"
-              "educ.xlsx",
+              #"educ.xlsx",
               #"lf.xlsx",
               #"spm.xlsx",
               #"public_benefits.xlsx",
-              #"hi_pension.xlsx", 
-              "off_pov.xlsx"
+              "hi_pension.xlsx"
+              #"off_pov.xlsx"
             )
 
 # quietly iterate over the two parallel vectors
@@ -259,5 +267,6 @@ pwalk(
     wb_save(wb, file, overwrite = TRUE)
   }
 )
+
 
 

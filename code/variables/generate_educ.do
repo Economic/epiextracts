@@ -12,8 +12,10 @@ if $marchcps == 1 {
 		replace educ = 1 if _grdhi == 12 & grdcom == 7
 		* did complete 12th
 		replace educ = 2 if _grdhi == 12 & grdcom == 6
+		replace educ = 2 if _grdhi == 13 & grdcom == 7
 		* college: 1-3 yrs
-		replace educ = 3 if 13 <= _grdhi & _grdhi <= 15
+		replace educ = 3 if _grdhi == 13 & grdcom == 6
+		replace educ = 3 if 14 <= _grdhi & _grdhi <= 15
 		* did not complete college
 		replace educ = 3 if _grdhi == 16 & grdcom == 7
 		* did complete college
@@ -21,26 +23,75 @@ if $marchcps == 1 {
 		* 4-5 years of college
 		replace educ = 4 if _grdhi == 17 & grdcom == 7
 		* more than 5 years of college
-		replace educ = 5 if 17 <= _grdhi & _grdhi <= 18 & grdcom == 6
+		replace educ = 5 if _grdhi == 17 & grdcom == 6
+		replace educ = 5 if _grdhi == 18
 	}
-	if tm(1963m1) <= $date & $date <= tm(1991m12) {
+	if tm(1963m1) <= $date & $date <= tm(1967m12) {
 		* none - 11th
 		*note: Unicon recodes NIU/NA & None or K as 0
-		replace educ = 1 if 1 <= _grdhi & _grdhi <= 11
+		replace educ = 1 if 0 <= _grdhi & _grdhi <= 11
 		* did not complete 12th
 		replace educ = 1 if _grdhi == 12 & grdcom == 2
 		* did complete 12th
 		replace educ = 2 if _grdhi == 12 & grdcom == 1
+		replace educ = 2 if _grdhi == 13 & grdcom == 2
 		* college: 1-3 yrs
-		replace educ = 3 if 13 <= _grdhi & _grdhi <= 15
+		replace educ = 3 if _grdhi == 13 & grdcom == 1
+		replace educ = 3 if 14 <= _grdhi & _grdhi <= 15
 		* did not complete college
 		replace educ = 3 if _grdhi == 16 & grdcom == 2
 		* did complete college
 		replace educ = 4 if _grdhi == 16 & grdcom == 1
 		* 4-5 years of college
-		replace educ = 4 if _grdhi >= 17 & grdcom == 2
+		replace educ = 4 if _grdhi == 17 & grdcom == 2
 		* more than 5 years of college
-		replace educ = 5 if 17 <= _grdhi & _grdhi <= 18 & grdcom == 1
+		replace educ = 5 if _grdhi == 17 & grdcom == 1
+		replace educ = 5 if _grdhi == 18
+	}
+	if tm(1968m1) <= $date & $date <= tm(1987m12) {
+		* none - 11th
+		*note: Unicon recodes NIU/NA & None or K as 0
+		replace educ = 1 if 1 <= grdhi & grdhi <= 12
+		* did not complete 12th
+		replace educ = 1 if _grdhi == 12 & grdcom == 2
+		* did complete 12th
+		replace educ = 2 if _grdhi == 12 & grdcom == 1
+		replace educ = 2 if _grdhi == 13 & grdcom == 2
+		* college: 1-3 yrs
+		replace educ = 3 if _grdhi == 13 & grdcom == 1
+		replace educ = 3 if 14 <= _grdhi & _grdhi <= 15
+		* did not complete college
+		replace educ = 3 if _grdhi == 16 & grdcom == 2
+		* did complete college
+		replace educ = 4 if _grdhi == 16 & grdcom == 1
+		* 4-5 years of college
+		replace educ = 4 if _grdhi == 17 & grdcom == 2
+		* more than 5 years of college
+		replace educ = 5 if _grdhi == 17 & grdcom == 1
+		replace educ = 5 if _grdhi == 18
+	}
+	if tm(1968m1) <= $date & $date <= tm(1991m12) {
+		* none - 11th
+		*note: Unicon recodes NIU/NA & None or K as 0
+		replace educ = 1 if _grdhi == 0 & grdcom != 0
+		replace educ = 1 if 1 <= _grdhi & _grdhi <= 11
+		* did not complete 12th
+		replace educ = 1 if _grdhi == 12 & grdcom == 2
+		* did complete 12th
+		replace educ = 2 if _grdhi == 12 & grdcom == 1
+		replace educ = 2 if _grdhi == 13 & grdcom == 2
+		* college: 1-3 yrs
+		replace educ = 3 if _grdhi == 13 & grdcom == 1
+		replace educ = 3 if 14 <= _grdhi & _grdhi <= 15
+		* did not complete college
+		replace educ = 3 if _grdhi == 16 & grdcom == 2
+		* did complete college
+		replace educ = 4 if _grdhi == 16 & grdcom == 1
+		* 4-5 years of college
+		replace educ = 4 if _grdhi == 17 & grdcom == 2
+		* more than 5 years of college
+		replace educ = 5 if _grdhi == 17 & grdcom == 1
+		replace educ = 5 if _grdhi == 18
 	}
 	if tm(1992m1) <= $date & $date <= tm(1997m12) {
 		* LTHS; includes "12th grade, no diploma"

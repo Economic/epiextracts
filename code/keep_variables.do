@@ -39,6 +39,7 @@ keepifexist
 	hicovly hicov
 	penplan penincl
 	foodstamps
+	hiihsly
   	himcaidly himcarely 
   	hiprivly higotherly
 	pubhouse hhtenure rentsub
@@ -73,6 +74,7 @@ if $monthlycps == 1 | $maycps == 1 {
     hicovly hicov
     penplan penincl
     foodstamps
+	hiihsly
     himcaidly himcarely 
     hiprivly higotherly
     pubhouse hhtenure rentsub

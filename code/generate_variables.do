@@ -44,6 +44,7 @@ foreach var in
   hicovly hicov
   penplan penincl
   foodstamps
+  hiihsly
   himcaidly himcarely 
   hiprivly higotherly
   pubhouse hhtenure rentsub

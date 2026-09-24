@@ -32,6 +32,5 @@ replace asecwgt = . if asecwgt < 0
 
 label var asecwgt "March/ASEC weight"
 notes asecwgt: 1963-1979: wgt
-notes asecwgt: 1980-1997: wgtalt used in available years (1980 & 1990)
 notes asecwgt: 1998-present: marsupwt 
 notes asecwgt: 1962 and 1966 adjusted using IPUMS methodology

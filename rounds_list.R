@@ -193,13 +193,19 @@ hi_pension_list <- list(
                 #"inclugh",
                 #"paidgh",
                 #"himcaidly", "caidly", "caidnw",
-                #"pension"
+                #"pension",
+                "coverpi", "prvtcovly",
+                "himcarely", 
+                "hiother" 
                 ),
   epimd_tab = c(#"hicov", "hicovly", 
                 #"hiownemply",
                 #"hiownpaidly",
                 #"himcaidly",
-                #"penplan", "penincl"
+                #"penplan", "penincl",
+                "hiprivly",
+                "himcarely",
+                "higotherly"
               )
 )
 

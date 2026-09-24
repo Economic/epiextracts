@@ -4,23 +4,28 @@
 gen byte higotherly = .
 
 if $marchcps == 1 {
-	if tm(1988m1) <= $date & $date <= tm(1994m12) {
+	if tm(1980m1) <= $date & $date <= tm(1994m12) {
 		replace higotherly = 1 if champ == 1 /* military/veteran health insurance */
+		replace higotherly = 0 if champ == 2
 
 	}
 	if tm(1995m1) <= $date & $date <= tm(1997m12) {
-		replace higotherly = 1 if oth == 1 /* other types of government coverage */
-		replace higotherly = 1 if othstper == 1 /* other types of government coverage*/
+		replace higotherly = 1 if champ == 1
+		replace higotherly = 1 if hiihsly == 1
+		replace higotherly = 0 if champ == 2 & hiihsly == 0
 	}
 	if tm(1998m1) <= $date & $date <= tm(2018m12) {
-		replace higotherly = 1 if oth == 1 /* other types of government coverage */
-		replace higotherly = 1 if othstper == 1 /* other types of government coverage */
+		replace higotherly = 1 if champ == 1
+		replace higotherly = 1 if hiihsly == 1
+		replace higotherly = 0 if champ == 2 & hiihsly == 0
+		
 	}    
 	if tm(2019m1) <= $date {
 		replace higotherly = 1 if ihsflg == 1 /* Indian health services coverage */
 		replace higotherly = 1 if mil == 1 /* active duty VA/TRICARE coverage */
 		replace higotherly = 1 if champva == 1 /* civilian VA coverage */
 		replace higotherly = 1 if vacare == 1 /* veteran VA coverage */
+		replace higotherly = 0 if ihsflg == 2 & mil == 2 & champva == 2 & vacare == 2
 	}
 }
 
