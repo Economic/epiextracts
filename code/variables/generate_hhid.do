@@ -24,7 +24,7 @@ if $monthlycps == 1 | $maycps == 1 {
 if $marchcps == 1 {
 	* character in underlying variable
 	if tm(1962m1) <= $date & $date <= tm(1975m12) {
-		gegen temp_hhid = group(year oldhhid)
+		gegen temp_hhid = group(year _hhid)
 		replace hhid = temp_hhid
 		drop temp_hhid
 	}

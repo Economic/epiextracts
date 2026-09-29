@@ -5,7 +5,31 @@ gen byte offfaminc = .
 
 if $marchcps == 1 {
     
-    if tm(1968m1) <= $date & $date <= tm(1987m12) {
+    if tm(1968m1) <= $date & $date <= tm(1971m12) {
+        * related subfamily indicator
+        gen related = famsub >= 1
+        * presence of related subfamily by household
+        bysort hrhhid hserial: egen rsubfam = max(related)
+
+        * income of primary householder with related subfamily
+        bysort hrhhid hserial: egen ftotval_rsubfam = max(cond(famdesc == 2, _faminc, .))
+
+        replace offfaminc = ftotval_rsubfam if offpovuniverse == 1 & rsubfam == 1 & inlist(famdesc, 2, 4)
+        replace offfaminc = _faminc if offpovuniverse == 1 & offfaminc == .
+    }
+    if tm(1972m1) <= $date & $date <= tm(1975m12) {
+        * related subfamily indicator
+        gen related = famsub >= 1
+        * presence of related subfamily by household
+        bysort hrhhid hhid: egen rsubfam = max(related)
+
+        * income of primary householder with related subfamily
+        bysort hrhhid hhid: egen ftotval_rsubfam = max(cond(famdesc == 2, _faminc, .))
+
+        replace offfaminc = ftotval_rsubfam if offpovuniverse == 1 & rsubfam == 1 & inlist(famdesc, 2, 4)
+        replace offfaminc = _faminc if offpovuniverse == 1 & offfaminc == .
+    }
+    if tm(1976m1) <= $date & $date <= tm(1987m12) {
         * related subfamily indicator
         gen related = famsub >= 1
         * presence of related subfamily by household

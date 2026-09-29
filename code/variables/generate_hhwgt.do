@@ -17,7 +17,7 @@ if $marchcps == 1 {
 	if tm(1962m1) <= $date & $date <= tm(1976m12) {
 
 		* weight of primary householder
-        bysort _hhid: egen hhwgt_primhh = max(cond(_relhd == 1, asecwgt, .))
+        bysort hhid: egen hhwgt_primhh = max(cond(_relhd == 1, asecwgt, .))
 
         replace hhwgt = hhwgt_primhh
 
