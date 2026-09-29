@@ -14,7 +14,6 @@ nohup.out
 .Rhistory
 .Rproj.user
 test*.csv
-pension_health.R
 
 *.smcl
 *.feather
@@ -28,6 +27,7 @@ census_benchmark_hinc05.csv
 esi_pension.R
 scratch*
 poverty_test.R
+rounds_list.R
+test_ipums.R
 test_create_extracts.do
-
 
