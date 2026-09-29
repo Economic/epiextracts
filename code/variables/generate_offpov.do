@@ -5,8 +5,9 @@ gen byte offpov = .
 
 if $marchcps == 1 {
     if tm(1968m1) <= $date {
-        replace offpov = 0 if offfaminc >= offpovcut & offpovuniverse == 1
-        replace offpov = 1 if offfaminc < offpovcut & offpovuniverse == 1
+        * require both values; Stata treats missing as larger than any number
+        replace offpov = 0 if offfaminc >= offpovcut & offpovuniverse == 1 & !missing(offfaminc, offpovcut)
+        replace offpov = 1 if offfaminc < offpovcut & offpovuniverse == 1 & !missing(offfaminc, offpovcut)
     }
 }
 

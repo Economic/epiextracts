@@ -16,10 +16,10 @@ if $monthlycps == 1 {
 if $marchcps == 1 {
 	if tm(1963m1) <= $date & $date <= tm(1997m12) {
 		if tm(1976m1) <= $date & $date <= tm(1976m12) {
-			egen firstperson = min(perid), by(hhid famid)
+			egen firstperson = min(perid), by(hserial famid)
 			gen famwgt2 = .
-			replace famwgt2 = asecwgt / 100 if perid == firstperson
-			egen famwgt3 = mean(famwgt2), by(hhid famid)
+			replace famwgt2 = asecwgt if perid == firstperson
+			egen famwgt3 = mean(famwgt2), by(hserial famid)
 			replace famwgt = famwgt3
 			drop firstperson famwgt2 famwgt3
 		}
@@ -27,7 +27,17 @@ if $marchcps == 1 {
 			replace famwgt = oldfamwgt / 100
 		}
 	}
-	if tm(1998m1) <= $date {
+	if tm(1998m1) <= $date & $date <= tm(2013m12) {
+		replace famwgt = fsup_wgt
+	}
+	if tm(2014m1) <= $date & $date <= tm(2014m12) {
+		replace famwgt = fsup_wgt * (3/8) if redesign == 1
+		replace famwgt = fsup_wgt * (5/8) if redesign == 0
+	}
+	if tm(2015m1) <= $date & $date <= tm(2018m12) {
+		replace famwgt = fsup_wgt
+	}
+	if tm(2019m1) <= $date {
 		replace famwgt = fsup_wgt / 100
 	}
 }

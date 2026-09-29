@@ -96,7 +96,7 @@ if $monthlycps == 1 | $maycps == 1 {
 
 if $marchcps == 1 {
   #delimit;
-  drop hrsersuf agechild
+  drop hrsersuf hhid agechild
     basicwgt cmpwgt orgwgt
     cow2
     emphrs gradecom

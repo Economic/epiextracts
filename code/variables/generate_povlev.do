@@ -11,7 +11,7 @@ if $marchcps == 1 {
         replace old_povlev = 0 if orig_povlev == 1
         replace old_povlev = 1 if orig_povlev == 2
         
-        bysort hrhhid hhid: egen povlev_rsubfam = max(cond(famtype == 1 & rsubfam == 1, old_povlev, .))
+        bysort hrhhid hserial: egen povlev_rsubfam = max(cond(famtype == 1 & rsubfam == 1, old_povlev, .))
 
         replace povlev = old_povlev
         replace povlev = povlev_rsubfam if povlev == .

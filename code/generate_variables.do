@@ -37,7 +37,6 @@ foreach var in
   famern
   famiws
   hhinc hhpct
-  povlev povrate
   schenrl
   earn income
   hoursly wrkly i_wrkly
@@ -49,6 +48,7 @@ foreach var in
   hiprivly higotherly
   pubhouse hhtenure rentsub
   offpovuniverse offfaminc offpovcut offpov 
+  povlev povrate
   spmpov spmpovcut spmeitc
   spmfedtax spmstatetax
   spmschlunch spmsnap spmwic spmmortgage 

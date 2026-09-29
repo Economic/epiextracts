@@ -19,6 +19,6 @@ if $marchcps == 1 {
 }
 
 lab var personid "Person identifer (unique within household-month)"
-notes personid: Person ID unique within year, month, hhid
+notes personid: Person ID unique within year, month, household (Basic: hhid; March: hserial)
 notes personid: 1998-present Basic: occurnum
 notes personid: 2003-present March: peridnum

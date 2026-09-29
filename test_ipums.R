@@ -39,46 +39,70 @@ vars <- c(
   "TRCCOVLY", "CHAMPVALY", "INHCOVLY"
 )
 
+vars <- c(
+  "YEAR", "SERIAL", "MONTH", 
+  "ASECWT", "ASECWTH", "ASECFWT",
+  #"PERNUM", "HRHHID", "LINENO", 
+  #"CLASSWKR", "CLASSWLY",
+  #"OCC", "IND",
+  "FTOTVAL", "OFFTOTVAL",
+  #"AGE", "SEX",  
+  #"FTYPE",
+  "POVERTY", "CUTOFF",
+  "OFFCUTOFF", "OFFPOV"
+)
+
+
 ipums_raw <- dl_ipums_asec(
-    years = 1962:2025, 
+    years = 1962:2026, 
     variables = vars) |> 
   janitor::clean_names()
 
 ipums_march <- ipums_raw %>% 
-  mutate(i_educ = case_when(
-           # NIU/blank/missing
-           educ %in% c(0, 1, 999) ~ NA,
-           # grades 1-11, plus 12th grade attended w/o diploma (matches EPI's grdcom==2 rule)
-           educ %in% c(2:71) ~ "Less than high school",
-           # 12th grade w/ diploma (72 = diploma status unclear, dominant code pre-1992; 73 = explicit diploma)
-           educ %in% c(72:73) ~ "High school",
-           # 1-3 yrs of college, plus associate's degrees/some college no degree (81/91/92, post-1992 only)
-           educ %in% c(80:100) ~  "Some college",
-           # 4 yrs of college / bachelor's degree; pre-1992 also absorbs "attended a 5th/6th yr but didn't
-           # complete it" since IPUMS rounds those down to the highest *completed* year, same as EPI's own
-           # grdhi>=17 & grdcom==2 rule
-           educ %in% c(110:111) ~ "College",
-           # 5+ yrs of college (120), 5 yrs (121, pre-1992's completed-5th-year code), 6+ yrs (122), and
-           # post-1992 specific advanced degrees (123-125) - matches EPI's grdhi 17-18 & grdcom==1 -> Advanced
-           educ %in% c(120:125) ~ "Advanced"),
+  mutate(
+    # i_educ = case_when(
+    #        # NIU/blank/missing
+    #        educ %in% c(0, 1, 999) ~ NA,
+    #        # grades 1-11, plus 12th grade attended w/o diploma (matches EPI's grdcom==2 rule)
+    #        educ %in% c(2:71) ~ "Less than high school",
+    #        # 12th grade w/ diploma (72 = diploma status unclear, dominant code pre-1992; 73 = explicit diploma)
+    #        educ %in% c(72:73) ~ "High school",
+    #        # 1-3 yrs of college, plus associate's degrees/some college no degree (81/91/92, post-1992 only)
+    #        educ %in% c(80:100) ~  "Some college",
+    #        # 4 yrs of college / bachelor's degree; pre-1992 also absorbs "attended a 5th/6th yr but didn't
+    #        # complete it" since IPUMS rounds those down to the highest *completed* year, same as EPI's own
+    #        # grdhi>=17 & grdcom==2 rule
+    #        educ %in% c(110:111) ~ "College",
+    #        # 5+ yrs of college (120), 5 yrs (121, pre-1992's completed-5th-year code), 6+ yrs (122), and
+    #        # post-1992 specific advanced degrees (123-125) - matches EPI's grdhi 17-18 & grdcom==1 -> Advanced
+    #        educ %in% c(120:125) ~ "Advanced"),
           # i_uhrsworkly = case_when(
           #  uhrsworkly == 999 ~ NA,
           #  TRUE ~ uhrsworkly),
           offtotval = case_when(offtotval == 9999999999 ~ NA, TRUE ~ offtotval),
           offcutoff = case_when(offcutoff == 999999 ~ NA, TRUE ~ offcutoff),
           ftotval = case_when(ftotval == 9999999999 ~ NA, TRUE ~ ftotval),
+          cutoff = case_when(cutoff == 999999 ~ NA, TRUE ~ cutoff),
           # incwage = case_when(incwage == 9999999999 ~ NA,
           #                     incwage == 9999999998 ~ NA, 
           #                     TRUE ~ incwage),
           # ctccrd = case_when(ctccrd == 999999 ~ NA, TRUE ~ ctccrd),
-          offpov = case_when(offpov == 1 ~ 1,
-                             offpov == 2 ~ 0,
-                             TRUE ~ NA),
-          asecwgt = asecwt, 
-          hrhhid = as.character(hrhhid), hrhhid2 = as.character(hrhhid2),
+          # offpov = case_when(offpov == 1 ~ "Below poverty line",
+          #                    offpov == 2 ~ "Above poverty line",
+          #                    offpov == 99 ~ NA,
+          #                    TRUE ~ NA),
+          asecwgt = asecwt
+          #, 
+          #hrhhid = as.character(hrhhid), #hrhhid2 = as.character(hrhhid2),
           # epi extracts hrhhid is consistent, IPUMS is not, pad with zeros to see if this is a fix
-          hrhhid = str_pad(hrhhid, width = 15, pad = "0", side = "left"),
-          hserial = hseq,
+          #hrhhid = str_pad(hrhhid, width = 10, pad = "0", side = "left"),
+          # poverty = 
+          #   case_when(
+          #     poverty == 10 ~ 0,
+          #     poverty == 20 ~ 1,
+          #     TRUE ~ NA
+          #   )
+          #hserial = hseq,
           # statefips = statefip,
           # statefips = case_when(
           #   year %in% c(1973:1976) & statefip == 25 ~ 14,
@@ -123,16 +147,17 @@ ipums_march <- ipums_raw %>%
           #   year %in% c(1968:1972) & statefip == 41 ~ 91,
           #   year %in% c(1968:1972) & statefip == 6 ~ 92,
           #   year %in% c(1968:1972) & statefip == 80 ~ 99),
-          hiother = 
-            case_when(
-              hichamp == 2 ~ 1,
-              inhcovly == 2 ~ 1,
-              TRUE ~ 0
-            )
-          ) |> 
-  rename(pulineno = lineno)
+          # hiother = 
+          #   case_when(
+          #     hichamp == 2 ~ 1,
+          #     inhcovly == 2 ~ 1,
+          #     TRUE ~ 0
+          #   )
+          )
+  #|> rename(pulineno = lineno)
 
-epi_march <- load_cps("march", 1962:2025, .extracts_dir = "extracts/")
+
+epi_march <- load_cps("march", 1962:2026, .extracts_dir = "extracts/")
 
 # read_dta("extracts/epi_cpsmarch_1988.dta") |> mutate(hrhhid = str_pad(hrhhid, width = 15, side = "left", pad = 0)) #|> arrow::write_feather("epi_march.feather")
 #epi_march <- read_dta("epi_march_2000_2002.dta") |> mutate(hrhhid = str_pad(hrhhid, width = 15, side = "left", pad = 0)) #|> arrow::write_feather("epi_march.feather")
@@ -194,6 +219,7 @@ mfun <- function(data, x, m = NULL) {
 }
 
 # testing function to handle list input
+
 testing_fun <- function(x, wb) {
   
   # iterate across each list item
@@ -226,28 +252,28 @@ source("rounds_list.R", echo = TRUE)
 
 # list of variable lists for mapping
 all_lists <- list(
-                  #id_list, # all difference explained
-                  #geo_list,
+                  id_list, # all difference explained
+                  #geo_list, # expanded coverage by collapsing categories
                   #demo_list, # all differences explained
-                  #educ_list,
-                  #lf_list,
+                  #educ_list, # match
+                  #lf_list, # mtch
                   #spm_list, # spm can go back further in time?
                   #public_benefits_list, # removing some variables from list
-                  hi_pension_list
-                  #offpov_list
+                  #hi_pension_list, # match
+                  offpov_list
                   )
 
 # list of files to map to
 all_files <- c(
-              #"id.xlsx",
+              "id.xlsx",
               #"geo.xlsx",
               #"demo.xlsx"
               #"educ.xlsx",
               #"lf.xlsx",
               #"spm.xlsx",
               #"public_benefits.xlsx",
-              "hi_pension.xlsx"
-              #"off_pov.xlsx"
+              #"hi_pension.xlsx",
+              "off_pov.xlsx"
             )
 
 # quietly iterate over the two parallel vectors
