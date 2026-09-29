@@ -28,6 +28,7 @@ if $marchcps == 1 {
 	if tm(1962m1) <= $date & $date <= tm(1997m12) {
 		replace veteran = 1 if 1 <= _vet & _vet <= 8
 		replace veteran = 0 if _vet == 6
+		replace veteran = . if _popstat == 2
 	}
 	if tm(1998m1) <= $date & $date <= tm(2005m12) {
 		replace veteran = 0 if a_vet == 6

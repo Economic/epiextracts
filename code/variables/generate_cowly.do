@@ -18,6 +18,10 @@ if $marchcps == 1 {
 	}
 	if tm(1976m1) <= $date & $date <= tm(1997m12) {
 		replace cowly = clslyr if clslyr > 0
+
+		if tm(1988m1) <= $date & $date <= tm(1989m12) {
+			replace cowly = . if _popstat ~= 1
+		}
 	}
 	if tm(1998m1) <= $date {
 		replace cowly = ljcw if ljcw > 0
