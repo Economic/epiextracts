@@ -225,7 +225,7 @@ if `year' >= 2019 {
     tempfile pppub
     import delimited "${censusmarchraw}tempfolder/pppub`shortyear'.csv", stringcols(1)
     gen id = ph_seq
-    gen id2 = pf_seq
+    gen id2 = phf_seq
     save `pppub'
 
     clear 
