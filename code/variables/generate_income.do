@@ -8,6 +8,7 @@ gen income = .
 if $marchcps == 1 {
     if tm(1962m1) <= $date & $date <= tm(1997m12) {
         replace income = oldincome
+        replace income = . if oldincome == 99999
     }
     if tm(1998m1) <= $date {
         replace income = ptotval
