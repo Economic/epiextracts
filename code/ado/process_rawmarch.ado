@@ -107,22 +107,10 @@ if `year' < 2019 {
   *note: files already in .dta format
 
   * combine with revised health insurance datasets (in .dta)
-  *note: 1997-1999, use March 2007 revision
-  if 1997 <= `year' & `year' <= 1999 {
-			local inputpath ${censusmarchraw}
-			local revhifile hi_pu_xtrct`shortyear'.dta
-
-			merge 1:1 h_seq using "`inputpath'`revhifile'", assert(3) nogenerate    
-
-  }
-
-  *note: 2000-2010, use September 2011
-    if 2000 <= `year' & `year' <= 2010 {
-			local inputpath ${censusmarchraw}
-			local revhifile hlthins_sy`year'_rev.dta
-
-			merge 1:1 ph_seq pppos using "`inputpath'`revhifile'", assert(3) nogenerate    
-
+  *note: 1997-2004, June 2007 revision flags; 2000-2010, September 2011 revision
+  *note: 2001 revisions match the expanded SCHIP file, so they are merged in the CHIP block below
+  if 1997 <= `year' & `year' <= 2010 & `year' != 2001 {
+    merge_revhi, year(`year')
   }
 
   * combine with 2014 redesign supplemental datasets
@@ -143,7 +131,23 @@ if `year' < 2019 {
 
 
 	}
- 
+
+  * 2018 bridge file: the same people run through the updated processing system;
+  * keep only its coverage recode for the processing-change series (hicovly5)
+  if `year' == 2018 {
+    preserve
+      tempfile bridgecsv bridgecov
+      !unzip -p ${censusmarchraw}asec2018_bridge_csv.zip pppub18.csv > `bridgecsv'
+      import delimited using `bridgecsv', stringcols(1) clear
+      keep peridnum cov
+      rename cov cov_bridge
+      save `bridgecov'
+    restore
+
+    * 14 production records have no bridge counterpart; 25 bridge-only records are dropped
+    merge 1:1 peridnum using `bridgecov', keep(master match) nogenerate
+  }
+
   * save, compress, clean up
   compress
   saveold cpsmarch_`year'.dta, replace version(13)
@@ -158,7 +162,14 @@ if `year' < 2019 {
 
     tempfile rawdat
     !unzip -p ${censusmarchraw}`archivename' > `rawdat'
+
+    * drop data and value labels from the regular 2001 file;
+    * cpsmar01.do redefines its labels without replace
+    clear
     do ${dictionaries}cpsmar01.do `rawdat' ${dictionaries}cpsmar01.dct
+
+    * September 2011 health insurance revision (person counts match SCHIP file)
+    merge_revhi, year(`year')
 
     * save, compress, clean up
     compress
@@ -266,5 +277,66 @@ if `year' >= 2019 {
 
 
 
+
+end
+
+
+
+*************************************************************************
+* NAME: merge_revhi
+* DESC: Merges Census revised health insurance files onto the March data
+* in memory. 1997-2004: household flags approximating the June 2007
+* correction (see revhlth_readme.txt). 2000-2010: September 2011 revised
+* recodes overwrite the originals, which are kept as *_orig.
+* Called by process_censusmarch
+*************************************************************************
+capture program drop merge_revhi
+program define merge_revhi
+syntax, year(integer)
+
+local shortyear = substr("`year'",3,2)
+
+* June 2007 revision: whole-household employer (allempl) and
+* direct-purchase (allpriv) flags, one record per household
+if 1997 <= `year' & `year' <= 2004 {
+  preserve
+    use "${censusmarchraw}hi_pu_xtrct`shortyear'.dta", clear
+
+    * Census names are uppercase but NBER dictionaries are lowercase
+    rename *, lower
+
+    * flags are stored as strings
+    destring _all, replace
+
+    tempfile revflags
+    save `revflags'
+  restore
+
+  merge m:1 h_seq using `revflags', assert(3) nogenerate
+}
+
+* September 2011 revision: full set of revised person-level recodes
+if 2000 <= `year' & `year' <= 2010 {
+  * keep the as-published recodes for the original and HIA series (hicovly1, hicovly2)
+  foreach v in cov_hi mcaid mcare champ {
+    clonevar `v'_orig = `v'
+  }
+
+  preserve
+    use "${censusmarchraw}hlthins_sy`year'_rev.dta", clear
+
+    * without lowercasing, the revised values sit alongside the originals unused
+    rename *, lower
+
+    * revised values are stored as strings
+    destring _all, replace
+
+    tempfile revhi
+    save `revhi'
+  restore
+
+  * overwrite original recodes with revised values for every person
+  merge 1:1 ph_seq pppos using `revhi', update replace assert(3 4 5) nogenerate
+}
 
 end

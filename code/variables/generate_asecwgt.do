@@ -33,9 +33,10 @@ if $marchcps == 1 {
     if tm(2019m1) <= $date {
         replace asecwgt = marsupwt/100
     }
+
 }
 
-replace asecwgt = . if asecwgt < 0
+replace asecwgt = . if asecwgt <= 0
 
 label var asecwgt "March/ASEC weight"
 notes asecwgt: 1963-1979: wgt

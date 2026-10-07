@@ -1,1 +1,1 @@
-`himcaidly` indicates whether the respondent was covered by Medicaid, CHIP, or other means-tested health coverage last year. See also [`hicovly`](hicovly.md) and [`himcarely`](himcarely.md).
+`himcaidly` indicates whether the respondent was covered by Medicaid, CHIP, or other means-tested health coverage last year. See also [`hicovly1`](hicovly1.md), [`hicovly2`](hicovly2.md), [`hicovly3`](hicovly3.md), [`hicovly4`](hicovly4.md), [`hicovly5`](hicovly5.md), and [`himcarely`](himcarely.md).

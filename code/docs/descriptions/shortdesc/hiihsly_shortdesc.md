@@ -1,1 +1,1 @@
-`hiihsly` indicates whether the respondent was covered by the Indian Health Service last year. See also [`higotherly`](higotherly.md) and [`hicovly`](hicovly.md).
+`hiihsly` indicates whether the respondent was covered by the Indian Health Service last year. See also [`hicovly1`](hicovly1.md), [`hicovly2`](hicovly2.md), [`hicovly3`](hicovly3.md), [`hicovly4`](hicovly4.md), [`hicovly5`](hicovly5.md), and [`higotherly`](higotherly.md).

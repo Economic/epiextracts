@@ -1,0 +1,1 @@
+`hicovly2` indicates whether the respondent had any health insurance coverage last year, consistent with Census's HIA historical tables (March 2007 revision; calendar years 2000-2009). See also [`hicovly`](hicovly.md) and [`hicovly3`](hicovly3.md).

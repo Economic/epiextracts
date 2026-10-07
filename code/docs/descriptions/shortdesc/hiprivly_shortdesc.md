@@ -1,1 +1,1 @@
-`hiprivly` indicates whether the respondent had private health insurance coverage last year. See also [`hicovly`](hicovly.md) and [`hiownemply`](hiownemply.md).
+`hiprivly` indicates whether the respondent had private health insurance coverage last year. See also [`hicovly1`](hicovly1.md), [`hicovly2`](hicovly2.md), [`hicovly3`](hicovly3.md), [`hicovly4`](hicovly4.md), [`hicovly5`](hicovly5.md), and [`hiownemply`](hiownemply.md).

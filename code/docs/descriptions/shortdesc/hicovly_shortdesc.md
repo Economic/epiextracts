@@ -1,1 +1,0 @@
-`hicovly` indicates whether the respondent had any health insurance coverage last year. See also [`hicov`](hicov.md), [`hiprivly`](hiprivly.md), [`himcaidly`](himcaidly.md), [`himcarely`](himcarely.md), and [`higotherly`](higotherly.md).
