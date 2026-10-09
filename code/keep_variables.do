@@ -3,7 +3,7 @@ keepifexist
 	year month minsamp
 	hrhhid hrhhid2 hrsample hrsersuf huhhnum pulineno unicon_recnum
 	hserial hhid famid personid proxy hhtype asecwgt famtype
-	finalwgt cmpwgt basicwgt orgwgt hhwgt famwgt
+	finalwgt cmpwgt basicwgt orgwgt hhwgt asecwgt_census hhwgt_census famwgt
 	statefips statecensus division region countyfips cbsafips metstat cbsasize
 	age female hispanic wbho wbhao wbhom wbhaom raceorig wbo_only wbho_only
 	citistat citizen married veteran
@@ -61,7 +61,7 @@ keepifexist
 
 if $monthlycps == 1 | $maycps == 1 {
   #delimit;
-  drop asecwgt hserial
+  drop asecwgt asecwgt_census hhwgt_census hserial
     hoursly
     famern
     famiws

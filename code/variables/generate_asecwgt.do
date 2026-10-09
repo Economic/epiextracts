@@ -34,11 +34,22 @@ if $marchcps == 1 {
         replace asecwgt = marsupwt/100
     }
 
+    * weights re-estimated with updated population controls, as in IPUMS ASECWT:
+    * 2010 Census-based for 2010-2011, 2020 Census-based for 2020-2021
+    if tm(2010m1) <= $date & $date <= tm(2011m12) {
+        replace asecwgt = marsupwt_rev
+    }
+    if tm(2020m1) <= $date & $date <= tm(2021m12) {
+        replace asecwgt = marsupwt_rev/100
+    }
+
 }
 
 replace asecwgt = . if asecwgt <= 0
 
 label var asecwgt "March/ASEC weight"
 notes asecwgt: 1963-1979: wgt
-notes asecwgt: 1998-present: marsupwt 
+notes asecwgt: 1998-present: marsupwt
+notes asecwgt: 2010-2011: 2010 Census-based revised weights (IPUMS ASECWT)
+notes asecwgt: 2020-2021: 2020 Census-based revised weights (Census replicate weight files)
 notes asecwgt: 1962 and 1966 adjusted using IPUMS methodology

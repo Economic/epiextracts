@@ -132,6 +132,11 @@ if `year' < 2019 {
 
 	}
 
+  * revised person weights based on updated population controls (marsupwt_rev)
+  if inlist(`year', 2010, 2011) {
+    merge_revwgt, year(`year')
+  }
+
   * 2018 bridge file: the same people run through the updated processing system;
   * keep only its coverage recode for the processing-change series (hicovly5)
   if `year' == 2018 {
@@ -264,6 +269,11 @@ if `year' >= 2019 {
     keep if _merge == 3
     drop _merge
 
+    * revised person weights based on updated population controls (marsupwt_rev)
+    if inlist(`year', 2020, 2021, 2025) {
+      merge_revwgt, year(`year')
+    }
+
     * save, compress, clean up
     compress
     saveold cpsmarch_`year'.dta, replace version(13)
@@ -338,5 +348,55 @@ if 2000 <= `year' & `year' <= 2010 {
   * overwrite original recodes with revised values for every person
   merge 1:1 ph_seq pppos using `revhi', update replace assert(3 4 5) nogenerate
 }
+
+end
+
+
+
+*************************************************************************
+* NAME: merge_revwgt
+* DESC: Merges person weights re-estimated with updated population
+* controls onto the March data in memory as marsupwt_rev, in the same
+* units as marsupwt. 2010-2011: 2010 Census-based (from IPUMS ASECWT,
+* matched on household ids and line number); 2020-2021: 2020
+* Census-based; 2025: Vintage 2025 (Census replicate weight files).
+* Called by process_censusmarch
+*************************************************************************
+capture program drop merge_revwgt
+program define merge_revwgt
+syntax, year(integer)
+
+preserve
+  * 2010 Census-based weights, already keyed on h_seq and pppos
+  if inlist(`year', 2010, 2011) {
+    import delimited using "${censusmarchraw}asec_2010base_weights_2010_2011.csv", clear
+    keep if year == `year'
+    keep h_seq pppos marsupwt_rev
+  }
+
+  * Census replicate weight files: main weight pwwgt0 has 4 implied decimals
+  if inlist(`year', 2020, 2021, 2025) {
+    if inlist(`year', 2020, 2021) local revfile CPS_ASEC_ASCII_REPWGT_`year'_2020BASE.zip
+    if `year' == 2025 local revfile CPS_ASEC_ASCII_REPWGT_2025_V2025.ZIP
+
+    tempfile revdat
+    !unzip -p ${censusmarchraw}`revfile' > `revdat'
+    infix double pwwgt0 1-9 long h_seq 1450-1454 int pppos 1455-1456 using `revdat', clear
+
+    * public use weights from 2019 on carry 2 implied decimals
+    gen double marsupwt_rev = pwwgt0 / 100
+    keep h_seq pppos marsupwt_rev
+  }
+
+  tempfile revwgt
+  save `revwgt'
+restore
+
+* every person has a revised weight; keep the original record order
+gen long revwgt_order = _n
+merge 1:1 h_seq pppos using `revwgt', assert(3) nogenerate
+sort revwgt_order
+drop revwgt_order
+label var marsupwt_rev "Person supplement weight, revised population controls"
 
 end

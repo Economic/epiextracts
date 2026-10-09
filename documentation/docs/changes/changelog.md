@@ -6,6 +6,15 @@ If you use the EPI extracts for your research, please cite them as
     Economic Policy Institute. {{ year }}. Current Population Survey Extracts, Version {{ version }}, https://microdata.epi.org.
 
 ## Recent changes
+### Unreleased
+#### Added
+* `asecwgt_census` and `hhwgt_census`: alternative March/ASEC person and household weights that reproduce the population controls behind Census's published historical income tables. They equal `asecwgt` and `hhwgt` except in 1980 and 1993 (Unicon alternate weights based on the 1980 and 1990 Censuses), 2010 and 2020 (original public use weights), and 2025 (Vintage 2025 population controls). With `hhwgt_census`, household counts and median household income match Census Table H-5 in those years.
+#### Modified
+* `asecwgt` and `hhwgt` for the 2010–2011 and 2020–2021 March/ASEC samples now use weights re-estimated by Census with 2010 Census-based and 2020 Census-based population controls, respectively, consistent with IPUMS `ASECWT`. Weighted estimates for these years will not match prior versions.
+* `hhwgt` (March/ASEC) is now missing for group quarters units, which Census does not count as households. Households with no `_relhd` head in 1968–1975 now take the weight of the head identified by `hhrel` instead of being missing.
+* Fixed `hhtype` for March/ASEC 1988–1997, which was previously missing.
+* `famwgt` (March/ASEC) is now the family reference person's `asecwgt` (unrelated individuals' own `asecwgt`) in 2010–2011 and 2020–2021, so family weights use the same revised population controls as `asecwgt` and `hhwgt`. This differs from IPUMS `ASECFWT`, which keeps the original family weights in those years.
+* Fixed `famwgt` scaling for March/ASEC 1963, 1964, and 1966, which was inconsistent with `asecwgt` (1963 and 1966 family weights lacked the adjustment factors applied to `asecwgt`). Zero and negative `famwgt` values are now missing, and `famwgt` availability for March/ASEC is corrected to 1963–present.
 ### Version 2026.9.11 -- 2026-09-11
 #### Added
 * August 2026 extracts
