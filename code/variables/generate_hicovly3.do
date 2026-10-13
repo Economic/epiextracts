@@ -27,5 +27,5 @@ notes hicovly3: Available 2000-2014 (calendar years 1999-2013)
 notes hicovly3: Census HIB series (September 2011 revision); includes verification question
 notes hicovly3: Covered: Medicaid, Medicare, private, or military health care (Census definition)
 notes hicovly3: 2000 uses 1990-based weights; Census HIB 1999 uses 2000-based weights
-notes hicovly3: 2014: traditional-questionnaire records only; weights scaled to 5/8 of population
+notes hicovly3: 2014: traditional-questionnaire records only; for population counts divide the weights by 5/8
 notes hicovly3: 2000-2013 CPS: mcaid, mcare, cov_hi, champ

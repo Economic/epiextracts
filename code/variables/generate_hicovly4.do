@@ -25,5 +25,5 @@ lab val hicovly4 hicovly4
 notes hicovly4: Available 2014-2018 (calendar years 2013-2017)
 notes hicovly4: Redesigned questionnaire processed with Census legacy system
 notes hicovly4: Covered: Medicaid, Medicare, private, or military health care (Census definition)
-notes hicovly4: 2014: redesigned-questionnaire records only; weights scaled to 3/8 of population
+notes hicovly4: 2014: redesigned-questionnaire records only; ; for population counts divide the weights by 3/8
 notes hicovly4: 2014-2018 CPS: mcaid, mcare, cov_hi, champ
