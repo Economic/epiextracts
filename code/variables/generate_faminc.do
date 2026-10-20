@@ -16,6 +16,6 @@ if $marchcps == 1 {
 
 lab val faminc faminc
 lab var faminc "Family income: continuous"
-notes faminc: faminc treats primary and related subfamilies as one household in accordance with the official poverty rate measure
+notes faminc: Income of the person's own family; related subfamilies have their own income (see offfaminc for primary and related subfamilies combined)
 notes faminc: 1963-1997: Unicon faminc
 notes faminc: 1998-present: CPS ftotval

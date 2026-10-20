@@ -9,7 +9,7 @@ if $marchcps == 1 {
 		replace himcarely = 0 if mcare == 2
 		replace himcarely = . if hvcare == 0
 	}
-	if tm(1980m1) <= $date & $date <= tm(1994m12) {
+	if tm(1988m1) <= $date & $date <= tm(1994m12) {
 		replace himcarely = 1 if mcare == 1
 		replace himcarely = 0 if mcare == 2
 		replace himcarely = . if mcare == 0

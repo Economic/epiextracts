@@ -21,6 +21,10 @@ if $marchcps == 1 {
 
 		if tm(1988m1) <= $date & $date <= tm(1989m12) {
 			replace cowly = . if _popstat ~= 1
+			* interviewer check item (chkwrk) defines who worked last year; in 1989
+			* two civilians with an Armed Forces job last year report workyn == 1
+			* but chkwrk == 2, consistent with IPUMS CLASSWLY universe (WORKLY)
+			replace cowly = . if chkwrk ~= 1
 		}
 	}
 	if tm(1998m1) <= $date {
@@ -44,4 +48,5 @@ lab def cowly
 lab val cowly cowly
 notes cowly: 1962-1975: Self-employed, incorporated included in Private
 notes cowly: 1962-1997 Unicon March: clslyr
+notes cowly: 1988-1989 Unicon March: universe limited to civilians (_popstat) who worked last year per interviewer check item (chkwrk)
 notes cowly: 1998-present CPS March: ljcw

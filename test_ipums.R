@@ -7,7 +7,8 @@ library(openxlsx2)
 
 ### DATA SOURCE ####
 vars <- c(
-  "YEAR", "SERIAL", "MONTH", "ASECWT", "ASECWTH", 
+  "YEAR", "SERIAL", "MONTH", "ASECWT", "ASECWTH",
+  "GQ", "HFLAG",
   "HSEQ", "PERNUM", "HRHHID", "HRHHID2", "LINENO", "FAMID",
   "REGION", "STATEFIP", "STATECENSUS", "COUNTY", 
   "PUBHOUS", "CPSIDP", "CPSIDV", "WKSUNEM1", "FAMKIND", 
@@ -58,7 +59,13 @@ ipums_raw <- dl_ipums_asec(
     variables = vars) |> 
   janitor::clean_names()
 
-ipums_march <- ipums_raw %>% 
+ipums_march <- ipums_raw %>%
+  # 2014: IPUMS keeps both ASEC samples at full weight; scale them as EPI does
+  # (hflag 1 = 3/8 redesigned income questions, 0 = 5/8 traditional)
+  mutate(across(c(asecwt, asecwth, asecfwt),
+                ~ case_when(year == 2014 & hflag == 1 ~ .x * 3/8,
+                            year == 2014 & hflag == 0 ~ .x * 5/8,
+                            TRUE ~ .x))) %>%
   mutate(
     i_educ = case_when(
            # NIU/blank/missing
@@ -91,16 +98,12 @@ ipums_march <- ipums_raw %>%
                              offpov == 2 ~ "Above poverty line",
                              offpov == 99 ~ NA,
                              TRUE ~ NA),
-          asecwgt = asecwt, 
+          asecwgt = asecwt,
+          # household weight excluding group quarters (gq 1 = households), as in EPI hhwgt
+          asecwth_hh = if_else(gq == 1, asecwth, NA),
           hrhhid = as.character(hrhhid), #hrhhid2 = as.character(hrhhid2),
           # epi extracts hrhhid is consistent, IPUMS is not, pad with zeros to see if this is a fix
           hrhhid = str_pad(hrhhid, width = 10, pad = "0", side = "left"),
-          poverty = 
-            case_when(
-              poverty == 10 ~ 0,
-              poverty == 20 ~ 1,
-              TRUE ~ NA
-            ),
           hserial = hseq,
           statefips = statefip,
           statefips = case_when(
@@ -250,13 +253,13 @@ source("rounds_list.R", echo = TRUE)
 
 # list of variable lists for mapping
 all_lists <- list(
-                  id_list, # all difference explained
-                  geo_list, # expanded coverage by collapsing categories
+                  id_list, # hhwgt: compare to asecwth_hh (group quarters excluded)
+                  #geo_list, # expanded coverage by collapsing categories
                   demo_list, # all differences explained
-                  educ_list, # match
+                  #educ_list, # match
                   lf_list, # mtch
                   spm_list, # spm can go back further in time?
-                  public_benefits_list, # removing some variables from list
+                  #public_benefits_list, # removing some variables from list
                   hi_pension_list, # match
                   offpov_list
                   )
@@ -264,12 +267,12 @@ all_lists <- list(
 # list of files to map to
 all_files <- c(
               "id.xlsx",
-              "geo.xlsx",
+              #"geo.xlsx",
               "demo.xlsx",
-              "educ.xlsx",
+              #"educ.xlsx",
               "lf.xlsx",
               "spm.xlsx",
-              "public_benefits.xlsx",
+              #"public_benefits.xlsx",
               "hi_pension.xlsx",
               "off_pov.xlsx"
             )

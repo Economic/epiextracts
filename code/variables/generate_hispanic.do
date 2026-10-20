@@ -6,9 +6,11 @@ gen byte hispanic = 0
 if $marchcps == 1 {
 	if tm(1971m1) <= $date & $date <= tm(1997m12) {
 		replace hispanic = 1 if 1 <= _spneth & _spneth <= 7
+		replace hispanic = . if 9 <= _spneth & _spneth <= 10
 	}
 	if tm(1998m1) <= $date & $date <= tm(2002m12) {
 		replace hispanic = 1 if 1 <= a_reorgn & a_reorgn <= 7
+		replace hispanic = . if 9 <= a_reorgn & a_reorgn <= 10
 	}
 	if tm(2003m1) <= $date & $date <= tm(2013m12) {
 		replace hispanic = 1 if 1 <= prdthsp & prdthsp <= 5
@@ -43,6 +45,7 @@ lab val hispanic hispanic
 notes hispanic: Hispanic ethnicity
 notes hispanic: Definition breaks in 1994, 2003, 2014
 notes hispanic: not Hispanic includes nonresponse, missing, etc., in order to be consistent with other race variables like wbho
+notes hispanic: 1971-2002 March: "don't know" and "NA" responses (_spneth, a_reorgn 9-10) are missing; wbho and other race variables still count them as not Hispanic
 notes hispanic: 1973-1993 Unicon Basic: spneth
 notes hispanic: 1994-2002 CPS Basic: prorigin
 notes hispanic: 2003-present CPS Basic/March: prdthsp

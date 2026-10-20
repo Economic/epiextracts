@@ -17,3 +17,4 @@ label value offpov offpov
 notes offpov: Universe definition from 1980-present: all persons except for unrelated individuals under age 15
 notes offpov: 1968-1997: faminc & povcut
 notes offpov: 1998-present: ftotval & fpovcut
+notes offpov: 2000-2001: differs from IPUMS OFFPOV, which uses related subfamilies' own thresholds (2000) and codes a zero-income unrelated subfamily without a threshold as above poverty (2001); EPI agrees with Census famlis and IPUMS POVERTY

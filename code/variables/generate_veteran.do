@@ -25,7 +25,12 @@ if $monthlycps == 1 | $maycps == 1 {
 }
 
 if $marchcps == 1 {
-	if tm(1962m1) <= $date & $date <= tm(1997m12) {
+	if tm(1963m1) <= $date & $date <= tm(1967m12) {
+		replace veteran = 1 if 1 <= _vet & _vet <= 8
+		replace veteran = 0 if vet == 6 | vet == 5
+		replace veteran = . if _popstat == 2 | vet == 9
+	}
+	if tm(1968m1) <= $date & $date <= tm(1997m12) {
 		replace veteran = 1 if 1 <= _vet & _vet <= 8
 		replace veteran = 0 if _vet == 6
 		replace veteran = . if _popstat == 2
@@ -50,3 +55,4 @@ notes veteran: 1994-2005m7 CPS Basic: peafwhen
 notes veteran: 2005m8-present CPS: peafever, peafwhn1
 notes veteran: 1962-1997 Unicon March: vet
 notes veteran: 1998-present CPS March: peafever, peafwhn1
+notes veteran: 2011 March: differs from IPUMS VETSTAT for 403 16-17 year olds at the age-17 universe boundary (edited cases, pxafever); EPI follows the Census file

@@ -13,12 +13,14 @@ if $marchcps == 1 {
     if tm(1976m1) <= $date & $date <= tm(1987m12) {
         replace ftptstat = 11 if _wkstat == 3
         replace ftptstat = 12 if _wkstat == 5
+        replace ftptstat = 1 if lfstat == 3
     }
     if tm(1988m1) <= $date & $date <= tm(1993m12) {
         replace ftptstat = 3 if wkstat == 3
         replace ftptstat = 6 if wkstat == 5
         replace ftptstat = 11 if wksch == 3
         replace ftptstat = 12 if wksch == 4
+        replace ftptstat = 1 if lfstat == 3
     }
     if tm(1994m1) <= $date & $date <= tm(1997m12) {
         replace ftptstat = rwkstat
@@ -49,5 +51,9 @@ lab def ftptstat
 #delimit cr
 lab val ftptstat ftptstat
 notes ftptstat: 1994-present CPS Basic: prwkstat
+notes ftptstat: 1976-1987 Unicon March: _wkstat (unemployed only), lfstat (not in labor force)
+notes ftptstat: 1988-1993 Unicon March: wkstat, wksch (part-time for economic reasons, unemployed), lfstat (not in labor force)
+notes ftptstat: 1976-1993 March: employed full-time schedules and part-time workers (other than 1988-1993 economic reasons) are missing; no exact counterpart in prwkstat categories
+notes ftptstat: Not in labor force is coded 1; IPUMS WKSTAT includes it in NIU
 notes ftptstat: 1994-1997 Unicon March: rwkstat
 notes ftptstat: 1998-present CPS March: prwkstat

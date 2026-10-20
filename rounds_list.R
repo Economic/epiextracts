@@ -10,6 +10,7 @@ id_list <- list(
     c(
       "asecwt", 
       "asecwth",
+      "asecwth_hh", # group quarters excluded, comparable to EPI hhwgt
       "asecfwt"
     ),
   ipums_count = 
@@ -54,7 +55,7 @@ demo_list <- list(
       "sex",  
       "hispan", 
       "citizen",
-      "nchild",
+      #"nchild",
       "vetstat", "marst", "race"
     ),
   ipums_mean = 
@@ -64,7 +65,7 @@ demo_list <- list(
       "female",
       "hispanic", 
       "citizen", "citistat",
-      "ownchild", # nothing comparable
+      #"ownchild", # nothing comparable
       "veteran", # change in unvierse definition 1968-1987, overlaps with overestimation
       "married", "raceorig" # samples don't match (EPI 54282 vs IPUMS 55882)
       ),
@@ -127,7 +128,7 @@ lf_list <- list(
 spm_list <- list(
   ipums_tab = 
     c(
-      "spmpov", "spmnewfam"
+      "spmpov"
     ),
   ipums_sum = 
     c(
@@ -148,8 +149,7 @@ spm_list <- list(
     ),
   epimd_tab = 
     c(
-      "spmpov", 
-      "spmfamtype"
+      "spmpov"
     ),
   epimd_sum = 
     c(
