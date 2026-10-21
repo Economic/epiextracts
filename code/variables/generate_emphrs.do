@@ -1,6 +1,7 @@
 *******************************************************************************
 * Reason not at work or hours last week
 *******************************************************************************
+capture rename emphrs orig_emphrs
 gen byte emphrs = .
 
 if $monthlycps == 1 {
