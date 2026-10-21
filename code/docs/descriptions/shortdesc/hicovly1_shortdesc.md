@@ -1,1 +1,1 @@
-`hicovly1` indicates whether the respondent had any health insurance coverage last year, using Census's original as-published series (calendar years 1987-1999), before the verification question and the 2007 and 2011 revisions. See also [`hicovly`](hicovly.md) and [`hicovly3`](hicovly3.md).
+`hicovly1` indicates whether the respondent had any health insurance coverage last year, using Census's original as-published series (calendar years 1987-1999), before the verification question and the 2007 and 2011 revisions. See also [`hicov`](hicov.md) and [`hicovly3`](hicovly3.md).

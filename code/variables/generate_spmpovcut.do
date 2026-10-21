@@ -13,6 +13,5 @@ if $marchcps == 1 {
 }
 
 lab var spmpovcut "SPM's poverty threshold"
-label value spmpovcut spmpovcut
 notes spmpovcut: 2010-2018 SPM: spmu_povthreshold
 notes spmpovcut: 2019-present: spm_povthreshold

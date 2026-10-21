@@ -15,6 +15,5 @@ if $marchcps == 1 {
 }
 
 label var famern "Total family earnings"
-label val famern famern
 notes famern: 1968-1997 Unicon: famern
 notes famern: 1998-present CPS: fearnval

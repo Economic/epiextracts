@@ -39,7 +39,6 @@ if $marchcps == 1 {
 }
 
 lab var indcode "Industry recode"
-label value indcode indcode
 notes indcode: 1962-1997 Unicon: ind
 notes indcode: 1998-present CPS: peioind
 

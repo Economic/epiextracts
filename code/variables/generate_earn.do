@@ -14,6 +14,5 @@ if $marchcps == 1 {
 }
 
 label var earn "Total personal earnings"
-label val earn earn
 notes earn: 1976-1997 Unicon: incern
 notes earn: 1998-present CPS: pearnval

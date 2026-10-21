@@ -14,7 +14,7 @@ if $marchcps == 1 {
 
 lab var spmmortgage "SPM's mortgage status"
 #delimit ;
-lab def spm_mortgage
+lab def spmmortgage
 1 "Owner with mortgage"
 2 "Owner w/o mortgage"
 3 "Renter"

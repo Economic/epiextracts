@@ -13,7 +13,6 @@ if $marchcps == 1 {
 }
 
 lab var spmeitc "SPM unit's earned income tax credit"
-lab val spmeitc spmeitc
 notes spmeitc: Available 2010-present
 notes spmeitc: 2010-2018 SPM: spmu_eitc
 notes spmeitc: 2019-present CPS: spm_eitc

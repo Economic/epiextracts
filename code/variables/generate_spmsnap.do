@@ -13,6 +13,5 @@ if $marchcps == 1 {
 }
 
 lab var spmsnap "SPM's SNAP subsidy"
-label value spmsnap spmsnap
 notes spmsnap: 2010-2018 SPM: spmu_snapsub
 notes spmsnap: 2019-present: spm_snapsub

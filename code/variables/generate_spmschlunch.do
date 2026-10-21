@@ -13,6 +13,5 @@ if $marchcps == 1 {
 }
 
 lab var spmschlunch "SPM's school lunch subsidy"
-label value spmschlunch spmschlunch
 notes spmschlunch: 2010-2018 SPM: spmu_schlunch
 notes spmschlunch: 2019-present: spm_schlunch

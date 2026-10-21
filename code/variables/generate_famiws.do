@@ -14,6 +14,5 @@ if $marchcps == 1 {
 }
 
 label var famiws "Family income: wages & salaries (continuous)"
-label value famiws famiws
 notes famiws: 1976-1997 Unicon: fmiwag
 notes famiws: 1998-present CPS: fwsval

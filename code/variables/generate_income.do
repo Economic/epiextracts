@@ -16,7 +16,6 @@ if $marchcps == 1 {
 }
 
 lab var income "Total personal income"
-label val income income
 notes income: 1980 onward universe defined for 15+
 notes income: 1962-1997 Unicon: income
 notes income: 1998-present CPS: ptotval

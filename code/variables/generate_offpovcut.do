@@ -35,6 +35,5 @@ if $marchcps == 1 {
 }
 
 lab var offpovcut "Offical poverty threshold value "
-label value offpovcut offpovcut
 notes offpovcut: 1968-1997 Unicon: povcut
 notes offpovcut: 1998-present CPS: fpovcut

@@ -13,6 +13,5 @@ if $marchcps == 1 {
 }
 
 lab var spmfedtax "SPM federal tax"
-label value spmfedtax spmfedtax
 notes spmfedtax: 2010-2018 SPM: spmu_fedtax
 notes spmfedtax: 2019-present CPS: spm_fedtax

@@ -1,1 +1,1 @@
-`hicovly5` indicates whether the respondent had any health insurance coverage last year, from Census's updated processing system (calendar years 2017-present; 2017 from the 2018 CPS ASEC Bridge File). See also [`hicovly`](hicovly.md) and [`hicovly4`](hicovly4.md).
+`hicovly5` indicates whether the respondent had any health insurance coverage last year, from Census's updated processing system (calendar years 2017-present; 2017 from the 2018 CPS ASEC Bridge File). See also [`hicov`](hicov.md) and [`hicovly4`](hicovly4.md).

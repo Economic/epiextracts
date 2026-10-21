@@ -13,6 +13,5 @@ if $marchcps == 1 {
 }
 
 lab var spmwgt "SPM's weight"
-label value spmwgt spmwgt
 notes spmwgt: 2010-2018 SPM: spmu_weight
 notes spmwgt: 2019-present: spm_weight

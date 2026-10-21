@@ -13,6 +13,5 @@ if $marchcps == 1 {
 }
 
 lab var spmwic "SPM's WIC subsidy"
-label value spmwic spmwic
 notes spmwic: 2010-2018 SPM: spmu_wicval
 notes spmwic: 2019-present: spm_wicval
