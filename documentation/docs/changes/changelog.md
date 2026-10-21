@@ -15,6 +15,9 @@ If you use the EPI extracts for your research, please cite them as
 * Fixed `hhtype` for March/ASEC 1988–1997, which was previously missing.
 * `famwgt` (March/ASEC) is now the family reference person's `asecwgt` (unrelated individuals' own `asecwgt`) in 2010–2011 and 2020–2021, so family weights use the same revised population controls as `asecwgt` and `hhwgt`. This differs from IPUMS `ASECFWT`, which keeps the original family weights in those years.
 * Fixed `famwgt` scaling for March/ASEC 1963, 1964, and 1966, which was inconsistent with `asecwgt` (1963 and 1966 family weights lacked the adjustment factors applied to `asecwgt`). Zero and negative `famwgt` values are now missing, and `famwgt` availability for March/ASEC is corrected to 1963–present.
+### Version 2026.10.13 -- 2026-10-13
+#### Added
+* September 2026 extracts
 ### Version 2026.9.11 -- 2026-09-11
 #### Added
 * August 2026 extracts
