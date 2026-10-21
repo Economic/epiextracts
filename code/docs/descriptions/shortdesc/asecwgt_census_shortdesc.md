@@ -1,1 +1,0 @@
-`asecwgt_census` is an alternative March/ASEC weight that reproduces the population controls used in Census's published historical income tables. It equals `asecwgt` except in 1980, 1993, 2010, 2020, and 2025.

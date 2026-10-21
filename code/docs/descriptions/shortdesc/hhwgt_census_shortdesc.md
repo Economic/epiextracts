@@ -1,1 +1,0 @@
-`hhwgt_census` is an alternative household weight that reproduces the population controls used in Census's published historical income tables. It equals `hhwgt` except in 1980, 1993, 2010, 2020, and 2025.

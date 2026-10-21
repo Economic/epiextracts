@@ -47,9 +47,18 @@ if $marchcps == 1 {
 		replace hhwgt = hsup_wgt / 100
 	}
 
-	* revised population controls (see asecwgt): household weight is the
-	* reference person's supplement weight, which reproduces hsup_wgt exactly
-	if (tm(2010m1) <= $date & $date <= tm(2011m12)) | (tm(2020m1) <= $date & $date <= tm(2021m12)) {
+	* population controls used in Census's published series (see asecwgt)
+	if tm(1980m1) <= $date & $date <= tm(1980m12) {
+		* household head's alternate weight
+		bysort hserial: egen hhwgt_head = max(cond(_relhd == 1, asecwgt, .))
+		replace hhwgt = hhwgt_head
+		drop hhwgt_head
+	}
+	if tm(1993m1) <= $date & $date <= tm(1993m12) {
+		replace hhwgt = hhwgtalt / 100
+	}
+	if inlist(year(dofm($date)), 2011, 2021, 2025) {
+		* reference person's revised weight (reproduces hsup_wgt exactly in other years)
 		bysort hserial: egen hhwgt_refper = max(cond(inlist(a_exprrp, 1, 2), asecwgt, .))
 		replace hhwgt = hhwgt_refper
 		drop hhwgt_refper
@@ -88,5 +97,6 @@ notes hhwgt: 1962-1976: Unicon March: asecwgt of household head (_relhd)
 notes hhwgt: 1968-1975: Unicon March: falls back to asecwgt of hhrel head if no _relhd head
 notes hhwgt: 1977-1997: Unicon March: hhwgt
 notes hhwgt: 1998-present: CPS March: hsup_wgt
-notes hhwgt: 2010-2011, 2020-2021: reference person's revised asecwgt (updated population controls)
+notes hhwgt: March population controls match Census's published historical income tables (see asecwgt)
+notes hhwgt: 1980: head's asecwgt (wgtalt); 1993: hhwgtalt; 2011, 2021, 2025: reference person's revised asecwgt
 notes hhwgt: March: missing for group quarters units (lvqtyp 1962-1975, htype2 1976-1987, hhtype 1988-present)

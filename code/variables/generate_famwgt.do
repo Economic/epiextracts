@@ -41,12 +41,28 @@ if $marchcps == 1 {
 		replace famwgt = fsup_wgt / 100
 	}
 
+	* population controls used in Census's published series (see asecwgt):
+	* 1993 Unicon alternate family weight (1990 Census-based)
+	if tm(1993m1) <= $date & $date <= tm(1993m12) {
+		replace famwgt = fmwgtalt / 100
+	}
+
+	* 1980: no family relationship recode; use the alternate weight of the
+	* family's first person (the family head), as for 1976
+	if tm(1980m1) <= $date & $date <= tm(1980m12) {
+		gen long famwgt_order = _n
+		bysort hserial famid (famwgt_order): gen famwgt_first = asecwgt[1]
+		replace famwgt = famwgt_first
+		sort famwgt_order
+		drop famwgt_first famwgt_order
+	}
+
 	* family weight is the family reference person's asecwgt (unrelated
 	* individuals carry their own); rebuild it where the source family weight
 	* is inconsistent with asecwgt: 1963 and 1966 asecwgt carry IPUMS scaling
-	* factors, 1964 source famwgt is on a different scale, and 2010-2011 and
-	* 2020-2021 asecwgt use revised population controls
-	if inlist(year(dofm($date)), 1963, 1964, 1966, 2010, 2011, 2020, 2021) {
+	* factors, 1964 source famwgt is on a different scale, and 2011, 2021 and
+	* 2025 asecwgt use revised population controls
+	if inlist(year(dofm($date)), 1963, 1964, 1966, 2011, 2021, 2025) {
 		* record order, to restore it and to identify each family's first person
 		gen long famwgt_order = _n
 
@@ -85,4 +101,5 @@ notes famwgt: 1994-present CPS Basic: pwfmwgt
 notes famwgt: 1963-1997 Unicon March: famwgt
 notes famwgt: 1976 March: asecwgt (for first person in family)
 notes famwgt: 1998-present CPS March: fsup_wgt
-notes famwgt: 1963, 1964, 1966, 2010-2011, 2020-2021 March: asecwgt of family reference person (own asecwgt for unrelated individuals)
+notes famwgt: 1963, 1964, 1966, 2011, 2021, 2025 March: asecwgt of family reference person (own asecwgt for unrelated individuals)
+notes famwgt: 1980 March: asecwgt (wgtalt) of first person in family; 1993 March: fmwgtalt

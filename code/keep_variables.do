@@ -3,7 +3,7 @@ keepifexist
 	year month minsamp
 	hrhhid hrhhid2 hrsample hrsersuf huhhnum pulineno unicon_recnum
 	hserial hhid famid personid proxy hhtype asecwgt famtype
-	finalwgt cmpwgt basicwgt orgwgt hhwgt asecwgt_census hhwgt_census famwgt
+	finalwgt cmpwgt basicwgt orgwgt hhwgt famwgt
 	statefips statecensus division region countyfips cbsafips metstat cbsasize
 	age female hispanic wbho wbhao wbhom wbhaom raceorig wbo_only wbho_only
 	citistat citizen married veteran
@@ -52,7 +52,6 @@ keepifexist
 	cowly
 	dhhtype famkind
 	disability parent
-	migarea migstatus migmetro
 	lookdurly spmwgt
 	redesign
 	hiownemp hiownemply hiownpaid hiownpaidly
@@ -61,7 +60,7 @@ keepifexist
 
 if $monthlycps == 1 | $maycps == 1 {
   #delimit;
-  drop asecwgt asecwgt_census hhwgt_census hserial
+  drop asecwgt hserial
     hoursly
     famern
     famiws
@@ -88,7 +87,6 @@ if $monthlycps == 1 | $maycps == 1 {
     cowly indcode
     dhhtype famkind 
     disability parent
-    migarea migstatus migmetro
     lookdurly spmwgt
     hiownemp hiownemply hiownpaid hiownpaidly
 	redesign
