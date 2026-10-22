@@ -16,5 +16,5 @@ if $marchcps == 1 {
 lab var spmpov "SPM's poverty rate"
 label def spmpov 0 "Not in poverty" 1 "In poverty"
 label value spmpov spmpov
-notes spmpov: 2010-2018 SPM: spmu_pov
-notes spmpov: 2019-present: spm_pov
+notes spmpov: 2010-2018 SPM: spmu_poor
+notes spmpov: 2019-present: spm_poor

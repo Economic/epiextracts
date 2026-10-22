@@ -45,7 +45,7 @@ keepifexist
   	hiprivly higotherly
 	pubhouse hhtenure rentsub
 	offpovuniverse offpov offpovcut offfaminc
-	spmpov spmpovcut spmeitc
+	spmpov spmpovcut spmresources spmeitc
 	spmfedtax spmstatetax
 	spmschlunch spmsnap spmwic spmmortgage
 	spmfamtype
@@ -78,7 +78,7 @@ if $monthlycps == 1 | $maycps == 1 {
     hiprivly higotherly
     pubhouse hhtenure rentsub
     offpovuniverse offpov offpovcut offfaminc
-    spmpov spmpovcut spmeitc
+    spmpov spmpovcut spmresources spmeitc
     spmfedtax spmstatetax
     spmschlunch spmsnap spmwic spmmortgage
     spmfamtype

@@ -1,0 +1,1 @@
+`spmresources` is the SPM unit's total resources (cash income plus noncash benefits, minus taxes and necessary expenses), as used in the Supplemental Poverty Measure. An SPM unit is in poverty when its resources fall below its threshold. See also [`spmpovcut`](spmpovcut.md) and [`spmpov`](spmpov.md).

@@ -50,7 +50,7 @@ foreach var in
   pubhouse hhtenure rentsub
   offpovuniverse offfaminc offpovcut offpov 
   povlev povrate
-  spmpov spmpovcut spmeitc
+  spmpov spmpovcut spmresources spmeitc
   spmfedtax spmstatetax
   spmschlunch spmsnap spmwic spmmortgage 
   spmfamtype
