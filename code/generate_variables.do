@@ -38,8 +38,8 @@ foreach var in
   famiws
   hhinc hhpct
   schenrl
-  earn income
-  hoursly wrkly i_wrkly
+  earn wagesal
+  hoursly wrkly weeksly i_weeksly
   hicov
   hicovly1 hicovly2 hicovly3 hicovly4 hicovly5
   penplan penincl

@@ -34,8 +34,8 @@ keepifexist
 	hhinc hhpct
 	povlev povrate
 	schenrl
-	earn income
-	hoursly wrkly i_wrkly
+	earn wagesal
+	hoursly wrkly weeksly i_weeksly
 	hicov
 	hicovly1 hicovly2 hicovly3 hicovly4 hicovly5
 	penplan penincl
@@ -65,12 +65,10 @@ if $monthlycps == 1 | $maycps == 1 {
     famern
     famiws
     hhinc hhpct
-    wrkly i_wrkly
-	income
+    wrkly weeksly i_weeksly
 	faminc
-    earn
+    earn wagesal
     povlev povrate
-    schenrl
     hicov
     hicovly1 hicovly2 hicovly3 hicovly4 hicovly5
     penplan penincl
