@@ -9,7 +9,8 @@ if $monthlycps == 1 {
 		replace famwgt = oldfamwgt / 100
 	}
 	if tm(1994m1) <= $date {
-		replace famwgt = pwfmwgt / 10000
+		* NBER dictionaries read pwfmwgt with its 4 implied decimals (%10.4f)
+		replace famwgt = pwfmwgt
 	}
 }
 
@@ -47,14 +48,17 @@ if $marchcps == 1 {
 		replace famwgt = fmwgtalt / 100
 	}
 
-	* 1980: no family relationship recode; use the alternate weight of the
-	* family's first person (the family head), as for 1976
+	* 1980: Unicon famwgt is one member's weight (the wife in married-couple
+	* families, otherwise the head); use that member's alternate weight.
+	* Primary and secondary individuals (_famtyp 4, 1) share famid 0 with the
+	* primary family but are their own family unit
 	if tm(1980m1) <= $date & $date <= tm(1980m12) {
-		gen long famwgt_order = _n
-		bysort hserial famid (famwgt_order): gen famwgt_first = asecwgt[1]
-		replace famwgt = famwgt_first
-		sort famwgt_order
-		drop famwgt_first famwgt_order
+		gen byte famwgt_indiv = inlist(_famtyp, 1, 4)
+		gen byte famwgt_match = abs(wgt - oldfamwgt) <= 1 & !famwgt_indiv
+		bysort hserial famid famwgt_indiv: egen famwgt_alt = max(cond(famwgt_match, asecwgt, .))
+		replace famwgt = famwgt_alt if !missing(famwgt_alt)
+		replace famwgt = asecwgt if famwgt_indiv
+		drop famwgt_indiv famwgt_match famwgt_alt
 	}
 
 	* family weight is the family reference person's asecwgt (unrelated
@@ -98,8 +102,9 @@ lab var famwgt "Family weight"
 notes famwgt: Family weight, based on head of family
 notes famwgt: 1984-1993 Unicon Basic: famwgt
 notes famwgt: 1994-present CPS Basic: pwfmwgt
+notes famwgt: 2000-2002 CPS Basic: original (1990-based) weight; revised 2000-based person weights have no family/household counterparts
 notes famwgt: 1963-1997 Unicon March: famwgt
 notes famwgt: 1976 March: asecwgt (for first person in family)
 notes famwgt: 1998-present CPS March: fsup_wgt
 notes famwgt: 1963, 1964, 1966, 2011, 2021, 2025 March: asecwgt of family reference person (own asecwgt for unrelated individuals)
-notes famwgt: 1980 March: asecwgt (wgtalt) of first person in family; 1993 March: fmwgtalt
+notes famwgt: 1980 March: wgtalt of the member whose wgt equals Unicon famwgt (own wgtalt for individuals); 1993 March: fmwgtalt

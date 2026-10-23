@@ -8,8 +8,16 @@ if $monthlycps == 1 {
 	if tm(1989m1) <= $date & $date <= tm(1993m12) {
 		replace hhwgt = oldhhwgt / 100
 	}
-	if tm(1994m1) <= $date {
+	* NBER dictionaries read hwhhwgt with its 4 implied decimals (%10.4f),
+	* except cpsbapr94 and cpsbjun95 (Apr 1994-Aug 1995), which read it as %10f
+	if tm(1994m1) <= $date & $date <= tm(1994m3) {
+		replace hhwgt = hwhhwgt
+	}
+	if tm(1994m4) <= $date & $date <= tm(1995m8) {
 		replace hhwgt = hwhhwgt / 10000
+	}
+	if tm(1995m9) <= $date {
+		replace hhwgt = hwhhwgt
 	}
 }
 
@@ -93,6 +101,7 @@ lab var hhwgt "Household weight"
 notes hhwgt: Household weight, based on head of household
 notes hhwgt: 1989-1993 Unicon Basic: hhwgt
 notes hhwgt: 1994-present CPS Basic: hwhhwgt
+notes hhwgt: 2000-2002 CPS Basic: original (1990-based) weight; revised 2000-based person weights have no family/household counterparts
 notes hhwgt: 1962-1976: Unicon March: asecwgt of household head (_relhd)
 notes hhwgt: 1968-1975: Unicon March: falls back to asecwgt of hhrel head if no _relhd head
 notes hhwgt: 1977-1997: Unicon March: hhwgt
