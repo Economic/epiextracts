@@ -1,0 +1,1 @@
+The breaks in the series in the figure above are caused by the 1992 reclassification of educational attainment. Before 1992, respondents were asked the highest grade of school they attended and whether they completed that grade. From 1992 to the present, respondents were asked to indicate the highest grade or degree they had obtained.

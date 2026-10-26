@@ -1,0 +1,95 @@
+---
+title: "Methodology: wage variables"
+---
+
+```{r}
+#| include: false
+source("R/helpers.R")
+```
+
+Three key wage variables in the EPI CPS extracts contain additional imputations and restrictions to improve their usefulness: [`wage`](../variables/income/wage.qmd), [`wageotc`](../variables/income/wageotc.qmd), and [`weekpay`](../variables/income/weekpay.qmd). This section discusses these modifications.
+
+If you'd like to use variables that don't include these adjustments, consider using [`wage_noadj`](../variables/income/wage_noadj.qmd), [`wageotc_noadj`](../variables/income/wageotc_noadj.qmd), and [`weekpay_noadj`](../variables/income/weekpay_noadj.qmd).
+
+For a shorter overview of the wage variables, see [this discussion](faq.qmd#which-wage-variable).
+
+## Top-code adjustments
+
+In order to preserve the confidentiality of respondents, the income variables in the public-use files of the CPS are top-coded or right-censored. Prior to April 2023, the top-code was a fixed value for weekly earnings. For the survey years 1973–1985, the weekly wage is top-coded at $999.00, $1,923 from 1986–1997,and $2,884.61 in 1998.
+This truncation of the wage distribution creates a downward bias in estimates of the mean wage, particularly as the share of respondants with top-coded weekly pay increases over time due to inflation. To account for this, the EPI extracts variable [`weekpay`](../variables/income/weekpay.qmd) contains the gender- and year-specific imputed mean above the top-code assuming the earnings distribution is Pareto above the 80th percentile. For non-hourly workers, these imputed values are also incorporated in the hourly wage variables [`wage`](../variables/income/wage.qmd) and [`wageotc`](../variables/income/wageotc.qmd). However, the [increasing share of respondants](../variables/income/tc_weekpay.qmd) with top-coded earnings also causes [other problems](https://www.epi.org/blog/stagnant-topcode-thresholds-threaten-data-reliability-for-the-highest-earners-and-make-inequality-difficult-to-accurately-measure/).
+
+Beginning in April 2023, the top-coding procedure changed from being a single value for weekly earnings (2,884.61), to a [dynamically adjusted](https://www2.census.gov/programs-surveys/cps/methodology/improving-disclosure-avoidance-puf-v2.pdf) value each month. This value is calculated by Census, and is the weighted average of the reported earnings of the top 3% of weekly earners. The same process is applied to hourly earners. Between April 2023 and March 2024, this new top-coding procedure is phased in so that only respondants who entered the survey in 2023 or later are top coded "dynamically." During this time period, only respondants coded as 4 in [`minsamp`](../variables/id/minsamp.qmd) will have the new top-coding procedure. Respondents coded as 8 in [`minsamp`](../variables/id/minsamp.qmd) are assigned the mean above the top-coded value for respondents that with the new top-coding procedure (respondents coded as 4 in [`minsamp`](../variables/id/minsamp.qmd), or half of the ORG sample) until all respondent groups are phased-in.
+
+During this time, the respondents coded as 8 in [`minsamp`](../variables/id/minsamp.qmd) are still under the old top-code regime. To create a more consistant top-code value across these two regimes, we take the the average of the values of [`weekpay`](../variables/income/weekpay.qmd) that are greater than 2884.61 from respondants coded as 4 in [`minsamp`](../variables/id/minsamp.qmd) in a given month. That value then becomes the new top-code for respondents coded as 8 in [`minsamp`](../variables/id/minsamp.qmd).
+
+Starting in April 2024, we do not make any adjustments to the earnings of top-coded respondants.
+
+To use a weekly earnings variable without any topcode adjustments across any years in the data, consider [`weekpay_noadj`](../variables/income/weekpay_noadj.qmd) and the associated hourly wage variables [`wage_noadj`](../variables/income/wage_noadj.qmd), [`wageotc_noadj`](../variables/income/wageotc_noadj.qmd).
+
+::: {.callout-note collapse="true" title="Function used to impute the mean above the topcode"}
+```{r}
+#| echo: false
+#| output: asis
+code_block_fun("code/ado/topcode_impute.ado", "stata")
+```
+:::
+
+::: {.callout-note collapse="true" title="Specific top-code adjustment used for weekly earnings"}
+```{r}
+#| echo: false
+#| output: asis
+code_block_fun("code/variables/generate_weekpay.do", "stata")
+```
+:::
+
+## Hours imputations
+
+For data from 1994 to the present, respondents can report that their usual weekly "hours vary" at work. The EPI extracts contain an imputed usual weekly hours variable [`hoursu1i`](../variables/hours/hoursu1i.qmd) that is equal to usual hours worked at the primary job [`hoursu1`](../variables/hours/hoursu1.qmd), except when "hours vary", in which case it is based on the following regression-based predictions:
+
+::: {.callout-note collapse="true" title="Demographic & industry-based usual hours prediction"}
+```{r}
+#| echo: false
+#| output: asis
+code_block_fun("code/variables/generate_hoursu1i.do", "stata")
+```
+:::
+
+The imputed usual weekly hours is used when calculating hourly wages for nonhourly workers in [`wage`](../variables/income/wage.qmd) and [`wageotc`](../variables/income/wageotc.qmd). If you do not want to include these hours imputations in your wage analysis, you can simply set wage values to missing for nonhourly (`paidhre == 0`) workers whose hours vary (`hoursvary1 == 1`).
+
+## Trimming outliers
+
+The hourly wage variables [`wage`](../variables/income/wage.qmd) and [`wageotc`](../variables/income/wageotc.qmd) are trimmed of outliers. Specifically, these hourly wage values are set to missing if they are above 50 cents per hour or $100 per hour in 1989 dollars.
+
+For hourly wage variables that do not have this modification, see [`wage_noadj`](../variables/income/wage_noadj.qmd) and [`wageotc_noadj`](../variables/income/wageotc_noadj.qmd)
+
+::: {.callout-note collapse="true" title="Hourly wage limits for `wage` and `wageotc`"}
+```{r}
+#| echo: false
+wage_limits_fun() |>
+  # fixed decimals per column, as in the Stata-made table
+  dplyr::mutate(
+    cpiurs_extended = sprintf("%.1f", cpiurs_extended),
+    dplyr::across(c(wage_lower, wage_upper), ~ sprintf("%.2f", .x))
+  ) |>
+  knitr::kable(
+    col.names = c("Year", "CPI-U-RS - extended", "Lower wage limit (\\$)", "Upper wage limit (\\$)"),
+    align = "lrrr"
+  )
+```
+:::
+
+## BLS wage allocations
+
+In recent years, a large number of observations have weekly earnings or hourly wages imputed by the BLS. If you want to use a wage variable without any weekly or hourly earnings imputations by EPI or BLS, you can incorporate the allocation flags [`a_weekpay`](../variables/income/a_weekpay.qmd) and [`a_earnhour`](../variables/income/a_earnhour.qmd).
+
+::: {.callout-note collapse="true" title="Generate wage variable that excludes all imputations"}
+```stata
+* Stata code to restrict hourly wages to data not allocated by BLS
+* Be aware that the allocation indicators are not consistent over time.
+* In particular, there is no allocation information at all during Jan 1994 - August 1995.
+
+gen wage_noimpute = wage_noadj
+replace wage_noimpute = . if paidhre == 1 & a_earnhour == 1
+replace wage_noimpute = . if paidhre == 0 & a_weekpay == 1
+```
+:::

@@ -1,0 +1,36 @@
+---
+title: EPI Microdata Extracts
+toc: false
+---
+
+## Download the data
+The latest EPI CPS extracts are available in Stata format:
+
+::: {.callout-note}
+Due to the 2025 U.S federal government shutdown, October data was not collected and is not available in the EPI CPS extracts.
+:::
+
+Extract     | Years   | File | Version
+------------|---------|------|---------------------------------
+CPS Basic monthly | 1976 - {{< var latestdata >}} | [epi_cpsbasic_2000_{{< var dataendyear >}}.zip](https://microdata.epi.org/epi_cpsbasic_2000_{{< var dataendyear >}}.zip) <br/> [epi_cpsbasic_1976_1999.zip](https://microdata.epi.org/epi_cpsbasic_1976_1999.zip) | {{< var version >}}
+CPS May           | 1973 - 1981            | [epi_cpsmay_1973_1981.zip](https://microdata.epi.org/epi_cpsmay_1973_1981.zip) | {{< var version >}}
+CPS ORG           | 1979 - {{< var latestdata >}} | [epi_cpsorg_1979_{{< var dataendyear >}}.zip](https://microdata.epi.org/epi_cpsorg_1979_{{< var dataendyear >}}.zip) | {{< var version >}}
+
+
+## View the documentation
+* [Variables](variables/index.qmd) available in the EPI extracts
+* How to [use](basicuse.qmd) the data after downloading it
+* Frequently asked [questions](methodology/faq.qmd)
+* Methodology for specific variables like [wages](methodology/wagevariables.qmd) and [race/ethnicity](methodology/racevariables.qmd)
+* How to [cite](sources.qmd) the EPI extracts
+* Recent [changes](changes/changelog.qmd) to the data
+
+## Citations
+If you use the EPI extracts for your research, please cite the data in your references:
+
+::: {.callout-note title="Suggested citation for EPI microdata extracts"}
+Economic Policy Institute. {{< var year >}}. Current Population Survey Extracts, Version {{< var version >}}, https://microdata.epi.org.
+:::
+
+The code that creates the EPI extracts and documentation is available on
+[Github](https://github.com/Economic/epiextracts).

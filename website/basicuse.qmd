@@ -1,0 +1,79 @@
+---
+title: How to use the EPI extracts
+---
+
+## 1. Download the data
+Version {{< var version >}} of the EPI CPS extracts is available to download [here](index.qmd).
+
+## 2. Unzip and move the files
+The zip file you downloaded is a collection of Stata data files, one file for each year (or monthly files when annual data is not available). You should decompress those files and move them into an appropriate directory on your computer.
+
+## 3. Use the data with your favorite statistical package
+
+::: {.callout-tip collapse="true" title="Stata examples"}
+Feel free to just use the datasets just as you would any Stata dataset:
+```stata
+use "/data/cps/epi_cpsorg_2019.dta", clear
+```
+where you have replaced `/data/cps/` with the directory containing the decompressed files.
+
+Alternatively, the Stata command `load_epiextracts` is an easy way to load a selection of years and variables of the EPI CPS extracts into memory. First, install the Stata package with
+```stata
+net install load_epiextracts, from("https://microdata.epi.org/stata")
+```
+and then use it like
+
+```stata
+* Load all of the 2016-2017 EPI CPS Basic monthly extracts
+load_epiextracts, begin(2016m1) end(2017m12) sample(basic) sourcedir("/data/cps")
+
+* Load certain variables from the 1990m7-2018m6 EPI CPS ORG
+load_epiextracts, begin(1990m7) end(2018m6) keep(age lfstat union) sample(org) sourcedir("/data/cps")
+```
+After installing the command see `help load_epiextracts` for more details.
+:::
+
+::: {.callout-tip collapse="true" title="R examples"}
+The haven package will load Stata datasets:
+```r
+mydata <- haven::read_dta("/data/cps/epi_cpsorg_2019.dta")
+```
+
+Alternatively, the [epiextractr](https://economic.github.io/epiextractr/) package is an easy way to download the EPI CPS extracts and load a selection of years and variables. First, install the package from GitHub:
+```r
+# install.packages("remotes")
+remotes::install_github("Economic/epiextractr")
+```
+and then use it to download the data. This replaces steps 1 and 2 above: `download_cps()` fetches the extracts in Feather format rather than the Stata zip files, and decompresses them into an existing directory.
+```r
+library(epiextractr)
+
+# Download the EPI CPS Basic monthly and ORG extracts
+download_cps("basic", "/data/cps")
+download_cps("org", "/data/cps")
+```
+and load a selection of years and variables:
+```r
+# Load all of the 2016-2017 EPI CPS Basic monthly extracts
+cps_basic <- load_basic(2016:2017, .extracts_dir = "/data/cps")
+
+# Load certain variables from the 2010-2019 EPI CPS ORG
+cps_org <- load_org(2010:2019, year, month, orgwgt, age, lfstat, union, .extracts_dir = "/data/cps")
+```
+To update to a newer version of the extracts, rerun `download_cps()` with `overwrite = TRUE`.
+To skip `.extracts_dir`, set the environment variables `EPIEXTRACTS_CPSBASIC_DIR`, `EPIEXTRACTS_CPSORG_DIR` and `EPIEXTRACTS_CPSMAY_DIR` in your `.Renviron` file.
+
+`cps_version()` and `cps_citation()` report the version of the extracts you loaded and how to cite them:
+```r
+cps_version(cps_org)
+cps_citation(cps_org)
+```
+See the [epiextractr documentation](https://economic.github.io/epiextractr/) for more details.
+:::
+
+## 4. Cite the data
+If you use the EPI extracts for your research, please cite the data in your references:
+
+::: {.callout-note title="Suggested citation for EPI microdata extracts"}
+Economic Policy Institute. {{< var year >}}. Current Population Survey Extracts, Version {{< var version >}}, https://microdata.epi.org.
+:::

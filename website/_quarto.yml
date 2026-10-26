@@ -1,0 +1,50 @@
+project:
+  type: website
+  # run every R chunk from website/, so relative paths work the same on every page
+  execute-dir: project
+  # refresh version values from ../config/release.yml before every render/preview
+  pre-render: R/write_variables.R
+  render:
+    - "*.qmd"
+    - "!R/"
+
+website:
+  title: "EPI Microdata Extracts"
+  description: "CPS and other microdata extracts used by EPI"
+  site-url: https://microdata.epi.org
+  search: true
+  navbar:
+    left:
+      - text: Home
+        href: index.qmd
+      - text: Basic use
+        href: basicuse.qmd
+      - text: Variables
+        href: variables/index.qmd
+      - text: Methodology
+        menu:
+          - text: FAQ
+            href: methodology/faq.qmd
+          - text: Wage variables
+            href: methodology/wagevariables.qmd
+    right:
+      - icon: github
+        href: https://github.com/Economic/epiextracts
+  page-footer:
+    center: 'Copyright &copy; {{< var year >}} <a href="https://epi.org">Economic Policy Institute</a>'
+
+format:
+  html:
+    theme: cosmo
+    css: styles.css
+    # filters the searchable value-label tables on variable pages
+    include-after-body: search.js
+    toc: true
+    code-copy: true
+    anchor-sections: true
+
+execute:
+  # only re-run figure chunks when their code changes
+  freeze: auto
+  warning: false
+  message: false

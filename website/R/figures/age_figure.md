@@ -1,0 +1,1 @@
+The minimum age of the sample in the CPS extracts is consistent since 1982. However, in 1985, about 16-17% of observations ages 0-13 have zero values for finalwgt. The zero weight values in that year explain the spike in (sample-weighted) age shares illustrated above.
