@@ -60,6 +60,8 @@ While there is not always a single correct answer regarding which weight you sho
 
 In a given month, the above weights sum to the total monthly population estimate of the relevant sample.
 
+The March (ASEC) extracts have their own weights: [`asecwgt`](../variables/weights/asecwgt.md) for persons, [`famwgt`](../variables/weights/famwgt.md) for families, and [`hhwgt`](../variables/weights/hhwgt.md) for households. See [March (ASEC) extracts](asec.md#weights) for details.
+
 ## Which wage variable should I use? {: #which-wage-variable}
 
 There are several hourly wage variables in the EPI CPS extracts, but for many purposes we recommend using [`wage`](../variables/income/wage.md) or [`wageotc`](../variables/income/wageotc.md).

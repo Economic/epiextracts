@@ -35,7 +35,7 @@ lab var paidhre "Paid by hour"
 lab def paidhre 0 "Nonhourly worker" 1 "Hourly worker"
 lab val paidhre paidhre
 notes paidhre: Indicates respondent is paid by hour
-notes paidhre: Only available in 1973-1978 May and 1979-present ORG
+notes paidhre: Only available in 1973-1979 and 1981 May, 1979-present ORG, and 1979-present March
 notes paidhre: 1973-1978 Unicon Basic: hourpd
 notes paidhre: 1979-1993 Unicon Basic: _ernpdh
 notes paidhre: 1994-present CPS Basic: peernhry

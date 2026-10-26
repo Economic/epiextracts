@@ -15,11 +15,13 @@ The current extracts draw extensively from excellent work by
 * [IPUMS](https://cps.ipums.org/cps/): clear variable-specific web pages providing a model for how variables should be documented
 * [NBER](http://www.nber.org/data/cps_basic_progs.html): helpful scripts for transforming BLS/Census flat files into Stata data,	as well as the resourceful NBER MORG data files
 
-##Raw data underlying the EPI extracts
+## Raw data underlying the EPI extracts
 Dataset                 | Years          | Source             
 :-----------------------|:---------------|:-------------------
 EPI CPS Basic Monthly   | 1976 - 1993    | Unicon CPS Basic   
 EPI CPS Basic Monthly   | 1994 - Present | Census/BLS monthly 
+EPI CPS March (ASEC)    | 1962 - 1997    | Unicon CPS March   
+EPI CPS March (ASEC)    | 1998 - Present | Census CPS ASEC    
 EPI CPS May             | 1973 - 1981    | Unicon CPS May     
 EPI CPS ORG             | 1979 - 1983    | Unicon CPS ORG     
 EPI CPS ORG             | 1984 - 1993    | Unicon CPS Basic   
