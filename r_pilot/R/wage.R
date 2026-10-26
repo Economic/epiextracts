@@ -1,17 +1,5 @@
-# CPI-based wage trim bounds. Uses realtalk::cpi_u_rs_annual in place of
-# reading suppdata/cpiurs_extended.csv directly -- verified numerically
-# identical (zero deviation) to the CSV for every year 1978-2024, which fully
-# covers the 1989 base year and this pipeline's 2000-2024 target range.
-build_wage_bounds <- function() {
-  cpi <- realtalk::cpi_u_rs_annual
-  cpibase <- cpi$cpi_u_rs[cpi$year == 1989]
-  dplyr::transmute(
-    cpi,
-    year,
-    wage_lower = stata_round(0.50 * cpi_u_rs / cpibase, 2),
-    wage_upper = stata_round(100 * cpi_u_rs / cpibase, 2)
-  )
-}
+# wage (generate_wage.do): assembled from wage_noadj/weekpay/hoursu1(i) and
+# trimmed by the CPI-based limits from build_wage_bounds() (R/cpi.R).
 
 #' Assemble wage from wage_noadj/weekpay/hoursu1(i), trimmed by CPI bounds.
 #' (generate_wage.do, Census era Basic/ORG 1994+)

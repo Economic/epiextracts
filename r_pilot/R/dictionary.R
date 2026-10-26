@@ -31,7 +31,8 @@ parse_dictionary <- function(dct_path) {
 }
 
 #' Select the NBER dictionary vintage for a given year/month, replicating
-#' process_rawbasic.ado's date-range table exactly (Basic Monthly, 2000-2024).
+#' process_rawbasic.ado's date-range table (Basic Monthly, 1998 onward; the
+#' 1994-1997 vintages aren't in the table yet).
 #'
 #' Uses an integer month-index (year*12 + month), not Date arithmetic --
 #' as.Date() range boundaries are a real footgun here (e.g. "2021-02-29"

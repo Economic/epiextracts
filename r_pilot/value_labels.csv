@@ -1,0 +1,225 @@
+variable,value,label
+statecensus,11,ME
+statecensus,12,NH
+statecensus,13,VT
+statecensus,14,MA
+statecensus,15,RI
+statecensus,16,CT
+statecensus,21,NY
+statecensus,22,NJ
+statecensus,23,PA
+statecensus,31,OH
+statecensus,32,IN
+statecensus,33,IL
+statecensus,34,MI
+statecensus,35,WI
+statecensus,41,MN
+statecensus,42,IA
+statecensus,43,MO
+statecensus,44,ND
+statecensus,45,SD
+statecensus,46,NE
+statecensus,47,KS
+statecensus,51,DE
+statecensus,52,MD
+statecensus,53,DC
+statecensus,54,VA
+statecensus,55,WV
+statecensus,56,NC
+statecensus,57,SC
+statecensus,58,GA
+statecensus,59,FL
+statecensus,61,KY
+statecensus,62,TN
+statecensus,63,AL
+statecensus,64,MS
+statecensus,71,AR
+statecensus,72,LA
+statecensus,73,OK
+statecensus,74,TX
+statecensus,81,MT
+statecensus,82,ID
+statecensus,83,WY
+statecensus,84,CO
+statecensus,85,NM
+statecensus,86,AZ
+statecensus,87,UT
+statecensus,88,NV
+statecensus,91,WA
+statecensus,92,OR
+statecensus,93,CA
+statecensus,94,AK
+statecensus,95,HI
+statecensus,101,MA-ME-NH-RI-VT
+statecensus,102,MI-WI
+statecensus,103,IA-MN
+statecensus,104,KS-NE-ND-SD
+statecensus,105,NC-SC
+statecensus,106,DE-VA
+statecensus,107,AL-MS
+statecensus,108,AR-OK
+statecensus,109,AZ-CO-NM
+statecensus,110,ID-MT-NV-UT-WY
+statecensus,111,AK-HI-WA
+statecensus,112,ME-NH-RI-VT
+statecensus,113,IA-KS-MN-MO-NE-ND-SD
+statecensus,114,DE-MD-VA-WV
+statecensus,115,GA-SC
+statecensus,116,KY-TN
+statecensus,117,AR-LA-OK
+statecensus,118,AZ-CO-ID-MT-NV-NM-UT-WY
+statecensus,119,AK-HI-OR-WA
+division,1,New England
+division,2,Middle Atlantic
+division,3,East North Central
+division,4,West North Central
+division,5,South Atlantic
+division,6,East South Central
+division,7,West South Central
+division,8,Mountain
+division,9,Pacific
+region,1,Northeast
+region,2,Midwest
+region,3,South
+region,4,West
+statefips,1,AL
+statefips,2,AK
+statefips,4,AZ
+statefips,5,AR
+statefips,6,CA
+statefips,8,CO
+statefips,9,CT
+statefips,10,DE
+statefips,11,DC
+statefips,12,FL
+statefips,13,GA
+statefips,15,HI
+statefips,16,ID
+statefips,17,IL
+statefips,18,IN
+statefips,19,IA
+statefips,20,KS
+statefips,21,KY
+statefips,22,LA
+statefips,23,ME
+statefips,24,MD
+statefips,25,MA
+statefips,26,MI
+statefips,27,MN
+statefips,28,MS
+statefips,29,MO
+statefips,30,MT
+statefips,31,NE
+statefips,32,NV
+statefips,33,NH
+statefips,34,NJ
+statefips,35,NM
+statefips,36,NY
+statefips,37,NC
+statefips,38,ND
+statefips,39,OH
+statefips,40,OK
+statefips,41,OR
+statefips,42,PA
+statefips,44,RI
+statefips,45,SC
+statefips,46,SD
+statefips,47,TN
+statefips,48,TX
+statefips,49,UT
+statefips,50,VT
+statefips,51,VA
+statefips,53,WA
+statefips,54,WV
+statefips,55,WI
+statefips,56,WY
+statefips,101,MA-ME-NH-RI-VT
+statefips,102,MI-WI
+statefips,103,IA-MN
+statefips,104,KS-NE-ND-SD
+statefips,105,NC-SC
+statefips,106,DE-VA
+statefips,107,AL-MS
+statefips,108,AR-OK
+statefips,109,AZ-CO-NM
+statefips,110,ID-MT-NV-UT-WY
+statefips,111,AK-HI-WA
+statefips,112,ME-NH-RI-VT
+statefips,113,IA-KS-MN-MO-NE-ND-SD
+statefips,114,DE-MD-VA-WV
+statefips,115,GA-SC
+statefips,116,KY-TN
+statefips,117,AR-LA-OK
+statefips,118,AZ-CO-ID-MT-NV-NM-UT-WY
+statefips,119,AK-HI-OR-WA
+countyfips,0,Not identified
+cbsafips,0,Not identified
+metstat,0,Nometropolitan
+metstat,1,Metropolitan
+cbsasize,0,Not identified or nonmetropolitan
+cbsasize,2,"100,000 - 249,999"
+cbsasize,3,"250,000 - 499,999"
+cbsasize,4,"500,000 - 999,999"
+cbsasize,5,"1,000,000 - 2,499,999"
+cbsasize,6,"2,500,000 - 4,999,999"
+cbsasize,7,"5,000,000+"
+age,80,80+
+female,0,Male
+female,1,Female
+wbho,1,White
+wbho,2,Black
+wbho,3,Hispanic
+wbho,4,Other
+citistat,1,"Native, born in US"
+citistat,2,"Native, born in Puerto Rico or other US island areas"
+citistat,3,"Native, born abroad with American parent(s)"
+citistat,4,"Foreign born, naturalized US citizen"
+citistat,5,"Foreign born, not a US citizen"
+married,0,Not married
+married,1,Married
+educ,1,Less than high school
+educ,2,High school
+educ,3,Some college
+educ,4,College
+educ,5,Advanced
+emp,0,NILF/unemployed
+emp,1,Employed
+unmem,0,Not a union member
+unmem,1,Union member
+uncov,0,Not union covered
+uncov,1,Union covered
+union,0,Not union represented
+union,1,Union represented
+pubsec,0,Not in public sector
+pubsec,1,In public sector
+paidhre,0,Nonhourly worker
+paidhre,1,Hourly worker
+hoursu1,99,99+
+hoursuorg,99,99+
+hoursvary1,0,Hours do not vary
+hoursvary1,1,Hours vary
+hoursuint,1,0-20 hours
+hoursuint,2,21-34 hours
+hoursuint,3,35-39 hours
+hoursuint,4,40 hours
+hoursuint,5,41-49 hours
+hoursuint,6,50 or more hours
+hoursuint,7,Hours vary: full-time
+hoursuint,8,Hours vary: part-time
+mind16,1,"Agriculture, mining, forestry and fisheries"
+mind16,2,Construction
+mind16,3,"Manufacturing, durable goods"
+mind16,4,"Manufacturing, nondurable goods"
+mind16,5,Transportation
+mind16,6,Communications and utilities
+mind16,7,Wholesale trade
+mind16,8,Retail trade
+mind16,9,"Finance, insurance and real estate. Business, auto, repair, and other professional services."
+mind16,10,"Personal services, including private household"
+mind16,11,Entertainment and recreation
+mind16,12,Hospital
+mind16,13,"Medical, except hospital"
+mind16,14,Educational
+mind16,15,Social Services
+mind16,16,Public administration
+hoursu1i,99,99+

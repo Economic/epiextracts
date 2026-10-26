@@ -1,3 +1,13 @@
+# Ids, weights, labor force and earnings recodes (Census era, Basic/ORG).
+# Each function's arguments are the columns it reads; see R/registry.R.
+
+# --- ids and dates (generate_year/month/hrhhid/hhid/personid.do), 1998+ -----
+recode_survey_year <- function(hryear4) as.numeric(hryear4)
+recode_survey_month <- function(hrmonth) as.numeric(hrmonth)
+recode_hrhhid <- function(hrhhid) hrhhid
+recode_hhid <- function(qstnum) as.numeric(qstnum)
+recode_personid <- function(occurnum) as.numeric(occurnum)
+
 # --- age (generate_age.do) --------------------------------------------------
 # peage covers 1994m1-2012m4, prtage covers 2012m5+; the two never co-occur
 # within a given row, so coalesce() picks whichever is populated.
@@ -149,73 +159,5 @@ recode_wage_noadj <- function(paidhre, earnhour, weekpay_noadj, hoursu1) {
   dplyr::if_else(paidhre == 1, earnhour, wage2)
 }
 
-#' Recode one year's raw table into the pilot variables.
-#'
-#' Applies the sample_cpsbasic.do universe filter (drop rows with negative raw
-#' age entirely) before recoding -- this is distinct from recode_age()'s rule
-#' of setting `age` to missing, and is required for row-count parity against
-#' the published Stata extracts, not just column-level correctness.
-#'
-#' minsamp/orgwgt/paidhre..wage_noadj are computed for every basic-level row
-#' (not just the ORG subset), mirroring how basicwgt is computed unconditionally
-#' -- ORG membership is an orthogonal downstream row filter, not a separate
-#' source of these columns.
-recode_year <- function(raw_year, reweight_years, state_geocodes) {
-  raw_year |>
-    dplyr::mutate(raw_age = recode_raw_age(peage, prtage)) |>
-    dplyr::filter(raw_age >= 0) |>
-    dplyr::mutate(
-      hhid     = as.numeric(qstnum),    # generate_hhid.do: 1998+ = qstnum
-      personid = as.numeric(occurnum),  # generate_personid.do: 1998+ = occurnum
-      year     = hryear4,
-      month    = hrmonth,
-      age      = recode_age(raw_age),
-      female   = recode_female(pesex),
-      lfstat   = recode_lfstat(pemlr),
-      emp      = recode_emp(lfstat),
-      cmpwgt   = recode_cmpwgt(pwcmpwgt, nwcmpwgt, year, reweight_years),
-      basicwgt = recode_basicwgt(cmpwgt, raw_age),
-      minsamp  = recode_minsamp(hrmis),
-      orgwgt   = recode_orgwgt(pworwgt, nworwgt, year, reweight_years),
-      paidhre       = recode_paidhre(peernhry),
-      hoursu1       = recode_hoursu1(pehrusl1),
-      hoursvary1    = recode_hoursvary1(pehrusl1),
-      hoursuint     = recode_hoursuint(prhrusl),
-      hoursuorg     = recode_hoursuorg(peernhro, hoursu1, minsamp),
-      earnhour      = recode_earnhour(year, month, prernhly, pternhly),
-      weekpay_noadj = recode_weekpay_noadj(year, month, prernwa, pternwa),
-      wage_noadj    = recode_wage_noadj(paidhre, earnhour, weekpay_noadj, hoursu1),
-      ptwk          = as.numeric(ptwk),  # BLS-supplied topcode flag, tc_fix.do 2023m4+ only
-      # 8 demographic/employment/industry covariates -- computed at the basic
-      # level (not just ORG) since Stata generates them identically regardless
-      # of sample; union/unmem/uncov end up mostly NA outside the ORG-eligible
-      # rotation groups, matching actual Stata behavior, not a gap to fix.
-      educ      = recode_educ(peeduca),
-      hispanic  = recode_hispanic(year, prorigin, prdthsp),
-      wbho      = recode_wbho(year, month, perace, ptdtrace, prdtrace, hispanic),
-      citistat  = recode_citistat(prcitshp),
-      married   = recode_married(prmarsta),
-      statefips = recode_statefips(gestfips),
-      unmem     = recode_unmem(peernlab),
-      uncov     = recode_uncov(peerncov),
-      union     = recode_union(unmem, uncov),
-      pubsec    = recode_pubsec(peio1cow),
-      indcode   = recode_indcode(peio1icd),
-      mind16    = recode_mind16(indcode, year),
-      # geography: countyfips/cbsafips/cbsasize/metstat are direct raw-column
-      # passthroughs (no crosswalk); statecensus/division/region come from a
-      # left-join below since they live in a separate lookup table, not a raw column
-      countyfips = recode_countyfips(year, month, geco, gtco),
-      cbsafips   = recode_cbsafips(year, month, gtcbsa),
-      cbsasize   = recode_cbsasize(year, month, gtcbsasz),
-      metstat    = recode_metstat(year, month, gemetsta, gtmetsta)
-    ) |>
-    dplyr::left_join(state_geocodes, by = "statefips") |>
-    dplyr::select(
-      hrhhid, hhid, personid, year, month, age, female, emp, basicwgt,
-      minsamp, orgwgt, paidhre, hoursu1, hoursvary1, hoursuint, hoursuorg,
-      earnhour, weekpay_noadj, wage_noadj, ptwk,
-      educ, wbho, citistat, married, statefips, unmem, uncov, union, pubsec, mind16,
-      statecensus, division, region, countyfips, cbsafips, cbsasize, metstat
-    )
-}
+# --- ptwk: BLS top-code flag for weekly earnings, 2023m4+ (raw, used by add_weekpay)
+recode_ptwk <- function(ptwk) as.numeric(ptwk)

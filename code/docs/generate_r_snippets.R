@@ -1,13 +1,12 @@
 # Generates per-variable R code snippets for the documentation site, mirroring
 # how docwrite.do already embeds each variable's generate_<var>.do verbatim in
 # a "## Code" admonition. Run this once per release (from the project root,
-# before `do code/docs/createdocs.do`) so docwrite.do finds a fresh snippet
-# file for every variable listed in code/docs/r_snippets_map.csv.
+# before `do code/docs/createdocs.do` or the Quarto build).
 #
-# Reads code/docs/r_snippets_map.csv (varname, r_file, functions) and, for
-# each row, extracts the named function(s) from r_pilot/R/<r_file> -- or the
-# whole file, if functions == "WHOLE_FILE" -- writing the result to
-# code/docs/r_snippets/<varname>_rcode.R.
+# Reads the `snippet` column of the variable registry (r_pilot/variables.csv):
+# "fn1;fn2" extracts those functions (wherever they're defined in
+# r_pilot/R/), "file:<name>.R" takes a whole file, blank means no snippet.
+# Writes code/docs/r_snippets/<variable>_rcode.R.
 
 library(readr)
 
@@ -66,24 +65,38 @@ extract_functions <- function(r_file, function_names) {
 }
 
 ## CONFIGURATION -- run from the project root
-map_csv    <- "code/docs/r_snippets_map.csv"
-r_pilot_dir <- "r_pilot/R"
-out_dir    <- "code/docs/r_snippets"
+registry_csv <- "r_pilot/variables.csv"
+r_pilot_dir  <- "r_pilot/R"
+out_dir      <- "code/docs/r_snippets"
 
-map <- readr::read_csv(map_csv, show_col_types = FALSE)
+registry <- readr::read_csv(registry_csv, col_types = readr::cols(.default = "c"), na = "")
+registry <- registry[!is.na(registry$snippet), ]
 dir.create(out_dir, showWarnings = FALSE, recursive = TRUE)
 
-for (i in seq_len(nrow(map))) {
-  var <- map$varname[i]
-  r_file <- file.path(r_pilot_dir, map$r_file[i])
-  spec <- map$functions[i]
+# which file defines each top-level function
+r_files <- list.files(r_pilot_dir, pattern = "\\.R$", full.names = TRUE)
+defined_in <- unlist(lapply(r_files, function(f) {
+  exprs <- parse(f, keep.source = FALSE)
+  is_fn <- vapply(exprs, function(e) is.call(e) && as.character(e[[1]]) %in% c("<-", "=") &&
+                    is.call(e[[3]]) && identical(e[[3]][[1]], as.name("function")), logical(1))
+  names <- vapply(exprs[is_fn], function(e) as.character(e[[2]]), character(1))
+  setNames(rep(f, length(names)), names)
+}))
 
-  snippet <- if (identical(spec, "WHOLE_FILE")) {
-    paste(readLines(r_file), collapse = "\n")
+for (i in seq_len(nrow(registry))) {
+  var <- registry$variable[i]
+  spec <- registry$snippet[i]
+
+  snippet <- if (startsWith(spec, "file:")) {
+    paste(readLines(file.path(r_pilot_dir, sub("^file:", "", spec))), collapse = "\n")
   } else {
     fn_names <- strsplit(spec, ";")[[1]]
-    pieces <- extract_functions(r_file, fn_names)
-    paste(unlist(pieces[fn_names]), collapse = "\n\n")
+    if (any(!fn_names %in% names(defined_in))) {
+      stop("generate_r_snippets.R: no definition found for ", paste(setdiff(fn_names, names(defined_in)), collapse = ", "))
+    }
+    # functions can live in different files; extract each from its own
+    pieces <- vapply(fn_names, function(fn) extract_functions(defined_in[[fn]], fn)[[fn]], character(1))
+    paste(pieces, collapse = "\n\n")
   }
 
   out_file <- file.path(out_dir, sprintf("%s_rcode.R", var))

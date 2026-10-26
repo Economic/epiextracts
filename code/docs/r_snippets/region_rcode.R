@@ -1,7 +1,10 @@
 #' suppdata/state_geocodes.csv: state -> statecensus/division/region lookup.
-#' Only the codes are needed (not statename/stateabb/divisionname/regionname
-#' labels), since this feeds a numeric join, not a display/report.
-build_state_geocodes <- function() {
-  readr::read_csv("/projects/jkandra/epiextracts/suppdata/state_geocodes.csv", show_col_types = FALSE) |>
+#' Only the codes are needed; the names become value labels (value_labels.csv).
+build_state_geocodes <- function(geocodes_file) {
+  readr::read_csv(geocodes_file, show_col_types = FALSE) |>
     dplyr::select(statefips, statecensus, division, region)
+}
+
+recode_region <- function(statefips, state_geocodes) {
+  state_geocodes$region[match(statefips, state_geocodes$statefips)]
 }

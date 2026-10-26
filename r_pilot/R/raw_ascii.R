@@ -1,33 +1,20 @@
-# Raw Census ASCII ingestion (replaces code/ado/process_rawbasic.ado /
-# process_censusbasic). Parses the fixed-width monthly files directly via
-# the NBER dictionaries -- no Stata step in between. Reads only the 36
-# columns in raw_cols_needed (R/load.R); the parser itself (dictionary.R)
-# is generic and would support reading more columns later without new
-# architecture. This is now recode_year()'s sole raw-data source -- it was
-# validated (925 checks, 0 mismatches, full 2000-2024) against the
-# Stata-converted intermediate before that intermediate was retired from
-# the pipeline.
+# Raw Census ASCII ingestion (replaces code/ado/process_rawbasic.ado).
+# Each month is parsed once with EVERY dictionary column and cached as
+# parquet, so adding a variable never re-parses raw files: recoding reads
+# only the columns it needs from the cache.
 #
-# Known, documented exclusion: the telework-COVID supplement merge
-# (Oct 2022-May 2024, code/ado/process_rawbasic.ado's twoct2022/twdec2023
-# branch) is NOT ported here -- the raw supplement files don't exist
-# anywhere on disk, and none of the currently-ported variables depend on
-# telework-derived columns.
+# Not yet ported: the telework supplement merge (2022m10-2024m5, see
+# process_rawbasic.ado). No ported variable uses it; see DEVIATIONS.md.
 
 monthname_lut <- tolower(month.abb)
 
 #' Scale a raw fixed-width numeric column by its dictionary-implied decimals.
 #'
-#' Census/NBER convention (confirmed empirically against real Stata `infile
-#' using <dct>`): missing-data sentinel codes (-1 not-in-universe, -2 don't
-#' know, -3 refused) are stored as literal small negative integers in the
-#' raw ASCII, even in fields whose format implies decimal places for genuine
-#' values (e.g. %4.2f: raw "800" -> 8.00). For those decimal fields, Stata's
-#' infile converts a raw negative value to MISSING -- it does NOT scale it
-#' (-1 does not become -0.01). Integer-format fields (decimals == 0) are
-#' unaffected; Stata keeps -1/-2/-3 there as literal integers. This only
-#' matters for the 8 of 36 columns with decimals > 0 (the weight/earnings
-#' columns) -- the other 28 already match without this rule.
+#' Census stores missing-data codes (-1 not in universe, -2 don't know,
+#' -3 refused) as literal negative integers, even in fields whose format
+#' implies decimals. Stata's infile turns those into missing in decimal
+#' fields (it does not scale -1 to -0.01) and keeps them as-is in integer
+#' fields. This reproduces that.
 scale_numeric <- function(raw_chr, decimals) {
   x <- suppressWarnings(as.numeric(raw_chr))
   if (decimals == 0) return(x)
@@ -37,101 +24,101 @@ scale_numeric <- function(raw_chr, decimals) {
   out
 }
 
-#' Read one month's raw Census ASCII fixed-width file, filtered to
-#' raw_cols_needed, plus the 2000-2002 reweight merge where applicable.
-read_raw_ascii_month <- function(year, month, raw_ascii_dir, dictionaries_dir) {
-  shortyear <- sprintf("%02d", year %% 100)
-  month_zip <- file.path(raw_ascii_dir, sprintf("%s%spub.zip", monthname_lut[month], shortyear))
-
-  dict_name <- select_dictionary(year, month)
-  dict <- parse_dictionary(file.path(dictionaries_dir, paste0(dict_name, ".dct")))
-  wanted <- dict[dict$varname %in% raw_cols_needed, ]
-
-  # readr::read_fwf() reads directly from a single-file .zip with no unzip
-  # step needed, matching haven::read_dta()'s existing .dta.zip behavior.
-  # Read everything as character first so decimal scaling stays explicit.
-  positions <- readr::fwf_positions(wanted$start, wanted$end, col_names = wanted$varname)
-  month_data <- readr::read_fwf(month_zip, positions, col_types = readr::cols(.default = readr::col_character()))
-
-  for (i in seq_len(nrow(wanted))) {
-    v <- wanted$varname[i]
-    month_data[[v]] <- if (wanted$type[i] == "string") {
-      trimws(month_data[[v]])
-    } else {
-      scale_numeric(month_data[[v]], wanted$decimals[i])
-    }
+#' Read fixed-width columns from a file using a parsed dictionary, converting
+#' strings (trimmed) and numerics (scaled) per the dictionary.
+read_fwf_dictionary <- function(file, dict) {
+  positions <- readr::fwf_positions(dict$start, dict$end, col_names = dict$varname)
+  # read everything as character first so decimal scaling stays explicit
+  data <- readr::read_fwf(file, positions, col_types = readr::cols(.default = readr::col_character()))
+  for (i in seq_len(nrow(dict))) {
+    v <- dict$varname[i]
+    data[[v]] <- if (dict$type[i] == "string") trimws(data[[v]]) else scale_numeric(data[[v]], dict$decimals[i])
   }
-
-  if (year >= 2000 && year <= 2002) {
-    month_data <- merge_reweight(month_data, year, month, raw_ascii_dir, dictionaries_dir)
-  }
-
-  month_data
+  data
 }
 
-#' 2000-2002 only: merge the Census-2000-based reweight file's nwcmpwgt/
-#' nworwgt onto the main month's data.
+#' Raw input files for one year: the monthly pub.zips, plus the yearly
+#' reweight archive in reweight years. Tracked as file targets.
+raw_zip_paths <- function(year, config) {
+  shortyear <- sprintf("%02d", year %% 100)
+  months <- year_months(year, config$skip_months)
+  zips <- file.path(config$paths$raw_ascii, sprintf("%s%spub.zip", monthname_lut[months], shortyear))
+  if (year %in% config$reweight_years) {
+    zips <- c(zips, file.path(config$paths$raw_ascii, sprintf("rw%s.zip", shortyear)))
+  }
+  zips
+}
+
+#' Census-2000-based reweights for one month (reweight years only).
 #'
-#' Reweight zips (rw<yy>.zip) are yearly archives containing one .dat member
-#' per month -- unlike the single-file monthly pub.zips, so read_fwf() can't
-#' target a member directly; extract via utils::unzip() first. The main
-#' dictionaries type qstnum/occurnum as strings, the reweight dictionaries as
-#' numeric -- coerced to matching string form before joining, mirroring
-#' Stata's own explicit tostring() calls in process_censusbasic.
-#'
-#' Replicates Stata's `merge 1:1 ... assert(2 3); keep if _merge==3`: every
-#' main-file row must find a reweight match (a hard stop() if not, matching
-#' Stata's assert strictness); reweight-only rows are silently dropped.
-merge_reweight <- function(month_data, year, month, raw_ascii_dir, dictionaries_dir) {
+#' Reweight zips are yearly archives with one .dat per month, so the member
+#' is extracted first. The main dictionaries type qstnum/occurnum as strings
+#' and the reweight dictionaries as numeric; both are made strings before
+#' joining, as process_rawbasic.ado does with tostring.
+read_reweight_month <- function(year, month, config) {
   shortyear <- sprintf("%02d", year %% 100)
   month2d <- sprintf("%02d", month)
-  rw_zip <- file.path(raw_ascii_dir, sprintf("rw%s.zip", shortyear))
-  rw_dat_name <- sprintf("rw%s%s.dat", shortyear, month2d)
-  rw_dict <- parse_dictionary(file.path(dictionaries_dir, "reweights", sprintf("rw%s%s.dct", shortyear, month2d)))
-
-  rw_keys <- c("qstnum", "hryear4", "hrmonth", "occurnum")
-  rw_wanted <- rw_dict[rw_dict$varname %in% c(rw_keys, "nwcmpwgt", "nworwgt"), ]
-  positions <- readr::fwf_positions(rw_wanted$start, rw_wanted$end, col_names = rw_wanted$varname)
+  rw_dict <- parse_dictionary(file.path(config$paths$dictionaries, "reweights", sprintf("rw%s%s.dct", shortyear, month2d)))
 
   exdir <- tempfile()
   dir.create(exdir)
   on.exit(unlink(exdir, recursive = TRUE), add = TRUE)
-  rw_dat <- utils::unzip(rw_zip, files = rw_dat_name, exdir = exdir)
-  rw_data <- readr::read_fwf(rw_dat, positions, col_types = readr::cols(.default = readr::col_character()))
+  rw_dat <- utils::unzip(file.path(config$paths$raw_ascii, sprintf("rw%s.zip", shortyear)),
+                         files = sprintf("rw%s%s.dat", shortyear, month2d), exdir = exdir)
 
-  for (i in seq_len(nrow(rw_wanted))) {
-    v <- rw_wanted$varname[i]
-    rw_data[[v]] <- if (v %in% c("qstnum", "occurnum")) {
-      as.character(as.integer(round(as.numeric(rw_data[[v]]))))
-    } else {
-      scale_numeric(rw_data[[v]], rw_wanted$decimals[i])
-    }
-  }
-
-  n_before <- nrow(month_data)
-  merged <- dplyr::inner_join(month_data, rw_data, by = rw_keys)
-  if (nrow(merged) < n_before) {
-    stop(sprintf(
-      "reweight merge: %d of %d main rows found no reweight match (year=%d month=%d)",
-      n_before - nrow(merged), n_before, year, month
-    ))
-  }
-  merged
+  rw_data <- read_fwf_dictionary(rw_dat, rw_dict)
+  # numeric ids -> the same string form the main file uses
+  rw_data |>
+    dplyr::mutate(dplyr::across(c(qstnum, occurnum), ~ as.character(as.integer(round(.x)))))
 }
 
-#' Read one year's 12 monthly raw Census ASCII files and stack them, backfilling
-#' structurally-absent columns exactly like the retired Stata-intermediate
-#' reader did, so recode_year() never has to check column existence itself.
-read_raw_ascii_year <- function(year, raw_ascii_dir, dictionaries_dir) {
-  raw <- purrr::map_dfr(1:12, function(m) {
-    d <- read_raw_ascii_month(year, m, raw_ascii_dir, dictionaries_dir)
-    stopifnot(all(d$hryear4 == year))
-    d
-  })
+#' Parse one month (all dictionary columns) and merge reweights where they apply.
+#'
+#' The reweight merge replicates Stata's `merge 1:1 ... assert(2 3); keep if
+#' _merge == 3`: every main row must find a reweight row (hard stop if not);
+#' reweight-only rows are dropped.
+parse_raw_month <- function(year, month, config) {
+  shortyear <- sprintf("%02d", year %% 100)
+  month_zip <- file.path(config$paths$raw_ascii, sprintf("%s%spub.zip", monthname_lut[month], shortyear))
+  dict <- parse_dictionary(file.path(config$paths$dictionaries, paste0(select_dictionary(year, month), ".dct")))
+  month_data <- read_fwf_dictionary(month_zip, dict)
+  stopifnot(all(month_data$hryear4 == year), all(month_data$hrmonth == month))
 
-  for (col in backfill_cols) {
-    if (!col %in% names(raw)) raw[[col]] <- NA_real_
+  if (year %in% config$reweight_years) {
+    rw_keys <- c("qstnum", "hryear4", "hrmonth", "occurnum")
+    rw_data <- read_reweight_month(year, month, config)
+    # keep only reweight columns the main file doesn't already have
+    rw_data <- rw_data[, c(rw_keys, setdiff(names(rw_data), names(month_data)))]
+    n_before <- nrow(month_data)
+    month_data <- dplyr::inner_join(month_data, rw_data, by = rw_keys)
+    if (nrow(month_data) < n_before) {
+      stop(sprintf("reweight merge: %d of %d rows found no reweight match (%d-%02d)",
+                   n_before - nrow(month_data), n_before, year, month))
+    }
   }
+  month_data
+}
 
-  raw
+#' Parse every month of one year into the parquet cache; returns the paths.
+parse_raw_year <- function(year, raw_zips, config) {
+  out_dir <- file.path(config$paths$cache, "raw")
+  fs::dir_create(out_dir)
+  purrr::map_chr(year_months(year, config$skip_months), ~ {
+    out_file <- file.path(out_dir, sprintf("%d_%02d.parquet", year, .x))
+    arrow::write_parquet(parse_raw_month(year, .x, config), out_file)
+    out_file
+  })
+}
+
+#' Read selected raw columns for one year from the parquet cache. Columns a
+#' month's dictionary doesn't have (era-specific names like peage/prtage)
+#' come back as NA, so recode functions never check column existence.
+read_raw_year <- function(raw_files, columns) {
+  # months missing a column get NA for it when stacked
+  data <- raw_files |>
+    purrr::map(~ arrow::read_parquet(.x, col_select = dplyr::any_of(columns))) |>
+    dplyr::bind_rows()
+  # columns no month of this year has
+  for (col in setdiff(columns, names(data))) data[[col]] <- NA_real_
+  data
 }

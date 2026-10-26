@@ -7,7 +7,6 @@ conflict_prefer("lag", "dplyr", quiet = TRUE)
 
 suppressPackageStartupMessages({
   library(dplyr)
-  library(tidyr)
   library(purrr)
   library(tibble)
   library(stringr)
@@ -15,5 +14,6 @@ suppressPackageStartupMessages({
   library(haven)
   library(arrow)
   library(fs)
-  library(realtalk)
+  library(yaml)
+  library(crew)
 })

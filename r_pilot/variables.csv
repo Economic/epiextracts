@@ -1,0 +1,46 @@
+variable,family,stage,kind,fn,depends,export,samples,tolerance,label,snippet
+year,ids,basic,column,recode_survey_year,,TRUE,basic;org,0,Year,
+month,ids,basic,column,recode_survey_month,,TRUE,basic;org,0,Month,
+minsamp,ids,basic,column,recode_minsamp,,TRUE,basic;org,0,Month in sample,
+hrhhid,ids,basic,column,recode_hrhhid,,TRUE,basic;org,0,CPS: Household identifier (Part 1),
+hhid,ids,basic,column,recode_hhid,,TRUE,basic;org,0,Household identifer (unique within month),
+personid,ids,basic,column,recode_personid,,TRUE,basic;org,0,Person identifer (unique within household-month),
+basicwgt,weights,basic,column,recode_basicwgt,,TRUE,basic;org,0.01,Basic monthly weight,recode_basicwgt
+orgwgt,weights,basic,column,recode_orgwgt,,TRUE,basic;org,0.01,Earnings weight,recode_orgwgt
+statecensus,geography,basic,column,recode_statecensus,,TRUE,basic;org,0,State - Census code,build_state_geocodes;recode_statecensus
+division,geography,basic,column,recode_division,,TRUE,basic;org,0,Census division (1-9),build_state_geocodes;recode_division
+region,geography,basic,column,recode_region,,TRUE,basic;org,0,Census region (1-4),build_state_geocodes;recode_region
+statefips,geography,basic,column,recode_statefips,,TRUE,basic;org,0,State - FIPS code,recode_statefips
+countyfips,geography,basic,column,recode_countyfips,,TRUE,basic;org,0,County - FIPS code,recode_countyfips
+cbsafips,geography,basic,column,recode_cbsafips,,TRUE,basic;org,0,Core Based Statistical Area - FIPS code,recode_cbsafips
+metstat,geography,basic,column,recode_metstat,,TRUE,basic;org,0,Metropolitan status,recode_metstat
+cbsasize,geography,basic,column,recode_cbsasize,,TRUE,basic;org,0,Size of metropolitan area (CBSA),recode_cbsasize
+age,demographics,basic,column,recode_age,,TRUE,basic;org,0,Age,recode_raw_age;recode_age
+female,demographics,basic,column,recode_female,,TRUE,basic;org,0,Female,recode_female
+wbho,demographics,basic,column,recode_wbho,,TRUE,basic;org,0,Race/ethnicity,recode_wbho
+citistat,demographics,basic,column,recode_citistat,,TRUE,basic;org,0,"Citizenship status, detailed",recode_citistat
+married,demographics,basic,column,recode_married,,TRUE,basic;org,0,Married,recode_married
+educ,education,basic,column,recode_educ,,TRUE,basic;org,0,Education level,recode_educ
+emp,labor force,basic,column,recode_emp,,TRUE,basic;org,0,Employed,recode_emp
+unmem,labor force,basic,column,recode_unmem,,TRUE,basic;org,0,Member of a union,recode_unmem
+uncov,labor force,basic,column,recode_uncov,,TRUE,basic;org,0,Covered by a union contract (not a member),recode_uncov
+union,labor force,basic,column,recode_union,,TRUE,basic;org,0,Represented by a union as a member or covered by contract,recode_union
+pubsec,labor force,basic,column,recode_pubsec,,TRUE,basic;org,0,Public sector employee,recode_pubsec
+paidhre,earnings,basic,column,recode_paidhre,,TRUE,basic;org,0,Paid by hour,
+hoursu1,hours,basic,column,recode_hoursu1,,TRUE,basic;org,0,"Usual hours worked per week, main job",
+hoursuorg,hours,basic,column,recode_hoursuorg,,TRUE,basic;org,0,Usual hours worked per week at this rate/job (earner study),
+hoursvary1,hours,basic,column,recode_hoursvary1,,TRUE,basic;org,0,"Usual hours vary, main job",
+hoursuint,hours,basic,column,recode_hoursuint,,TRUE,basic;org,0,"Usual hours worked weekly, intervalled",
+mind16,industry,basic,column,recode_mind16,,TRUE,basic;org,0,Major industry (consistent),recode_mind16
+weekpay_noadj,earnings,basic,column,recode_weekpay_noadj,,TRUE,basic;org,0.01,Weekly pay,recode_weekpay_noadj
+earnhour,earnings,basic,column,recode_earnhour,,TRUE,basic;org,0.01,Hourly wage (if hourly worker),
+wage_noadj,earnings,basic,column,recode_wage_noadj,,TRUE,basic;org,0.01,Hourly wage,recode_wage_noadj
+hoursu1i,hours,org,table,compute_hoursu1i,hoursu1;hoursuint;orgwgt;age;minsamp;female;educ;wbho;citistat;married;statefips;union;pubsec;mind16,TRUE,org,0,"Imputed usual weekly hours, main job (ORG only)",file:hoursu1i.R
+weekpay,earnings,org,table,add_weekpay,weekpay_noadj;ptwk;female;age;orgwgt;minsamp;month;year,TRUE,org,0.01,Weekly pay (top-code adjusted),add_weekpay
+wage,earnings,org,table,add_wage,wage_noadj;weekpay;hoursu1i;hoursu1;hoursvary1;paidhre;year,TRUE,org,0.01,Hourly wage (adjusted),add_wage
+raw_age,demographics,basic,column,recode_raw_age,,FALSE,,,,
+lfstat,labor force,basic,column,recode_lfstat,,FALSE,,,,
+cmpwgt,weights,basic,column,recode_cmpwgt,,FALSE,,,,
+hispanic,demographics,basic,column,recode_hispanic,,FALSE,,,,
+indcode,industry,basic,column,recode_indcode,,FALSE,,,,
+ptwk,earnings,basic,column,recode_ptwk,,FALSE,,,,

@@ -47,7 +47,7 @@ fit_predict_hours <- function(d, sex, band_fit, band_pred, factor_vars) {
 
 #' Compute hoursu1i for an ORG-year table. educ/wbho/citistat/married/
 #' statefips/union/pubsec/mind16 are already present on org_year (inherited
-#' from recode_year() via filter_org_universe()) -- no join needed.
+#' from the basic stage via filter_org_universe()) -- no join needed.
 compute_hoursu1i <- function(org_year) {
   d <- org_year
   factor_vars <- c("educ", "wbho", "citistat", "married", "statefips", "union", "pubsec", "mind16")

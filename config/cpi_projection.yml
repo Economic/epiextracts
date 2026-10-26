@@ -1,0 +1,9 @@
+# CPI-U-RS for years past the last actual value in suppdata/cpiurs_extended.csv
+# is projected with CBO's growth in CPI-U. Each projected year is
+# CPI-U-RS(year - 1) * cbo_cpi_u(year) / cbo_cpi_u(year - 1).
+# Update these levels when CBO publishes new projections, and add the actual
+# CPI-U-RS value to the CSV once BLS publishes it (it then takes precedence).
+source: https://www.cbo.gov/system/files/2025-01/51135-2025-01-Economic-Projections.xlsx
+cbo_cpi_u:
+  2025: 322.4
+  2026: 331.8

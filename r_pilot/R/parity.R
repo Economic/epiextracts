@@ -1,66 +1,152 @@
-#' Path to the published Stata reference extract for a given year/sample.
-#'
-#' Points at the deployed copies under reference_dir/<sample>/epi/ (the
-#' Makefile's `deploydata` target rsyncs extracts/ there after each release)
-#' rather than the project-local extracts/ directory, which isn't guaranteed
-#' to be populated on every machine this pipeline runs on.
-year_to_reference_path <- function(year, reference_dir, sample = "basic") {
+# Parity gate: compare the R extracts against the published Stata extracts.
+# Values are checked per variable with registry tolerances; labels, column
+# order and the dataset label are checked against the published metadata.
+# parity_gate() stops the build if anything doesn't match.
+
+join_keys <- c("hrhhid", "hhid", "personid", "year", "month")
+
+#' Path to the published Stata extract for one year and sample.
+reference_dta_path <- function(year, sample, reference_dir) {
   file.path(reference_dir, sample, "epi", sprintf("epi_cps%s_%d.dta", sample, year))
 }
 
-read_reference_year <- function(reference_path, variables) {
-  join_keys <- c("hrhhid", "hhid", "personid", "year", "month")
-  haven::read_dta(
-    reference_path,
-    col_select = dplyr::all_of(c(join_keys, variables))
-  ) |>
-    dplyr::mutate(dplyr::across(dplyr::all_of(variables), as.numeric))
+#' Cache one published extract's values as parquet (labels dropped), so the
+#' large .dta is read once rather than on every recode change.
+cache_reference_year <- function(dta_path, cache_dir) {
+  out_dir <- file.path(cache_dir, "reference")
+  fs::dir_create(out_dir)
+  out_file <- file.path(out_dir, sub("\\.dta$", ".parquet", basename(dta_path)))
+  haven::read_dta(dta_path) |>
+    haven::zap_labels() |>
+    haven::zap_formats() |>
+    arrow::write_parquet(out_file)
+  out_file
 }
 
-#' Compare one year's R-recoded output against the published Stata extract.
-#'
-#' Joins on (hrhhid, hhid, personid, year, month) -- verified unique in the
-#' reference extracts and sufficient for 100% row recovery. tol is an
-#' absolute tolerance: weight/dollar/hours variables carry Stata `float`
-#' rounding noise (up to ~5e-4 on values in the thousands) against R's
-#' `double`, while integer-valued variables (age/female/emp) compare exactly
-#' regardless. `sample` ("basic"/"org") is carried through as a report column
-#' so one unified report can cover both samples.
-compare_year <- function(recoded_year, reference_path, variables, sample = "basic", tol = 0.01) {
-  year <- unique(recoded_year$year)
-  reference_year <- read_reference_year(reference_path, variables)
-
-  join_keys <- c("hrhhid", "hhid", "personid", "year", "month")
-
-  matched <- dplyr::inner_join(
-    recoded_year, reference_year,
-    by = join_keys, suffix = c("_r", "_stata")
+#' Published metadata: column order, variable labels, value labels, data label.
+reference_metadata <- function(dta_path) {
+  header <- haven::read_dta(dta_path, n_max = 0)
+  value_labels <- names(header) |>
+    purrr::map(~ {
+      labels <- attr(header[[.x]], "labels")
+      if (is.null(labels)) return(NULL)
+      tibble::tibble(variable = .x, value = unname(as.numeric(labels)), label = names(labels))
+    }) |>
+    dplyr::bind_rows()
+  list(
+    columns = names(header),
+    var_labels = purrr::map_chr(header, ~ attr(.x, "label") %||% ""),
+    value_labels = value_labels,
+    data_label = attr(header, "label") %||% ""
   )
-  only_r <- dplyr::anti_join(recoded_year, reference_year, by = join_keys)
-  only_stata <- dplyr::anti_join(reference_year, recoded_year, by = join_keys)
+}
 
-  var_summary <- purrr::map_dfr(variables, function(v) {
+#' Compare one year's values: rows matched on the join keys, then every
+#' exported column with its registry tolerance. Columns with tolerance 0
+#' must also be whole numbers in R (they are byte/int/long in Stata).
+compare_values_year <- function(r_year, reference_parquet, registry, sample) {
+  columns <- export_columns(registry, sample)
+  reference <- arrow::read_parquet(reference_parquet, col_select = dplyr::any_of(columns))
+  r_year <- r_year[, columns]
+
+  matched <- dplyr::inner_join(r_year, reference, by = join_keys, suffix = c("_r", "_stata"))
+  n_only_r <- nrow(dplyr::anti_join(r_year, reference, by = join_keys))
+  n_only_stata <- nrow(dplyr::anti_join(reference, r_year, by = join_keys))
+
+  # keys match by construction; compare everything else
+  purrr::map(setdiff(columns, join_keys), function(v) {
+    tol <- registry$tolerance[registry$variable == v]
+    if (!v %in% names(reference)) {
+      return(tibble::tibble(variable = v, in_reference = FALSE))
+    }
     r_col <- matched[[paste0(v, "_r")]]
     s_col <- matched[[paste0(v, "_stata")]]
-    missingness_mismatch <- is.na(r_col) != is.na(s_col)
-    value_mismatch <- !missingness_mismatch & !is.na(r_col) & abs(r_col - s_col) > tol
+    missingness <- is.na(r_col) != is.na(s_col)
+    both <- !is.na(r_col) & !is.na(s_col)
     tibble::tibble(
       variable = v,
+      in_reference = TRUE,
       n_compared = nrow(matched),
-      n_missingness_mismatch = sum(missingness_mismatch),
-      n_value_mismatch = sum(value_mismatch),
-      pct_mismatch = round(100 * (sum(missingness_mismatch) + sum(value_mismatch)) / nrow(matched), 4)
+      n_missingness_mismatch = sum(missingness),
+      n_value_mismatch = sum(abs(r_col[both] - s_col[both]) > tol),
+      n_not_whole = if (tol == 0) sum(r_col[both] != round(r_col[both])) else 0L
     )
-  })
+  }) |>
+    dplyr::bind_rows() |>
+    dplyr::mutate(sample = sample, year = unique(r_year$year), n_r_rows = nrow(r_year),
+                  n_stata_rows = nrow(reference), n_only_r = n_only_r, n_only_stata = n_only_stata, .before = 1)
+}
 
-  var_summary |>
-    dplyr::mutate(
-      sample = sample,
-      year = year,
-      n_r_rows = nrow(recoded_year),
-      n_stata_rows = nrow(reference_year),
-      n_only_r = nrow(only_r),
-      n_only_stata = nrow(only_stata),
-      .before = 1
+#' Compare the extract's metadata spec (registry labels, value_labels.csv,
+#' column order, data label) with one year's published metadata.
+compare_metadata_year <- function(reference_meta, registry, value_labels, sample, year, label) {
+  columns <- export_columns(registry, sample)
+  in_reference <- columns[columns %in% reference_meta$columns]
+
+  # value labels as "value=label" strings, so sets can be compared
+  label_set <- function(d, v) {
+    rows <- d[d$variable == v, ]
+    paste(sort(paste0(rows$value, "=", rows$label)), collapse = "; ")
+  }
+
+  checks <- dplyr::bind_rows(
+    tibble::tibble(
+      check = "variable label",
+      variable = in_reference,
+      published = unname(reference_meta$var_labels[in_reference]),
+      r = registry$label[match(in_reference, registry$variable)]
+    ),
+    tibble::tibble(
+      check = "value labels",
+      variable = in_reference,
+      published = purrr::map_chr(in_reference, ~ label_set(reference_meta$value_labels, .x)),
+      r = purrr::map_chr(in_reference, ~ label_set(value_labels, .x))
+    ),
+    tibble::tibble(
+      check = "column order",
+      variable = "(all)",
+      # R's columns must appear in the same relative order as published
+      published = paste(intersect(reference_meta$columns, in_reference), collapse = " "),
+      r = paste(in_reference, collapse = " ")
+    ),
+    tibble::tibble(
+      check = "data label",
+      variable = "(dataset)",
+      # versions differ between builds; compare the rest of the label
+      published = sub("Version .*$", "Version", reference_meta$data_label),
+      r = sub("Version .*$", "Version", label)
     )
+  )
+  dplyr::mutate(checks, sample = sample, year = year, ok = published == r, .before = 1)
+}
+
+#' Stop the build if any value or metadata check failed; otherwise return a
+#' one-row-per-variable summary.
+parity_gate <- function(value_report, metadata_report) {
+  value_failures <- value_report |>
+    dplyr::filter(!in_reference | n_only_r > 0 | n_only_stata > 0 |
+                    n_missingness_mismatch > 0 | n_value_mismatch > 0 | n_not_whole > 0)
+  metadata_failures <- dplyr::filter(metadata_report, !ok)
+
+  if (nrow(value_failures) > 0 || nrow(metadata_failures) > 0) {
+    # one line per failing variable, with the years it fails in
+    year_span <- function(year) paste(min(year), max(year), sep = "-")
+    print_rows <- function(d) paste(utils::capture.output(print(as.data.frame(d))), collapse = "\n")
+    value_summary <- if (nrow(value_failures) > 0) {
+      dplyr::summarise(value_failures, years = year_span(year),
+                       mismatches = sum(n_missingness_mismatch + n_value_mismatch + n_not_whole, na.rm = TRUE),
+                       .by = c(sample, variable))
+    }
+    metadata_summary <- if (nrow(metadata_failures) > 0) {
+      dplyr::summarise(metadata_failures, years = year_span(year), .by = c(sample, check, variable))
+    }
+    stop(
+      "parity gate failed (details in reports/parity_*.csv)\n",
+      if (!is.null(value_summary)) paste0("values:\n", print_rows(value_summary), "\n"),
+      if (!is.null(metadata_summary)) paste0("metadata:\n", print_rows(metadata_summary)),
+      call. = FALSE
+    )
+  }
+  dplyr::summarise(value_report, years = dplyr::n_distinct(year), rows_compared = sum(n_compared),
+                   .by = c(sample, variable))
 }

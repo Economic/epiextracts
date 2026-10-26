@@ -1,13 +1,5 @@
-# Auxiliary demographic/employment/industry covariates originally introduced
-# (Phase 2) purely as internal inputs to hoursu1i's regression imputation.
-# Promoted here (Phase 3) to basic-level pilot variables, computed for every
-# row in recode_year() exactly like age/female/basicwgt/the wage_noadj chain
-# -- Stata computes them identically regardless of sample; union/unmem/uncov
-# are simply mostly NA on basic rows outside the ORG-eligible rotation groups
-# (the underlying survey questions are earner-supplement-only), which is
-# expected behavior to reproduce, not a gap. hispanic/unmem/uncov/indcode
-# remain intermediate-only (used, then dropped), matching the lfstat/cmpwgt
-# precedent from Phase 1 -- only the 8 named variables are exposed.
+# Demographic, employment and industry recodes (Census era, Basic/ORG).
+# Each function's arguments are the columns it reads; see R/registry.R.
 
 # --- educ (generate_educ.do), 1994+ ----------------------------------------
 recode_educ <- function(peeduca) {
@@ -76,9 +68,7 @@ recode_married <- function(prmarsta) {
 }
 
 # --- statefips (generate_statefips.do), 1994+ ------------------------------
-# Stata's script also merges in state_geocodes.csv, but only for value
-# labels/region -- not needed here since we expose the bare FIPS code
-# (a future dedicated Geography phase can add region/division properly).
+# statecensus/division/region are looked up from it in R/geography.R.
 recode_statefips <- function(gestfips) as.numeric(gestfips)
 
 # --- unmem/uncov/union (generate_unmem.do, generate_uncov.do,
