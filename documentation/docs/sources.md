@@ -2,7 +2,7 @@
 If you use the EPI extracts for your research, please cite the data in your references:
 
 !!! note "Suggested citation for EPI microdata extracts"
-    Economic Policy Institute. {{ year }}. Current Population Survey Extracts, Version {{ version }}, https://microdata.epi.org.
+    Economic Policy Institute. {{ release.version[:4] }}. Current Population Survey Extracts, Version {{ release.version }}, https://microdata.epi.org.
 
 The code that creates the EPI extracts and documentation is available on
 [Github](https://github.com/Economic/epiextracts).

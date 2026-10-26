@@ -1,0 +1,5 @@
+# Release metadata: the only place to edit for each monthly release.
+# Read by master.do, documentation/mkdocs.yml (markdownextradata), the Quarto
+# site (website/R/write_variables.R) and the Makefile.
+version: 2026.10.13
+latestdata: 2026m9

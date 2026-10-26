@@ -31,3 +31,10 @@ poverty_test.R
 rounds_list.R
 test_ipums.R
 test_create_extracts.do
+
+# quarto website proof of concept (build output and generated pages)
+website/_site/
+website/.quarto/
+website/_freeze/
+website/variables/
+website/_variables.yml

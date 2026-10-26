@@ -1,7 +1,7 @@
 # How to use the EPI extracts
 
 ## 1. Download the data
-Version {{ version }} of the EPI CPS extracts is available to download [here](index.md).
+Version {{ release.version }} of the EPI CPS extracts is available to download [here](index.md).
 
 ## 2. Unzip and move the files
 The zip file you downloaded is a collection of Stata data files, one file for each year (or monthly files when annual data is not available). You should decompress those files and move them into an appropriate directory on your computer.
@@ -40,6 +40,6 @@ The zip file you downloaded is a collection of Stata data files, one file for ea
 If you use the EPI extracts for your research, please cite the data in your references:
 
 !!! note "Suggested citation for EPI microdata extracts"
-    Economic Policy Institute. {{ year }}. Current Population Survey Extracts, Version {{ version }}, https://microdata.epi.org.
+    Economic Policy Institute. {{ release.version[:4] }}. Current Population Survey Extracts, Version {{ release.version }}, https://microdata.epi.org.
 
 

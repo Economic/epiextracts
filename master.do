@@ -40,8 +40,23 @@ set trace off
 *******************************************************************************
 * DATA VERSION
 *******************************************************************************
-* The version is saved in the dataset labels and notes
-global dataversion 2026.10.13
+* The version is saved in the dataset labels and notes.
+* Both the version and the latest month of data are set in config/release.yml,
+* the single source shared with the docs, the Quarto site and the Makefile.
+file open release using config/release.yml, read text
+file read release line
+while r(eof) == 0 {
+	* skip comments; split "key: value" lines
+	if !regexm(`"`line'"', "^ *#") & strpos(`"`line'"', ":") > 0 {
+		local key = strtrim(substr(`"`line'"', 1, strpos(`"`line'"', ":") - 1))
+		local value = strtrim(substr(`"`line'"', strpos(`"`line'"', ":") + 1, .))
+		if "`key'" == "version" global dataversion `value'
+		if "`key'" == "latestdata" global latestdata `value'
+	}
+	file read release line
+}
+file close release
+assert "$dataversion" != "" & "$latestdata" != ""
 
 
 *******************************************************************************
@@ -85,11 +100,11 @@ adopath ++ ${code}ado
 * process the raw data and convert it to Stata format
 * this is only necessary for additional months of data
 * process_rawmarch, begin(1998) end(2018)
-*process_rawbasic, begin(2025m9) end(2026m9)
+*process_rawbasic, begin(2025m9) end($latestdata)
 
 * create EPI's extracts from the processed raw data
 * creates both basic monthly and ORG subsample
-create_extracts, begin(2024m1) end(2026m9)
+create_extracts, begin(2024m1) end($latestdata)
 do ${code}tc_fix.do
 
 * create documentation
