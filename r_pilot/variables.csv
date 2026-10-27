@@ -3,8 +3,10 @@ year,ids,basic,column,recode_survey_year,,TRUE,basic;org,0,Year,
 month,ids,basic,column,recode_survey_month,,TRUE,basic;org,0,Month,
 minsamp,ids,basic,column,recode_minsamp,,TRUE,basic;org,0,Month in sample,
 hrhhid,ids,basic,column,recode_hrhhid,,TRUE,basic;org,0,CPS: Household identifier (Part 1),
+pulineno,ids,basic,column,recode_pulineno,,TRUE,basic;org,0,CPS: Person line number within household,
 hhid,ids,basic,column,recode_hhid,,TRUE,basic;org,0,Household identifer (unique within month),
 personid,ids,basic,column,recode_personid,,TRUE,basic;org,0,Person identifer (unique within household-month),
+finalwgt,weights,basic,column,recode_finalwgt,,TRUE,basic;org,0.01,Final basic monthly weight,
 basicwgt,weights,basic,column,recode_basicwgt,,TRUE,basic;org,0.01,Basic monthly weight,recode_basicwgt
 orgwgt,weights,basic,column,recode_orgwgt,,TRUE,basic;org,0.01,Earnings weight,recode_orgwgt
 statecensus,geography,basic,column,recode_statecensus,,TRUE,basic;org,0,State - Census code,build_state_geocodes;recode_statecensus

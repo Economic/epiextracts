@@ -2,7 +2,7 @@ source("./packages.R")
 lapply(list.files("./R", full.names = TRUE), source)
 
 ## CONFIGURATION
-# settings: ../config/pipeline.yml; version: ../config/release.yml
+# settings: ../config/pipeline.yml; version and latest month: ../config/release.yml
 pipeline_config_file <- "../config/pipeline.yml"
 config <- read_pipeline_config(pipeline_config_file)
 
@@ -41,10 +41,10 @@ tar_assign({
   raw_zips = raw_zip_paths(years, config) |>
     tar_target(pattern = map(years), format = "file")
 
-  reference_basic_dta = reference_dta_path(years, "basic", config$paths$reference) |>
+  reference_basic_dta = reference_dta_path(years, "basic", config) |>
     tar_target(pattern = map(years), format = "file")
 
-  reference_org_dta = reference_dta_path(years, "org", config$paths$reference) |>
+  reference_org_dta = reference_dta_path(years, "org", config) |>
     tar_target(pattern = map(years), format = "file")
 
   ###################
@@ -74,7 +74,8 @@ tar_assign({
   basic_year = recode_basic_year(raw_parquet, registry, recode_functions, recode_context) |>
     tar_target(pattern = map(raw_parquet))
 
-  org_year = recode_org_year(basic_year, registry, recode_functions, recode_context) |>
+  # takes every cached raw file: a partial year's trailing window reaches into the year before
+  org_year = recode_org_year(basic_year, raw_parquet, registry, recode_functions, recode_context, config) |>
     tar_target(pattern = map(basic_year))
 
   ##########
@@ -124,11 +125,12 @@ tar_assign({
   #################
   # FINAL RELEASE #
   #################
+  # one file per year; one per month for a partial year
   basic_feather = label_extract(basic_year, registry, value_labels, "basic", data_label("basic", release_file)) |>
-    create_feather(file.path(config$paths$output, sprintf("epi_cpsbasic_%d.feather", unique(basic_year$year)))) |>
+    write_extract("basic", config$paths$output, config) |>
     tar_target(pattern = map(basic_year), format = "file")
 
   org_feather = label_extract(org_year, registry, value_labels, "org", data_label("org", release_file)) |>
-    create_feather(file.path(config$paths$output, sprintf("epi_cpsorg_%d.feather", unique(org_year$year)))) |>
+    write_extract("org", config$paths$output, config) |>
     tar_target(pattern = map(org_year), format = "file")
 })

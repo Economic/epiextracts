@@ -18,16 +18,35 @@ test_that("dictionary vintages switch on the right months", {
   expect_equal(select_dictionary(2021, 2), "cpsbjan2020")
   expect_equal(select_dictionary(2021, 3), "cpsbmar2021")
   expect_equal(select_dictionary(2030, 1), "cpsbjun2024")
-  # 1994-1997 vintages are not in the table yet
-  expect_error(select_dictionary(1997, 6), "No unique dictionary")
+  expect_equal(select_dictionary(1994, 3), "cpsbjan94")
+  expect_equal(select_dictionary(1995, 8), "cpsbjun95")
+  expect_equal(select_dictionary(1997, 12), "cpsbsep95")
+  expect_error(select_dictionary(1993, 12), "No unique dictionary")
 })
 
-test_that("skipped months are left out", {
-  expect_equal(year_months(2025, "2025m10"), c(1:9, 11:12))
-  expect_equal(year_months(2024, "2025m10"), 1:12)
+test_that("skipped months and months after the latest release are left out", {
+  cfg <- list(skip_months = "2025m10", latest_year = 2026, latest_month = 9)
+  expect_equal(year_months(2025, cfg), c(1:9, 11:12))
+  expect_equal(year_months(2024, cfg), 1:12)
+  expect_equal(year_months(2026, cfg), 1:9)
+  expect_true(is_partial_year(2026, cfg))
+  expect_false(is_partial_year(2025, cfg))
+  expect_false(is_partial_year(2026, modifyList(cfg, list(latest_month = 12))))
 })
 
-test_that("raw zips include the reweight archive only in reweight years", {
+test_that("raw zips cover the year's months, plus reweights in reweight years", {
+  expect_length(raw_zip_paths(2025, config), 11)
   expect_length(raw_zip_paths(2001, config), 13)
   expect_length(raw_zip_paths(2010, config), 12)
+})
+
+test_that("NUL bytes inside records don't split lines", {
+  raw <- tempfile()
+  # second record's field b is all NULs, as gecmsa is in some 1994-1997 files
+  writeBin(c(charToRaw("1234\n"), charToRaw("5"), as.raw(c(0, 0, 0)), charToRaw("\n")), raw)
+  dict <- tibble::tibble(varname = c("a", "b"), start = c(1L, 2L), end = c(1L, 4L),
+                         type = "numeric", decimals = 0L, stata_type = "int")
+  parsed <- read_fwf_dictionary(raw, dict)
+  expect_equal(nrow(parsed), 2)
+  expect_equal(parsed$b, c(234, NA))
 })

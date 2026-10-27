@@ -3,29 +3,37 @@
 # order and the dataset label are checked against the published metadata.
 # parity_gate() stops the build if anything doesn't match.
 
-join_keys <- c("hrhhid", "hhid", "personid", "year", "month")
+# unique in every year; personid is missing before 1998, pulineno is not
+join_keys <- c("year", "month", "hrhhid", "hhid", "pulineno")
 
-#' Path to the published Stata extract for one year and sample.
-reference_dta_path <- function(year, sample, reference_dir) {
-  file.path(reference_dir, sample, "epi", sprintf("epi_cps%s_%d.dta", sample, year))
+#' Published Stata extract(s) for one year and sample: the annual file, or
+#' the monthly files for a partial year.
+reference_dta_path <- function(year, sample, config) {
+  dir <- file.path(config$paths$reference, sample, "epi")
+  if (is_partial_year(year, config)) {
+    return(file.path(dir, sprintf("epi_cps%s_%d_%d.dta", sample, year, year_months(year, config))))
+  }
+  file.path(dir, sprintf("epi_cps%s_%d.dta", sample, year))
 }
 
-#' Cache one published extract's values as parquet (labels dropped), so the
-#' large .dta is read once rather than on every recode change.
-cache_reference_year <- function(dta_path, cache_dir) {
+#' Cache one year's published values as parquet (labels dropped), so the
+#' large .dta files are read once rather than on every recode change.
+cache_reference_year <- function(dta_paths, cache_dir) {
   out_dir <- file.path(cache_dir, "reference")
   fs::dir_create(out_dir)
-  out_file <- file.path(out_dir, sub("\\.dta$", ".parquet", basename(dta_path)))
-  haven::read_dta(dta_path) |>
-    haven::zap_labels() |>
-    haven::zap_formats() |>
+  # monthly files of a partial year go into one parquet named for the year
+  out_file <- file.path(out_dir, sub("^(epi_cps[a-z]+_[0-9]{4}).*$", "\\1.parquet", basename(dta_paths[1])))
+  dta_paths |>
+    purrr::map(~ haven::read_dta(.x) |> haven::zap_labels() |> haven::zap_formats()) |>
+    dplyr::bind_rows() |>
     arrow::write_parquet(out_file)
   out_file
 }
 
 #' Published metadata: column order, variable labels, value labels, data label.
-reference_metadata <- function(dta_path) {
-  header <- haven::read_dta(dta_path, n_max = 0)
+reference_metadata <- function(dta_paths) {
+  # monthly files of a partial year share one layout; the first stands for all
+  header <- haven::read_dta(dta_paths[1], n_max = 0)
   value_labels <- names(header) |>
     purrr::map(~ {
       labels <- attr(header[[.x]], "labels")

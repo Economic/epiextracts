@@ -2,7 +2,9 @@
 
 Builds the EPI CPS Basic and ORG extracts from raw Census files without
 Stata, and checks every output column against the published Stata extracts.
-Currently covers Basic/ORG 2000–2024 for the variables in `variables.csv`.
+Covers Basic/ORG from 1994 through the latest month in `config/release.yml`
+for the variables in `variables.csv`; the latest year, if incomplete, is
+written as monthly files, as Stata does.
 The migration plan and phases are tracked outside the repo; deliberate
 differences from Stata are in [DEVIATIONS.md](DEVIATIONS.md).
 

@@ -18,6 +18,9 @@ test_that("wage limits match create_extracts.ado's table", {
 
 test_that("config and release metadata resolve", {
   expect_true(dir.exists(config$paths$dictionaries))
+  # the year range ends at the latest month in release.yml
+  latest <- yaml::read_yaml(file.path(repo_dir, "config/release.yml"))$latestdata
+  expect_equal(max(config$years), as.integer(substr(latest, 1, 4)))
   expect_match(data_label("basic", file.path(repo_dir, "config/release.yml")),
                "^EPI CPS Basic Monthly Extracts, Version [0-9]{4}\\.[0-9]+\\.[0-9]+$")
 })

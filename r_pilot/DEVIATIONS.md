@@ -13,6 +13,8 @@ not listed here matches.
 | Dictionary end date | `cpsbjun2024` capped at 2026m9 in `process_rawbasic.ado:131` | Open-ended in `select_dictionary()` | The cap marks how far it was tested, not a format change; Stata will fail on 2026m10 data | None for covered years |
 | metstat eras | Separate 1994m1–1995m5 and 1995m9–2004m4 branches | One 2004m5 boundary | Both branches read the same raw column | None for 2000+ |
 | Raw parsing | Converts each month to a `.dta` with the dictionary's columns | Parses every dictionary column once into `cache/raw/` parquet | Adding variables never re-parses raw files | None |
+| NUL bytes in 1994-1997 raw files | `infile` reads each record whole; the field is missing | NULs are replaced with spaces before parsing (`without_nul_bytes()`) | readr would split the record at a NUL | None |
+| Partial-year top-coding | One top-code pass over the whole trailing window | Each calendar year in the window top-coded separately | Same result whenever the window's years are 2025+ (no imputation, passthrough), which holds for every partial year the pipeline builds | None for 2026 |
 | CPI source | `suppdata/cpiurs_extended.csv`, 2026 projected with CBO levels hardcoded in `create_extracts.ado` | Same CSV, projection from `config/cpi_projection.yml` via `cpi_annual_fun()` | One copy of the CBO numbers, works for any year | None (wage limits identical 1962–2026) |
 
 ## Not yet ported (known gaps)
@@ -20,8 +22,7 @@ not listed here matches.
 | Gap | Affects | Plan phase |
 |---|---|---|
 | `hoursu1i`, `weekpay`, `wage` only computed for ORG; the published Basic files also have them | Basic extracts | Phase 3 |
-| Telework supplement merge (2022m10–2024m5) | `telework`, `hourslwtw` | Phase 2 |
-| 1994–1999 and 2025+ | All variables | Phase 2 |
+| Telework supplement merge (2022m10–2024m5). The raw supplement files (`<mon><yy>cpucvr_pub.zip`) are not on disk anywhere; the merged columns survive only in Stata's monthly intermediates (`/data/cps/basic/census/stata/cps_<yyyy>_<m>.dta.zip`, e.g. `ptcovr1`–`ptcovr4`). Re-download the supplement from Census, or read those columns from the intermediates. | `telework`, `hourslwtw` | Phase 3 |
 | `tc_weekpay` computed internally for 2023–2024 only, not exported | `tc_weekpay` | Phase 3 |
 | Stata `notes` (per-variable and `note1` version note) | `.dta` output; `load_epiextracts` reads `note1` | Phase 4 |
 

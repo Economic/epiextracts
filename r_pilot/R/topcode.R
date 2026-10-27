@@ -87,8 +87,8 @@ compute_tc_weekpay <- function(weekpay_noadj, ptwk, year, month) {
 #' 1989-97 / 1998-2024 / 2025+), just extended to cover the 2023m4-2024m3
 #' dynamic top-code phase-in as further branches instead of a bolt-on patch.
 #'
-#' - pre-2023: single fixed topcodeval=2884.60 regime, Pareto-fit and applied
-#'   over the whole year, by sex.
+#' - pre-2023: fixed ceiling ($1,923 through 1997, $2,884.60 from 1998),
+#'   Pareto-fit and applied over the whole year, by sex.
 #' - 2023 Jan-Mar: same fixed-ceiling regime, but Census's dynamic rollout is
 #'   already underway for minsamp==4 respondents starting month 4 -- so the
 #'   reference Pareto constants are fit on a subsample of this same year's
@@ -101,15 +101,22 @@ compute_tc_weekpay <- function(weekpay_noadj, ptwk, year, month) {
 #'   reported (2024 Apr-Dec via monthly max fallback for edge topcoded rows;
 #'   2025+ passthrough, matching generate_weekpay.do).
 add_weekpay <- function(org_year) {
+  # a partial year's trailing window spans two years: top-code each year on its own
+  if (length(unique(org_year$year)) > 1) {
+    return(dplyr::bind_rows(purrr::map(split(org_year, org_year$year), add_weekpay)))
+  }
   year <- unique(org_year$year)
   d <- org_year
 
   if (year < 2023) {
+    # fixed weekly ceiling: $1,923 through 1997, $2,884.61 from 1998 (2884.60
+    # avoids float precision issues, as in generate_weekpay.do)
+    topcodeval <- if (year <= 1997) 1923 else 2884.60
     d$weekpay <- NA_real_
     for (sex in c(0, 1)) {
       idx <- d$female == sex & !is.na(d$weekpay_noadj) & !is.na(d$age) & d$age >= 16
       res <- topcode_impute_pareto(d$weekpay_noadj[idx], d$orgwgt[idx],
-                                    threshold = 80, topcodeval = 2884.60)
+                                    threshold = 80, topcodeval = topcodeval)
       d$weekpay[idx] <- res$value
     }
     return(d)

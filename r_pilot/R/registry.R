@@ -56,7 +56,7 @@ registry_raw_columns <- function(registry, recode_functions) {
   inputs <- registry_inputs(registry, recode_functions)
   purrr::imap(inputs, ~ .x[.x == .y | !.x %in% registry$variable]) |>
     unlist(use.names = FALSE) |>
-    setdiff(context_names) |>
+    setdiff(c(context_names, file_date_columns)) |>
     unique()
 }
 

@@ -4,10 +4,9 @@
 #' Assemble wage from wage_noadj/weekpay/hoursu1(i), trimmed by CPI bounds.
 #' (generate_wage.do, Census era Basic/ORG 1994+)
 add_wage <- function(org_year, wage_bounds) {
-  yr <- unique(org_year$year)
-  bounds <- wage_bounds[wage_bounds$year == yr, ]
-
+  # each row is trimmed with its own year's limits (a partial year's window spans two years)
   org_year |>
+    dplyr::left_join(wage_bounds, by = "year") |>
     dplyr::mutate(
       # nonhourly workers: weekpay/hoursu1, using the imputed hoursu1i instead
       # when hours vary -- overwrites, doesn't branch, matching generate_wage.do
@@ -18,7 +17,7 @@ add_wage <- function(org_year, wage_bounds) {
       ),
       wage2_adjusted = dplyr::if_else(wage2_adjusted < 0, NA_real_, wage2_adjusted, missing = wage2_adjusted),
       wage = dplyr::if_else(paidhre == 1, wage_noadj, wage2_adjusted, missing = wage2_adjusted),
-      wage = dplyr::if_else(wage < bounds$wage_lower | wage > bounds$wage_upper, NA_real_, wage, missing = wage)
+      wage = dplyr::if_else(wage < wage_lower | wage > wage_upper, NA_real_, wage, missing = wage)
     ) |>
-    dplyr::select(-wage2_adjusted)
+    dplyr::select(-wage2_adjusted, -wage_lower, -wage_upper)
 }

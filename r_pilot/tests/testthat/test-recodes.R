@@ -26,11 +26,30 @@ test_that("wage_noadj guards against zero hours", {
 })
 
 test_that("basicwgt uses raw age and orgwgt uses reweights in reweight years", {
-  expect_equal(recode_basicwgt(cmpwgt = c(100, 100), raw_age = c(15, 16)), c(NA, 100))
+  expect_equal(recode_basicwgt(cmpwgt = c(100, 100), finalwgt = c(50, 50), raw_age = c(15, 16), year = c(2001, 2001)), c(NA, 100))
+  # finalwgt before 1998
+  expect_equal(recode_basicwgt(cmpwgt = NA, finalwgt = 50, raw_age = 30, year = 1997), 50)
   expect_equal(recode_orgwgt(pworwgt = 10, nworwgt = 20, year = c(2001, 2003), reweight_years = 2000:2002), c(20, 10))
 })
 
 test_that("state lookups match the geocode file", {
   geocodes <- build_state_geocodes(file.path(config$paths$suppdata, "state_geocodes.csv"))
   expect_equal(recode_region(c(6, 36, 99), geocodes), c(4, 1, NA))
+})
+
+test_that("1994-1997 hhid numbers households within each month in sorted order", {
+  hhid <- recode_hhid(qstnum = rep(NA, 5), year = rep(1995, 5), month = c(1, 1, 1, 2, 2),
+                      gestfips = c(6, 1, 6, 6, 6), hrhhid = c("b", "z", "a", "a", "a"),
+                      huhhnum = rep(1, 5), hrsample = rep("A1", 5), hrsersuf = c("", "", "", "", "-"))
+  expect_equal(hhid, c(3, 1, 2, 1, 2))
+  # 1998 on: qstnum
+  expect_equal(recode_hhid(qstnum = "123", year = 1998, month = 1, gestfips = 6,
+                           hrhhid = "a", huhhnum = 1, hrsample = "A1", hrsersuf = ""), 123)
+})
+
+test_that("era rules for 1994-1997", {
+  # perace 5 is "other" only through 1995
+  expect_equal(recode_wbho(c(1995, 1996), 1, perace = 5, NA, NA, hispanic = c(0, 0)), c(4, NA))
+  expect_equal(recode_countyfips(1995, c(8, 9), geco = 37, gtco = NA), c(NA, 37))
+  expect_equal(recode_metstat(1995, c(5, 7, 9), gemetsta = 1, gtmetsta = NA), c(1, NA, 1))
 })

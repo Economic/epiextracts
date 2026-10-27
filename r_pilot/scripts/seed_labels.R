@@ -37,8 +37,10 @@ new_value_labels <- registry$variable[registry$export == "TRUE"] |>
     labels <- attr(reference[[.x]], "labels")
     if (is.null(labels)) return(NULL)
     tibble(variable = .x, value = unname(as.numeric(labels)), label = names(labels))
-  }) |>
-  bind_rows()
+  })
+# start from an empty table so "nothing new" still has the columns
+new_value_labels <- bind_rows(tibble(variable = character(), value = numeric(), label = character()),
+                              new_value_labels)
 
 readr::write_csv(registry, "variables.csv", na = "")
 readr::write_csv(bind_rows(value_labels, new_value_labels), value_labels_file)

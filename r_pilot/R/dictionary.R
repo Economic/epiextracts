@@ -31,8 +31,7 @@ parse_dictionary <- function(dct_path) {
 }
 
 #' Select the NBER dictionary vintage for a given year/month, replicating
-#' process_rawbasic.ado's date-range table (Basic Monthly, 1998 onward; the
-#' 1994-1997 vintages aren't in the table yet).
+#' process_rawbasic.ado's date-range table (Basic Monthly, 1994 onward).
 #'
 #' Uses an integer month-index (year*12 + month), not Date arithmetic --
 #' as.Date() range boundaries are a real footgun here (e.g. "2021-02-29"
@@ -66,7 +65,11 @@ select_dictionary <- function(year, month) {
     mi(2005, 8),  mi(2006, 12),   "cpsbaug05",
     mi(2004, 5),  mi(2005, 7),    "cpsbmay04",
     mi(2003, 1),  mi(2004, 4),    "cpsbjan03",
-    mi(1998, 1),  mi(2002, 12),   "cpsbjan98"
+    mi(1998, 1),  mi(2002, 12),   "cpsbjan98",
+    mi(1995, 9),  mi(1997, 12),   "cpsbsep95",
+    mi(1995, 6),  mi(1995, 8),    "cpsbjun95",
+    mi(1994, 4),  mi(1995, 5),    "cpsbapr94",
+    mi(1994, 1),  mi(1994, 3),    "cpsbjan94"
   )
 
   hit <- dictionary_table[dictionary_table$start_mi <= target & target <= dictionary_table$end_mi, ]

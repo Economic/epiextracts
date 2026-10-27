@@ -18,6 +18,21 @@ label_extract <- function(data, registry, value_labels, sample, label) {
   data
 }
 
+#' Write one year's labelled extract: one annual file, or one file per month
+#' for a partial year (epi_cps<sample>_<year>_<month>.feather, as Stata does).
+write_extract <- function(data, sample, output_dir, config) {
+  yr <- unique(data$year)
+  if (!is_partial_year(yr, config)) {
+    return(create_feather(data, file.path(output_dir, sprintf("epi_cps%s_%d.feather", sample, yr))))
+  }
+  purrr::map_chr(sort(unique(data$month)), ~ {
+    # filtering keeps the column labels and the data label
+    month_data <- data[data$month == .x, ]
+    attr(month_data, "label") <- attr(data, "label")
+    create_feather(month_data, file.path(output_dir, sprintf("epi_cps%s_%d_%d.feather", sample, yr, .x)))
+  })
+}
+
 create_feather <- function(data, file) {
   fs::dir_create(fs::path_dir(file))
   arrow::write_feather(data, file)

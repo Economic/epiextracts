@@ -1,11 +1,10 @@
 # Settings for the R targets pipeline in r_pilot/.
 # Relative paths are relative to the repo root.
-years:
-  first: 2000
-  last: 2024
+# The last year and month come from latestdata in config/release.yml.
+first_year: 1994
 # months with no CPS data at all (October 2025 was not collected: federal shutdown)
 skip_months: ["2025m10"]
-# Census-2000-based reweights (nwcmpwgt, nworwgt) replace the regular weights in these years
+# Census-2000-based reweights (nwsswgt, nwcmpwgt, nworwgt) replace the regular weights in these years
 reweight_years:
   first: 2000
   last: 2002

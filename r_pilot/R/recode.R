@@ -1,11 +1,32 @@
 # Ids, weights, labor force and earnings recodes (Census era, Basic/ORG).
 # Each function's arguments are the columns it reads; see R/registry.R.
 
-# --- ids and dates (generate_year/month/hrhhid/hhid/personid.do), 1998+ -----
-recode_survey_year <- function(hryear4) as.numeric(hryear4)
-recode_survey_month <- function(hrmonth) as.numeric(hrmonth)
+# --- ids and dates (generate_year/month/hrhhid/hhid/personid/pulineno.do) --
+# year and month come from the file's date, as in Stata (1994-1997 files only
+# have a 2-digit hryear)
+recode_survey_year <- function(file_year) as.numeric(file_year)
+recode_survey_month <- function(file_month) as.numeric(file_month)
 recode_hrhhid <- function(hrhhid) hrhhid
-recode_hhid <- function(qstnum) as.numeric(qstnum)
+recode_pulineno <- function(pulineno) as.numeric(pulineno)
+
+# hhid: qstnum from 1998. For 1994-1997 Stata numbers households within each
+# month file with gegen group(year month gestfips hrhhid huhhnum hrsample
+# hrsersuf): ids 1, 2, ... in sorted order of those parts (strings sorted
+# bytewise, as Stata does).
+recode_hhid <- function(qstnum, year, month, gestfips, hrhhid, huhhnum, hrsample, hrsersuf) {
+  hhid <- as.numeric(qstnum)
+  pre98 <- which(year <= 1997)
+  if (length(pre98) > 0) {
+    parts <- tibble::tibble(year, month, gestfips, hrhhid, huhhnum, hrsample, hrsersuf)[pre98, ]
+    # group ids across all months in sorted order; groups of a month are contiguous
+    group <- vctrs::vec_rank(parts, ties = "dense", incomplete = "na")
+    month_start <- stats::ave(group, parts$year, parts$month, FUN = function(g) min(g, na.rm = TRUE))
+    hhid[pre98] <- group - month_start + 1
+  }
+  hhid
+}
+
+# personid: occurnum from 1998; missing before (no person id in 1994-1997 files)
 recode_personid <- function(occurnum) as.numeric(occurnum)
 
 # --- age (generate_age.do) --------------------------------------------------
@@ -61,10 +82,19 @@ recode_cmpwgt <- function(pwcmpwgt, nwcmpwgt, year, reweight_years) {
   dplyr::if_else(cmpwgt <= 0, NA_real_, cmpwgt)
 }
 
-# --- basicwgt (generate_basicwgt.do), Census era Basic Monthly 1998+ -------
-# Age floor uses the RAW (untopcoded) age variable, not the generated `age`.
-recode_basicwgt <- function(cmpwgt, raw_age) {
-  dplyr::if_else(raw_age < 16 | is.na(raw_age), NA_real_, cmpwgt)
+# --- finalwgt (generate_finalwgt.do), Census era Basic Monthly 1994+ -------
+# Census-2000-based nwsswgt replaces pwsswgt in the reweight years.
+recode_finalwgt <- function(pwsswgt, nwsswgt, year, reweight_years) {
+  finalwgt <- dplyr::if_else(year %in% reweight_years, as.numeric(nwsswgt), as.numeric(pwsswgt))
+  dplyr::if_else(finalwgt <= 0, NA_real_, finalwgt)
+}
+
+# --- basicwgt (generate_basicwgt.do), Census era Basic Monthly 1994+ -------
+# finalwgt through 1997, cmpwgt from 1998. Age floor uses the RAW
+# (untopcoded) age variable, not the generated `age`.
+recode_basicwgt <- function(cmpwgt, finalwgt, raw_age, year) {
+  basicwgt <- dplyr::if_else(year <= 1997, finalwgt, cmpwgt)
+  dplyr::if_else(raw_age < 16 | is.na(raw_age), NA_real_, basicwgt)
 }
 
 # --- minsamp (generate_minsamp.do), Census era Basic Monthly 1994+ ---------

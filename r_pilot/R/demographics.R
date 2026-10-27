@@ -26,7 +26,7 @@ recode_hispanic <- function(year, prorigin, prdthsp) {
 }
 
 # --- wbho (generate_wbho.do), 1994+ ----------------------------------------
-# Race source column/coding changes at 2003 and again at 2012m5; ptdtrace was
+# Race source column/coding changes at 1996, 2003 and again at 2012m5; ptdtrace was
 # renamed prdtrace for a ~15-month window (May 2004-Jul 2005), same pattern as
 # peage/prtage -- coalesce() handles it. Hispanic ethnicity always overrides.
 recode_wbho <- function(year, month, perace, ptdtrace, prdtrace, hispanic) {
@@ -34,11 +34,13 @@ recode_wbho <- function(year, month, perace, ptdtrace, prdtrace, hispanic) {
   is_pre2003    <- year <= 2002
   is_2003_2012a <- year >= 2003 & (year < 2012 | (year == 2012 & month <= 4))
   is_2012b_on   <- year > 2012 | (year == 2012 & month >= 5)
+  # perace has a fifth category (other) in 1994-1995 only
+  other_max <- dplyr::if_else(year <= 1995, 5, 4)
 
   race <- dplyr::case_when(
     is_pre2003 & perace == 1 ~ 1,
     is_pre2003 & perace == 2 ~ 2,
-    is_pre2003 & perace >= 3 & perace <= 4 ~ 4,
+    is_pre2003 & perace >= 3 & perace <= other_max ~ 4,
 
     is_2003_2012a & ptdtrace_eff == 1 ~ 1,
     is_2003_2012a & (ptdtrace_eff == 2 | ptdtrace_eff %in% c(6, 10, 11, 12, 15, 16, 19)) ~ 2,

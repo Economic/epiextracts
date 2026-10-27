@@ -24,12 +24,30 @@ scale_numeric <- function(raw_chr, decimals) {
   out
 }
 
+#' Copy of a raw file (unzipped if needed) with NUL bytes replaced by spaces.
+#'
+#' Some 1994-1997 files have NUL bytes inside records (e.g. 4,286 in
+#' jan94pub, in the gecmsa field). readr splits a line at a NUL, creating
+#' extra blank rows and losing the rest of the record; Stata's infile reads
+#' the record whole and the field as missing. A space gives the same: a
+#' blank field, read as missing.
+without_nul_bytes <- function(file) {
+  con <- if (grepl("\\.zip$", file)) unz(file, utils::unzip(file, list = TRUE)$Name[1], "rb") else file(file, "rb")
+  on.exit(close(con))
+  bytes <- readBin(con, "raw", n = 2e9)
+  if (!any(bytes == as.raw(0))) return(file)
+  bytes[bytes == as.raw(0)] <- charToRaw(" ")
+  cleaned <- tempfile(fileext = ".dat")
+  writeBin(bytes, cleaned)
+  cleaned
+}
+
 #' Read fixed-width columns from a file using a parsed dictionary, converting
 #' strings (trimmed) and numerics (scaled) per the dictionary.
 read_fwf_dictionary <- function(file, dict) {
   positions <- readr::fwf_positions(dict$start, dict$end, col_names = dict$varname)
   # read everything as character first so decimal scaling stays explicit
-  data <- readr::read_fwf(file, positions, col_types = readr::cols(.default = readr::col_character()))
+  data <- readr::read_fwf(without_nul_bytes(file), positions, col_types = readr::cols(.default = readr::col_character()))
   for (i in seq_len(nrow(dict))) {
     v <- dict$varname[i]
     data[[v]] <- if (dict$type[i] == "string") trimws(data[[v]]) else scale_numeric(data[[v]], dict$decimals[i])
@@ -41,7 +59,7 @@ read_fwf_dictionary <- function(file, dict) {
 #' reweight archive in reweight years. Tracked as file targets.
 raw_zip_paths <- function(year, config) {
   shortyear <- sprintf("%02d", year %% 100)
-  months <- year_months(year, config$skip_months)
+  months <- year_months(year, config)
   zips <- file.path(config$paths$raw_ascii, sprintf("%s%spub.zip", monthname_lut[months], shortyear))
   if (year %in% config$reweight_years) {
     zips <- c(zips, file.path(config$paths$raw_ascii, sprintf("rw%s.zip", shortyear)))
@@ -82,7 +100,9 @@ parse_raw_month <- function(year, month, config) {
   month_zip <- file.path(config$paths$raw_ascii, sprintf("%s%spub.zip", monthname_lut[month], shortyear))
   dict <- parse_dictionary(file.path(config$paths$dictionaries, paste0(select_dictionary(year, month), ".dct")))
   month_data <- read_fwf_dictionary(month_zip, dict)
-  stopifnot(all(month_data$hryear4 == year), all(month_data$hrmonth == month))
+  # sanity check from 1998: in 1994-1997 hrmonth has stray values and blank
+  # records, which is why year/month come from the file date (as in Stata)
+  if (year >= 1998) stopifnot(all(month_data$hrmonth == month))
 
   if (year %in% config$reweight_years) {
     rw_keys <- c("qstnum", "hryear4", "hrmonth", "occurnum")
@@ -103,20 +123,29 @@ parse_raw_month <- function(year, month, config) {
 parse_raw_year <- function(year, raw_zips, config) {
   out_dir <- file.path(config$paths$cache, "raw")
   fs::dir_create(out_dir)
-  purrr::map_chr(year_months(year, config$skip_months), ~ {
+  purrr::map_chr(year_months(year, config), ~ {
     out_file <- file.path(out_dir, sprintf("%d_%02d.parquet", year, .x))
     arrow::write_parquet(parse_raw_month(year, .x, config), out_file)
     out_file
   })
 }
 
-#' Read selected raw columns for one year from the parquet cache. Columns a
-#' month's dictionary doesn't have (era-specific names like peage/prtage)
-#' come back as NA, so recode functions never check column existence.
+# columns read_raw_year() adds from the cached file name (YYYY_MM.parquet):
+# year and month come from the file, as in Stata (year(dofm($date)))
+file_date_columns <- c("file_year", "file_month")
+
+#' Read selected raw columns for one or more months from the parquet cache.
+#' Columns a month's dictionary doesn't have (era-specific names like
+#' peage/prtage) come back as NA, so recode functions never check column
+#' existence.
 read_raw_year <- function(raw_files, columns) {
   # months missing a column get NA for it when stacked
   data <- raw_files |>
-    purrr::map(~ arrow::read_parquet(.x, col_select = dplyr::any_of(columns))) |>
+    purrr::map(~ {
+      date <- as.integer(strsplit(sub("\\.parquet$", "", basename(.x)), "_")[[1]])
+      arrow::read_parquet(.x, col_select = dplyr::any_of(columns)) |>
+        dplyr::mutate(file_year = date[1], file_month = date[2])
+    }) |>
     dplyr::bind_rows()
   # columns no month of this year has
   for (col in setdiff(columns, names(data))) data[[col]] <- NA_real_
