@@ -2,7 +2,7 @@
 # the single source of release metadata, so {{< var ... >}} stays current.
 release <- yaml::read_yaml("../config/release.yml")
 
-list(
+variables <- list(
   version = release$version,
   latestdata = release$latestdata,
   # citation year comes from the version (YYYY.M.DD)
@@ -10,4 +10,10 @@ list(
   # last data year, used in the download zip names
   dataendyear = substr(release$latestdata, 1, 4)
 ) |>
-  yaml::write_yaml("_variables.yml")
+  yaml::as.yaml()
+
+# only rewrite when the values change: quarto preview treats a rewritten
+# _variables.yml as a site-wide change and re-renders every page you open
+if (!file.exists("_variables.yml") || !identical(readr::read_file("_variables.yml"), variables)) {
+  writeLines(variables, "_variables.yml", sep = "")
+}
