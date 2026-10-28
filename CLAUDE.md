@@ -263,6 +263,17 @@ Also requires: Python `tabulate` module, EPI CPI Stata package (`github.com/Econ
 
 ---
 
+## Server memory: parallel jobs
+
+The R pipeline in `r_pilot/` crashed the shared server (Oct 2026) by running 8 crew workers at once. Each worker holds a year of CPS data, so a worker can need about 10 GB. Precautions for any parallel run (targets/crew, future, mclapply):
+
+- **Use fewer workers.** Use about 4 (`workers` in `config/pipeline.yml`, `future::plan(multisession, workers = 4)`, or `mc.cores = 4`). At roughly 10 GB per worker, 4 workers is already about 40 GB.
+- **Load less into each worker.** Read only the columns and rows it needs, e.g. `arrow::open_dataset() |> select() |> filter() |> collect()` (`read_raw_year()` already selects columns). Don't send large objects from the main session to every worker.
+- **Set a safety limit.** Call `unix::rlimit_as(12e9)` inside each worker. A worker that goes over about 12 GB then errors out instead of taking down the server.
+- **Measured (Oct 2026, year 1996, the heaviest step is parity):** one worker peaks at about 9.2 GB resident and 14.2 GB virtual. The server then had 27 GB of RAM, so `config/pipeline.yml` uses 2 workers. `rlimit_as` caps *virtual* memory, which arrow pushes to about 1.5x resident, so the cap there is 16 GB (`worker_memory_gb`, set as each crew worker starts via `r_arguments`). A 12 GB cap stops the parity step at about 8 GB resident.
+- **Check before scaling up.** Run one worker first (e.g. one year's target) and watch its memory in `top`/`htop`. Multiply that by the number of workers before launching the full `tar_make()`.
+- **Don't build the extracts yourself (Claude).** Never run `tar_make()` or any full extract build, in the background or otherwise. Finish all the work for a phase (code, registry, tests, docs), then ask the user to run `tar_make()` from `r_pilot/`. Small checks on one month or one year are fine.
+
 ## Common Gotchas
 
 - **October 2025 is skipped** in `create_extracts.ado` (hardcoded `continue` for 2025m10) — likely a data quality issue with that month's release
