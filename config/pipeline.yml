@@ -25,3 +25,7 @@ workers: 2
 # runs about 1.5x resident with arrow (peak 14.2 GB virtual / 9.2 GB resident),
 # so 16 here means roughly 11 GB of real memory
 worker_memory_gb: 16
+# targets each worker runs before crew replaces it with a fresh process. A
+# long-lived worker keeps several GB from earlier targets (R and arrow don't
+# release it), and that build-up hit the cap; 1 starts every target clean
+worker_tasks_max: 1

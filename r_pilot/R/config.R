@@ -67,9 +67,9 @@ data_label <- function(sample, release_file) {
   paste0("EPI CPS ", sample_name, " Extracts, Version ", version)
 }
 
-worker_setting_names <- c("workers", "worker_memory_gb")
+worker_setting_names <- c("workers", "worker_memory_gb", "worker_tasks_max")
 
-#' Worker count and per-worker memory cap from config/pipeline.yml. Read
+#' Worker count, per-worker memory cap and tasks per worker from config/pipeline.yml. Read
 #' apart from read_pipeline_config(), so tuning them doesn't make targets
 #' rebuild.
 read_worker_settings <- function(config_file) {

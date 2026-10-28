@@ -20,6 +20,9 @@ tar_option_set(
   format = "parquet",
   controller = crew::crew_controller_local(
     workers = worker_settings$workers,
+    # a fresh worker process per target: memory left over from earlier
+    # targets would otherwise build up against the cap
+    tasks_max = worker_settings$worker_tasks_max,
     # cap each worker's memory as it starts, so a runaway worker errors out
     # instead of exhausting the shared server
     r_arguments = c("--no-save", "--no-restore", "-e", worker_memory_limit(worker_settings$worker_memory_gb))
