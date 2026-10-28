@@ -191,3 +191,64 @@ write_stata_dta <- function(data, path, notes, label_names = c(mocc10 = "occ_lab
   writeBin(c(data_close, strls, value_labels, close_tag), con)
   invisible(path)
 }
+
+#' Read a format-117 .dta file's metadata without its data: row count, data
+#' label, and per variable the storage type, display format, value-label
+#' name, variable label and notes. (haven doesn't expose types or notes.)
+read_dta_metadata <- function(path) {
+  con <- file(path, "rb")
+  on.exit(close(con))
+  head_bytes <- readBin(con, "raw", 4096)
+  stopifnot(identical(rawToChar(head_bytes[29:31]), "117"))
+  read_uint <- function(bytes, at, size) {
+    sum(as.numeric(bytes[at + seq_len(size) - 1]) * 256^(seq_len(size) - 1))
+  }
+  k <- read_uint(head_bytes, grepRaw("<K>", head_bytes) + 3, 2)
+  n <- read_uint(head_bytes, grepRaw("<N>", head_bytes) + 3, 4)
+  label_at <- grepRaw("<label>", head_bytes) + 7
+  label_length <- as.integer(head_bytes[label_at])
+  data_label <- if (label_length > 0) rawToChar(head_bytes[label_at + seq_len(label_length)]) else ""
+  # the map: where each section starts
+  map_at <- grepRaw("<map>", head_bytes) + 5
+  map <- vapply(0:13, function(i) read_uint(head_bytes, map_at + 8 * i, 8), numeric(1))
+
+  # everything before the data: the descriptors and characteristics
+  seek(con, 0)
+  meta <- readBin(con, "raw", map[10])
+  text_fields <- function(start, tag_length, width) {
+    vapply(seq_len(k), function(i) {
+      field <- meta[start + 1 + tag_length + (i - 1) * width + seq_len(width) - 1]
+      rawToChar(field[seq_len(max(0, which(field == as.raw(0))[1] - 1))])
+    }, character(1))
+  }
+  codes <- vapply(seq_len(k), function(i) read_uint(meta, map[3] + 1 + 16 + 2 * (i - 1), 2), numeric(1))
+  type_names <- setNames(names(stata_type_code), stata_type_code)
+  types <- ifelse(codes <= 2045, paste0("str", codes), type_names[as.character(codes)])
+  vars <- text_fields(map[4], 10, 33)
+
+  # characteristics: <ch> length varname[33] charname[33] contents </ch>
+  notes <- list()
+  at <- map[9] + 1 + nchar("<characteristics>")
+  while (identical(rawToChar(meta[at + 0:3]), "<ch>")) {
+    len <- read_uint(meta, at + 4, 4)
+    body <- meta[at + 8 + seq_len(len) - 1]
+    field <- function(b) rawToChar(b[seq_len(max(0, which(b == as.raw(0))[1] - 1))])
+    notes[[length(notes) + 1]] <- tibble::tibble(variable = field(body[1:33]), name = field(body[34:66]),
+                                                 text = field(body[67:len]))
+    at <- at + 8 + len + 5
+  }
+  notes <- dplyr::bind_rows(notes)
+
+  list(
+    n = n,
+    data_label = data_label,
+    variables = tibble::tibble(
+      variable = vars, type = unname(types), format = text_fields(map[6], 9, 49),
+      value_label = text_fields(map[7], 19, 33), label = text_fields(map[8], 17, 81)
+    ),
+    # notes as variable, note number, text (note0, the count, dropped)
+    notes = notes |>
+      dplyr::filter(grepl("^note[1-9][0-9]*$", name)) |>
+      dplyr::transmute(variable, note = as.integer(sub("note", "", name)), text)
+  )
+}

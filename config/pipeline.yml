@@ -14,6 +14,8 @@ paths:
   dictionaries: code/dictionaries
   suppdata: suppdata
   cache: r_pilot/cache
+  # unused: superseded by output_dir below; remove at the next full rebuild
+  # (editing anything under paths changes `config`, which rebuilds every target)
   output: r_pilot/output
   reports: r_pilot/reports
 # parallel targets workers: one worker peaks at about 9 GB resident (1996,
@@ -29,3 +31,7 @@ worker_memory_gb: 16
 # long-lived worker keeps several GB from earlier targets (R and arrow don't
 # release it), and that build-up hit the cap; 1 starts every target clean
 worker_tasks_max: 1
+# where tar_make() writes the release files (.dta, .feather). Read apart from
+# `config`, so pointing it elsewhere (e.g. r_pilot/scratch/ for a simulated
+# release) only rewrites the files
+output_dir: r_pilot/output

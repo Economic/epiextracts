@@ -34,8 +34,9 @@ label_extract <- function(data, registry, value_labels, sample, label) {
 #' Write one year's labelled extract as .feather or .dta: one annual file, or
 #' one file per month for a partial year (epi_cps<sample>_<year>_<month>.<ext>,
 #' as Stata does). .dta files also carry the variables' notes; `uncompressed`
-#' lists the wages-stage variables, which Stata stores as float (see
-#' write_stata_dta()).
+#' lists the wages-stage variables, which Stata's annual files store as float
+#' (see write_stata_dta()). A partial year's monthly files are compressed
+#' after the wage adjustments (create_extracts.ado), so there they shrink too.
 write_extract <- function(data, sample, output_dir, spec, format = c("feather", "dta"), notes = NULL,
                           uncompressed = character(0)) {
   format <- match.arg(format)
@@ -45,6 +46,7 @@ write_extract <- function(data, sample, output_dir, spec, format = c("feather", 
     file
   }
   yr <- spec$year
+  if (spec$partial) uncompressed <- character(0)
   if (!spec$partial) {
     return(write_file(data, file.path(output_dir, sprintf("epi_cps%s_%d.%s", sample, yr, format))))
   }

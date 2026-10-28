@@ -13,9 +13,10 @@ read_pipeline_config <- function(config_file) {
   repo_root <- dirname(dirname(normalizePath(config_file)))
   config <- yaml::read_yaml(config_file)
 
-  # worker settings only shape how targets run, not what they compute; keep
-  # them out of the config targets depend on (see read_worker_settings())
-  config[worker_setting_names] <- NULL
+  # worker settings only shape how targets run, not what they compute, and
+  # the output folder only where files go; keep them out of the config
+  # targets depend on (see read_worker_settings(), read_output_dir())
+  config[c(worker_setting_names, "output_dir")] <- NULL
 
   # absolute paths stay as they are; relative ones hang off the repo root
   config$paths <- purrr::map(config$paths, ~ if (startsWith(.x, "/")) .x else file.path(repo_root, .x))
@@ -68,6 +69,14 @@ data_label <- function(sample, release_file) {
 }
 
 worker_setting_names <- c("workers", "worker_memory_gb", "worker_tasks_max")
+
+#' Where tar_make() writes the release files (output_dir in
+#' config/pipeline.yml), resolved against the repo root. Read apart from
+#' read_pipeline_config(), so changing it only rewrites the files.
+read_output_dir <- function(config_file) {
+  dir <- yaml::read_yaml(config_file)$output_dir
+  if (startsWith(dir, "/")) dir else file.path(dirname(dirname(normalizePath(config_file))), dir)
+}
 
 #' Worker count, per-worker memory cap and tasks per worker from config/pipeline.yml. Read
 #' apart from read_pipeline_config(), so tuning them doesn't make targets

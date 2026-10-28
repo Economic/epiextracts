@@ -70,8 +70,6 @@ read_parity_exceptions <- function(exceptions_file) {
 #' time, so memory stays at the keys plus one batch from each side (about
 #' 1 GB) rather than two whole years.
 compare_values_year <- function(r_files, reference_parquet, registry, sample, exceptions, batch_size = 20) {
-  columns <- export_columns(registry, sample)
-  reference_columns <- names(arrow::open_dataset(reference_parquet)$schema)
   # one or more columns from each side, as plain vectors (labels dropped)
   read_r <- function(cols) {
     purrr::map(r_files, ~ arrow::read_feather(.x, col_select = dplyr::all_of(cols))) |>
@@ -79,6 +77,15 @@ compare_values_year <- function(r_files, reference_parquet, registry, sample, ex
       haven::zap_labels()
   }
   read_reference <- function(cols) arrow::read_parquet(reference_parquet, col_select = dplyr::all_of(cols))
+  compare_values(read_r, read_reference, names(arrow::open_dataset(reference_parquet)$schema),
+                 registry, sample, exceptions, batch_size)
+}
+
+#' The value comparison behind compare_values_year() and the release
+#' comparison: read_r/read_reference return the requested columns (as plain
+#' vectors) from each side; reference_columns lists what the reference has.
+compare_values <- function(read_r, read_reference, reference_columns, registry, sample, exceptions, batch_size = 20) {
+  columns <- export_columns(registry, sample)
 
   # match rows once on the keys; row positions then line up every column
   r_keys <- dplyr::mutate(read_r(join_keys), .r = dplyr::row_number())

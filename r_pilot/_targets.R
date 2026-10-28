@@ -10,6 +10,7 @@ pipeline_config_file <- "../config/pipeline.yml"
 config <- read_pipeline_config(pipeline_config_file)
 release_month <- read_release_month("../config/release.yml")
 worker_settings <- read_worker_settings(pipeline_config_file)
+output_dir <- read_output_dir(pipeline_config_file)
 
 # variable registry: what to compute and export (see R/registry.R)
 registry <- read_registry("variables.csv")
@@ -179,23 +180,23 @@ tar_assign({
     tar_target()
 
   basic_feather = label_extract(basic_extract, registry, value_labels, "basic", data_label("basic", release_file)) |>
-    write_extract("basic", config$paths$output, year_spec) |>
+    write_extract("basic", output_dir, year_spec) |>
     tar_target(pattern = map(basic_extract, year_spec), format = "file")
 
   org_feather = label_extract(org_year, registry, value_labels, "org", data_label("org", release_file)) |>
-    write_extract("org", config$paths$output, year_spec) |>
+    write_extract("org", output_dir, year_spec) |>
     tar_target(pattern = map(org_year, year_spec), format = "file")
 
   # Stata .dta (format 117, as saveold version(13) writes): storage types,
   # labels and notes as in the Stata-made files. The wages-stage variables
   # stay float, as they're created after Stata's compress (R/dta.R).
   basic_dta = label_extract(basic_extract, registry, value_labels, "basic", data_label("basic", release_file)) |>
-    write_extract("basic", config$paths$output, year_spec, "dta", variable_notes,
+    write_extract("basic", output_dir, year_spec, "dta", variable_notes,
                   uncompressed = registry$variable[registry$stage == "wages"]) |>
     tar_target(pattern = map(basic_extract, year_spec), format = "file")
 
   org_dta = label_extract(org_year, registry, value_labels, "org", data_label("org", release_file)) |>
-    write_extract("org", config$paths$output, year_spec, "dta", variable_notes,
+    write_extract("org", output_dir, year_spec, "dta", variable_notes,
                   uncompressed = registry$variable[registry$stage == "wages"]) |>
     tar_target(pattern = map(org_year, year_spec), format = "file")
 })
