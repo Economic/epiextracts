@@ -19,6 +19,8 @@ test*.csv
 *.feather
 tmpdata.do
 
+*.gz
+
 r_pilot
 hilary-hhpct.R
 census_benchmark_hinc05.csv

@@ -1,0 +1,1 @@
+`hserial` is the March ASEC household identifier, unique within [`year`](year.md). For 1976-present it is the household serial number on the raw Unicon/Census file and, together with [`hrhhid`](hrhhid.md), can be used to join EPI extracts to the raw data; for 1962-1975 it is derived by EPI from Unicon's household ID and cannot be used to join to the raw data.

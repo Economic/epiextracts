@@ -4,7 +4,7 @@
 /* 1983-1991: 1980 census industry codes */
 gen ind80 = .
 
-if $monthlycps == 1 {
+if $monthlycps == 1 | $marchcps == 1 {
 	if tm(1983m1) <= $date & $date <= tm(1991m12) {
 		replace ind80 = indcode
 	}

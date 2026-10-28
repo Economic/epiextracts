@@ -50,3 +50,22 @@ California,CA,6,93,9,Pacific,4,West
 Hawaii,HI,15,95,9,Pacific,4,West
 Oregon,OR,41,92,9,Pacific,4,West
 Washington,WA,53,91,9,Pacific,4,West
+"Maine-Massachusetts-New Hampshire-Rhode Island-Vermont",MA-ME-NH-RI-VT,101,101,1,"New England",1,Northeast
+Michigan-Wisconsin,MI-WI,102,102,3,"East North Central",2,Midwest
+Iowa-Minnesota,IA-MN,103,103,4,"West North Central",2,Midwest
+"Kansas-Nebraska-North Dakota-South Dakota",KS-NE-ND-SD,104,104,4,"West North Central",2,Midwest
+"North Carolina-South Carolina",NC-SC,105,105,5,"South Atlantic",3,South
+Delaware-Virginia,DE-VA,106,106,5,"South Atlantic",3,South
+Alabama-Mississippi,AL-MS,107,107,6,"East South Central",3,South
+Arkansas-Oklahoma,AR-OK,108,108,7,"West South Central",3,South
+"Arizona-Colorado-New Mexico",AZ-CO-NM,109,109,8,Mountain,4,West
+Idaho-Montana-Nevada-Utah-Wyoming,ID-MT-NV-UT-WY,110,110,8,Mountain,4,West
+Alaska-Hawaii-Washington,AK-HI-WA,111,111,9,Pacific,4,West
+"Maine-New Hampshire-Rhode Island-Vermont",ME-NH-RI-VT,112,112,1,"New England",1,Northeast
+"Iowa-Kansas-Minnesota-Missouri-Nebraska-North Dakota-South Dakota",IA-KS-MN-MO-NE-ND-SD,113,113,4,"West North Central",2,Midwest
+"Delaware-Maryland-Virginia-West Virginia",DE-MD-VA-WV,114,114,5,"South Atlantic",3,South
+"Georgia-South Carolina",GA-SC,115,115,5,"South Atlantic",3,South
+Kentucky-Tennessee,KY-TN,116,116,6,"East South Central",3,South
+Arkansas-Louisiana-Oklahoma,AR-LA-OK,117,117,7,"West South Central",3,South
+"Arizona-Colorado-Idaho-Montana-Nevada-New Mexico-Utah-Wyoming",AZ-CO-ID-MT-NV-NM-UT-WY,118,118,8,Mountain,4,West
+Alaska-Hawaii-Oregon-Washington,AK-HI-OR-WA,119,119,9,Pacific,4,West

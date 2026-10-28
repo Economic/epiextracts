@@ -1,5 +1,5 @@
 *******************************************************************************
-* Weeks unemployed, looking
+* Weeks unemployed looking, continuous
 *******************************************************************************
 gen int lookdur = .
 
@@ -16,5 +16,6 @@ lab var lookdur "Job seeking duration (weeks)"
 notes lookdur: Top-code inconsistent across time
 notes lookdur: Top-code 1976-1993: 99; 1994-2011m3: 999; 2011m4-present: 119
 notes lookdur: Definition/universe changes: 1973-1988, 1989-1993, 1994-present
-notes lookdur: 1973-1993 Unicon: wksun
-notes lookdur: 1994-present CPS: pelkdur
+notes lookdur: 1963-1967 March: Exlcuded due to binning weeks above 6
+notes lookdur: 1973-1993 Unicon Basic/May: wksun
+notes lookdur: 1994-present CPS Basic/May: pelkdur

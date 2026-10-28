@@ -1,0 +1,1 @@
+`higotherly` indicates whether the respondent had other government health insurance coverage last year, including military/VA health care (TRICARE, CHAMPVA) and Indian Health Service coverage. See also [`hicovly1`](hicovly1.md), [`hicovly2`](hicovly2.md), [`hicovly3`](hicovly3.md), [`hicovly4`](hicovly4.md), [`hicovly5`](hicovly5.md), and [`hiihsly`](hiihsly.md).

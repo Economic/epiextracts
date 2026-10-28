@@ -14,11 +14,24 @@ if $monthlycps == 1 {
 	}
 }
 
+if $marchcps == 1 {
+	if tm(1986m1) <= $date & $date <= tm(1997m12) {
+		replace schenrl = 0 if schenr == 2
+		replace schenrl = 1 if schenr == 1
+	}
+	if tm(1998m1) <= $date {
+		replace schenrl = 0 if a_enrlw == 2
+		replace schenrl = 1 if a_enrlw == 1
+	}
+}
+
 lab var schenrl "Enrolled in high school or college last week"
 lab def schenrl 1 "Enrolled" 0 "Not enrolled"
 lab val schenrl schenrl
 notes schenrl: Available 1993-present
 notes schenrl: 1983-2012 universe: ages 16-24
 notes schenrl: 2013-present universe: ages 16-54
-notes schenrl: 1984-1993 Unicon: schenr
-notes schenrl: 1994-present CPS: peschenr
+notes schenrl: 1984-1993 Unicon Basic: schenr
+notes schenrl: 1994-present CPS Basic: peschenr
+notes schenrl: 1986-1997 Unicon March: schenr
+notes schenrl: 1997-present CPS March: a_enrlw

@@ -10,8 +10,8 @@ if $monthlycps == 1 {
 	}
 }
 
-lab var hoursvaryt "Usual hours vary, other job"
+lab var hoursvaryt "Usual hours vary, all jobs"
 lab def hoursvaryt 0 "Hours do not vary" 1 "Hours vary"
-lab val hoursvaryt hoursvary2
+lab val hoursvaryt hoursvaryt
 notes hoursvaryt: Available 1994-present
 notes hoursvaryt: 1994-present CPS: pehruslt==-4

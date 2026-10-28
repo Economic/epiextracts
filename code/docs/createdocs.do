@@ -18,8 +18,14 @@ forvalues i = 1 / `N' {
 }
 
 * load data for a given year to gather all variables
+* March-only variables are not in the ORG, so stack one March record
+load_epiextracts, begin(2024m1) end(2024m12) sample(march) version(local)
+keep if _n == 1
+tempfile marchdata
+save `marchdata'
 load_epiextracts, begin(2024m1) end(2024m12) sample(org) version(local)
 keep if _n == 1
+append using `marchdata', force
 tempfile basedata
 save `basedata'
 

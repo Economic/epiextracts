@@ -24,8 +24,14 @@ forvalues i = 1 / `N' {
 	local group`var': di group
 }
 
+* March-only variables are not in the Basic, so stack one March record
+load_epiextracts, begin(2024m1) end(2024m12) sample(march) version(local)
+keep if _n == 1
+tempfile marchdata
+save `marchdata'
 load_epiextracts, begin(2021m1) end(2021m1) sample(basic) version(local)
 keep if _n == 1
+append using `marchdata', force
 order _all, alphabetic
 foreach var of varlist _all {
   local label: variable label `var'

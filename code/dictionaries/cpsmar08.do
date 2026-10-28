@@ -456,7 +456,7 @@ note a_wksch: U A-CLSWRK NE 8
 note a_civlf: U All
 note a_mjind: U F/T
 note a_dtind: U A-CLSWKR = 1-7
-note mjocc: U A-CLSWKR=1-7
+note a_mjocc: U A-CLSWKR=1-7
 note a_dtocc: U A_CLSWKR = 1-7
 note prerelg: U A-CLSWKR=1-7
 note workyn: U All
@@ -2256,8 +2256,8 @@ label values a_dtind  a_dtind;
 label define a_dtind
 	0           "Not in universe or children or"
 ;
-label values mjocc    mjocc;
-label define mjocc
+label values a_mjocc    a_mjocc;
+label define a_mjocc
 	0           "Not in universe or children"
 	1           "Management, business, and"
 	2           "Professional and related"
