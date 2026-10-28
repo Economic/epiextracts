@@ -1,5 +1,6 @@
 # Parity gate: compare the R extracts against the published Stata extracts.
-# Values are checked per variable with registry tolerances; labels, column
+# Values are checked per variable with registry tolerances, against the
+# released .feather files; labels, column
 # order and the dataset label are checked against the published metadata.
 # parity_gate() stops the build if anything doesn't match, except documented
 # exceptions (parity_exceptions.csv), which are reported but allowed.
@@ -63,24 +64,36 @@ read_parity_exceptions <- function(exceptions_file) {
 #' exported column with its registry tolerance. Columns with tolerance 0
 #' must also be whole numbers in R (they are byte/int/long in Stata); string
 #' columns must be equal.
-compare_values_year <- function(r_year, reference_parquet, registry, sample, exceptions) {
+#'
+#' Reads the released .feather files (r_files: one per year, or one per month
+#' of a partial year) and the cached published year a batch of columns at a
+#' time, so memory stays at the keys plus one batch from each side (about
+#' 1 GB) rather than two whole years.
+compare_values_year <- function(r_files, reference_parquet, registry, sample, exceptions, batch_size = 20) {
   columns <- export_columns(registry, sample)
-  reference <- arrow::read_parquet(reference_parquet, col_select = dplyr::any_of(columns))
-  r_year <- r_year[, columns]
+  reference_columns <- names(arrow::open_dataset(reference_parquet)$schema)
+  # one or more columns from each side, as plain vectors (labels dropped)
+  read_r <- function(cols) {
+    purrr::map(r_files, ~ arrow::read_feather(.x, col_select = dplyr::all_of(cols))) |>
+      dplyr::bind_rows() |>
+      haven::zap_labels()
+  }
+  read_reference <- function(cols) arrow::read_parquet(reference_parquet, col_select = dplyr::all_of(cols))
 
-  matched <- dplyr::inner_join(r_year, reference, by = join_keys, suffix = c("_r", "_stata"))
-  n_only_r <- nrow(dplyr::anti_join(r_year, reference, by = join_keys))
-  n_only_stata <- nrow(dplyr::anti_join(reference, r_year, by = join_keys))
+  # match rows once on the keys; row positions then line up every column
+  r_keys <- dplyr::mutate(read_r(join_keys), .r = dplyr::row_number())
+  s_keys <- dplyr::mutate(read_reference(join_keys), .s = dplyr::row_number())
+  matched <- dplyr::inner_join(r_keys, s_keys, by = join_keys)
+  n_only_r <- sum(!r_keys$.r %in% matched$.r)
+  n_only_stata <- sum(!s_keys$.s %in% matched$.s)
+  n_r_rows <- nrow(r_keys)
+  n_stata_rows <- nrow(s_keys)
   date <- ym(matched$year, matched$month)
+  rm(r_keys, s_keys)
 
-  # keys match by construction; compare everything else
-  purrr::map(setdiff(columns, join_keys), function(v) {
+  # keys match by construction; compare everything else, a batch of columns at a time
+  compare_column <- function(v, r_col, s_col) {
     tol <- registry$tolerance[registry$variable == v]
-    if (!v %in% names(reference)) {
-      return(tibble::tibble(variable = v, in_reference = FALSE))
-    }
-    r_col <- matched[[paste0(v, "_r")]]
-    s_col <- matched[[paste0(v, "_stata")]]
     # rows in a documented exception window are counted apart
     windows <- exceptions[exceptions$variable == v & exceptions$sample == sample, ]
     excepted <- purrr::reduce(purrr::map2(windows$from, windows$to, ~ date >= .x & date <= .y),
@@ -99,10 +112,22 @@ compare_values_year <- function(r_year, reference_parquet, registry, sample, exc
       n_excepted = sum(excepted),
       n_excepted_mismatch = sum((missingness | differs) & excepted)
     )
-  }) |>
-    dplyr::bind_rows() |>
-    dplyr::mutate(sample = sample, year = unique(r_year$year), n_r_rows = nrow(r_year),
-                  n_stata_rows = nrow(reference), n_only_r = n_only_r, n_only_stata = n_only_stata, .before = 1)
+  }
+  to_compare <- setdiff(columns, join_keys)
+  missing_from_reference <- setdiff(to_compare, reference_columns)
+  in_both <- intersect(to_compare, reference_columns)
+  report <- split(in_both, ceiling(seq_along(in_both) / batch_size)) |>
+    purrr::map(function(batch) {
+      r_batch <- read_r(batch)
+      s_batch <- read_reference(batch)
+      purrr::map(batch, ~ compare_column(.x, r_batch[[.x]][matched$.r], s_batch[[.x]][matched$.s]))
+    }) |>
+    purrr::list_flatten() |>
+    c(purrr::map(missing_from_reference, ~ tibble::tibble(variable = .x, in_reference = FALSE))) |>
+    dplyr::bind_rows()
+
+  dplyr::mutate(report, sample = sample, year = unique(matched$year), n_r_rows = n_r_rows,
+                n_stata_rows = n_stata_rows, n_only_r = n_only_r, n_only_stata = n_only_stata, .before = 1)
 }
 
 #' Compare the extract's metadata spec (registry labels, value_labels.csv,

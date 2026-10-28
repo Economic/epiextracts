@@ -141,11 +141,12 @@ tar_assign({
   parity_exceptions = read_parity_exceptions(parity_exceptions_file) |>
     tar_target()
 
-  parity_basic_values = compare_values_year(basic_extract, reference_basic_parquet, registry, "basic", parity_exceptions) |>
-    tar_target(pattern = map(basic_extract, reference_basic_parquet))
+  # compares the released .feather files column by column (low memory)
+  parity_basic_values = compare_values_year(basic_feather, reference_basic_parquet, registry, "basic", parity_exceptions) |>
+    tar_target(pattern = map(basic_feather, reference_basic_parquet))
 
-  parity_org_values = compare_values_year(org_year, reference_org_parquet, registry, "org", parity_exceptions) |>
-    tar_target(pattern = map(org_year, reference_org_parquet))
+  parity_org_values = compare_values_year(org_feather, reference_org_parquet, registry, "org", parity_exceptions) |>
+    tar_target(pattern = map(org_feather, reference_org_parquet))
 
   parity_basic_metadata = compare_metadata_year(reference_basic_meta, registry, value_labels, "basic",
                                                 years, data_label("basic", release_file)) |>
