@@ -56,12 +56,13 @@ read_fwf_dictionary <- function(file, dict) {
   data
 }
 
-#' Raw input files for one year: the monthly pub.zips, plus the yearly
-#' reweight archive in reweight years. Tracked as file targets.
-raw_zip_paths <- function(year, config) {
+#' Raw input files for one year (a year_spec, see build_year_spec()): the
+#' monthly pub.zips, plus the yearly reweight archive in reweight years.
+#' Tracked as file targets.
+raw_zip_paths <- function(spec, config) {
+  year <- spec$year
   shortyear <- sprintf("%02d", year %% 100)
-  months <- year_months(year, config)
-  zips <- file.path(config$paths$raw_ascii, sprintf("%s%spub.zip", monthname_lut[months], shortyear))
+  zips <- file.path(config$paths$raw_ascii, sprintf("%s%spub.zip", monthname_lut[spec$months], shortyear))
   if (year %in% config$reweight_years) {
     zips <- c(zips, file.path(config$paths$raw_ascii, sprintf("rw%s.zip", shortyear)))
   }
@@ -120,13 +121,14 @@ parse_raw_month <- function(year, month, config) {
   month_data
 }
 
-#' Parse every month of one year into the parquet cache; returns the paths.
-parse_raw_year <- function(year, raw_zips, config) {
+#' Parse every month of one year (a year_spec) into the parquet cache;
+#' returns the paths.
+parse_raw_year <- function(spec, raw_zips, config) {
   out_dir <- file.path(config$paths$cache, "raw")
   fs::dir_create(out_dir)
-  purrr::map_chr(year_months(year, config), ~ {
-    out_file <- file.path(out_dir, sprintf("%d_%02d.parquet", year, .x))
-    arrow::write_parquet(parse_raw_month(year, .x, config), out_file)
+  purrr::map_chr(spec$months, ~ {
+    out_file <- file.path(out_dir, sprintf("%d_%02d.parquet", spec$year, .x))
+    arrow::write_parquet(parse_raw_month(spec$year, .x, config), out_file)
     out_file
   })
 }

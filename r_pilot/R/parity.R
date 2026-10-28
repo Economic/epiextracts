@@ -8,13 +8,13 @@
 join_keys <- c("year", "month", "hrhhid", "hhid", "pulineno")
 
 #' Published Stata extract(s) for one year and sample: the annual file, or
-#' the monthly files for a partial year.
-reference_dta_path <- function(year, sample, config) {
+#' the monthly files for a partial year (spec: see build_year_spec()).
+reference_dta_path <- function(spec, sample, config) {
   dir <- file.path(config$paths$reference, sample, "epi")
-  if (is_partial_year(year, config)) {
-    return(file.path(dir, sprintf("epi_cps%s_%d_%d.dta", sample, year, year_months(year, config))))
+  if (spec$partial) {
+    return(file.path(dir, sprintf("epi_cps%s_%d_%d.dta", sample, spec$year, spec$months)))
   }
-  file.path(dir, sprintf("epi_cps%s_%d.dta", sample, year))
+  file.path(dir, sprintf("epi_cps%s_%d.dta", sample, spec$year))
 }
 
 #' Cache one year's published values as parquet (labels dropped), so the

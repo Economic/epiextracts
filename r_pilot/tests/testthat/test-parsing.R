@@ -25,19 +25,41 @@ test_that("dictionary vintages switch on the right months", {
 })
 
 test_that("skipped months and months after the latest release are left out", {
-  cfg <- list(skip_months = "2025m10", latest_year = 2026, latest_month = 9)
-  expect_equal(year_months(2025, cfg), c(1:9, 11:12))
-  expect_equal(year_months(2024, cfg), 1:12)
-  expect_equal(year_months(2026, cfg), 1:9)
-  expect_true(is_partial_year(2026, cfg))
-  expect_false(is_partial_year(2025, cfg))
-  expect_false(is_partial_year(2026, modifyList(cfg, list(latest_month = 12))))
+  cfg <- list(skip_months = "2025m10")
+  rel <- list(latest_year = 2026, latest_month = 9)
+  expect_equal(year_months(2025, cfg, rel), c(1:9, 11:12))
+  expect_equal(year_months(2024, cfg, rel), 1:12)
+  expect_equal(year_months(2026, cfg, rel), 1:9)
+  expect_true(is_partial_year(2026, rel))
+  expect_false(is_partial_year(2025, rel))
+  expect_false(is_partial_year(2026, list(latest_year = 2026, latest_month = 12)))
+})
+
+test_that("a partial year's trailing window skips missing months", {
+  cfg <- list(skip_months = "2025m10")
+  spec <- build_year_spec(2026, cfg, list(latest_year = 2026, latest_month = 9))
+  expect_true(spec$partial)
+  expect_equal(spec$window_months, 11:12)
+  expect_equal(build_year_spec(2025, cfg, list(latest_year = 2026, latest_month = 9))$window_months, integer(0))
+})
+
+test_that("a new release changes only the latest year's spec (so only it rebuilds)", {
+  specs <- function(latest_month) {
+    rel <- list(latest_year = 2026, latest_month = latest_month)
+    purrr::map(pipeline_years(config, rel), ~ build_year_spec(.x, config, rel))
+  }
+  before <- specs(8)
+  after <- specs(9)
+  changed <- purrr::map2_lgl(before, after, ~ !identical(.x, .y))
+  expect_equal(pipeline_years(config, list(latest_year = 2026))[changed], 2026)
 })
 
 test_that("raw zips cover the year's months, plus reweights in reweight years", {
-  expect_length(raw_zip_paths(2025, config), 11)
-  expect_length(raw_zip_paths(2001, config), 13)
-  expect_length(raw_zip_paths(2010, config), 12)
+  rel <- list(latest_year = 2026, latest_month = 9)
+  zips <- function(year) raw_zip_paths(build_year_spec(year, config, rel), config)
+  expect_length(zips(2025), 11)
+  expect_length(zips(2001), 13)
+  expect_length(zips(2010), 12)
 })
 
 test_that("NUL bytes inside records don't split lines", {

@@ -16,7 +16,7 @@ proxy,household,basic,column,recode_proxy,,TRUE,basic;org,0,Self or proxy respon
 hhtype,household,basic,column,recode_hhtype,,TRUE,basic;org,0,Household type,recode_hhtype
 famtype,household,basic,column,recode_famtype,,TRUE,basic;org,0,Family type (person level),recode_famtype
 finalwgt,weights,basic,column,recode_finalwgt,,TRUE,basic;org,0.01,Final basic monthly weight,
-cmpwgt,weights,basic,column,recode_cmpwgt,,TRUE,basic;org,0,Composited final monthly weight,recode_cmpwgt
+cmpwgt,weights,basic,column,recode_cmpwgt,,TRUE,basic;org,0.01,Composited final monthly weight,recode_cmpwgt
 basicwgt,weights,basic,column,recode_basicwgt,,TRUE,basic;org,0.01,Basic monthly weight,recode_basicwgt
 orgwgt,weights,basic,column,recode_orgwgt,,TRUE,basic;org,0.01,Earnings weight,recode_orgwgt
 hhwgt,weights,basic,column,recode_hhwgt,,TRUE,basic;org,0.01,Household weight,recode_hhwgt

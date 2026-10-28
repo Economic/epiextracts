@@ -29,23 +29,29 @@ recode_basic_year <- function(raw_files, registry, recode_functions, context) {
     dplyr::select(dplyr::all_of(registry$variable[registry$stage == "basic"]))
 }
 
+#' The previous year's months in a partial year's trailing window, recoded
+#' from the raw cache like any basic table (spec: see build_year_spec()).
+#'
+#' For a partial year, Stata (create_extracts.ado) runs the wage adjustments
+#' on a trailing window: the previous year's months after the current year's
+#' month count (e.g. 2025m10-m12 for 2026m1-m9). Full years have no window
+#' and get an empty table, so their extracts don't depend on other years'
+#' raw files.
+recode_trailing_window <- function(spec, raw_files, registry, recode_functions, context) {
+  if (!spec$partial) return(tibble::tibble(year = numeric(0)))
+  window_files <- raw_files[basename(raw_files) %in% sprintf("%d_%02d.parquet", spec$year - 1, spec$window_months)]
+  recode_basic_year(window_files, registry, recode_functions, context)
+}
+
 #' One year's extract for a sample: the basic table (ORG: after the ORG
 #' universe filter), then the wage-adjustment stage (hoursu1i imputation ->
 #' weekpay top-coding -> wage -> wageotc), which adjust_wages.do runs on the
-#' Basic and on the ORG file separately.
-#'
-#' For a partial year, Stata (create_extracts.ado) runs the adjustments on a
-#' trailing window: the previous year's months after the current year's
-#' month count (e.g. 2025m10-m12 for 2026m1-m9), then keeps the current year.
-#' The previous months are recoded from the raw cache the same way.
-build_extract_year <- function(basic_year, raw_files, registry, recode_functions, context, config, sample) {
+#' Basic and on the ORG file separately. A partial year's adjustments run
+#' over its trailing window (recode_trailing_window()), then only the
+#' current year is kept.
+build_extract_year <- function(basic_year, trailing_window, registry, recode_functions, context, sample) {
   yr <- unique(basic_year$year)
-  window <- basic_year
-  if (is_partial_year(yr, config)) {
-    prev_months <- seq(length(year_months(yr, config)) + 1, 12)
-    prev_files <- raw_files[basename(raw_files) %in% sprintf("%d_%02d.parquet", yr - 1, prev_months)]
-    window <- dplyr::bind_rows(recode_basic_year(prev_files, registry, recode_functions, context), basic_year)
-  }
+  window <- dplyr::bind_rows(trailing_window, basic_year)
   if (sample == "org") window <- filter_org_universe(window)
   window |>
     run_stage(registry, recode_functions, "wages", context) |>

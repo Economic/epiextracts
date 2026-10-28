@@ -25,7 +25,8 @@ test_that("value labels only cover exported variables", {
 })
 
 test_that("every raw column exists in at least one dictionary the configured years use", {
-  dicts <- purrr::map(config$years, \(y) purrr::map_chr(1:12, ~ select_dictionary(y, .x))) |>
+  years <- pipeline_years(config, read_release_month(file.path(repo_dir, "config/release.yml")))
+  dicts <- purrr::map(years, \(y) purrr::map_chr(1:12, ~ select_dictionary(y, .x))) |>
     unlist() |>
     unique()
   dict_columns <- purrr::map(dicts, ~ parse_dictionary(file.path(config$paths$dictionaries, paste0(.x, ".dct")))$varname) |>

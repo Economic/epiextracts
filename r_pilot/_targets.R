@@ -2,9 +2,13 @@ source("./packages.R")
 lapply(list.files("./R", full.names = TRUE), source)
 
 ## CONFIGURATION
-# settings: ../config/pipeline.yml; version and latest month: ../config/release.yml
+# Stable settings (paths, first year, skipped months): ../config/pipeline.yml.
+# The latest month (../config/release.yml) only reaches targets through
+# `years` and `year_spec`, so a new release rebuilds just the current year
+# (see R/config.R). The version reaches them through release_file.
 pipeline_config_file <- "../config/pipeline.yml"
 config <- read_pipeline_config(pipeline_config_file)
+release_month <- read_release_month("../config/release.yml")
 worker_settings <- read_worker_settings(pipeline_config_file)
 
 # variable registry: what to compute and export (see R/registry.R)
@@ -26,9 +30,6 @@ tar_assign({
   ###############
   # INPUT FILES #
   ###############
-  pipeline_config_path = pipeline_config_file |>
-    tar_file()
-
   release_file = "../config/release.yml" |>
     tar_file()
 
@@ -50,25 +51,30 @@ tar_assign({
   telework_zips = telework_zip_paths(config) |>
     tar_target(format = "file")
 
-  years = config$years |>
+  years = pipeline_years(config, release_month) |>
     tar_target(format = "rds")
 
-  raw_zips = raw_zip_paths(years, config) |>
-    tar_target(pattern = map(years), format = "file")
+  # per year: its months, whether it's partial, its trailing-window months.
+  # Recomputed every release, but only the latest year's value changes.
+  year_spec = build_year_spec(years, config, release_month) |>
+    tar_target(pattern = map(years), iteration = "list", format = "rds")
 
-  reference_basic_dta = reference_dta_path(years, "basic", config) |>
-    tar_target(pattern = map(years), format = "file")
+  raw_zips = raw_zip_paths(year_spec, config) |>
+    tar_target(pattern = map(year_spec), format = "file")
 
-  reference_org_dta = reference_dta_path(years, "org", config) |>
-    tar_target(pattern = map(years), format = "file")
+  reference_basic_dta = reference_dta_path(year_spec, "basic", config) |>
+    tar_target(pattern = map(year_spec), format = "file")
+
+  reference_org_dta = reference_dta_path(year_spec, "org", config) |>
+    tar_target(pattern = map(year_spec), format = "file")
 
   ###################
   # PROCESS RAW DATA #
   ###################
   # every column of every month, parsed once into cache/raw/; recoding reads
   # only the columns it needs, so adding variables never re-parses raw files
-  raw_parquet = parse_raw_year(years, raw_zips, config) |>
-    tar_target(pattern = map(years, raw_zips), format = "file")
+  raw_parquet = parse_raw_year(year_spec, raw_zips, config) |>
+    tar_target(pattern = map(year_spec, raw_zips), format = "file")
 
   # telework supplement, 2022m10-2024m5: its own cache, joined when reading raw months
   telework_parquet = parse_telework(telework_zips, config) |>
@@ -98,13 +104,17 @@ tar_assign({
   basic_year = recode_basic_year(raw_parquet, registry, recode_functions, recode_context) |>
     tar_target(pattern = map(raw_parquet))
 
-  # the wage adjustments run on each sample's own table, as adjust_wages.do does;
-  # both take every cached raw file: a partial year's trailing window reaches into the year before
-  basic_extract = build_extract_year(basic_year, raw_parquet, registry, recode_functions, recode_context, config, "basic") |>
-    tar_target(pattern = map(basic_year))
+  # a partial year's trailing window: the previous year's months, recoded.
+  # Empty for full years, so only the partial year depends on other years' raw files.
+  trailing_basic = recode_trailing_window(year_spec, raw_parquet, registry, recode_functions, recode_context) |>
+    tar_target(pattern = map(year_spec))
 
-  org_year = build_extract_year(basic_year, raw_parquet, registry, recode_functions, recode_context, config, "org") |>
-    tar_target(pattern = map(basic_year))
+  # the wage adjustments run on each sample's own table, as adjust_wages.do does
+  basic_extract = build_extract_year(basic_year, trailing_basic, registry, recode_functions, recode_context, "basic") |>
+    tar_target(pattern = map(basic_year, trailing_basic))
+
+  org_year = build_extract_year(basic_year, trailing_basic, registry, recode_functions, recode_context, "org") |>
+    tar_target(pattern = map(basic_year, trailing_basic))
 
   ##########
   # PARITY #
@@ -158,10 +168,10 @@ tar_assign({
   #################
   # one file per year; one per month for a partial year
   basic_feather = label_extract(basic_extract, registry, value_labels, "basic", data_label("basic", release_file)) |>
-    write_extract("basic", config$paths$output, config) |>
-    tar_target(pattern = map(basic_extract), format = "file")
+    write_extract("basic", config$paths$output, year_spec) |>
+    tar_target(pattern = map(basic_extract, year_spec), format = "file")
 
   org_feather = label_extract(org_year, registry, value_labels, "org", data_label("org", release_file)) |>
-    write_extract("org", config$paths$output, config) |>
-    tar_target(pattern = map(org_year), format = "file")
+    write_extract("org", config$paths$output, year_spec) |>
+    tar_target(pattern = map(org_year, year_spec), format = "file")
 })

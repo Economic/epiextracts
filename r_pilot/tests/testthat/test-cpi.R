@@ -20,7 +20,10 @@ test_that("config and release metadata resolve", {
   expect_true(dir.exists(config$paths$dictionaries))
   # the year range ends at the latest month in release.yml
   latest <- yaml::read_yaml(file.path(repo_dir, "config/release.yml"))$latestdata
-  expect_equal(max(config$years), as.integer(substr(latest, 1, 4)))
+  release <- read_release_month(file.path(repo_dir, "config/release.yml"))
+  expect_equal(max(pipeline_years(config, release)), as.integer(substr(latest, 1, 4)))
+  # release values stay out of config, so a release doesn't rebuild every target
+  expect_false(any(c("latest_year", "latest_month", "years", "workers") %in% names(config)))
   expect_match(data_label("basic", file.path(repo_dir, "config/release.yml")),
                "^EPI CPS Basic Monthly Extracts, Version [0-9]{4}\\.[0-9]+\\.[0-9]+$")
 })

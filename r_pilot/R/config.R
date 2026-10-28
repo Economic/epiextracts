@@ -1,13 +1,17 @@
 # Pipeline configuration: config/pipeline.yml (paths, first year, skipped
-# months) and config/release.yml (version, latest month of data). Everything
-# else reads settings from here.
+# months) and config/release.yml (version, latest month of data).
+#
+# Caching: targets reruns every target whose command mentions an object that
+# changed. So `config` holds only settings that rarely change, and the latest
+# month reaches the pipeline through one small per-year `year_spec`: each
+# release recomputes them all, but only the current year's comes out
+# different, so only that year rebuilds.
 
-#' Read config/pipeline.yml and config/release.yml (both in the config/
-#' folder) and resolve relative paths against the repo root.
+#' Read config/pipeline.yml and resolve relative paths against the repo root.
+#' Release values (latest month, version) are read separately.
 read_pipeline_config <- function(config_file) {
   repo_root <- dirname(dirname(normalizePath(config_file)))
   config <- yaml::read_yaml(config_file)
-  release <- yaml::read_yaml(file.path(dirname(config_file), "release.yml"))
 
   # worker settings only shape how targets run, not what they compute; keep
   # them out of the config targets depend on (see read_worker_settings())
@@ -15,30 +19,44 @@ read_pipeline_config <- function(config_file) {
 
   # absolute paths stay as they are; relative ones hang off the repo root
   config$paths <- purrr::map(config$paths, ~ if (startsWith(.x, "/")) .x else file.path(repo_root, .x))
-
-  # the latest month of data ("2026m9") ends the year range
-  latest <- as.integer(strsplit(release$latestdata, "m")[[1]])
-  config$latest_year <- latest[1]
-  config$latest_month <- latest[2]
-  config$years <- seq(config$first_year, config$latest_year)
   config$reweight_years <- seq(config$reweight_years$first, config$reweight_years$last)
   config
 }
 
+#' Latest month of data from config/release.yml ("2026m9").
+read_release_month <- function(release_file) {
+  latest <- as.integer(strsplit(yaml::read_yaml(release_file)$latestdata, "m")[[1]])
+  list(latest_year = latest[1], latest_month = latest[2])
+}
+
+#' Years the pipeline builds: the first year through the latest year of data.
+pipeline_years <- function(config, release) seq(config$first_year, release$latest_year)
+
 #' Months with data in one year: 1-12, minus skipped months (e.g. 2025m10),
 #' and only through the latest month in the latest year. The Stata loader
 #' and epiextractr hardcode the same October 2025 gap.
-year_months <- function(year, config) {
+year_months <- function(year, config, release) {
   months <- 1:12
-  if (year == config$latest_year) months <- months[months <= config$latest_month]
+  if (year == release$latest_year) months <- months[months <= release$latest_month]
   months[!paste0(year, "m", months) %in% config$skip_months]
 }
 
 #' A partial year is the latest year before its December data is out. Its
 #' extracts are monthly files, and its wage adjustments use a trailing
 #' 12-month window (create_extracts.ado).
-is_partial_year <- function(year, config) {
-  year == config$latest_year && config$latest_month < 12
+is_partial_year <- function(year, release) {
+  year == release$latest_year && release$latest_month < 12
+}
+
+#' Everything about one year that depends on the release: its months,
+#' whether it's partial, and, for a partial year, the previous year's months
+#' in its trailing window (e.g. 2025m10-m12 for 2026m1-m9, minus skipped
+#' months). Unchanged for every year but the latest, release to release.
+build_year_spec <- function(year, config, release) {
+  months <- year_months(year, config, release)
+  partial <- is_partial_year(year, release)
+  window_months <- if (partial) intersect(seq(length(months) + 1, 12), year_months(year - 1, config, release)) else integer(0)
+  list(year = year, months = months, partial = partial, window_months = window_months)
 }
 
 #' Data label written into every extract, e.g. "EPI CPS Basic Monthly Extracts,
