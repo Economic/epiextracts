@@ -3,10 +3,22 @@ all: createdocs deploywebdocs createfeather deploydata deploywebcode deploywebda
 # last year of data (e.g. 2026 from latestdata: 2026m9), for the zip file names
 DATA_END_YEAR := $(shell sed -n 's/^latestdata: *\([0-9]\{4\}\).*/\1/p' config/release.yml)
 
-.PHONY: all deploydata createdocs deploywebdocs deploywebcode deploywebdata deploywindata deployado
+.PHONY: all deploydata createdocs deploywebdocs deploywebcode deploywebdata deploywindata deployado createextracts stagerextracts
 
 createfeather:
 	Rscript extracts_to_feather.R
+
+# R pipeline (r_pilot/): builds the Basic/ORG extracts, 1994-present, as .dta
+# and .feather in r_pilot/output/. Not part of `all` until the cutover
+# (Phase 4.6): Stata's extracts are still the published ones.
+createextracts:
+	cd r_pilot && Rscript -e 'targets::tar_make()'
+
+# Replace Stata's Basic/ORG 1994-present files in extracts/ with the R ones,
+# so deploydata and deploywebdata publish them. Run after createfeather (which
+# would otherwise rebuild these .feather files from the .dta).
+stagerextracts:
+	rsync -avh r_pilot/output/epi_cpsbasic_* r_pilot/output/epi_cpsorg_* extracts/
 
 deploydata:
 	rsync -avh --chmod=0444 extracts/epi_cpsbasic* /data/cps/basic/epi/
