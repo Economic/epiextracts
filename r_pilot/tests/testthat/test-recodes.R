@@ -91,3 +91,40 @@ test_that("earnings flags use weekpay_noadj, as Stata's abbreviation does", {
                                     otcamt = c(40, NA, NA), peernhro = c(20, 20, NA), hoursuorg = c(20, 20, NA),
                                     wage_noadj = c(10, 10, 25)), c(12, 10, 25))
 })
+
+test_that("values are stored as Stata stores them", {
+  # whole numbers fit the smallest of byte/int; other whole numbers stay float
+  expect_equal(stata_storage_type(c(1, 100, NA)), "byte")
+  expect_equal(stata_storage_type(c(-5, 30000)), "int")
+  expect_equal(stata_storage_type(c(1, 99999)), "float")
+  expect_equal(stata_storage_type(c(1.5, 2)), "float")
+  expect_equal(stata_storage_type(c("ab", "")), "str2")
+  expect_equal(stata_storage_type(c("", "")), "str1")
+  # float precision, missing kept
+  expect_equal(float_round(c(0.1, NA)), c(0.100000001490116, NA))
+  expect_type(store_values(c(1, 2, NA)), "integer")
+})
+
+test_that(".dta files round-trip values, labels, notes and storage types", {
+  d <- tibble::tibble(year = c(2005, 2005), wbho = c(1, 3), wage = c(12.5, NA), hrhhid = c("abc", ""))
+  d <- label_extract(d, tibble::tibble(variable = names(d), label = c("Year", "Race", "Wage", "Id"),
+                                       export = TRUE, samples = "basic;org"),
+                     tibble::tibble(variable = "wbho", value = c(1, 3), label = c("White", "Hispanic")),
+                     "basic", "EPI CPS Basic Monthly Extracts, Version 1")
+  path <- tempfile(fileext = ".dta")
+  write_stata_dta(d, path, tibble::tibble(variable = "wbho", note = 1:2, text = c("first", "second")))
+  back <- haven::read_dta(path)
+  expect_equal(attr(back, "label"), "EPI CPS Basic Monthly Extracts, Version 1")
+  expect_equal(as.vector(haven::zap_labels(back$wage)), c(12.5, NA))
+  expect_equal(as.vector(back$hrhhid), c("abc", ""))
+  expect_equal(unname(attr(back$wbho, "labels")), c(1, 3))
+  expect_equal(attr(back$wbho, "label"), "Race")
+  # storage types from the <variable_types> section: int (2005), byte, float, str3
+  bytes <- readBin(path, "raw", file.size(path))
+  start <- grepRaw("<variable_types>", bytes) + nchar("<variable_types>")
+  codes <- readBin(bytes[start + 0:7], "integer", n = 4, size = 2, signed = FALSE, endian = "little")
+  expect_equal(codes, c(65529, 65530, 65527, 3))
+  # notes are characteristics, including the version note on _dta
+  expect_true(grepRaw("second", bytes) > 0)
+  expect_true(grepRaw("Version 1", bytes, all = TRUE) |> length() >= 2)
+})

@@ -34,6 +34,7 @@ Rscript tests/testthat.R
 | `../config/cpi_projection.yml` | CBO levels used to project CPI-U-RS past the last actual year |
 | `variables.csv` | The variable registry: one row per variable (see below) |
 | `value_labels.csv` | Value labels for exported variables |
+| `variable_notes.csv` | Stata notes for each variable (from `scripts/seed_notes.R`) |
 | `crosswalks/mocc10.csv` | `mocc10` occupation code ranges by era (from `scripts/convert_mocc10.R`) |
 | `parity_exceptions.csv` | Known, documented differences the gate reports but allows |
 | `R/raw_ascii.R`, `R/dictionary.R` | Raw fixed-width parsing with the NBER dictionaries, and the telework supplement |
@@ -43,7 +44,7 @@ Rscript tests/testthat.R
 | `R/org.R` | Universe filters; builds each sample's extract |
 | `R/hoursu1i.R`, `R/topcode.R`, `R/wage.R` | The `wages` stage: hours imputation, top-coding, wage, wageotc (run on Basic and ORG) |
 | `R/parity.R` | Comparison with the published extracts and the gate |
-| `R/output.R` | Labelled extract writing |
+| `R/output.R`, `R/dta.R` | Labelled extract writing (.feather, and .dta in Stata 13 format) |
 
 ## Adding a variable
 
@@ -64,8 +65,11 @@ Rscript tests/testthat.R
 
 ## Outputs
 
-- `output/epi_cps{basic,org}_<year>.feather`: labelled extracts with the data
-  label `EPI CPS Basic Monthly Extracts, Version <version>` (ORG: `EPI CPS ORG Extracts, ...`).
+- `output/epi_cps{basic,org}_<year>.feather` and `.dta`: labelled extracts with
+  the data label `EPI CPS Basic Monthly Extracts, Version <version>` (ORG:
+  `EPI CPS ORG Extracts, ...`). The `.dta` files are Stata 13 format with
+  Stata's storage types and each variable's notes (`variable_notes.csv`),
+  including `_dta[note1]`, which `load_epiextracts` reads.
 - `reports/parity_values.csv`: per year, sample and variable: rows compared,
   missingness and value mismatches, non-whole values in integer columns, and
   rows in documented exception windows (`n_excepted`, `n_excepted_mismatch`).

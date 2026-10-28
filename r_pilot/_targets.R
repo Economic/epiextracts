@@ -51,6 +51,10 @@ tar_assign({
   parity_exceptions_file = "parity_exceptions.csv" |>
     tar_file()
 
+  # Stata notes for each variable (written into the .dta files)
+  notes_file = "variable_notes.csv" |>
+    tar_file()
+
   telework_zips = telework_zip_paths(config) |>
     tar_target(format = "file")
 
@@ -170,11 +174,27 @@ tar_assign({
   # FINAL RELEASE #
   #################
   # one file per year; one per month for a partial year
+  variable_notes = readr::read_csv(notes_file, col_types = "cic") |>
+    tar_target()
+
   basic_feather = label_extract(basic_extract, registry, value_labels, "basic", data_label("basic", release_file)) |>
     write_extract("basic", config$paths$output, year_spec) |>
     tar_target(pattern = map(basic_extract, year_spec), format = "file")
 
   org_feather = label_extract(org_year, registry, value_labels, "org", data_label("org", release_file)) |>
     write_extract("org", config$paths$output, year_spec) |>
+    tar_target(pattern = map(org_year, year_spec), format = "file")
+
+  # Stata .dta (format 117, as saveold version(13) writes): storage types,
+  # labels and notes as in the Stata-made files. The wages-stage variables
+  # stay float, as they're created after Stata's compress (R/dta.R).
+  basic_dta = label_extract(basic_extract, registry, value_labels, "basic", data_label("basic", release_file)) |>
+    write_extract("basic", config$paths$output, year_spec, "dta", variable_notes,
+                  uncompressed = registry$variable[registry$stage == "wages"]) |>
+    tar_target(pattern = map(basic_extract, year_spec), format = "file")
+
+  org_dta = label_extract(org_year, registry, value_labels, "org", data_label("org", release_file)) |>
+    write_extract("org", config$paths$output, year_spec, "dta", variable_notes,
+                  uncompressed = registry$variable[registry$stage == "wages"]) |>
     tar_target(pattern = map(org_year, year_spec), format = "file")
 })

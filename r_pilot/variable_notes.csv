@@ -1,0 +1,585 @@
+variable,note,text
+year,1,Generated from file date
+month,1,Generated from file date
+minsamp,1,Caution using data in 1962 and 1967.
+minsamp,2,1973-1993 Unicon Basic: mis
+minsamp,3,1994-present CPS Basic: hrmis
+minsamp,4,1962-1997 Unicon March: mis
+minsamp,5,1998-present CPS March: h_mis
+hrhhid,1,1973-1993 Unicon May/Basic: hhid
+hrhhid,2,1994-present CPS May/Basic: hrhhid
+hrhhid,3,1962-1997 Unicon March: hhid
+hrhhid,4,1998-2004 CPS March: h_idnum
+hrhhid,5,2005-2018 CPS March: h_idnum
+hrhhid,6,Used for joining EPI extracts to BLS/Census raw data
+hrhhid2,1,"2004m5-present: May/Basic household identifier, part 2"
+hrhhid2,2,"2005-2018: March household identifier, part 2"
+hrhhid2,3,Used for joining EPI extracts to BLS/Census raw data
+hrsample,1,1994-2004m4: CPS household sample
+hrsample,2,Used for joining EPI extracts to BLS/Census raw data
+hrsersuf,1,1994-2004m4: CPS household serial suffix
+hrsersuf,2,Used for joining EPI extracts to BLS/Census raw data
+huhhnum,1,1994-2004m4: CPS household number
+huhhnum,2,Used for joining EPI extracts to BLS/Census raw data
+pulineno,1,1973-1993 Unicon Basic: lineno
+pulineno,2,1994-present CPS Basic: pulineno
+pulineno,3,1962-1997 Unicon March: lineno
+pulineno,4,1998-present CPS March: a_lineno
+pulineno,5,Used for joining EPI extracts to BLS/Census raw data
+pulineno,6,Data missing 1976-1978
+unicon_recnum,1,1973-1993: Unicon: recnum
+unicon_recnum,2,Used for joining EPI extracts to Unicon data
+hhid,1,Household ID unique within year and month
+hhid,2,1984-1993: Basic/May derived from year month hrhhid
+hhid,3,1994-1997: Basic/May derived from year month statefips hrhhid huhhnum hrsample hrsersuf
+hhid,4,1998-present: Basic/May qstnum
+famid,1,Family ID unique within year X month X household (Basic: hhid; March: hserial)
+famid,2,1984-1993 Basic: famnum
+famid,3,1994-present Basic: prfamnum
+famid,4,1963-1997 March: famnum
+famid,5,1998-present March: a_famnum
+personid,1,"Person ID unique within year, month, household (Basic: hhid; March: hserial)"
+personid,2,1998-present Basic: occurnum
+personid,3,2003-present March: peridnum
+proxy,1,Labor force information collected by self or proxy
+proxy,2,Only available 1994 - present
+proxy,3,1994-present CPS: puslfprx
+hhtype,1,Type of household
+hhtype,2,1984-1993 Unicon: hhtype
+hhtype,3,1994-present CPS: hrhtype
+hhtype,4,1988-1997 Unicon March: hhtype
+famtype,1,Type of family
+famtype,2,1968-1975 Unicon March: famtyp missing data
+famtype,3,1984-1993 Unicon May/Basic: famtyp
+famtype,4,1994-present CPS May/Basic: prfamtyp
+famtype,5,1962-1997 Unicon March: famtyp
+finalwgt,1,"Sum to civilian, non-institutional population in each month"
+finalwgt,2,1973-1981 Unicon May: wgtfnl
+finalwgt,3,1976-1993 Unicon: wgt
+finalwgt,4,1994-present CPS: pwsswgt
+cmpwgt,1,Available only 1998-present
+cmpwgt,2,"Sum to civilian, non-institutional population age > 16 in each month"
+cmpwgt,3,Use to replicate BLS statistics
+cmpwgt,4,1998-present CPS: pwcmpwgt
+basicwgt,1,"Sum to civilian, non-institutional population age > 16 in each month"
+basicwgt,2,"Combination of finalwgt and pwcmpwgt, but defined only for age > 16"
+basicwgt,3,Used by EPI for most labor force statistics
+basicwgt,4,1973-1997: finalwgt
+basicwgt,5,1998-present: cmpwgt
+orgwgt,1,Only for information collected only in ORG
+orgwgt,2,"Sum to civilian, non-institutional population in each month"
+orgwgt,3,"To obtain approximate US population with full year of data,  divide orgwgt by 12"
+orgwgt,4,1994-present CPS: pworwgt
+orgwgt,5,1979-1993 Unicon: ernwgt
+hhwgt,1,"Household weight, based on head of household"
+hhwgt,2,1989-1993 Unicon Basic: hhwgt
+hhwgt,3,1994-present CPS Basic: hwhhwgt
+hhwgt,4,2000-2002 CPS Basic: original (1990-based) weight; revised 2000-based person weights have no family/household counterparts
+hhwgt,5,1962-1976: Unicon March: asecwgt of household head (_relhd)
+hhwgt,6,1968-1975: Unicon March: falls back to asecwgt of hhrel head if no _relhd head
+hhwgt,7,1977-1997: Unicon March: hhwgt
+hhwgt,8,1998-present: CPS March: hsup_wgt
+hhwgt,9,March population controls match Census's published historical income tables (see asecwgt)
+hhwgt,10,"1980: head's asecwgt (wgtalt); 1993: hhwgtalt; 2011, 2021, 2025: reference person's revised asecwgt"
+hhwgt,11,"March: missing for group quarters units (lvqtyp 1962-1975, htype2 1976-1987, hhtype 1988-present)"
+famwgt,1,"Family weight, based on head of family"
+famwgt,2,1984-1993 Unicon Basic: famwgt
+famwgt,3,1994-present CPS Basic: pwfmwgt
+famwgt,4,2000-2002 CPS Basic: original (1990-based) weight; revised 2000-based person weights have no family/household counterparts
+famwgt,5,1963-1997 Unicon March: famwgt
+famwgt,6,1976 March: asecwgt (for first person in family)
+famwgt,7,1998-present CPS March: fsup_wgt
+famwgt,8,"1963, 1964, 1966, 2011, 2021, 2025 March: asecwgt of family reference person (own asecwgt for unrelated individuals)"
+famwgt,9,1980 March: wgtalt of the member whose wgt equals Unicon famwgt (own wgtalt for individuals); 1993 March: fmwgtalt
+statefips,1,"1978-1993, derived from Unicon state census code: state"
+statefips,2,"1994-present, CPS: gestfips"
+statecensus,1,"1978-1993, Unicon: state"
+statecensus,2,"1994-present, derived from CPS state FIPS code: gestfips"
+division,1,derived from statefips
+region,1,derived from statefips
+countyfips,1,"1995m9-2004m4, CPS: geco"
+countyfips,2,"2004m5-present, CPS: gtco"
+countyfips,3,1996-1998 Unicon March: cntyfp
+countyfips,4,1998-2004 CPS March: geco
+countyfips,5,2005-present CPS March: gtco
+countyfips,6,Not consistent over time
+cbsafips,1,"2004m5-present, CPS: gtcbsa"
+cbsafips,2,Not consistent over time
+metstat,1,1973-1976 May Unicon: citystat
+metstat,2,1977-1981 May Unicon: citystat
+metstat,3,1976-1993 Basic Unicon: metstat
+metstat,4,"1994-1995m5, 1995m9-2004m4 CPS: gemetsta"
+metstat,5,2004m5-present CPS: gtmetsta
+metstat,6,1977-1997 Unicon March: metstat
+metstat,7,1998-2004 CPS March: hmsa_r
+metstat,8,2005-present CPS March: gtmetsta
+metstat,9,Missing for all observations during 1995m6-1995m8
+metstat,10,Based on SMSA central city/noncentral status for May 1973-1981
+cbsasize,1,2004m5-present CPS: gtcbsasz
+age,1,1976-1993 Unicon Basic: age
+age,2,1994-2012 CPS Basic: peage
+age,3,2013-present CPS Basic: prtage
+age,4,1962-1997 Unicon March: age
+age,5,1998-present CPS March: a_age
+age,6,top-coded at 80 for consistency across years
+age,7,1976-1981 range 14-80
+age,8,1982-present range 0-80
+female,1,1976-1993 Unicon May/Basic: sex
+female,2,1994-present CPS May/Basic: pesex
+female,3,1973-1997 Unicon March: sex
+female,4,1998-present CPS March: a_sex
+hispanic,1,Hispanic ethnicity
+hispanic,2,"Definition breaks in 1994, 2003, 2014"
+hispanic,3,"not Hispanic includes nonresponse, missing, etc., in order to be consistent with other race variables like wbho"
+hispanic,4,"1971-2002 March: ""don't know"" and ""NA"" responses (_spneth, a_reorgn 9-10) are missing; wbho and other race variables still count them as not Hispanic"
+hispanic,5,1973-1993 Unicon Basic: spneth
+hispanic,6,1994-2002 CPS Basic: prorigin
+hispanic,7,2003-present CPS Basic/March: prdthsp
+hispanic,8,1973-1993 Unicon March: _spneth
+hispanic,9,1994-2002 CPS Basic: a_reorgn
+wbho,1,Racial and ethnic categories are mutually exclusive
+wbho,2,"Definition breaks in 1989, 1996, 2003, 2012m5, 2014"
+wbho,3,Major recoding of race variable in 2003
+wbho,4,"From 2003, black includes all respondents listing black; other  includes all respondents listing non-white or non-black races, except  those also listing black"
+wbho,5,1973-present: Hispanic definition from variable hispanic
+wbho,6,1973-1993 May/Basic: race
+wbho,7,1994-2002 May/Basic: perace
+wbho,8,2003-present May/Bascic: ptdtrace
+wbho,9,1973-1997 March: race
+wbho,10,1998-2002 March: a_race
+wbho,11,2003-present March: prdtrace
+wbhao,1,Racial and ethnic categories are mutually exclusive
+wbhao,2,Asians include Hawaiian/Pacific Islanders
+wbhao,3,"Available 1989-present; definition changes in 1996, 2003, 2012m5, 2014"
+wbhao,4,"From 2003, black includes all respondents listing black; other  includes all respondents listing non-white or non-black races, except  those also listing black"
+wbhao,5,1989-present: Hispanic definition from variable hispanic
+wbhao,6,1989-1993 May/Basic: race
+wbhao,7,1994-2002 May/Basic: perace
+wbhao,8,2003-present May/Basic: ptdtrace
+wbhao,9,1988-1997 March: race
+wbhao,10,1998-2002 March: a_race
+wbhao,11,2003-present: prdtrace
+wbhom,1,Racial and ethnic categories are mutually exclusive
+wbhom,2,"Available 2003-present; definition changes in 2012m5, 2014"
+wbhom,3,Hispanic definition from variable hispanic
+wbhom,4,"From 2003, black, white, and other exclude all respondents  listing more than one race, except AI-Asian, AI-HP, Asian-HP, which  are included in other"
+wbhom,5,2003-present May/Basic: ptdtrace
+wbhom,6,2003-present March: prdtrace
+wbhaom,1,Racial and ethnic categories are mutually exclusive
+wbhaom,2,Asians include Hawaiian/Pacific Islanders
+wbhaom,3,"Available 2003-present; definition changes in 2012m5, 2014"
+wbhaom,4,Hispanic definition from variable hispanic
+wbhaom,5,2003-present May/Basic: ptdtrace
+wbhaom,6,2003-present March: prtdrace
+raceorig,1,minimally recoded original race variable on file (mostly reordering)
+raceorig,2,"Coding changes in 1989, 1996, 2003, 2012m5"
+raceorig,3,1973-1993 Unicon Basic: race
+raceorig,4,1994-2002 CPS Basic: perace
+raceorig,5,1973-1997 Unicon March: race
+raceorig,6,1998-2002 CPS March: a_race
+raceorig,7,2003-present CPS Basic/March: ptdtrace
+wbo_only,1,"Coding changes in 1989, 1996, 2003, 2012m5"
+wbo_only,2,1973-1993 May/Basic: race
+wbo_only,3,1994-2002 May/Basic: perace
+wbo_only,4,2003-present May/Basic: ptdtrace
+wbo_only,5,1962-1997 March: race
+wbo_only,6,1998-2002 March: a_race
+wbo_only,7,2003-present March: prdtrace
+wbho_only,1,Racial and ethnic categories are mutually exclusive
+wbho_only,2,"Coding changes in 1989, 1996, 2003, 2012m5"
+wbho_only,3,Hispanic definition from variable hispanic
+wbho_only,4,1973-1993 May/basic: race
+wbho_only,5,1994-2002 May/Basic: perace
+wbho_only,6,2003-present May/Basic: ptdtrace
+wbho_only,7,1973-1997 March: race
+wbho_only,8,1997-2002 March: a_race
+wbho_only,9,2003-present March: prdtrace
+citistat,1,1994-1997 Unicon March: citstat
+citistat,2,1994/1998-present CPS Basic/March: prcitshp
+citizen,1,1994-present CPS Basic: citistat
+citizen,2,1994-1997 Unicon March: citstat
+citizen,3,1998-present CPS March: prcitshp
+married,1,1976-1982 March: Not married includes age < 14
+married,2,1983-1988 March: Not married includes age < 15
+married,3,1973-1993 Unicon May/Basic: marstat
+married,4,1994-present CPS Basic: prmarsta
+married,5,1962-1997 Unicon March: _marstat
+married,6,1998-present CPS March: a_maritl
+veteran,1,universe restricted to men before 1989
+veteran,2,Significant question change in 2005m8
+veteran,3,1973-1993 Unicon Basic: vet
+veteran,4,1994-2005m7 CPS Basic: peafwhen
+veteran,5,"2005m8-present CPS: peafever, peafwhn1"
+veteran,6,1962-1997 Unicon March: vet
+veteran,7,"1998-present CPS March: peafever, peafwhn1"
+veteran,8,"2011 March: differs from IPUMS VETSTAT for 403 16-17 year olds at the age-17 universe boundary (edited cases, pxafever); EPI follows the Census file"
+gradecom,1,Only available 1973-1991
+gradecom,2,1973-1991 Unicon: grdcom
+gradehi,1,Only available 1973-1991
+gradehi,2,1973-1991 Unicon May/Basic: grdhi
+gradehi,3,1968-1991 Unicon March: grdhi
+gradeatn,1,Only available 1992-present
+gradeatn,2,1992-1993 Unicon Basic: grdatn
+gradeatn,3,1994-present CPS Basic: peeduca
+gradeatn,4,1988-1997 Unicon March: grdatn
+gradeatn,5,1998-present CPS March: a_hga
+educ,1,"1973-1991 Unicon: grdhi, grdcom"
+educ,2,1992-1993 Unicon: grdatn
+educ,3,1994-present CPS: derived from peeduca
+lfstat,1,1973-1993 Unicon Basic/May: mlr
+lfstat,2,1994-present CPS Basic/May: pemlr
+lfstat,3,1962-1993 Unicon March: _esr
+lfstat,4,1994-1997 Unicon March: mlr
+lfstat,5,1998-present CPS March: pemlr
+dlfstat,1,1994-1997 Unicon March: mlr
+dlfstat,2,1994/1998-present CPS Basic/March: pemlr
+emp,1,Derived from lfstat = 1
+emp,2,Universe: lfstat!=.
+emphrs,1,1994-present CPS: premphrs
+unemp,1,Derived from lfstat = 2
+unemp,2,Universe: lfstat!=.
+nilf,1,Derived from lfstat = 3
+nilf,2,Universe: lfstat!=.
+samejob,1,Available 1994-present
+samejob,2,1994-present CPS: puiodp1
+whyabsent,1,1994-present CPS: peabsrsn
+whyunemp,1,1994-1997 Unicon: runtype
+whyunemp,2,1998-present CPS: pruntype
+selfemp,1,Unincorporated self-employed only
+selfemp,2,1994-present CPS: peio1cow
+selfemp,3,1994-present: For first job
+selfemp,4,1976-1993 Unicon Basic: class
+selfemp,5,1973-1981 Unicon May: class4
+selfemp,6,1962-1997 Unicon March: class
+selfemp,7,1998-present CPS March: peio1cow
+selfemp,8,Universe: Class of worker assigned (not necessarily employed)
+selfemp,9,"Different definitions/universes: 1973-1988, 1989-1993, 1994-present"
+selfinc,1,Incorporated self-employed only
+selfinc,2,1994-present CPS Basic: peio1cow
+selfinc,3,1994-present: For first job
+selfinc,4,1989-1993 Unicon Basic: derived from class
+selfinc,5,1994-1997 Unicon March: class
+selfinc,6,1998-present CPS March: peio1cow
+selfinc,7,Universe: Class of worker assigned (not necessarily employed)
+selfinc,8,"Different definitions/universes: 1989-1993, 1994-present"
+cow1,1,Available 1994-present
+cow1,2,1994-1997 Unicon March: cowjob1
+cow1,3,1994/1998-present CPS Basic/March: peio1cow
+cow2,1,Available 1994-present
+cow2,2,1994-present CPS: peio2cow
+multjobs,1,Only available 1994-present
+multjobs,2,Universe = employed or unemployed
+multjobs,3,1994-present CPS: pemjot
+numjobs,1,Only available 1994-present
+numjobs,2,"Universe = employed for one job, labor force for 2+ numjobs"
+numjobs,3,Top-code: 4 = four or more jobs
+numjobs,4,1994-present CPS: pemjnum
+unmem,1,"Only available in 1973-1981 May, 1983-present ORG"
+unmem,2,Not available in 1982
+unmem,3,1973-1993 Unicon Basic: unmem
+unmem,4,1994-present CPS Basic: peernlab
+unmem,5,1971-1997 Unicon March: unmem
+unmem,6,1998-present CPS March: a_unmem
+uncov,1,Defined for non-members of unions
+uncov,2,"Only available in 1977-1981 May, 1983-present ORG"
+uncov,3,Not available on 1976-1983 basic monthly files
+uncov,4,Not available prior to 1977 or in 1982
+uncov,5,1977-1981 Unicon March: uncov
+uncov,6,1983-1993 Unicon March: uncov
+uncov,7,1994-present CPS: peerncov
+uncov,8,1987-1997 Unicon March: uncov
+uncov,9,1998-present CPS March: a_uncov
+union,1,Not defined when union coverage is missing
+union,2,"Only available in 1977-1981 May, 1983-present ORG"
+union,3,Not available on 1976-1983 basic monthly files
+union,4,Not available prior to 1977 or in 1982
+union,5,Derived from unmem and uncov
+pubsec,1,"Different definitions/universes CPS Basic: 1976-1988, 1989-1993, 1994-present"
+pubsec,2,Different definitions/universes CPS May: 1973-1981
+pubsec,3,1994-present: For first job only
+pubsec,4,1973-1981 Unicon May: class4
+pubsec,5,1976-1993 Unicon Basic: class
+pubsec,6,1994-present CPS Basic: peio1cow
+pubsec,7,1962-1997 Unicon March: class
+pubsec,8,1998-present CPS March: peio1cow
+publoc,1,"Different definitions/universes in 1989-1993, 1994-present"
+publoc,2,1994-present: For first job only
+publoc,3,1989-1993 Unicon Basic: class
+publoc,4,1994-present CPS Basic: peio1cow
+publoc,5,1988-1997 Unicon March: class
+publoc,6,1998-present CPS March: peio1cow
+pubst,1,"Different definitions/universes in 1989-1993, 1994-present"
+pubst,2,1994-present: For first job only
+pubst,3,1989-1993 Unicon Basic: class
+pubst,4,1994-present CPS Basic: peio1cow
+publoc,7,1989-1997 Unicon March: class
+publoc,8,1998-present CPS March: peio1cow
+pubfed,1,"Different definitions/universes in 1989-1993, 1994-present"
+pubfed,2,1994-present: For first job only
+pubfed,3,1983-1987 Unicon Basic: class6
+pubfed,4,1989-1993 Unicon Basic: class
+pubfed,5,1994-present CPS Basic: peio1cow
+pubfed,6,1994-1997 Unicon March: class
+pubfed,7,1998-present CPS March: peio1cow
+unempdur,1,Only available since 1994
+unempdur,2,Top-code inconsistent across time
+unempdur,3,Top-code 1994-2011m3: 999; 2011m4-present: 119
+unempdur,4,1994-present CPS: prunedur
+unempdur,5,1968-1997 Unicon March: wksun
+unempdur,6,1998-present CPS March: a_wkslk
+lookdur,1,Top-code inconsistent across time
+lookdur,2,Top-code 1976-1993: 99; 1994-2011m3: 999; 2011m4-present: 119
+lookdur,3,"Definition/universe changes: 1973-1988, 1989-1993, 1994-present"
+lookdur,4,1963-1967 March: Exlcuded due to binning weeks above 6
+lookdur,5,1973-1993 Unicon Basic/May: wksun
+lookdur,6,1994-present CPS Basic/May: pelkdur
+discwork,1,Only available 1989-present Basic and 1994-present March
+discwork,2,"Definition/universe change 1989-1993, 1994-present"
+discwork,3,1989-1993 Unicon Basic: dscwk
+discwork,4,1994-1997 Unicon March: dscwk
+discwork,5,1994/1998-present CPS Basic/March: prdisc
+ptecon,1,Only available 1989-present
+ptecon,2,Universe = those usually FT or usually PT
+ptecon,3,"Definition/universe change 1989-1993, 1994-present"
+ptecon,4,1989-1993 Unicon Basic: wkstat
+ptecon,5,1994-present CPS Basic: prwkstat
+ptecon,6,1994-1997 Unicon March: rwkstat
+ptecon,7,1998-present CPS March: prwkstat
+ftptstat,1,1994-present CPS Basic: prwkstat
+ftptstat,2,"1976-1987 Unicon March: _wkstat (unemployed only), lfstat (not in labor force)"
+ftptstat,3,"1988-1993 Unicon March: wkstat, wksch (part-time for economic reasons, unemployed), lfstat (not in labor force)"
+ftptstat,4,1976-1993 March: employed full-time schedules and part-time workers (other than 1988-1993 economic reasons) are missing; no exact counterpart in prwkstat categories
+ftptstat,5,Not in labor force is coded 1; IPUMS WKSTAT includes it in NIU
+ftptstat,6,1994-1997 Unicon March: rwkstat
+ftptstat,7,1998-present CPS March: prwkstat
+paidhre,1,Indicates respondent is paid by hour
+paidhre,2,"Only available in 1973-1979 and 1981 May, 1979-present ORG, and 1979-present March"
+paidhre,3,1973-1978 Unicon Basic: hourpd
+paidhre,4,1979-1993 Unicon Basic: _ernpdh
+paidhre,5,1994-present CPS Basic: peernhry
+paidhre,6,1979-1997 Unicon March: ernpdh
+paidhre,7,1998-present CPS March: a_hrlywk
+hoursu1,1,Only in May/Basic available 1994-present
+hoursu1,2,1994-present CPS May/Basic: pehrusl1
+hoursu2,1,Only available 1994-present
+hoursu2,2,1994-present CPS: pehrusl2
+hoursut,1,Only in May/Basic available 1994-present
+hoursut,2,1979-1993 March: 'Hours vary' coded as 0
+hoursut,3,1994-present CPS May/Basic: pehruslt
+hoursut,4,1979-1997 Unicon March: ernush
+hoursut,5,1997-present CPS March: a_uslhrs
+hourslw1,1,Only available 1994-present
+hourslw1,2,1994-present CPS: pehract1
+hourslw2,1,Only available 1994-present
+hourslw2,2,1994-present CPS: pehract2
+hourslwt,1,"Universe/definition changes 1973-1988, 1989-1993, 1994-present"
+hourslwt,2,Top-coding inconsistent across time
+hourslwt,3,Top-code 1973-1993: 99
+hourslwt,4,Top-code 1994-present: 198
+hourslwt,5,1973-1993 May/Basic: hours
+hourslwt,6,1994-present May/Basic: pehractt
+hourslwt,7,1963-1997 March: hours
+hoursumay,1,Only available for May supplement
+hoursumay,2,1973-1981 Unicon: wkhrswk
+hoursuorg,1,Only available for the ORG sample
+hoursuorg,2,Definition break in 1994
+hoursuorg,3,1979-1993 May/Basic: ernush
+hoursuorg,4,1994-present May/Basic: peernhro and hoursu1
+hoursuorg,5,1979-1997 March: ernush
+hoursuorg,6,1998-present a_uslhrs
+hoursvary1,1,Available 1994-present
+hoursvary1,2,1994-present CPS: pehrusl1==-4
+hoursvary2,1,Available 1994-present
+hoursvary2,2,1994-present CPS: pehrusl2==-4
+hoursvaryt,1,Available 1994-present
+hoursvaryt,2,1994-present CPS: pehruslt==-4
+hoursuint,1,1994-present CPS: prhrusl
+hoursvary,1,Available 1994-present
+hoursvary,2,1994-present CPS Basic: pehrusl1==-4
+hoursvary,3,1994-1997 Unicon March: ernush==-4
+hoursvary,4,1998-present CPS Basic: a_uslhrs==-4
+ind70,1,Industry classification for 1973-1982
+ind70,2,1973-1982 Unicon: ind
+ind80,1,Industry classification for 1983-1991
+ind80,2,1983-1991 Unicon: ind
+ind90,1,Industry classification for 1992-2002
+ind90,2,1992-1993 Unicon: ind
+ind90,3,1994-2002 CPS: peio1icd
+ind02,1,Industry classification for 2003-2008
+ind02,2,2003-2008 CPS: peio1icd
+ind07,1,Industry classification for 2009-2013
+ind07,2,2009-2013 CPS: peio1icd
+ind12,1,Industry classification for 2014-2019
+ind12,2,2014-2019 CPS: peio1icd
+ind17,1,Industry classification for 2020-2024
+ind17,2,2020-2024 CPS: peio1icd
+ind22,1,Industry classification for 2020-present
+ind22,2,2025-present CPS: peio1icd
+mind16,1,"Major industry classification, consistent for 1973-present"
+mind16,2,1973-1982: ind70
+mind16,3,1983-1991: ind80
+mind16,4,1992-2002: ind90
+mind16,5,2003-2008: ind02
+mind16,6,2009-2013: ind07
+mind16,7,2014-2019: ind12
+mind16,8,2020-2024: ind17
+mind16,9,2025-present: ind22
+manuf,1,"Manufacturing industry classification, consistent for 1973-present"
+manuf,2,derived from mind16 == 3 | mind16 == 4
+dind03,1,"Detailed industry recode by Census, consistent for 2003-present"
+dind03,2,Industry codes from primary job
+dind03,3,2003-present CPS Basic: prdtind1
+dind03,4,2003-present CPS March: a_dtind
+mind03,1,"Major industry recode by Census, consistent for 2003-present"
+mind03,2,Industry codes from primary job
+mind03,3,2003-present Basic: prmjind1
+mind03,4,2003-present March: a_mjind
+occcode,1,Not consistent over time
+occcode,2,1973-1993 Unicon Basic: occ
+occcode,3,1994-2021m2 CPS Basic: peio1ocd
+occcode,4,2021m3-present CPS Basic: ptio1ocd
+occcode,5,1962-1997 Unicon March: occ
+occcode,6,1998-2002 CPS March: a_occ
+occcode,7,2003-present CPS March: peioocc
+occ70,1,Occupation classification for 1973-1982
+occ70,2,1973-1982 Unicon: occ
+occ80,1,Occupation classification for 1983-1991
+occ80,2,1983-1991 Unicon: occ
+occ90,1,Occupation classification for 1992-2002
+occ90,2,1992-1993 Unicon: occ
+occ90,3,1994-2002 CPS: peio1ocd
+occ00,1,Occupation classification for 2003-2010m12
+occ00,2,2003-2010m12 CPS: peio1ocd
+occ10,1,Occupation classification for 2011m1-2019m12
+occ10,2,2011m1-2019m12 CPS: peio1ocd
+occ18,1,Occupation classification for 2020m1-present
+occ18,2,2020m1-present CPS: peio1ocd
+mocc10,1,"Major occupation classification, consistent for 1973-present"
+mocc10,2,1973-1982: occ70
+mocc10,3,1983-1991: occ80
+mocc10,4,1992-2002: occ90
+mocc10,5,2003-2010m12: occ00
+mocc10,6,2011m1-2019m12: occ10
+mocc10,7,2020m1-present: occ18
+mocc03,1,"Major occupation recode by Census, consistent for 2003-present"
+mocc03,2,Occupation codes from primary job
+mocc03,3,2003-present Basic: prmjocc1
+mocc03,4,2003-present March: a_mjocc
+docc03,1,"Detailed occupation recode by Census, consistent for 2003-present"
+docc03,2,Occupation codes from primary job
+docc03,3,2003-present CPS Basic: prdtocc1
+docc03,4,2003-present CPS March: a_dtocc
+weekpay_noadj,1,Dollars per week for nonhourly and hourly workers
+weekpay_noadj,2,"Includes overtime, tips, commissions"
+weekpay_noadj,3,Top-code: 1973-88: 999; 1989-97: 1923; 1998-: 2884.61
+weekpay_noadj,4,Some records in 1986-1988 may have earnings 999-1932
+weekpay_noadj,5,1973-1978 Unicon: wkusern
+weekpay_noadj,6,1979-1988 Unicon: ernwkc
+weekpay_noadj,7,"1986-1988 Unicon, ernwk4x for ernwkc > 999"
+weekpay_noadj,8,"1989-1993 Unicon, ernwk"
+weekpay_noadj,9,1994-present CPS: prernwa
+tc_weekpay,1,Top-code for weekpay: 1973-88: 999; 1989-97: 1923; 1998-2023m3: 2884.61
+a_weekpay,1,Allocation coding inconsistent across time
+a_weekpay,2,Basic: No allocation codes available during 1994m1-1995m8
+a_weekpay,3,March: No allocation codes available during 1994m1-2000m12
+earnhour,1,Dollars per hour
+earnhour,2,"For hourly workers only; excludes overtime, tips, commissions"
+earnhour,3,Top-code 1973-84: 99.99
+earnhour,4,"Top-code 1985-2002, < 20 usual hours: 99.99"
+earnhour,5,"Top-code 1985-2002, 20+ usual hours: 1923.07/(usual hours)"
+earnhour,6,"Top-code 2003-present, < 29 usual hours: 99.99"
+earnhour,7,"Top-code 2003-present, 29+ usual hours: 2885.07/(usual hours)"
+earnhour,8,"1973-1993 Unicon Basic: hourern,ernhr"
+earnhour,9,1994-present CPS Basic: prernhly
+earnhour,10,1979-1997 Unicon March: ernhr
+earnhour,11,1998-present CPS March: a_hrspay
+a_earnhour,1,Allocation coding inconsistent across time
+a_earnhour,2,Basic: No allocation codes available during 1994m1-1995m8
+otcrec,1,Hourly workers only
+otcrec,2,1994-present CPS: derived from peernuot & paidhre
+otcamt,1,Hourly workers only
+otcamt,2,"1994-present, CPS: derived from peern, otcrec"
+wage_noadj,1,"Dollars per hour, for hourly & nonhourly workers"
+wage_noadj,2,Approximates NBER's recommended wage variable
+wage_noadj,3,"Includes overtime, tips, commissions for nonhourly"
+wage_noadj,4,"Excludes overtime, tips, commissions for hourly"
+wage_noadj,5,"No adjustments for top-coding, no trimming of outliers"
+wage_noadj,6,Excludes nonhourly workers whose usual hours vary
+wageotc_noadj,1,"Dollars per hour, for hourly and nonhourly workers"
+wageotc_noadj,2,"Includes overtime, tips, commissions for nonhourly and hourly"
+wageotc_noadj,3,Covers only hourly workers who report hourly rate of pay
+wageotc_noadj,4,"No adjustments for top-coding, no trimming of outliers"
+wageotc_noadj,5,Excludes nonhourly workers whose usual hours vary
+wageotc_noadj,6,"1994-present, CPS: derived from wage_noadj, weekpay_noadj, hoursu1, otcamt, otrec, peernhro"
+tc_earnhour,1,1989-1993 Unicon: ernhtf
+tc_earnhour,2,1994-present CPS: pthr
+i_faminc,1,Categories 13-15 differ after 2003m9
+i_faminc,2,"Census imputes hefaminc to remove missing — zero or near-zero missing rates reflect Census imputation, not complete reporting"
+i_faminc,3,1989-1993 Unicon Basic: faminc
+i_faminc,4,1994-2009 CPS Basic: hufaminc
+i_faminc,5,2010-present CPS Basic: hefaminc
+i_faminc,6,1988-1997 Unicon March: hfminc
+i_faminc,7,1989 March: hfminc data missing
+i_faminc,8,1998-2004 CPS March: h_faminc
+i_faminc,9,2005-2009 CPS March: hufaminc
+i_faminc,10,2010-2018 CPS March: hefaminc
+i_faminc,11,2019-present CPS March: ftot_r
+i_faminc_det,1,2010-present: CPS hefaminc
+ownchild,1,Universe: family reference person or spouse
+ownchild,2,1963-1967 March: topcode=7
+ownchild,3,1967-present March: topcode=9
+ownchild,4,1984m1-1984m4 Basic: topcode=4
+ownchild,5,1984m5-1993 Basic: topcode=8
+ownchild,6,1984-1993 Unicon: pfnocd
+ownchild,7,1999m11-present CPS: prnmchld
+ownchild,8,1963-1997 Unicon March: child18
+ownchild,9,1998-present CPS March: fownu18
+famrel,1,Census recode of family relationship
+famrel,2,"1976-1987 March: famrel only breaksdown sub- and secondary families, excluded"
+famrel,3,1994-present CPS Basic: prfamrel
+famrel,4,1962-1997 Unicon March: famrel
+famrel,5,1998-present CPS March: a-famrel
+agechild,1,Available 1999m11-present
+agechild,2,1999m11-present CPS: prchld
+telework,1,Universe restricted to employed at work
+telework,2,Only available 2022m10-present
+telework,3,2022m10-2024m5 CPS: ptcovr1
+hourslwtw,1,Universe restricted to employed at work
+hourslwtw,2,Only available 2022m10-present
+hourslwtw,3,2022m10-2024m5 CPS: ptcovr2
+diffdress,1,"2008m6-present Basic: prdisflg, pedis*"
+differrands,1,2008m6-present Basic: pedisout
+diffhear,1,2008m6-present Basic: pedisear
+diffmemory,1,2008m6-present Basic: pedisrem
+diffphysical,1,2008m6-present Basic: pedisphy
+diffvision,1,2008m6-present Basic: pediseye
+difficulty,1,2008m6-present: prdisflg
+schenrl,1,Available 1993-present
+schenrl,2,1983-2012 universe: ages 16-24
+schenrl,3,2013-present universe: ages 16-54
+schenrl,4,1984-1993 Unicon Basic: schenr
+schenrl,5,1994-present CPS Basic: peschenr
+schenrl,6,1986-1997 Unicon March: schenr
+schenrl,7,1997-present CPS March: a_enrlw
+hoursu1i,1,Only available 1994-present ORG
+hoursu1i,2,"Same as hoursu1, except for those whose usual hours vary at main job"
+weekpay,1,Dollars per week for nonhourly and hourly workers
+weekpay,2,"Includes overtime, tips, commissions"
+weekpay,3,Original top-code values replaced with Pareto-distribution implied mean above top-code
+weekpay,4,Separate imputations for men and women
+weekpay,5,Original top-code: 1973-88: 999; 1989-97: 1923; 1998-2023: 2884.61
+weekpay,6,"Beginning in 2023, top-code value is the weighted average of the top 3% of earners in a given month"
+weekpay,7,Data 2023m4-2024m3 replace final ORG (minsamp == 8) topcoded value with average full-year topcoded value for first ORG (minsamp == 4)
+weekpay,8,Derived from weekpay_noadj and tc_weekpay
+wage,1,"Dollars per hour, for hourly and nonhourly workers"
+wage,2,Approximates NBER's recommended wage variable
+wage,3,"Adjustments for weekly earnings top-coding, trimming of outliers"
+wage,4,Includes nonhourly workers whose usual hours vary
+wage,5,"Includes overtime, tips, commissions for nonhourly"
+wage,6,"Excludes overtime, tips, commissions for hourly"
+wageotc,1,"Dollars per hour, for hourly and nonhourly workers"
+wageotc,2,"Includes overtime, tips, commissions for nonhourly and hourly"
+wageotc,3,"Adjustments for top-coding, trimming of outliers"
+wageotc,4,Includes nonhourly workers whose usual hours vary
+wageotc,5,Covers only hourly workers who report hourly rate of pay
+wageotc,6,"1994-present, CPS: derived from wage, weekpay, phersul1, otcamt, otrec, peernhro"
