@@ -1,4 +1,4 @@
-# Demographic, employment and industry recodes (Census era, Basic/ORG).
+# Demographic, education, family and disability recodes (Census era, Basic/ORG).
 # Each function's arguments are the columns it reads; see R/registry.R.
 
 # --- educ (generate_educ.do), 1994+ ----------------------------------------
@@ -25,12 +25,27 @@ recode_hispanic <- function(year, prorigin, prdthsp) {
   )
 }
 
+# --- ptdtrace: detailed race, 2003+ -----------------------------------------
+# Census renamed it prdtrace for May 2004-Jul 2005; generate_wbho.do creates
+# ptdtrace from it there, and every race variable after wbho reads ptdtrace.
+recode_ptdtrace <- function(ptdtrace, prdtrace) {
+  dplyr::coalesce(as.numeric(ptdtrace), as.numeric(prdtrace))
+}
+
+# Detailed-race eras: 2003m1-2012m4 (21 codes) and 2012m5+ (26 codes)
+race_era <- function(year, month) {
+  dplyr::case_when(
+    year <= 2002 ~ "perace",
+    ym(year, month) <= ym(2012, 4) ~ "dtrace03",
+    TRUE ~ "dtrace12"
+  )
+}
+
 # --- wbho (generate_wbho.do), 1994+ ----------------------------------------
-# Race source column/coding changes at 1996, 2003 and again at 2012m5; ptdtrace was
-# renamed prdtrace for a ~15-month window (May 2004-Jul 2005), same pattern as
-# peage/prtage -- coalesce() handles it. Hispanic ethnicity always overrides.
-recode_wbho <- function(year, month, perace, ptdtrace, prdtrace, hispanic) {
-  ptdtrace_eff <- dplyr::coalesce(as.numeric(ptdtrace), as.numeric(prdtrace))
+# Race source column/coding changes at 1996, 2003 and again at 2012m5.
+# Hispanic ethnicity always overrides.
+recode_wbho <- function(year, month, perace, ptdtrace, hispanic) {
+  ptdtrace_eff <- ptdtrace
   is_pre2003    <- year <= 2002
   is_2003_2012a <- year >= 2003 & (year < 2012 | (year == 2012 & month <= 4))
   is_2012b_on   <- year > 2012 | (year == 2012 & month >= 5)
@@ -57,8 +72,169 @@ recode_wbho <- function(year, month, perace, ptdtrace, prdtrace, hispanic) {
   dplyr::if_else(hispanic == 1, 3, race, missing = race)
 }
 
+# --- wbhao (generate_wbhao.do): wbho with Asian (4) split from other (5) ----
+recode_wbhao <- function(year, month, perace, ptdtrace, hispanic) {
+  era <- race_era(year, month)
+  race <- dplyr::case_when(
+    era == "perace" & perace == 1 ~ 1,
+    era == "perace" & perace == 2 ~ 2,
+    era == "perace" & perace == 4 ~ 4,
+    era == "perace" & perace %in% c(3, 5) ~ 5,
+
+    era == "dtrace03" & ptdtrace == 1 ~ 1,
+    era == "dtrace03" & ptdtrace %in% c(2, 6, 10, 11, 12, 15, 16, 19) ~ 2,
+    era == "dtrace03" & ptdtrace %in% c(4, 5, 8, 9, 13, 14, 17, 18) ~ 4,
+    era == "dtrace03" & ptdtrace %in% c(3, 7, 20, 21) ~ 5,
+
+    era == "dtrace12" & ptdtrace == 1 ~ 1,
+    era == "dtrace12" & ptdtrace %in% c(2, 6, 10, 11, 12, 16, 17, 18, 22, 23) ~ 2,
+    era == "dtrace12" & ptdtrace %in% c(4, 5, 8, 9, 13, 14, 15, 19, 20, 21, 24) ~ 4,
+    era == "dtrace12" & ptdtrace %in% c(3, 7, 25, 26) ~ 5,
+    TRUE ~ NA_real_
+  )
+  stata_replace(race, hispanic == 1, 3)
+}
+
+# --- wbhom (generate_wbhom.do): multiple races (5) apart, 2003+ -------------
+# AI-Asian, Asian-HP (and AI-HP from 2012m5) count as other, not multiple
+recode_wbhom <- function(year, month, ptdtrace, hispanic) {
+  era <- race_era(year, month)
+  last_code <- dplyr::if_else(era == "dtrace12", 26, 21)
+  other_pairs <- dplyr::if_else(era == "dtrace12", ptdtrace %in% c(13, 14, 15), ptdtrace %in% c(13, 14))
+  race <- dplyr::case_when(
+    era == "perace" ~ NA_real_,
+    other_pairs ~ 4,
+    ptdtrace == 1 ~ 1,
+    ptdtrace == 2 ~ 2,
+    ptdtrace >= 3 & ptdtrace <= 5 ~ 4,
+    ptdtrace >= 6 & ptdtrace <= last_code ~ 5,
+    TRUE ~ NA_real_
+  )
+  stata_replace(race, era != "perace" & hispanic == 1, 3)
+}
+
+# --- wbhaom (generate_wbhaom.do): Asian, Native American and multiple, 2003+
+recode_wbhaom <- function(year, month, ptdtrace, hispanic) {
+  era <- race_era(year, month)
+  last_code <- dplyr::if_else(era == "dtrace12", 26, 21)
+  race <- dplyr::case_when(
+    era == "perace" ~ NA_real_,
+    ptdtrace == 1 ~ 1,
+    ptdtrace == 2 ~ 2,
+    ptdtrace %in% c(4, 5) ~ 4,
+    ptdtrace == 3 ~ 5,
+    ptdtrace >= 6 & ptdtrace <= last_code ~ 6,
+    TRUE ~ NA_real_
+  )
+  stata_replace(race, era != "perace" & hispanic == 1, 3)
+}
+
+# --- raceorig (generate_raceorig.do): race, minimally recoded --------------
+# 1994-2002 perace codes 1-4 (5 = other, 0, through 1995); 2003+ detailed
+# codes mapped onto one combined list (see value_labels.csv)
+raceorig_dtrace03 <- c(1, 2, 3, 5, 6, 10:23, 30, 31)
+raceorig_dtrace12 <- c(1, 2, 3, 5, 6, 10:17, 24, 18:20, 25, 21, 26, 22, 27, 23, 28, 30, 31)
+recode_raceorig <- function(year, month, perace, ptdtrace) {
+  era <- race_era(year, month)
+  dplyr::case_when(
+    era == "perace" & perace >= 1 & perace <= 4 ~ as.numeric(perace),
+    era == "perace" & perace == 5 & year <= 1995 ~ 0,
+    era == "dtrace03" & ptdtrace >= 1 & ptdtrace <= 21 ~ raceorig_dtrace03[pmin(pmax(ptdtrace, 1), 21)],
+    era == "dtrace12" & ptdtrace >= 1 & ptdtrace <= 26 ~ raceorig_dtrace12[pmin(pmax(ptdtrace, 1), 26)],
+    TRUE ~ NA_real_
+  )
+}
+
+# --- wbo_only / wbho_only (generate_wbo_only.do, generate_wbho_only.do) -----
+# single-race white and black; everyone else other. perace 5 is other only
+# through 1995, as in wbho.
+race_only <- function(year, month, perace, ptdtrace) {
+  era <- race_era(year, month)
+  perace_max <- dplyr::if_else(year <= 1995, 5, 4)
+  dtrace_max <- dplyr::if_else(era == "dtrace12", 26, 21)
+  code <- dplyr::if_else(era == "perace", as.numeric(perace), ptdtrace)
+  top <- dplyr::if_else(era == "perace", perace_max, dtrace_max)
+  dplyr::case_when(
+    code == 1 ~ "white",
+    code == 2 ~ "black",
+    code >= 3 & code <= top ~ "other",
+    TRUE ~ NA_character_
+  )
+}
+recode_wbo_only <- function(year, month, perace, ptdtrace) {
+  c(white = 1, black = 2, other = 3)[race_only(year, month, perace, ptdtrace)] |> unname()
+}
+recode_wbho_only <- function(year, month, perace, ptdtrace, hispanic) {
+  race <- c(white = 1, black = 2, other = 4)[race_only(year, month, perace, ptdtrace)] |> unname()
+  stata_replace(race, hispanic == 1, 3)
+}
+
 # --- citistat (generate_citistat.do), 1994+ --------------------------------
 recode_citistat <- function(prcitshp) as.numeric(prcitshp)
+
+# --- citizen (generate_citizen.do): citistat 1-4 are citizens ---------------
+recode_citizen <- function(citistat) {
+  citizen <- dplyr::if_else(!is.na(citistat), 0, NA_real_)
+  stata_replace(citizen, citistat >= 1 & citistat <= 4, 1)
+}
+
+# --- veteran (generate_veteran.do): peafwhen 1994m12-2005m7, then peafever/peafwhn1
+recode_veteran <- function(year, month, peafwhen, peafever, peafwhn1) {
+  date <- ym(year, month)
+  old <- date >= ym(1994, 12) & date <= ym(2005, 7)
+  new <- date >= ym(2005, 8)
+  veteran <- rep(NA_real_, length(year))
+  veteran <- stata_replace(veteran, old & peafwhen == 6, 0)
+  veteran <- stata_replace(veteran, old & peafwhen >= 1 & peafwhen <= 5, 1)
+  veteran <- stata_replace(veteran, new & peafever == 2, 0)
+  stata_replace(veteran, new & peafwhn1 >= 1 & peafwhn1 <= 9, 1)
+}
+
+# --- gradeatn (generate_gradeatn.do): peeduca shifted to 1-16 ---------------
+# only "not in universe" (-1) is set missing; other negative codes stay shifted
+recode_gradeatn <- function(peeduca) {
+  gradeatn <- as.numeric(peeduca) - 30
+  dplyr::if_else(gradeatn == -31, NA_real_, gradeatn)
+}
+
+# --- schenrl (generate_schenrl.do) -------------------------------------------
+recode_schenrl <- function(peschenr) yes_no(peschenr)
+
+# --- family (generate_famrel/ownchild/agechild.do) ---------------------------
+recode_famrel <- function(prfamrel) nonnegative(prfamrel)
+
+# own children counted for family reference people and spouses, from 1999m11
+recode_ownchild <- function(year, month, prnmchld, prfamrel) {
+  from <- ym(year, month) >= ym(1999, 11)
+  dplyr::if_else(from & prfamrel %in% c(1, 2) & prnmchld >= 0, as.numeric(prnmchld), NA_real_)
+}
+recode_agechild <- function(year, month, prchld) {
+  nonnegative(in_window(prchld, year, month, from = c(1999, 11)))
+}
+
+# --- family income (generate_i_faminc.do, generate_i_faminc_det.do) ---------
+# hufaminc through 2009, hefaminc from 2010. Codes above 12 shift down one,
+# collapsing $50,000-59,999 and $60,000-74,999 into one category.
+recode_i_faminc <- function(year, hufaminc, hefaminc) {
+  raw <- dplyr::if_else(year <= 2009, as.numeric(hufaminc), as.numeric(hefaminc))
+  dplyr::case_when(
+    raw >= 0 & raw <= 12 ~ raw,
+    raw > 12 ~ raw - 1,
+    TRUE ~ NA_real_
+  )
+}
+recode_i_faminc_det <- function(year, hefaminc) {
+  dplyr::if_else(year >= 2010, as.numeric(hefaminc), NA_real_)
+}
+
+# --- disability (generate_diff*.do, generate_difficulty.do), 2009+ ----------
+recode_diffdress <- function(year, pedisdrs) dplyr::if_else(year >= 2009, yes_no(pedisdrs), NA_real_)
+recode_differrands <- function(year, pedisout) dplyr::if_else(year >= 2009, yes_no(pedisout), NA_real_)
+recode_diffhear <- function(year, pedisear) dplyr::if_else(year >= 2009, yes_no(pedisear), NA_real_)
+recode_diffmemory <- function(year, pedisrem) dplyr::if_else(year >= 2009, yes_no(pedisrem), NA_real_)
+recode_diffphysical <- function(year, pedisphy) dplyr::if_else(year >= 2009, yes_no(pedisphy), NA_real_)
+recode_diffvision <- function(year, pediseye) dplyr::if_else(year >= 2009, yes_no(pediseye), NA_real_)
+recode_difficulty <- function(year, prdisflg) dplyr::if_else(year >= 2009, yes_no(prdisflg), NA_real_)
 
 # --- married (generate_married.do), 1994+ ----------------------------------
 recode_married <- function(prmarsta) {
@@ -98,68 +274,4 @@ recode_union <- function(unmem, uncov) {
 recode_pubsec <- function(peio1cow) {
   pubsec <- dplyr::case_when(peio1cow >= 1 & !is.na(peio1cow) ~ 0, TRUE ~ NA_real_)
   dplyr::if_else(peio1cow >= 1 & peio1cow <= 3, 1, pubsec, missing = pubsec)
-}
-
-# --- indcode (generate_indcode.do), 1994+ ----------------------------------
-recode_indcode <- function(peio1icd) {
-  indcode <- as.numeric(peio1icd)
-  dplyr::if_else(indcode < 0, NA_real_, indcode)
-}
-
-# --- mind16 (generate_mind16.do) -------------------------------------------
-# Major-industry bucket boundaries differ between the pre-2003 (3-digit,
-# "ind90"-era) and 2003+ (4-digit) industry code systems; a 2020+ hospital
-# code carve-out (8191/8192) is nested inside the 2003+ branch.
-recode_mind16 <- function(indcode, year) {
-  yr <- unique(year)
-  if (yr <= 2002) {
-    dplyr::case_when(
-      indcode == 991 ~ NA_real_,
-      (indcode >= 10 & indcode <= 19) | (indcode >= 21 & indcode <= 30) |
-        (indcode >= 31 & indcode <= 32) | (indcode >= 40 & indcode <= 50) ~ 1,
-      indcode == 60 ~ 2,
-      (indcode >= 230 & indcode <= 392) ~ 3,
-      (indcode >= 100 & indcode <= 222) ~ 4,
-      (indcode >= 400 & indcode <= 432) ~ 5,
-      (indcode >= 440 & indcode <= 442) | (indcode >= 450 & indcode <= 472) ~ 6,
-      (indcode >= 500 & indcode <= 571) ~ 7,
-      (indcode >= 580 & indcode <= 640) | (indcode >= 642 & indcode <= 691) ~ 8,
-      indcode == 841 | (indcode >= 700 & indcode <= 712) | (indcode >= 721 & indcode <= 760) |
-        indcode == 20 | (indcode >= 873 & indcode <= 893) ~ 9,
-      indcode == 761 | (indcode >= 771 & indcode <= 791) ~ 10,
-      indcode == 872 | indcode == 641 | indcode == 762 | indcode == 770 |
-        (indcode >= 800 & indcode <= 810) ~ 11,
-      indcode == 831 ~ 12,
-      (indcode >= 812 & indcode <= 830) | (indcode >= 832 & indcode <= 840) ~ 13,
-      (indcode >= 842 & indcode <= 860) ~ 14,
-      (indcode >= 861 & indcode <= 871) ~ 15,
-      (indcode >= 900 & indcode <= 932) ~ 16,
-      TRUE ~ NA_real_
-    )
-  } else {
-    dplyr::case_when(
-      indcode == 9890 ~ NA_real_,
-      (indcode >= 170 & indcode <= 180) | indcode == 290 | indcode == 7480 |
-        (indcode >= 190 & indcode <= 280) | (indcode >= 370 & indcode <= 490) ~ 1,
-      indcode == 770 ~ 2,
-      (indcode >= 2470 & indcode <= 3990) ~ 3,
-      (indcode >= 1070 & indcode <= 2390) | (indcode >= 6470 & indcode <= 6481) ~ 4,
-      (indcode >= 6070 & indcode <= 6390) ~ 5,
-      (indcode >= 570 & indcode <= 690) | (indcode >= 6490 & indcode <= 6695) |
-        (indcode >= 6780 & indcode <= 6790) ~ 6,
-      (indcode >= 4070 & indcode <= 4590) ~ 7,
-      (indcode >= 4670 & indcode <= 5791) ~ 8,
-      (indcode >= 6870 & indcode <= 7190) | (indcode >= 7270 & indcode <= 7470) |
-        (indcode >= 7490 & indcode <= 7790) | (indcode >= 8770 & indcode <= 8891) |
-        (indcode >= 9160 & indcode <= 9190) ~ 9,
-      indcode == 9290 | (indcode >= 8970 & indcode <= 9090) ~ 10,
-      (indcode >= 8560 & indcode <= 8690) ~ 11,
-      indcode == 8190 | (indcode == 8191 & yr >= 2020) | (indcode == 8192 & yr >= 2020) ~ 12,
-      (indcode >= 7970 & indcode <= 8180) | (indcode >= 8270 & indcode <= 8290) ~ 13,
-      indcode == 6770 | (indcode >= 7860 & indcode <= 7890) ~ 14,
-      (indcode >= 8370 & indcode <= 8470) ~ 15,
-      (indcode >= 9370 & indcode <= 9590) ~ 16,
-      TRUE ~ NA_real_
-    )
-  }
 }

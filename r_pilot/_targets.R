@@ -13,7 +13,12 @@ value_labels <- readr::read_csv("value_labels.csv", col_types = "cdc")
 
 tar_option_set(
   format = "parquet",
-  controller = crew::crew_controller_local(workers = config$workers)
+  controller = crew::crew_controller_local(
+    workers = config$workers,
+    # cap each worker's memory as it starts, so a runaway worker errors out
+    # instead of exhausting the shared server
+    r_arguments = c("--no-save", "--no-restore", "-e", worker_memory_limit(config$worker_memory_gb))
+  )
 )
 
 tar_assign({
@@ -35,6 +40,15 @@ tar_assign({
   geocodes_file = file.path(config$paths$suppdata, "state_geocodes.csv") |>
     tar_file()
 
+  mocc10_file = "crosswalks/mocc10.csv" |>
+    tar_file()
+
+  parity_exceptions_file = "parity_exceptions.csv" |>
+    tar_file()
+
+  telework_zips = telework_zip_paths(config) |>
+    tar_target(format = "file")
+
   years = config$years |>
     tar_target(format = "rds")
 
@@ -55,7 +69,14 @@ tar_assign({
   raw_parquet = parse_raw_year(years, raw_zips, config) |>
     tar_target(pattern = map(years, raw_zips), format = "file")
 
+  # telework supplement, 2022m10-2024m5: its own cache, joined when reading raw months
+  telework_parquet = parse_telework(telework_zips, config) |>
+    tar_target(format = "file")
+
   state_geocodes = build_state_geocodes(geocodes_file) |>
+    tar_target()
+
+  mocc10_crosswalk = read_mocc10_crosswalk(mocc10_file) |>
     tar_target()
 
   cpi = cpi_annual_fun(cpi_file, cpi_projection_file) |>
@@ -67,15 +88,21 @@ tar_assign({
   recode_context = list(
       reweight_years = config$reweight_years,
       state_geocodes = state_geocodes,
-      wage_bounds = wage_bounds
+      wage_bounds = wage_bounds,
+      mocc10_crosswalk = mocc10_crosswalk,
+      telework_files = telework_parquet
     ) |>
     tar_target(format = "rds")
 
   basic_year = recode_basic_year(raw_parquet, registry, recode_functions, recode_context) |>
     tar_target(pattern = map(raw_parquet))
 
-  # takes every cached raw file: a partial year's trailing window reaches into the year before
-  org_year = recode_org_year(basic_year, raw_parquet, registry, recode_functions, recode_context, config) |>
+  # the wage adjustments run on each sample's own table, as adjust_wages.do does;
+  # both take every cached raw file: a partial year's trailing window reaches into the year before
+  basic_extract = build_extract_year(basic_year, raw_parquet, registry, recode_functions, recode_context, config, "basic") |>
+    tar_target(pattern = map(basic_year))
+
+  org_year = build_extract_year(basic_year, raw_parquet, registry, recode_functions, recode_context, config, "org") |>
     tar_target(pattern = map(basic_year))
 
   ##########
@@ -93,10 +120,13 @@ tar_assign({
   reference_org_meta = reference_metadata(reference_org_dta) |>
     tar_target(pattern = map(reference_org_dta), iteration = "list", format = "rds")
 
-  parity_basic_values = compare_values_year(basic_year, reference_basic_parquet, registry, "basic") |>
-    tar_target(pattern = map(basic_year, reference_basic_parquet))
+  parity_exceptions = read_parity_exceptions(parity_exceptions_file) |>
+    tar_target()
 
-  parity_org_values = compare_values_year(org_year, reference_org_parquet, registry, "org") |>
+  parity_basic_values = compare_values_year(basic_extract, reference_basic_parquet, registry, "basic", parity_exceptions) |>
+    tar_target(pattern = map(basic_extract, reference_basic_parquet))
+
+  parity_org_values = compare_values_year(org_year, reference_org_parquet, registry, "org", parity_exceptions) |>
     tar_target(pattern = map(org_year, reference_org_parquet))
 
   parity_basic_metadata = compare_metadata_year(reference_basic_meta, registry, value_labels, "basic",
@@ -126,9 +156,9 @@ tar_assign({
   # FINAL RELEASE #
   #################
   # one file per year; one per month for a partial year
-  basic_feather = label_extract(basic_year, registry, value_labels, "basic", data_label("basic", release_file)) |>
+  basic_feather = label_extract(basic_extract, registry, value_labels, "basic", data_label("basic", release_file)) |>
     write_extract("basic", config$paths$output, config) |>
-    tar_target(pattern = map(basic_year), format = "file")
+    tar_target(pattern = map(basic_extract), format = "file")
 
   org_feather = label_extract(org_year, registry, value_labels, "org", data_label("org", release_file)) |>
     write_extract("org", config$paths$output, config) |>

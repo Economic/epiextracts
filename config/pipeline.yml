@@ -16,5 +16,12 @@ paths:
   cache: r_pilot/cache
   output: r_pilot/output
   reports: r_pilot/reports
-# parallel targets workers (each holds about one year of data in memory)
-workers: 8
+# parallel targets workers: one worker peaks at about 9 GB resident (1996,
+# measured Oct 2026); keep workers x 9 GB well under the server's free memory
+# (8 workers crashed it, Oct 2026; see CLAUDE.md)
+workers: 2
+# memory cap per worker (unix::rlimit_as): a worker that goes over stops with
+# an error instead of taking down the server. It caps virtual memory, which
+# runs about 1.5x resident with arrow (peak 14.2 GB virtual / 9.2 GB resident),
+# so 16 here means roughly 11 GB of real memory
+worker_memory_gb: 16

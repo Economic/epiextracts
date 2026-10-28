@@ -3,9 +3,9 @@
 
 #' Assemble wage from wage_noadj/weekpay/hoursu1(i), trimmed by CPI bounds.
 #' (generate_wage.do, Census era Basic/ORG 1994+)
-add_wage <- function(org_year, wage_bounds) {
+add_wage <- function(data, wage_bounds) {
   # each row is trimmed with its own year's limits (a partial year's window spans two years)
-  org_year |>
+  data |>
     dplyr::left_join(wage_bounds, by = "year") |>
     dplyr::mutate(
       # nonhourly workers: weekpay/hoursu1, using the imputed hoursu1i instead
@@ -20,4 +20,21 @@ add_wage <- function(org_year, wage_bounds) {
       wage = dplyr::if_else(wage < wage_lower | wage > wage_upper, NA_real_, wage, missing = wage)
     ) |>
     dplyr::select(-wage2_adjusted, -wage_lower, -wage_upper)
+}
+
+#' wageotc (generate_wageotc.do): hourly workers' wageotc_noadj (with
+#' overtime, tips and commissions), nonhourly workers' adjusted wage, trimmed
+#' by the same CPI bounds as wage.
+add_wageotc <- function(data, wage_bounds) {
+  data |>
+    dplyr::left_join(wage_bounds, by = "year") |>
+    dplyr::mutate(
+      wageotc = dplyr::case_when(
+        paidhre == 1 ~ wageotc_noadj,
+        paidhre == 0 ~ wage,
+        TRUE ~ NA_real_
+      ),
+      wageotc = dplyr::if_else(wageotc < wage_lower | wageotc > wage_upper, NA_real_, wageotc, missing = wageotc)
+    ) |>
+    dplyr::select(-wage_lower, -wage_upper)
 }

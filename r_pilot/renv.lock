@@ -2691,6 +2691,29 @@
       "Maintainer": "Davis Vaughan <davis@posit.co>",
       "Repository": "RSPM"
     },
+    "unix": {
+      "Package": "unix",
+      "Version": "1.6.0",
+      "Source": "Repository",
+      "Title": "POSIX System Utilities",
+      "Authors@R": "person(\"Jeroen\", \"Ooms\", email = \"jeroenooms@gmail.com\",  comment = c(ORCID = \"0000-0002-4035-0289\"), role = c(\"aut\", \"cre\"))",
+      "Description": "Bindings to system utilities found in most Unix systems such as POSIX functions which are not part of the Standard C Library.",
+      "License": "MIT + file LICENSE",
+      "URL": "https://jeroen.r-universe.dev/unix",
+      "BugReports": "https://github.com/jeroen/unix/issues",
+      "OS_type": "unix",
+      "SystemRequirements": "POSIX.1-2001, AppArmor (optional)",
+      "RoxygenNote": "7.3.1",
+      "Suggests": [
+        "testthat"
+      ],
+      "Language": "en-US",
+      "Encoding": "UTF-8",
+      "NeedsCompilation": "yes",
+      "Author": "Jeroen Ooms [aut, cre] (ORCID: <https://orcid.org/0000-0002-4035-0289>)",
+      "Maintainer": "Jeroen Ooms <jeroenooms@gmail.com>",
+      "Repository": "CRAN"
+    },
     "utf8": {
       "Package": "utf8",
       "Version": "1.2.6",

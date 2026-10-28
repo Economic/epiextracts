@@ -1,7 +1,8 @@
 # Parity gate: compare the R extracts against the published Stata extracts.
 # Values are checked per variable with registry tolerances; labels, column
 # order and the dataset label are checked against the published metadata.
-# parity_gate() stops the build if anything doesn't match.
+# parity_gate() stops the build if anything doesn't match, except documented
+# exceptions (parity_exceptions.csv), which are reported but allowed.
 
 # unique in every year; personid is missing before 1998, pulineno is not
 join_keys <- c("year", "month", "hrhhid", "hhid", "pulineno")
@@ -49,10 +50,20 @@ reference_metadata <- function(dta_paths) {
   )
 }
 
+#' Known differences from the published extracts (parity_exceptions.csv):
+#' variable, sample, months (from/to, e.g. 2022m10) and why. Rows in those
+#' months are reported separately and don't fail the gate.
+read_parity_exceptions <- function(exceptions_file) {
+  to_ym <- function(x) purrr::map_dbl(x, ~ { d <- as.numeric(strsplit(.x, "m")[[1]]); ym(d[1], d[2]) })
+  readr::read_csv(exceptions_file, col_types = "ccccc") |>
+    dplyr::mutate(from = to_ym(from), to = to_ym(to))
+}
+
 #' Compare one year's values: rows matched on the join keys, then every
 #' exported column with its registry tolerance. Columns with tolerance 0
-#' must also be whole numbers in R (they are byte/int/long in Stata).
-compare_values_year <- function(r_year, reference_parquet, registry, sample) {
+#' must also be whole numbers in R (they are byte/int/long in Stata); string
+#' columns must be equal.
+compare_values_year <- function(r_year, reference_parquet, registry, sample, exceptions) {
   columns <- export_columns(registry, sample)
   reference <- arrow::read_parquet(reference_parquet, col_select = dplyr::any_of(columns))
   r_year <- r_year[, columns]
@@ -60,6 +71,7 @@ compare_values_year <- function(r_year, reference_parquet, registry, sample) {
   matched <- dplyr::inner_join(r_year, reference, by = join_keys, suffix = c("_r", "_stata"))
   n_only_r <- nrow(dplyr::anti_join(r_year, reference, by = join_keys))
   n_only_stata <- nrow(dplyr::anti_join(reference, r_year, by = join_keys))
+  date <- ym(matched$year, matched$month)
 
   # keys match by construction; compare everything else
   purrr::map(setdiff(columns, join_keys), function(v) {
@@ -69,15 +81,23 @@ compare_values_year <- function(r_year, reference_parquet, registry, sample) {
     }
     r_col <- matched[[paste0(v, "_r")]]
     s_col <- matched[[paste0(v, "_stata")]]
+    # rows in a documented exception window are counted apart
+    windows <- exceptions[exceptions$variable == v & exceptions$sample == sample, ]
+    excepted <- purrr::reduce(purrr::map2(windows$from, windows$to, ~ date >= .x & date <= .y),
+                              `|`, .init = rep(FALSE, length(date)))
     missingness <- is.na(r_col) != is.na(s_col)
     both <- !is.na(r_col) & !is.na(s_col)
+    differs <- if (is.character(r_col)) both & r_col != s_col else both & abs(r_col - s_col) > tol
+    not_whole <- if (tol == 0 && is.numeric(r_col)) both & r_col != round(r_col) else rep(FALSE, length(both))
     tibble::tibble(
       variable = v,
       in_reference = TRUE,
-      n_compared = nrow(matched),
-      n_missingness_mismatch = sum(missingness),
-      n_value_mismatch = sum(abs(r_col[both] - s_col[both]) > tol),
-      n_not_whole = if (tol == 0) sum(r_col[both] != round(r_col[both])) else 0L
+      n_compared = sum(!excepted),
+      n_missingness_mismatch = sum(missingness & !excepted),
+      n_value_mismatch = sum(differs & !excepted),
+      n_not_whole = sum(not_whole & !excepted),
+      n_excepted = sum(excepted),
+      n_excepted_mismatch = sum((missingness | differs) & excepted)
     )
   }) |>
     dplyr::bind_rows() |>
@@ -156,5 +176,5 @@ parity_gate <- function(value_report, metadata_report) {
     )
   }
   dplyr::summarise(value_report, years = dplyr::n_distinct(year), rows_compared = sum(n_compared),
-                   .by = c(sample, variable))
+                   excepted_mismatches = sum(n_excepted_mismatch), .by = c(sample, variable))
 }

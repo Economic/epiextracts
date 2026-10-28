@@ -29,14 +29,14 @@ build_design <- function(data, factor_vars, levels_list = NULL) {
 }
 
 fit_predict_hours <- function(d, sex, band_fit, band_pred, factor_vars) {
-  train <- d[d$orgsample & d$female == sex & !is.na(d$hoursu1) & d$hoursu1 > 0 &
-               d$hoursuint >= band_fit[1] & d$hoursuint <= band_fit[2], ]
+  train <- d[which(d$orgsample & d$female == sex & !is.na(d$hoursu1) & d$hoursu1 > 0 &
+                     d$hoursuint >= band_fit[1] & d$hoursuint <= band_fit[2]), ]
   train <- train[stats::complete.cases(train[, factor_vars]) & !is.na(train$age), ]
 
   des <- build_design(train, factor_vars)
   fit <- stats::lm.wfit(x = des$X, y = train$hoursu1, w = train$orgwgt)
 
-  pred_rows <- d[d$orgsample & d$female == sex & d$hoursuint == band_pred, ]
+  pred_rows <- d[which(d$orgsample & d$female == sex & d$hoursuint == band_pred), ]
   des_pred <- build_design(pred_rows, factor_vars, levels_list = des$levels_used)
   Xp <- des_pred$X[, colnames(des$X), drop = FALSE]
   pred <- as.numeric(Xp %*% fit$coefficients)
@@ -45,11 +45,11 @@ fit_predict_hours <- function(d, sex, band_fit, band_pred, factor_vars) {
   data.frame(obs_id = pred_rows$obs_id, pred = pred)
 }
 
-#' Compute hoursu1i for an ORG-year table. educ/wbho/citistat/married/
-#' statefips/union/pubsec/mind16 are already present on org_year (inherited
-#' from the basic stage via filter_org_universe()) -- no join needed.
-compute_hoursu1i <- function(org_year) {
-  d <- org_year
+#' Compute hoursu1i for a Basic or ORG table. The regressions use only the
+#' ORG sample (orgsample), so both tables get the same predictions; rows
+#' outside it keep their reported hours (rounded, top-coded at 99).
+compute_hoursu1i <- function(data) {
+  d <- data
   factor_vars <- c("educ", "wbho", "citistat", "married", "statefips", "union", "pubsec", "mind16")
   d$orgsample <- !is.na(d$orgwgt) & d$orgwgt > 0 & !is.na(d$age) & d$age >= 16 &
     (d$minsamp == 4 | d$minsamp == 8)

@@ -6,7 +6,8 @@
 # Columns:
 #   variable   output column name
 #   family     grouping for docs and porting order
-#   stage      "basic" (every basic row) or "org" (after the ORG universe filter)
+#   stage      "basic" (every basic row) or "wages" (the wage adjustments, run on
+#                the whole Basic and ORG tables after every basic variable)
 #   kind       "column": fn's arguments are column names (or context objects) and it
 #                returns the new column
 #              "table": fn takes the stage table first and returns it with the new
@@ -20,7 +21,7 @@
 #   snippet    functions shown on the docs site ("fn1;fn2" or "file:<R file>"); blank = none
 
 # objects recode functions can take besides columns
-context_names <- c("reweight_years", "state_geocodes", "wage_bounds")
+context_names <- c("reweight_years", "state_geocodes", "wage_bounds", "mocc10_crosswalk", "telework_files")
 
 read_registry <- function(registry_file) {
   readr::read_csv(registry_file, col_types = readr::cols(.default = "c"), na = "") |>

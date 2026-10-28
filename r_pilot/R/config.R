@@ -44,3 +44,12 @@ data_label <- function(sample, release_file) {
   sample_name <- c(basic = "Basic Monthly", org = "ORG")[[sample]]
   paste0("EPI CPS ", sample_name, " Extracts, Version ", version)
 }
+
+#' R code that caps a worker process's memory at `gb` gigabytes, run when
+#' each crew worker starts (see _targets.R). Over the cap, allocations fail
+#' with an error in that worker rather than exhausting the server.
+worker_memory_limit <- function(gb) {
+  # workers need the unix package; fail here rather than in every worker
+  stopifnot(requireNamespace("unix", quietly = TRUE))
+  sprintf("unix::rlimit_as(%.0f)", gb * 1e9)
+}

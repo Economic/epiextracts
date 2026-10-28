@@ -1,10 +1,8 @@
 # Raw Census ASCII ingestion (replaces code/ado/process_rawbasic.ado).
 # Each month is parsed once with EVERY dictionary column and cached as
 # parquet, so adding a variable never re-parses raw files: recoding reads
-# only the columns it needs from the cache.
-#
-# Not yet ported: the telework supplement merge (2022m10-2024m5, see
-# process_rawbasic.ado). No ported variable uses it; see DEVIATIONS.md.
+# only the columns it needs from the cache. The telework supplement
+# (2022m10-2024m5) has its own small cache and is joined in read_raw_year().
 
 monthname_lut <- tolower(month.abb)
 
@@ -130,6 +128,35 @@ parse_raw_year <- function(year, raw_zips, config) {
   })
 }
 
+#' Telework supplement zips on disk (<mon><yy>cpucvr_pub.zip), 2022m10-2024m5.
+#' June 2024 on, the basic file carries the telework items.
+telework_zip_paths <- function(config) {
+  months <- seq(as.Date("2022-10-01"), as.Date("2024-05-01"), by = "month")
+  zips <- file.path(config$paths$raw_ascii, sprintf("%s%scpucvr_pub.zip",
+                    monthname_lut[as.integer(format(months, "%m"))], format(months, "%y")))
+  zips[file.exists(zips)]
+}
+
+#' Parse the telework supplement zips into cache/telework/YYYY_MM.parquet.
+#' Two layouts: twoct2022 through 2023m11, twdec2023 from 2023m12. The
+#' supplement stores a 2-digit year (process_rawbasic.ado adds 2000).
+parse_telework <- function(telework_zips, config) {
+  out_dir <- file.path(config$paths$cache, "telework")
+  fs::dir_create(out_dir)
+  purrr::map_chr(telework_zips, ~ {
+    date <- as.Date(paste0("01", substr(basename(.x), 1, 5)), "%d%b%y")
+    year <- as.integer(format(date, "%Y"))
+    month <- as.integer(format(date, "%m"))
+    layout <- if (ym(year, month) <= ym(2023, 11)) "twoct2022" else "twdec2023"
+    dict <- parse_dictionary(file.path(config$paths$dictionaries, paste0(layout, ".dct")))
+    out_file <- file.path(out_dir, sprintf("%d_%02d.parquet", year, month))
+    read_fwf_dictionary(.x, dict) |>
+      dplyr::mutate(hryear4 = hryear4 + 2000) |>
+      arrow::write_parquet(out_file)
+    out_file
+  })
+}
+
 # columns read_raw_year() adds from the cached file name (YYYY_MM.parquet):
 # year and month come from the file, as in Stata (year(dofm($date)))
 file_date_columns <- c("file_year", "file_month")
@@ -138,12 +165,26 @@ file_date_columns <- c("file_year", "file_month")
 #' Columns a month's dictionary doesn't have (era-specific names like
 #' peage/prtage) come back as NA, so recode functions never check column
 #' existence.
-read_raw_year <- function(raw_files, columns) {
+#'
+#' Months with a telework supplement file get its columns joined on the
+#' household and person ids (process_rawbasic.ado's merge; supplement-only
+#' rows are dropped). 2024m1 has repeated ids in the basic file, which is why
+#' Stata merges m:1 there.
+read_raw_year <- function(raw_files, columns, telework_files = character(0)) {
+  keys <- c("qstnum", "occurnum", "hrmonth", "hryear4")
   # months missing a column get NA for it when stacked
   data <- raw_files |>
     purrr::map(~ {
+      month_data <- arrow::read_parquet(.x, col_select = dplyr::any_of(unique(c(columns, keys))))
+      supplement <- telework_files[basename(telework_files) == basename(.x)]
+      if (length(supplement) == 1) {
+        tw_columns <- intersect(columns, setdiff(names(arrow::open_dataset(supplement)$schema), keys))
+        month_data <- dplyr::left_join(month_data, arrow::read_parquet(supplement, col_select = dplyr::all_of(c(keys, tw_columns))),
+                                       by = keys, relationship = "many-to-one")
+      }
       date <- as.integer(strsplit(sub("\\.parquet$", "", basename(.x)), "_")[[1]])
-      arrow::read_parquet(.x, col_select = dplyr::any_of(columns)) |>
+      month_data |>
+        dplyr::select(dplyr::any_of(columns)) |>
         dplyr::mutate(file_year = date[1], file_month = date[2])
     }) |>
     dplyr::bind_rows()

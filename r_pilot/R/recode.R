@@ -29,6 +29,43 @@ recode_hhid <- function(qstnum, year, month, gestfips, hrhhid, huhhnum, hrsample
 # personid: occurnum from 1998; missing before (no person id in 1994-1997 files)
 recode_personid <- function(occurnum) as.numeric(occurnum)
 
+# --- raw household ids for joining back to Census files ---------------------
+# (generate_hrhhid2/hrsample/hrsersuf/huhhnum.do). Strings are "" where not
+# available, as in Stata. hrhhid2 starts 2004m5; the other three end 2004m4.
+recode_hrhhid2 <- function(hrhhid2, year, month) {
+  dplyr::if_else(ym(year, month) >= ym(2004, 5), dplyr::coalesce(as.character(hrhhid2), ""), "")
+}
+recode_hrsample <- function(hrsample, year, month) {
+  dplyr::if_else(ym(year, month) <= ym(2004, 4), dplyr::coalesce(as.character(hrsample), ""), "")
+}
+recode_hrsersuf <- function(hrsersuf, year, month) {
+  dplyr::if_else(ym(year, month) <= ym(2004, 4), dplyr::coalesce(as.character(hrsersuf), ""), "")
+}
+recode_huhhnum <- function(huhhnum, year, month) in_window(huhhnum, year, month, to = c(2004, 4))
+
+# Variables with no Census-era source (Unicon-only or May-only): always missing
+# here (unicon_recnum, gradecom, gradehi, hoursumay, ind70/80, occ70/80).
+recode_unavailable <- function(year) rep(NA_real_, length(year))
+
+# --- household and family (generate_famid/proxy/hhtype/famtype.do) ---------
+recode_famid <- function(prfamnum) as.numeric(prfamnum)
+recode_hhtype <- function(hrhtype) as.numeric(hrhtype)
+recode_famtype <- function(prfamtyp) as.numeric(prfamtyp)
+
+# self or proxy response: 1 self, 2 proxy, 3 both
+recode_proxy <- function(puslfprx) {
+  dplyr::if_else(puslfprx >= 1 & puslfprx <= 3, as.numeric(puslfprx), NA_real_)
+}
+
+# --- hhwgt/famwgt (generate_hhwgt.do, generate_famwgt.do) -------------------
+# The dictionaries already apply hwhhwgt's 4 implied decimals, except
+# cpsbapr94 and cpsbjun95 (1994m4-1995m8), which read it unscaled.
+recode_hhwgt <- function(hwhhwgt, year, month) {
+  date <- ym(year, month)
+  dplyr::if_else(date >= ym(1994, 4) & date <= ym(1995, 8), hwhhwgt / 10000, as.numeric(hwhhwgt))
+}
+recode_famwgt <- function(pwfmwgt) as.numeric(pwfmwgt)
+
 # --- age (generate_age.do) --------------------------------------------------
 # peage covers 1994m1-2012m4, prtage covers 2012m5+; the two never co-occur
 # within a given row, so coalesce() picks whichever is populated.
@@ -126,15 +163,8 @@ recode_hoursu1 <- function(pehrusl1) {
   dplyr::if_else(hoursu1 < 0, NA_real_, hoursu1)
 }
 
-# --- hoursvary1 (generate_hoursvary1.do): pehrusl1 == -4 is the "hours
-# vary" sentinel value -----------------------------------------------------
-recode_hoursvary1 <- function(pehrusl1) {
-  dplyr::case_when(
-    pehrusl1 == -4 ~ 1,
-    pehrusl1 >= 0  ~ 0,
-    TRUE           ~ NA_real_
-  )
-}
+# --- hoursvary1 (generate_hoursvary1.do): see hours_vary() in R/labor.R ---
+recode_hoursvary1 <- function(pehrusl1) hours_vary(pehrusl1)
 
 # --- hoursuint (generate_hoursuint.do): interval-coded usual hours (1-8) --
 recode_hoursuint <- function(prhrusl) {
@@ -189,5 +219,52 @@ recode_wage_noadj <- function(paidhre, earnhour, weekpay_noadj, hoursu1) {
   dplyr::if_else(paidhre == 1, earnhour, wage2)
 }
 
-# --- ptwk: BLS top-code flag for weekly earnings, 2023m4+ (raw, used by add_weekpay)
+# --- ptwk: BLS top-code flag for weekly earnings, 2023m4+ (raw, used by tc_weekpay)
 recode_ptwk <- function(ptwk) as.numeric(ptwk)
+
+# --- tc_weekpay (generate_tc_weekpay.do) -------------------------------------
+# The script tests `weekpay`, which doesn't exist yet at that point; Stata
+# abbreviates it to weekpay_noadj (see DEVIATIONS.md). Fixed ceiling until
+# 2023m3 ($1,923 through 1997; 2884.60 rather than 2884.61 to avoid float
+# precision issues), then the BLS flag ptwk.
+recode_tc_weekpay <- function(weekpay_noadj, ptwk, year, month) {
+  ceiling <- dplyr::if_else(year <= 1997, 1923, 2884.60)
+  tc <- dplyr::if_else(weekpay_noadj >= ceiling, 1, 0)
+  dplyr::if_else(ym(year, month) >= ym(2023, 4) & !is.na(weekpay_noadj), as.numeric(ptwk), tc)
+}
+
+# --- allocation and top-code flags (generate_a_weekpay/a_earnhour/tc_earnhour.do)
+# BLS allocation flags start 1995m9; `weekpay` is weekpay_noadj, as in tc_weekpay
+allocated <- function(amount, flag, year, month) {
+  has_amount <- ym(year, month) >= ym(1995, 9) & !is.na(amount) & amount > 0
+  dplyr::case_when(has_amount & flag == 1 ~ 1, has_amount ~ 0, TRUE ~ NA_real_)
+}
+recode_a_weekpay <- function(weekpay_noadj, prwernal, year, month) allocated(weekpay_noadj, prwernal, year, month)
+recode_a_earnhour <- function(earnhour, prhernal, year, month) allocated(earnhour, prhernal, year, month)
+recode_tc_earnhour <- function(earnhour, pthr) dplyr::if_else(is.na(earnhour), NA_real_, as.numeric(pthr))
+
+# --- overtime, tips and commissions (generate_otcrec/otcamt.do), hourly workers
+recode_otcrec <- function(paidhre, peernuot) {
+  dplyr::case_when(paidhre == 1 & peernuot == 2 ~ 0, paidhre == 1 & peernuot == 1 ~ 1, TRUE ~ NA_real_)
+}
+# weekly amount: peern, renamed ptern from 2024m6
+recode_otcamt <- function(paidhre, otcrec, peern, ptern, year, month) {
+  amount <- dplyr::if_else(ym(year, month) <= ym(2024, 5), as.numeric(peern), as.numeric(ptern))
+  otcamt <- dplyr::if_else(paidhre == 1 & otcrec == 1, amount, NA_real_)
+  nonnegative(otcamt)
+}
+
+# --- wageotc_noadj (generate_wageotc_noadj.do) ------------------------------
+# Hourly workers' rate plus overtime/tips/commissions per hour; nonhourly
+# workers get wage_noadj. The script checks peernhro but divides by hoursuorg,
+# which equals peernhro whenever that check passes.
+recode_wageotc_noadj <- function(paidhre, earnhour, otcrec, otcamt, peernhro, hoursuorg, wage_noadj) {
+  with_otc <- paidhre == 1 & otcrec == 1 & !is.na(otcamt) & otcamt > 0 & peernhro > 0 & peernhro <= 99
+  wageotc <- dplyr::case_when(
+    paidhre == 1 ~ earnhour,
+    paidhre == 0 ~ wage_noadj,
+    TRUE ~ NA_real_
+  )
+  wageotc <- stata_replace(wageotc, with_otc, earnhour + otcamt / hoursuorg)
+  dplyr::if_else(wageotc < 0, NA_real_, wageotc)
+}
