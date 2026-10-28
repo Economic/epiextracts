@@ -9,6 +9,10 @@ read_pipeline_config <- function(config_file) {
   config <- yaml::read_yaml(config_file)
   release <- yaml::read_yaml(file.path(dirname(config_file), "release.yml"))
 
+  # worker settings only shape how targets run, not what they compute; keep
+  # them out of the config targets depend on (see read_worker_settings())
+  config[worker_setting_names] <- NULL
+
   # absolute paths stay as they are; relative ones hang off the repo root
   config$paths <- purrr::map(config$paths, ~ if (startsWith(.x, "/")) .x else file.path(repo_root, .x))
 
@@ -43,6 +47,15 @@ data_label <- function(sample, release_file) {
   version <- yaml::read_yaml(release_file)$version
   sample_name <- c(basic = "Basic Monthly", org = "ORG")[[sample]]
   paste0("EPI CPS ", sample_name, " Extracts, Version ", version)
+}
+
+worker_setting_names <- c("workers", "worker_memory_gb")
+
+#' Worker count and per-worker memory cap from config/pipeline.yml. Read
+#' apart from read_pipeline_config(), so tuning them doesn't make targets
+#' rebuild.
+read_worker_settings <- function(config_file) {
+  yaml::read_yaml(config_file)[worker_setting_names]
 }
 
 #' R code that caps a worker process's memory at `gb` gigabytes, run when

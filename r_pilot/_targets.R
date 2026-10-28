@@ -5,6 +5,7 @@ lapply(list.files("./R", full.names = TRUE), source)
 # settings: ../config/pipeline.yml; version and latest month: ../config/release.yml
 pipeline_config_file <- "../config/pipeline.yml"
 config <- read_pipeline_config(pipeline_config_file)
+worker_settings <- read_worker_settings(pipeline_config_file)
 
 # variable registry: what to compute and export (see R/registry.R)
 registry <- read_registry("variables.csv")
@@ -14,10 +15,10 @@ value_labels <- readr::read_csv("value_labels.csv", col_types = "cdc")
 tar_option_set(
   format = "parquet",
   controller = crew::crew_controller_local(
-    workers = config$workers,
+    workers = worker_settings$workers,
     # cap each worker's memory as it starts, so a runaway worker errors out
     # instead of exhausting the shared server
-    r_arguments = c("--no-save", "--no-restore", "-e", worker_memory_limit(config$worker_memory_gb))
+    r_arguments = c("--no-save", "--no-restore", "-e", worker_memory_limit(worker_settings$worker_memory_gb))
   )
 )
 

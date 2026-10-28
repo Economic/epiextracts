@@ -30,9 +30,12 @@ scale_numeric <- function(raw_chr, decimals) {
 #' the record whole and the field as missing. A space gives the same: a
 #' blank field, read as missing.
 without_nul_bytes <- function(file) {
-  con <- if (grepl("\\.zip$", file)) unz(file, utils::unzip(file, list = TRUE)$Name[1], "rb") else file(file, "rb")
+  is_zip <- grepl("\\.zip$", file)
+  member <- if (is_zip) utils::unzip(file, list = TRUE)[1, ]
+  con <- if (is_zip) unz(file, member$Name, "rb") else file(file, "rb")
   on.exit(close(con))
-  bytes <- readBin(con, "raw", n = 2e9)
+  # read exactly the file's size: readBin allocates all of n up front
+  bytes <- readBin(con, "raw", n = if (is_zip) member$Length else file.size(file))
   if (!any(bytes == as.raw(0))) return(file)
   bytes[bytes == as.raw(0)] <- charToRaw(" ")
   cleaned <- tempfile(fileext = ".dat")
