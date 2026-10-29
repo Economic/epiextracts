@@ -1,0 +1,7 @@
+# folders renv shouldn't scan for package dependencies: scratch work (incl.
+# the marchcps worktree for release simulations) and pipeline data/outputs
+scratch/
+cache/
+output/
+reports/
+_targets/
