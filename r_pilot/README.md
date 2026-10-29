@@ -2,9 +2,11 @@
 
 Builds the EPI CPS Basic and ORG extracts from raw Census files without
 Stata, and checks every output column against the published Stata extracts.
-Covers Basic/ORG from 1994 through the latest month in `config/release.yml`,
-all 140 published variables (`variables.csv`); the latest year, if
-incomplete, is written as monthly files, as Stata does.
+Covers Basic from 1976 and ORG from 1979 through the latest month in
+`config/release.yml`, all 140 published variables (`variables.csv`): Unicon
+.dta files for 1976-1993 (with separate ORG files for 1979-1983) and raw
+Census files from 1994. The latest year, if incomplete, is written as
+monthly files, as Stata does.
 The migration plan and phases are tracked outside the repo; deliberate
 differences from Stata are in [DEVIATIONS.md](DEVIATIONS.md).
 
@@ -37,9 +39,10 @@ Rscript tests/testthat.R
 | `variable_notes.csv` | Stata notes for each variable (from `scripts/seed_notes.R`) |
 | `crosswalks/mocc10.csv` | `mocc10` occupation code ranges by era (from `scripts/convert_mocc10.R`) |
 | `parity_exceptions.csv` | Known, documented differences the gate reports but allows |
-| `R/raw_ascii.R`, `R/dictionary.R` | Raw fixed-width parsing with the NBER dictionaries, and the telework supplement |
+| `R/raw_ascii.R`, `R/dictionary.R` | Raw fixed-width parsing with the NBER dictionaries, the telework supplement, and the Unicon .dta files |
 | `R/registry.R` | Reads the registry and computes variables in dependency order |
-| `R/recode.R`, `R/demographics.R`, `R/labor.R`, `R/industry.R`, `R/geography.R` | Column recode functions |
+| `R/recode.R`, `R/demographics.R`, `R/labor.R`, `R/industry.R`, `R/geography.R` | Column recode functions (Census era) |
+| `R/unicon.R` | Unicon-era recode functions (the registry's `fn_unicon` column) |
 | `R/helpers.R` | Stata semantics in R: rounding, `replace ... if`, missing as +∞ |
 | `R/org.R` | Universe filters; builds each sample's extract |
 | `R/hoursu1i.R`, `R/topcode.R`, `R/wage.R` | The `wages` stage: hours imputation, top-coding, wage, wageotc (run on Basic and ORG) |
@@ -49,10 +52,11 @@ Rscript tests/testthat.R
 ## Adding a variable
 
 1. Write a recode function. Its arguments are the columns it reads: raw
-   Census columns, or other registry variables. Context objects
+   Census columns, or other registry variables. For 1976-1993 write a second
+   one reading the Unicon columns (prefixed `u_`), or use `unicon_missing`. Context objects
    (`reweight_years`, `state_geocodes`, `wage_bounds`, `mocc10_crosswalk`)
    can also be arguments.
-2. Add a row to `variables.csv` with the function name, stage, whether it's
+2. Add a row to `variables.csv` with the function names (`fn`, `fn_unicon`), stage, whether it's
    exported, its samples and its parity tolerance (0 for codes, 0.01 for Stata
    float columns). The row's position sets the output column order, so put it
    where the published extracts have it.

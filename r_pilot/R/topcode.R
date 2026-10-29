@@ -97,7 +97,8 @@ dynamic_topcode_month <- function(d, m, phase_in) {
 #' weekpay (generate_weekpay.do + code/tc_fix.do), era-aware in one pass --
 #' no separate "fix" step. Runs on the Basic and on the ORG table.
 #'
-#' - pre-2023: fixed ceiling ($1,923 through 1997, $2,884.60 from 1998),
+#' - pre-2023: fixed ceiling ($999 through 1988, $1,923 through 1997,
+#'   $2,884.60 from 1998),
 #'   Pareto-fit and applied over the whole year, by sex.
 #' - 2023 Jan-Mar: same fixed-ceiling regime, with Pareto constants fit on
 #'   the year's ORG rows minus the minsamp 4 rows already under the dynamic
@@ -115,12 +116,14 @@ add_weekpay <- function(data) {
   d <- data
 
   if (year < 2023) {
-    # fixed weekly ceiling: $1,923 through 1997, $2,884.61 from 1998 (2884.60
-    # avoids float precision issues, as in generate_weekpay.do)
-    topcodeval <- if (year <= 1997) 1923 else 2884.60
+    # fixed weekly ceiling: $999 through 1988, $1,923 through 1997, $2,884.61
+    # from 1998 (2884.60 avoids float precision issues, as in generate_weekpay.do)
+    topcodeval <- if (year <= 1988) 999 else if (year <= 1997) 1923 else 2884.60
     d$weekpay <- NA_real_
     for (sex in c(0, 1)) {
       idx <- pareto_rows(d, sex)
+      # files without earnings data (Unicon basic files before 1982) have none
+      if (length(idx) == 0) next
       res <- topcode_impute_pareto(d$weekpay_noadj[idx], d$orgwgt[idx],
                                     threshold = 80, topcodeval = topcodeval)
       d$weekpay[idx] <- res$value

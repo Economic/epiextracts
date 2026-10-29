@@ -1,4 +1,5 @@
-# Raw Census ASCII ingestion (replaces code/ado/process_rawbasic.ado).
+# Raw data ingestion: Census ASCII files from 1994 (replaces
+# code/ado/process_rawbasic.ado), and Unicon .dta files for 1976-1993.
 # Each month is parsed once with EVERY dictionary column and cached as
 # parquet, so adding a variable never re-parses raw files: recoding reads
 # only the columns it needs from the cache. The telework supplement
@@ -57,10 +58,12 @@ read_fwf_dictionary <- function(file, dict) {
 }
 
 #' Raw input files for one year (a year_spec, see build_year_spec()): the
-#' monthly pub.zips, plus the yearly reweight archive in reweight years.
-#' Tracked as file targets.
+#' monthly pub.zips, plus the yearly reweight archive in reweight years; for
+#' Unicon years, the monthly basic .dta.zips, plus the separate ORG files of
+#' 1979-1983. Tracked as file targets.
 raw_zip_paths <- function(spec, config) {
   year <- spec$year
+  if (year < census_first_year) return(unicon_zip_paths(spec, config))
   shortyear <- sprintf("%02d", year %% 100)
   zips <- file.path(config$paths$raw_ascii, sprintf("%s%spub.zip", monthname_lut[spec$months], shortyear))
   if (year %in% config$reweight_years) {
@@ -126,6 +129,7 @@ parse_raw_month <- function(year, month, config) {
 parse_raw_year <- function(spec, raw_zips, config) {
   out_dir <- file.path(config$paths$cache, "raw")
   fs::dir_create(out_dir)
+  if (spec$year < census_first_year) return(cache_unicon_year(spec, raw_zips, out_dir))
   purrr::map_chr(spec$months, ~ {
     out_file <- file.path(out_dir, sprintf("%d_%02d.parquet", spec$year, .x))
     arrow::write_parquet(parse_raw_month(spec$year, .x, config), out_file)
@@ -162,9 +166,56 @@ parse_telework <- function(telework_zips, config) {
   })
 }
 
-# columns read_raw_year() adds from the cached file name (YYYY_MM.parquet):
-# year and month come from the file, as in Stata (year(dofm($date)))
-file_date_columns <- c("file_year", "file_month")
+# --- Unicon era (1976-1993) -------------------------------------------------
+# The Unicon files are already Stata .dta, one per month; Basic from 1976,
+# and separate ORG files for 1979-1983 (ORG is part of the basic files
+# from 1984; the basic files carry earnings data from 1982). Columns are cached with a u_ prefix, so Unicon names (age,
+# hhwgt, famwgt, ...) never clash with the variables computed from them.
+
+#' Unicon zips for one year: monthly basic files, plus the separate ORG files
+#' in 1979-1983.
+unicon_zip_paths <- function(spec, config) {
+  basic <- file.path(config$paths$unicon_basic, sprintf("unicon_basic_%d_%d.dta.zip", spec$year, spec$months))
+  org <- if (spec$year >= 1979 && spec$year <= 1983) {
+    file.path(config$paths$unicon_org, sprintf("unicon_org_%d_%d.dta.zip", spec$year, spec$months))
+  }
+  c(basic, org)
+}
+
+#' One Unicon month as a plain table: labels and formats dropped, columns
+#' prefixed u_.
+read_unicon_month <- function(zip) {
+  exdir <- tempfile()
+  dir.create(exdir)
+  on.exit(unlink(exdir, recursive = TRUE))
+  data <- haven::read_dta(utils::unzip(zip, exdir = exdir)) |>
+    haven::zap_labels() |>
+    haven::zap_formats() |>
+    haven::zap_label()
+  rlang::set_names(data, paste0("u_", names(data)))
+}
+
+#' Cache one Unicon year: YYYY_MM.parquet for basic months, org_YYYY_MM.parquet
+#' for the separate ORG files; returns the paths.
+cache_unicon_year <- function(spec, raw_zips, out_dir) {
+  purrr::map_chr(raw_zips, ~ {
+    parts <- regmatches(basename(.x), regexec("unicon_(basic|org)_([0-9]{4})_([0-9]+)\\.dta\\.zip", basename(.x)))[[1]]
+    prefix <- if (parts[2] == "org") "org_" else ""
+    out_file <- file.path(out_dir, sprintf("%s%s_%02d.parquet", prefix, parts[3], as.integer(parts[4])))
+    arrow::write_parquet(read_unicon_month(.x), out_file)
+    out_file
+  })
+}
+
+# columns read_raw_year() adds from the cached file name ([org_]YYYY_MM.parquet):
+# year and month come from the file, as in Stata (year(dofm($date))); and
+# create_extracts.ado's $earnerinfo (the file has earnings data: Census
+# files, Unicon basic files from 1982, the separate ORG files) and $basicfile
+# (a basic monthly file rather than a separate ORG file)
+file_columns <- c("file_year", "file_month", "earnerinfo", "basicfile")
+
+#' Which cached files are basic months and which separate ORG months.
+is_org_file <- function(raw_files) startsWith(basename(raw_files), "org_")
 
 #' Read selected raw columns for one or more months from the parquet cache.
 #' Columns a month's dictionary doesn't have (era-specific names like
@@ -187,10 +238,13 @@ read_raw_year <- function(raw_files, columns, telework_files = character(0)) {
         month_data <- dplyr::left_join(month_data, arrow::read_parquet(supplement, col_select = dplyr::all_of(c(keys, tw_columns))),
                                        by = keys, relationship = "many-to-one")
       }
-      date <- as.integer(strsplit(sub("\\.parquet$", "", basename(.x)), "_")[[1]])
+      org_file <- is_org_file(.x)
+      date <- as.integer(strsplit(sub("^org_", "", sub("\\.parquet$", "", basename(.x))), "_")[[1]])
       month_data |>
         dplyr::select(dplyr::any_of(columns)) |>
-        dplyr::mutate(file_year = date[1], file_month = date[2])
+        dplyr::mutate(file_year = date[1], file_month = date[2],
+                      earnerinfo = as.numeric(org_file || date[1] >= 1982),
+                      basicfile = as.numeric(!org_file))
     }) |>
     dplyr::bind_rows()
   # columns no month of this year has

@@ -1,10 +1,11 @@
 # Stage runners: raw year -> basic table -> Basic and ORG extracts.
 
 #' Basic universe filter (sample_cpsbasic.do): drop rows with negative raw
-#' age entirely, before any variable is computed (as in Stata, so e.g. the
-#' 1994-1997 hhid numbering only counts the households that remain).
-#' Distinct from recode_age(), which sets age to missing.
+#' age (Unicon years: missing age) entirely, before any variable is computed
+#' (as in Stata, so e.g. the hhid numbering only counts the households that
+#' remain). Distinct from recode_age(), which sets age to missing.
 filter_basic_universe <- function(raw) {
+  if (data_era(raw$file_year) == "unicon") return(dplyr::filter(raw, !is.na(u_age)))
   dplyr::filter(raw, recode_raw_age(peage, prtage) >= 0)
 }
 
@@ -20,10 +21,15 @@ filter_org_universe <- function(data) {
 }
 
 #' Basic table for a set of raw months: read the raw columns the registry
-#' needs, apply the basic universe, compute every basic-stage variable, keep
-#' registry columns.
-recode_basic_year <- function(raw_files, registry, recode_functions, context) {
-  read_raw_year(raw_files, registry_raw_columns(registry, recode_functions), context$telework_files) |>
+#' needs for the files' era, apply the basic universe, compute every
+#' basic-stage variable, keep registry columns. `source` picks the basic
+#' monthly files or the separate ORG files (1979-1983).
+recode_basic_year <- function(raw_files, registry, recode_functions, context, source = c("basic", "org")) {
+  source <- match.arg(source)
+  raw_files <- raw_files[is_org_file(raw_files) == (source == "org")]
+  years <- as.integer(sub("^(org_)?([0-9]{4})_.*$", "\\2", basename(raw_files)))
+  columns <- registry_raw_columns(registry, recode_functions, data_era(years))
+  read_raw_year(raw_files, columns, context$telework_files) |>
     filter_basic_universe() |>
     run_stage(registry, recode_functions, "basic", context) |>
     dplyr::select(dplyr::all_of(registry$variable[registry$stage == "basic"]))
@@ -49,12 +55,19 @@ recode_trailing_window <- function(spec, raw_files, registry, recode_functions, 
 #' Basic and on the ORG file separately. A partial year's adjustments run
 #' over its trailing window (recode_trailing_window()), then only the
 #' current year is kept.
-build_extract_year <- function(basic_year, trailing_window, registry, recode_functions, context, sample) {
+#'
+#' ORG for 1979-1983 comes from separate Unicon ORG files (raw_files has
+#' them as org_YYYY_MM.parquet), recoded like a basic table; before 1979
+#' there is no ORG, and the universe filter leaves an empty table.
+build_extract_year <- function(basic_year, trailing_window, raw_files, registry, recode_functions, context, sample) {
   yr <- unique(basic_year$year)
   window <- dplyr::bind_rows(trailing_window, basic_year)
+  if (sample == "org" && any(is_org_file(raw_files))) {
+    window <- recode_basic_year(raw_files, registry, recode_functions, context, source = "org")
+  }
   if (sample == "org") window <- filter_org_universe(window)
   window |>
     run_stage(registry, recode_functions, "wages", context) |>
     dplyr::filter(year == yr) |>
-    dplyr::select(dplyr::all_of(export_columns(registry, sample)))
+    dplyr::select(dplyr::all_of(export_columns(registry, sample, yr)))
 }

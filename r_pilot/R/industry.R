@@ -14,6 +14,53 @@ recode_indcode <- function(peio1icd) {
 # code carve-out (8191/8192) is nested inside the 2003+ branch.
 recode_mind16 <- function(indcode, year) {
   yr <- unique(year)
+  if (yr <= 1982) {
+    # 1970 Census codes (no -1 or military codes in these years)
+    return(dplyr::case_when(
+      indcode %in% c(17, 18, 29) | (indcode >= 27 & indcode <= 28) | (indcode >= 47 & indcode <= 58) ~ 1,
+      indcode >= 67 & indcode <= 78 ~ 2,
+      indcode >= 107 & indcode <= 267 ~ 3,
+      indcode >= 268 & indcode <= 399 ~ 4,
+      indcode >= 407 & indcode <= 429 ~ 5,
+      (indcode >= 447 & indcode <= 449) | (indcode >= 467 & indcode <= 499) ~ 6,
+      indcode >= 507 & indcode <= 599 ~ 7,
+      (indcode >= 607 & indcode <= 668) | (indcode >= 677 & indcode <= 699) ~ 8,
+      (indcode >= 707 & indcode <= 719) | (indcode >= 727 & indcode <= 767) | indcode %in% c(19, 849, 877, 887) |
+        (indcode >= 888 & indcode <= 899) ~ 9,
+      indcode == 769 | (indcode >= 779 & indcode <= 799) ~ 10,
+      indcode %in% c(669, 869) | (indcode >= 777 & indcode <= 778) | (indcode >= 807 & indcode <= 817) ~ 11,
+      indcode == 838 ~ 12,
+      (indcode >= 828 & indcode <= 837) | (indcode >= 839 & indcode <= 848) ~ 13,
+      indcode >= 857 & indcode <= 868 ~ 14,
+      indcode >= 878 & indcode <= 879 ~ 15,
+      indcode >= 907 & indcode <= 947 ~ 16,
+      TRUE ~ NA_real_
+    ))
+  }
+  if (yr <= 1991) {
+    # 1980 Census codes; -1 (not in universe) and 991 (armed forces) missing
+    return(dplyr::case_when(
+      indcode %in% c(-1, 991) ~ NA_real_,
+      (indcode >= 10 & indcode <= 20) | (indcode >= 30 & indcode <= 31) | (indcode >= 40 & indcode <= 50) ~ 1,
+      indcode == 60 ~ 2,
+      indcode >= 230 & indcode <= 392 ~ 3,
+      indcode >= 100 & indcode <= 222 ~ 4,
+      indcode >= 400 & indcode <= 432 ~ 5,
+      (indcode >= 440 & indcode <= 442) | (indcode >= 460 & indcode <= 472) ~ 6,
+      indcode >= 500 & indcode <= 571 ~ 7,
+      (indcode >= 580 & indcode <= 640) | (indcode >= 642 & indcode <= 691) ~ 8,
+      indcode %in% c(841, 21) | (indcode >= 700 & indcode <= 712) | (indcode >= 721 & indcode <= 760) |
+        (indcode >= 873 & indcode <= 892) ~ 9,
+      indcode == 761 | (indcode >= 771 & indcode <= 791) ~ 10,
+      indcode %in% c(872, 641, 762, 770) | (indcode >= 800 & indcode <= 802) ~ 11,
+      indcode == 831 ~ 12,
+      (indcode >= 812 & indcode <= 830) | (indcode >= 832 & indcode <= 840) ~ 13,
+      indcode >= 842 & indcode <= 860 ~ 14,
+      indcode >= 861 & indcode <= 871 ~ 15,
+      indcode >= 900 & indcode <= 932 ~ 16,
+      TRUE ~ NA_real_
+    ))
+  }
   if (yr <= 2002) {
     dplyr::case_when(
       indcode == 991 ~ NA_real_,
@@ -74,13 +121,17 @@ recode_occcode <- function(year, month, peio1ocd, ptio1ocd) {
 
 # --- era classifications (generate_ind90..ind22.do, generate_occ90..occ18.do)
 # the original code, kept only in the years its Census classification was used
-recode_ind90 <- function(indcode, year, month) in_window(indcode, year, month, to = c(2002, 12))
+recode_ind70 <- function(indcode, year, month) in_window(indcode, year, month, c(1973, 1), c(1982, 12))
+recode_ind80 <- function(indcode, year, month) in_window(indcode, year, month, c(1983, 1), c(1991, 12))
+recode_ind90 <- function(indcode, year, month) in_window(indcode, year, month, c(1992, 1), c(2002, 12))
 recode_ind02 <- function(indcode, year, month) in_window(indcode, year, month, c(2003, 1), c(2008, 12))
 recode_ind07 <- function(indcode, year, month) in_window(indcode, year, month, c(2009, 1), c(2013, 12))
 recode_ind12 <- function(indcode, year, month) in_window(indcode, year, month, c(2014, 1), c(2019, 12))
 recode_ind17 <- function(indcode, year, month) in_window(indcode, year, month, c(2020, 1), c(2024, 12))
 recode_ind22 <- function(indcode, year, month) in_window(indcode, year, month, from = c(2025, 1))
-recode_occ90 <- function(occcode, year, month) in_window(occcode, year, month, to = c(2002, 12))
+recode_occ70 <- function(occcode, year, month) in_window(occcode, year, month, c(1973, 1), c(1982, 12))
+recode_occ80 <- function(occcode, year, month) in_window(occcode, year, month, c(1983, 1), c(1991, 12))
+recode_occ90 <- function(occcode, year, month) in_window(occcode, year, month, c(1992, 1), c(2002, 12))
 recode_occ00 <- function(occcode, year, month) in_window(occcode, year, month, c(2003, 1), c(2010, 12))
 recode_occ10 <- function(occcode, year, month) in_window(occcode, year, month, c(2011, 1), c(2019, 12))
 recode_occ18 <- function(occcode, year, month) in_window(occcode, year, month, from = c(2020, 1))

@@ -42,3 +42,16 @@ nonnegative <- function(x) {
 yes_no <- function(x) {
   dplyr::case_when(x == 2 ~ 0, x == 1 ~ 1, TRUE ~ NA_real_)
 }
+
+# Largest value Stata stores in a float (or any non-double type). Stata
+# creates variables as float/byte/int/long, never double, so a computed value
+# beyond this becomes missing when stored. Unicon's own "missing" code
+# (about 1.75e100, in ernwgt and famwgt from 1985) turns into missing that way.
+stata_float_max <- 1.70141173319e38
+
+# a computed value as Stata stores it: missing if beyond float range
+stata_store <- function(x) {
+  if (!is.numeric(x)) return(x)
+  x[!is.na(x) & abs(x) > stata_float_max] <- NA
+  x
+}

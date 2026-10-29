@@ -5,12 +5,15 @@
 # parity_gate() stops the build if anything doesn't match, except documented
 # exceptions (parity_exceptions.csv), which are reported but allowed.
 
-# unique in every year; personid is missing before 1998, pulineno is not
-join_keys <- c("year", "month", "hrhhid", "hhid", "pulineno")
+# unique in every year: personid is missing before 1998 and hhid before 1984,
+# so Unicon years add Unicon's record number (missing, and so matching, from 1994)
+join_keys <- c("year", "month", "hrhhid", "hhid", "pulineno", "unicon_recnum")
 
 #' Published Stata extract(s) for one year and sample: the annual file, or
 #' the monthly files for a partial year (spec: see build_year_spec()).
 reference_dta_path <- function(spec, sample, config) {
+  # ORG starts in 1979
+  if (sample == "org" && spec$year < 1979) return(character(0))
   dir <- file.path(config$paths$reference, sample, "epi")
   if (spec$partial) {
     return(file.path(dir, sprintf("epi_cps%s_%d_%d.dta", sample, spec$year, spec$months)))
@@ -21,6 +24,7 @@ reference_dta_path <- function(spec, sample, config) {
 #' Cache one year's published values as parquet (labels dropped), so the
 #' large .dta files are read once rather than on every recode change.
 cache_reference_year <- function(dta_paths, cache_dir) {
+  if (length(dta_paths) == 0) return(character(0))
   out_dir <- file.path(cache_dir, "reference")
   fs::dir_create(out_dir)
   # monthly files of a partial year go into one parquet named for the year
@@ -34,6 +38,7 @@ cache_reference_year <- function(dta_paths, cache_dir) {
 
 #' Published metadata: column order, variable labels, value labels, data label.
 reference_metadata <- function(dta_paths) {
+  if (length(dta_paths) == 0) return(NULL)
   # monthly files of a partial year share one layout; the first stands for all
   header <- haven::read_dta(dta_paths[1], n_max = 0)
   value_labels <- names(header) |>
@@ -70,6 +75,8 @@ read_parity_exceptions <- function(exceptions_file) {
 #' time, so memory stays at the keys plus one batch from each side (about
 #' 1 GB) rather than two whole years.
 compare_values_year <- function(r_files, reference_parquet, registry, sample, exceptions, batch_size = 20) {
+  # years without the sample (ORG before 1979)
+  if (length(r_files) == 0 && length(reference_parquet) == 0) return(tibble::tibble())
   # one or more columns from each side, as plain vectors (labels dropped)
   read_r <- function(cols) {
     purrr::map(r_files, ~ arrow::read_feather(.x, col_select = dplyr::all_of(cols))) |>
@@ -140,7 +147,8 @@ compare_values <- function(read_r, read_reference, reference_columns, registry, 
 #' Compare the extract's metadata spec (registry labels, value_labels.csv,
 #' column order, data label) with one year's published metadata.
 compare_metadata_year <- function(reference_meta, registry, value_labels, sample, year, label) {
-  columns <- export_columns(registry, sample)
+  if (is.null(reference_meta)) return(tibble::tibble())
+  columns <- export_columns(registry, sample, year)
   in_reference <- columns[columns %in% reference_meta$columns]
 
   # value labels as "value=label" strings, so sets can be compared

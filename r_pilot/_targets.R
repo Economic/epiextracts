@@ -117,12 +117,13 @@ tar_assign({
   trailing_basic = recode_trailing_window(year_spec, raw_parquet, registry, recode_functions, recode_context) |>
     tar_target(pattern = map(year_spec))
 
-  # the wage adjustments run on each sample's own table, as adjust_wages.do does
-  basic_extract = build_extract_year(basic_year, trailing_basic, registry, recode_functions, recode_context, "basic") |>
-    tar_target(pattern = map(basic_year, trailing_basic))
+  # the wage adjustments run on each sample's own table, as adjust_wages.do does;
+  # the year's raw files hold the separate ORG files of 1979-1983
+  basic_extract = build_extract_year(basic_year, trailing_basic, raw_parquet, registry, recode_functions, recode_context, "basic") |>
+    tar_target(pattern = map(basic_year, trailing_basic, raw_parquet))
 
-  org_year = build_extract_year(basic_year, trailing_basic, registry, recode_functions, recode_context, "org") |>
-    tar_target(pattern = map(basic_year, trailing_basic))
+  org_extract = build_extract_year(basic_year, trailing_basic, raw_parquet, registry, recode_functions, recode_context, "org") |>
+    tar_target(pattern = map(basic_year, trailing_basic, raw_parquet))
 
   ##########
   # PARITY #
@@ -183,9 +184,9 @@ tar_assign({
     write_extract("basic", output_dir, year_spec) |>
     tar_target(pattern = map(basic_extract, year_spec), format = "file")
 
-  org_feather = label_extract(org_year, registry, value_labels, "org", data_label("org", release_file)) |>
+  org_feather = label_extract(org_extract, registry, value_labels, "org", data_label("org", release_file)) |>
     write_extract("org", output_dir, year_spec) |>
-    tar_target(pattern = map(org_year, year_spec), format = "file")
+    tar_target(pattern = map(org_extract, year_spec), format = "file")
 
   # Stata .dta (format 117, as saveold version(13) writes): storage types,
   # labels and notes as in the Stata-made files. The wages-stage variables
@@ -195,8 +196,8 @@ tar_assign({
                   uncompressed = registry$variable[registry$stage == "wages"]) |>
     tar_target(pattern = map(basic_extract, year_spec), format = "file")
 
-  org_dta = label_extract(org_year, registry, value_labels, "org", data_label("org", release_file)) |>
+  org_dta = label_extract(org_extract, registry, value_labels, "org", data_label("org", release_file)) |>
     write_extract("org", output_dir, year_spec, "dta", variable_notes,
                   uncompressed = registry$variable[registry$stage == "wages"]) |>
-    tar_target(pattern = map(org_year, year_spec), format = "file")
+    tar_target(pattern = map(org_extract, year_spec), format = "file")
 })

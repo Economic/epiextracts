@@ -15,7 +15,7 @@ store_values <- function(x) {
 
 #' Select, store and label one sample's exported columns.
 label_extract <- function(data, registry, value_labels, sample, label) {
-  columns <- export_columns(registry, sample)
+  columns <- export_columns(registry, sample, unique(data$year))
   data <- data[, columns]
   for (v in columns) {
     data[[v]] <- store_values(data[[v]])
@@ -40,6 +40,8 @@ label_extract <- function(data, registry, value_labels, sample, label) {
 write_extract <- function(data, sample, output_dir, spec, format = c("feather", "dta"), notes = NULL,
                           uncompressed = character(0)) {
   format <- match.arg(format)
+  # no file for years without the sample (ORG before 1979)
+  if (nrow(data) == 0) return(character(0))
   write_file <- function(d, file) {
     fs::dir_create(fs::path_dir(file))
     if (format == "feather") arrow::write_feather(d, file) else write_stata_dta(d, file, notes, uncompressed = uncompressed)
