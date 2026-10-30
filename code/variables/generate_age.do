@@ -34,9 +34,11 @@ cap lab drop age
 lab def age 80 "80+"
 lab val age age
 lab var age "Age"
-notes age: 1976-1993 Unicon: age
-notes age: 1994-2012 CPS: peage
-notes age: 2013-present CPS: prtage
+notes age: 1976-1993 Unicon Basic: age
+notes age: 1994-2012 CPS Basic: peage
+notes age: 2013-present CPS Basic: prtage
+notes age: 1962-1997 Unicon March: age
+notes age: 1998-present CPS March: a_age
 notes age: top-coded at 80 for consistency across years
 notes age: 1976-1981 range 14-80
 notes age: 1982-present range 0-80

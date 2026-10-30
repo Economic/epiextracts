@@ -1,1 +1,1 @@
-`personid` is a person identifer, unique within [`year`](year.md), [`month`](month.md), and [`hhid`](hhid.md).
+`personid` is a person identifer, unique within [`year`](year.md), [`month`](month.md), and household ([`hhid`](hhid.md) in the Basic and ORG, [`hserial`](hserial.md) in the March ASEC).

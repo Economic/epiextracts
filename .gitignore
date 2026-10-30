@@ -19,10 +19,9 @@ test*.csv
 *.feather
 tmpdata.do
 
-test_veteran_change.do
-check_*.do
-
 r_pilot/_targets/
+*.gz
+
 hilary-hhpct.R
 census_benchmark_hinc05.csv
 esi_pension.R

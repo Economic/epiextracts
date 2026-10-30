@@ -4,7 +4,7 @@
 /* 2009-2013: 2007 census industry codes */
 gen ind07 = .
 
-if $monthlycps == 1 {
+if $monthlycps == 1 | $marchcps == 1 {
 	if tm(2009m1) <= $date & $date <= tm(2013m12) {
 		replace ind07 = indcode
 	}

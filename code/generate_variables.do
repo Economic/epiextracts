@@ -6,13 +6,13 @@ assert $earnerinfo == 1 | $earnerinfo == 0
 foreach var in
   year month minsamp
   hrhhid hrhhid2 hrsample hrsersuf huhhnum pulineno unicon_recnum
-  hhid famid personid proxy hhtype famtype
-  finalwgt cmpwgt basicwgt orgwgt hhwgt famwgt
+  hserial hhid famid personid proxy hhtype famtype
+  finalwgt cmpwgt basicwgt orgwgt asecwgt hhwgt famwgt
   statefips statecensus division region countyfips cbsafips metstat cbsasize
   age female hispanic wbho wbhao wbhom wbhaom raceorig wbo_only wbho_only
 	citistat citizen married veteran
   gradecom gradehi gradeatn educ
-  lfstat dlfstat emp emphrs unemp nilf schenrl samejob whyabsent whyunemp 
+  lfstat dlfstat emp emphrs unemp nilf samejob whyabsent whyunemp 
   selfemp selfinc cow1 cow2
   multjobs numjobs
   unmem uncov union
@@ -21,18 +21,46 @@ foreach var in
   ptecon ftptstat
 	paidhre
   hoursu1 hoursu2 hoursut hourslw1 hourslw2 hourslwt hoursumay hoursuorg
-	hoursvary1 hoursvary2 hoursvaryt hoursuint
+	hoursvary1 hoursvary2 hoursvaryt hoursuint hoursvary
   indcode ind70 ind80 ind90 ind02 ind07 ind12 ind17 ind22 mind16 manuf dind03 mind03
   occcode occ70 occ80 occ90 occ00 occ10 occ18 mocc10 mocc03 docc03
   weekpay_noadj tc_weekpay a_weekpay
 	earnhour a_earnhour
   otcrec
   otcamt wage_noadj wageotc_noadj tc_earnhour
-	faminc faminc_det
+	i_faminc i_faminc_det
+	faminc
 	ownchild famrel agechild
   telework hourslwtw
   diffdress differrands diffhear diffmemory diffphysical diffvision
   difficulty
+  famern
+  famiws
+  hhinc hhpct
+  schenrl
+  earn wagesal
+  hoursly wrkly weeksly i_weeksly
+  hicov
+  hicovly1 hicovly2 hicovly3 hicovly4 hicovly5
+  penplan penincl
+  foodstamps
+  hiihsly
+  himcaidly himcarely 
+  hiprivly higotherly
+  pubhouse hhtenure rentsub
+  offpovuniverse offfaminc offpovcut offpov 
+  povlev povrate
+  spmpov spmpovcut spmresources spmeitc
+  spmfedtax spmstatetax
+  spmschlunch spmsnap spmwic spmmortgage 
+  spmfamtype
+  cowly
+  dhhtype famkind 
+  disability parent
+  migarea migstatus migmetro
+  lookdurly spmwgt
+  hiownemp hiownemply hiownpaid hiownpaidly
+  redesign
   {;
     do ${codevars}generate_`var'.do;
   };

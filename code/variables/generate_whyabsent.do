@@ -4,13 +4,36 @@
 gen byte whyabsent = .
 
 if $marchcps == 1 {
+    if tm(1962m1) <= $date & $date <= tm(1962m12) {
+        replace whyabsent = 4 if whyabs == 1
+        replace whyabsent = 5 if whyabs == 0
+        replace whyabsent = 9 if whyabs == 3
+        replace whyabsent = 10 if whyabs == 2
+        replace whyabsent = 14 if whyabs == 4
+    }
+    if tm(1963m1) <= $date & $date <= tm(1967m12) {
+        replace whyabsent = 4 if whyabs == 2
+        replace whyabsent = 5 if whyabs == 1
+        replace whyabsent = 9 if whyabs == 4
+        replace whyabsent = 10 if whyabs == 3
+        replace whyabsent = 14 if whyabs == 5
+    }
+    if tm(1968m1) <= $date & $date <= tm(1993m12) {
+        replace whyabsent = 1 if whyabs == 6 | whyabs == 7
+        replace whyabsent = 3 if whyabs == 5
+        replace whyabsent = 4 if whyabs == 2
+        replace whyabsent = 5 if whyabs == 1
+        replace whyabsent = 9 if whyabs == 4
+        replace whyabsent = 10 if whyabs == 3
+        replace whyabsent = 14 if whyabs == 8
+    }
     if tm(1994m1) <= $date & $date <= tm(1997m12)  {
         replace whyabsent = absrsn
-        replace whyabsent = . if whyabsent == -1
+        replace whyabsent = . if whyabsent == -1 | whyabsent == 0
 	}
 	if tm(1998m1) <= $date {
         replace whyabsent = peabsrsn
-        replace whyabsent = . if whyabsent == -1
+        replace whyabsent = . if whyabsent == -1 | whyabsent == 0 
 	}
 }
 

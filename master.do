@@ -104,7 +104,7 @@ adopath ++ ${code}ado
 
 * create EPI's extracts from the processed raw data
 * creates both basic monthly and ORG subsample
-create_extracts, begin(2024m1) end($latestdata)
+create_extracts, begin(1962m1) end($latestdata)
 do ${code}tc_fix.do
 
 * create documentation

@@ -7,8 +7,20 @@ If you use the EPI extracts for your research, please cite them as
 
 ## Recent changes
 ### Version 2026.10.13 -- 2026-10-13
+This release rebuilds the March (ASEC) extracts for all years and extends them through 2026. Weighted estimates and some variable names differ from prior versions; see [March (ASEC) extracts](../methodology/asec.md).
 #### Added
 * September 2026 extracts
+* March (ASEC) extracts for 2019–2026
+* New March (ASEC) variables, including official and Supplemental Poverty Measure (SPM) poverty, health insurance coverage, and prior-year work, earnings, and income. See [new variables](../methodology/asec.md#new-variables).
+#### Modified
+* March (ASEC) extracts for 1962–2018 have been rebuilt. See [what changed](../methodology/asec.md#changes).
+* `marchwgt` has been renamed to `asecwgt`.
+* `faminc` (Basic Monthly/ORG) has been renamed to `i_faminc`, and `faminc_det` to `i_faminc_det`. `faminc` is now continuous family income in the March (ASEC) extracts. Users relying on `faminc` in the Basic Monthly or ORG extracts should update references to `i_faminc`.
+* `asecwgt`, `hhwgt`, and `famwgt` (March/ASEC) now use the same population controls as Census's published historical income tables, so weighted estimates for 1980, 1993, 2011, 2021, and 2025 will not match prior versions. See [weights](../methodology/asec.md#weights).
+#### Fixed
+* Basic Monthly `famwgt` (January 1994–present) and `hhwgt` (January–March 1994 and September 1995–present) were 10,000 times too small because the CPS weights' implied decimals were applied twice. In 2000–2002, `famwgt` and `hhwgt` remain on the original 1990-based population controls, since Census's revised 2000-based weights cover person weights only.
+* March (ASEC) `hhtype` was missing for 1988–1997.
+* March (ASEC) `famwgt` scaling for 1963, 1964, and 1966 was inconsistent with `asecwgt`. See [weights](../methodology/asec.md#weights).
 ### Version 2026.9.11 -- 2026-09-11
 #### Added
 * August 2026 extracts

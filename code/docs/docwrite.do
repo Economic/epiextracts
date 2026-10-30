@@ -5,6 +5,11 @@ webdoc set _stlog
 * grab variable info
 local label: variable label `1'
 local labelname: value label `1'
+* skip value labels that are attached but not defined (some March variables)
+if "`labelname'" != "" {
+	capture label list `labelname'
+	if _rc local labelname
+}
 tempfile thelevels
 if "`labelname'" ~= "" valuelabel2md using `thelevels', label(`labelname')
 * variable availability time periods
@@ -71,6 +76,7 @@ webdoc put -------|------
 if "`basicyears'" ~= "" webdoc put Basic | `basicyears'
 if "`mayyears'" ~= "" webdoc put May | `mayyears'
 if "`orgyears'" ~= "" webdoc put ORG | `orgyears'
+if "`marchyears'" ~= "" webdoc put March | `marchyears'
 webdoc put
 capture confirm file ${variableavailability}`1'_availability.md
 if _rc == 0 webdoc append ${variableavailability}`1'_availability.md
