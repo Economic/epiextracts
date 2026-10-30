@@ -733,3 +733,104 @@ recode_famrel_unicon_march <- function(u_famrel, year) {
   as.numeric(u_famrel)
 }
 recode_famrel_census_march <- function(m_a_famrel) nonnegative(m_a_famrel)
+
+# --- industry and occupation (generate_indcode/occcode/mind16/...03.do) --------
+# Unicon ind: 1962 code 44 and 1963-1967 codes 45 and 99 are armed forces or
+# not in universe; 0 is missing from 1968
+recode_indcode_unicon_march <- function(u_ind, year) {
+  yr <- unique(year)
+  missing_codes <- if (yr == 1962) 44 else if (yr <= 1967) c(45, 99) else 0
+  dplyr::if_else(u_ind %in% missing_codes, NA_real_, as.numeric(u_ind))
+}
+# a_ind through 2002, then peioind; 0 is missing
+recode_indcode_census_march <- function(m_a_ind, m_peioind, year) {
+  indcode <- if (unique(year) <= 2002) m_a_ind else m_peioind
+  dplyr::if_else(indcode == 0, NA_real_, as.numeric(indcode))
+}
+recode_occcode_unicon_march <- function(u_occ) dplyr::if_else(u_occ < 1, NA_real_, as.numeric(u_occ))
+recode_occcode_census_march <- function(m_a_occ, m_peioocc, year) {
+  occcode <- if (unique(year) <= 2002) m_a_occ else m_peioocc
+  dplyr::if_else(occcode < 1, NA_real_, as.numeric(occcode))
+}
+
+#' Major industry. 1962-1970 March files have their own industry codes:
+#' 1962 and 1963-1967 one-or-two-digit groups, 1968-1970 1960 Census codes.
+#' From 1971, Basic's rules (recode_mind16()).
+recode_mind16_march <- function(indcode, year) {
+  yr <- unique(year)
+  if (yr >= 1971) return(recode_mind16(indcode, year))
+  if (yr == 1962) {
+    return(dplyr::case_when(
+      indcode >= 0 & indcode <= 2 ~ 1,
+      indcode == 3 ~ 2,
+      indcode >= 4 & indcode <= 14 ~ 3,
+      indcode >= 15 & indcode <= 20 ~ 4,
+      indcode >= 21 & indcode <= 22 ~ 5,
+      indcode >= 23 & indcode <= 24 ~ 6,
+      indcode == 25 ~ 7,
+      indcode == 27 ~ 8,
+      (indcode >= 28 & indcode <= 31) | indcode == 39 ~ 9,
+      indcode >= 32 & indcode <= 33 ~ 10,
+      indcode %in% c(26, 34) ~ 11,
+      indcode == 36 ~ 12,
+      indcode == 35 ~ 13,
+      indcode == 38 ~ 14,
+      indcode == 37 ~ 15,
+      indcode >= 40 & indcode <= 43 ~ 16,
+      TRUE ~ NA_real_
+    ))
+  }
+  if (yr <= 1967) {
+    # mostly 1962's codes plus one, but durable goods run to 16
+    return(dplyr::case_when(
+      indcode >= 1 & indcode <= 3 ~ 1,
+      indcode == 4 ~ 2,
+      indcode >= 5 & indcode <= 16 ~ 3,
+      indcode >= 17 & indcode <= 21 ~ 4,
+      indcode >= 22 & indcode <= 23 ~ 5,
+      indcode >= 24 & indcode <= 25 ~ 6,
+      indcode == 26 ~ 7,
+      indcode == 28 ~ 8,
+      (indcode >= 29 & indcode <= 32) | indcode == 40 ~ 9,
+      indcode >= 33 & indcode <= 34 ~ 10,
+      indcode %in% c(27, 35) ~ 11,
+      indcode == 37 ~ 12,
+      indcode == 36 ~ 13,
+      indcode == 39 ~ 14,
+      indcode == 38 ~ 15,
+      indcode >= 41 & indcode <= 44 ~ 16,
+      TRUE ~ NA_real_
+    ))
+  }
+  dplyr::case_when(
+    indcode %in% 16:18 | (indcode >= 126 & indcode <= 156) ~ 1,
+    indcode == 196 ~ 2,
+    indcode >= 206 & indcode <= 296 ~ 3,
+    indcode >= 306 & indcode <= 459 ~ 4,
+    indcode >= 506 & indcode <= 526 ~ 5,
+    (indcode >= 536 & indcode <= 539) | (indcode >= 567 & indcode <= 579) ~ 6,
+    indcode >= 606 & indcode <= 629 ~ 7,
+    (indcode >= 636 & indcode <= 658) | (indcode >= 666 & indcode <= 696) ~ 8,
+    (indcode >= 706 & indcode <= 736) | (indcode >= 806 & indcode <= 809) | indcode == 869 |
+      (indcode >= 888 & indcode <= 898) ~ 9,
+    indcode == 816 | (indcode >= 826 & indcode <= 839) ~ 10,
+    indcode == 659 | (indcode >= 846 & indcode <= 849) ~ 11,
+    indcode == 868 ~ 12,
+    indcode == 867 ~ 13,
+    indcode == 876 ~ 14,
+    indcode == 879 ~ 15,
+    indcode >= 906 & indcode <= 936 ~ 16,
+    TRUE ~ NA_real_
+  )
+}
+
+# Census detailed/major industry and occupation recodes from 2003; each
+# script sets a different floor to missing (dind03/docc03 0 or less,
+# mind03 below 1, mocc03 below 0)
+recode_dind03_census_march <- function(m_a_dtind, year) march_recode_2003(m_a_dtind, year, 1)
+recode_mind03_census_march <- function(m_a_mjind, year) march_recode_2003(m_a_mjind, year, 1)
+recode_docc03_census_march <- function(m_a_dtocc, year) march_recode_2003(m_a_dtocc, year, 1)
+recode_mocc03_census_march <- function(m_a_mjocc, year) march_recode_2003(m_a_mjocc, year, 0)
+march_recode_2003 <- function(x, year, lowest) {
+  dplyr::if_else(year >= 2003 & x >= lowest, as.numeric(x), NA_real_)
+}

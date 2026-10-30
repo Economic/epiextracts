@@ -111,3 +111,21 @@ test_that("March rules for the shared variables", {
   # reason absent: 1963-1967 codes onto the 1994 codes
   expect_equal(recode_whyabsent_unicon_march(c(1, 5), NA, c(1965, 1965)), c(5, 14))
 })
+
+test_that("March industry and occupation rules", {
+  # armed forces / not in universe codes by era
+  expect_equal(recode_indcode_unicon_march(c(44, 3), c(1962, 1962)), c(NA, 3))
+  expect_equal(recode_indcode_unicon_march(c(45, 99, 0), rep(1965, 3)), c(NA, NA, 0))
+  expect_equal(recode_indcode_unicon_march(c(0, 196), c(1970, 1970)), c(NA, 196))
+  # 1962 and 1963-1967 industry groups differ at code 16 (durable from 1963)
+  expect_equal(recode_mind16_march(c(0, 15, 16), rep(1962, 3)), c(1, 4, 4))
+  expect_equal(recode_mind16_march(c(1, 16, 17), rep(1964, 3)), c(1, 3, 4))
+  expect_equal(recode_mind16_march(c(196, 868), c(1969, 1969)), c(2, 12))
+  expect_equal(recode_mind16_march(c(17, 838), c(1975, 1975)), recode_mind16(c(17, 838), c(1975, 1975)))
+  # occupation: a_occ through 2002, then peioocc
+  expect_equal(recode_occcode_census_march(c(0, 5), c(9, 9), c(2001, 2001)), c(NA, 5))
+  expect_equal(recode_occcode_census_march(5, 4700, 2003), 4700)
+  # Census recodes from 2003, each with its own floor
+  expect_equal(recode_mocc03_census_march(c(0, 3), c(2005, 2005)), c(0, 3))
+  expect_equal(recode_mind03_census_march(c(0, 3), c(2005, 2005)), c(NA, 3))
+})
