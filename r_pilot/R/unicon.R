@@ -1,6 +1,6 @@
-# Unicon-era recodes (Basic/ORG 1976-1993), the variables.csv fn_unicon
-# column. A year is wholly Unicon (before 1994) or Census era, and
-# run_stage() calls these for Unicon years instead of fn. Unicon columns
+# Unicon-era recodes (Basic/ORG 1976-1993): the unicon_basic source in
+# variable_functions.csv. A year is wholly Unicon (before 1994) or Census
+# era, and run_stage() calls these for Unicon years. Unicon columns
 # come prefixed u_ (raw_unicon_month()), so they never clash with output
 # names like age or hhwgt. Each function's arguments are the columns it
 # reads; earnerinfo and basicfile describe the source file (read_raw_year()),

@@ -1,5 +1,6 @@
 test_that("every registry function exists and there are no dependency cycles", {
-  expect_length(recode_functions, length(unique(c(registry$fn, registry$fn_unicon))))
+  all_fns <- unlist(registry[, paste0("fn_", registry_sources(registry))], use.names = FALSE)
+  expect_length(recode_functions, length(unique(all_fns)))
   for (stage in unique(registry$stage)) {
     expect_setequal(stage_order(registry, recode_functions, stage), registry$variable[registry$stage == stage])
   }
@@ -47,8 +48,21 @@ test_that("export columns follow registry order and exclude intermediates", {
 })
 
 test_that("Unicon-era raw columns are all u_-prefixed Unicon columns", {
-  raw <- registry_raw_columns(registry, recode_functions, "unicon")
+  raw <- registry_raw_columns(registry, recode_functions, "unicon_basic")
   expect_true(all(startsWith(raw, "u_")))
   # and the Census era reads none of them
-  expect_false(any(startsWith(registry_raw_columns(registry, recode_functions, "census"), "u_")))
+  expect_false(any(startsWith(registry_raw_columns(registry, recode_functions, "census_basic"), "u_")))
+})
+
+test_that("every variable has a function for every source", {
+  expect_setequal(registry_sources(registry), c("census_basic", "unicon_basic"))
+  fn_columns <- registry[, paste0("fn_", registry_sources(registry))]
+  expect_false(anyNA(fn_columns))
+  # an incomplete functions file is refused
+  dir <- tempfile(); dir.create(dir)
+  readr::write_csv(registry[1:2, c("variable", "family", "stage", "kind", "depends", "export", "samples", "tolerance", "label", "snippet")],
+                   file.path(dir, "variables.csv"))
+  readr::write_csv(tibble::tibble(variable = c("year", "year", "month"), source = c("census_basic", "unicon_basic", "census_basic"),
+                                  fn = "recode_survey_year"), file.path(dir, "variable_functions.csv"))
+  expect_error(read_registry(file.path(dir, "variables.csv")), "without a function for every source: month")
 })

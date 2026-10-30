@@ -35,6 +35,7 @@ Rscript tests/testthat.R
 | `../config/release.yml` | Release version (written into each extract's data label) |
 | `../config/cpi_projection.yml` | CBO levels used to project CPI-U-RS past the last actual year |
 | `variables.csv` | The variable registry: one row per variable (see below) |
+| `variable_functions.csv` | Each variable's recode function per data source (`census_basic`, `unicon_basic`, ...) |
 | `value_labels.csv` | Value labels for exported variables |
 | `variable_notes.csv` | Stata notes for each variable (from `scripts/seed_notes.R`) |
 | `crosswalks/mocc10.csv` | `mocc10` occupation code ranges by era (from `scripts/convert_mocc10.R`) |
@@ -51,15 +52,16 @@ Rscript tests/testthat.R
 
 ## Adding a variable
 
-1. Write a recode function. Its arguments are the columns it reads: raw
-   Census columns, or other registry variables. For 1976-1993 write a second
-   one reading the Unicon columns (prefixed `u_`), or use `unicon_missing`. Context objects
+1. Write a recode function for each data source. Its arguments are the
+   columns it reads: raw columns, or other registry variables. Unicon columns
+   are prefixed `u_`; use `unicon_missing` where a source has no data. Context objects
    (`reweight_years`, `state_geocodes`, `wage_bounds`, `mocc10_crosswalk`)
    can also be arguments.
-2. Add a row to `variables.csv` with the function names (`fn`, `fn_unicon`), stage, whether it's
+2. Add a row to `variables.csv` with its stage, whether it's
    exported, its samples and its parity tolerance (0 for codes, 0.01 for Stata
    float columns). The row's position sets the output column order, so put it
-   where the published extracts have it.
+   where the published extracts have it. Add one row per source to
+   `variable_functions.csv`; the pipeline stops if a source is missing.
 3. Run `Rscript scripts/seed_labels.R` to copy its variable and value labels
    from the published extract.
 4. Run `tar_make()`. Raw columns it needs are read from the cache

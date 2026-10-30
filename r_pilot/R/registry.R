@@ -12,16 +12,21 @@
 #                returns the new column
 #              "table": fn takes the stage table first and returns it with the new
 #                column added; `depends` lists the columns it reads
-#   fn         recode function name (Census era, 1994+)
-#   fn_unicon  recode function for Unicon-era years (1976-1993; R/unicon.R).
-#                Every year is wholly one era, so each year runs one era's
-#                functions; the same name in both columns means one rule for both
-#   depends    table kind only: semicolon-separated columns read (either era)
+#   depends    table kind only: semicolon-separated columns read (any source)
 #   export     TRUE = written to the extracts and parity-checked; FALSE = intermediate
 #   samples    samples the exported column appears in ("basic;org" or "org")
 #   tolerance  parity tolerance: 0 = exact, 0.01 for Stata float columns (weights, dollars)
 #   label      variable label (Stata/haven); value labels live in value_labels.csv
 #   snippet    functions shown on the docs site ("fn1;fn2" or "file:<R file>"); blank = none
+#
+# Recode functions live in variable_functions.csv, one row per variable and
+# data source (variable, source, fn). A source is a kind of input file:
+#   census_basic  Census Basic monthly files, 1994+
+#   unicon_basic  Unicon Basic monthly files, 1976-1993 (R/unicon.R)
+# Each table comes wholly from one source and runs that source's functions;
+# the same function under two sources means one rule for both. Every
+# variable needs a function for every source (unicon_missing when there is
+# no data).
 
 # objects recode functions can take besides columns
 context_names <- c("reweight_years", "state_geocodes", "wage_bounds", "mocc10_crosswalk", "telework_files")
@@ -29,55 +34,72 @@ context_names <- c("reweight_years", "state_geocodes", "wage_bounds", "mocc10_cr
 # first year of the Census era; earlier years are Unicon
 census_first_year <- 1994
 
-#' Era of a table of years: "unicon" (all before 1994) or "census" (all 1994+).
-#' An empty table counts as Census era.
-data_era <- function(year) {
-  if (length(year) == 0 || all(year >= census_first_year)) return("census")
-  if (all(year < census_first_year)) return("unicon")
+#' Data source of a Basic/ORG table from its years: "unicon_basic" (all before
+#' 1994) or "census_basic" (all 1994+). An empty table counts as Census.
+data_source <- function(year) {
+  if (length(year) == 0 || all(year >= census_first_year)) return("census_basic")
+  if (all(year < census_first_year)) return("unicon_basic")
   stop("a table mixes Unicon-era and Census-era years: ", paste(range(year), collapse = "-"))
 }
 
-#' The recode function column for an era.
-era_fns <- function(registry, era) if (era == "unicon") registry$fn_unicon else registry$fn
+#' Each variable's recode function for one source, in registry order.
+source_fns <- function(registry, source) registry[[paste0("fn_", source)]]
 
-read_registry <- function(registry_file) {
-  readr::read_csv(registry_file, col_types = readr::cols(.default = "c"), na = "") |>
+#' The data sources the registry has functions for.
+registry_sources <- function(registry) sub("^fn_", "", grep("^fn_", names(registry), value = TRUE))
+
+#' Read variables.csv and attach each source's functions from
+#' variable_functions.csv (as fn_<source> columns). Stops if a variable lacks
+#' a function for some source, or a function row names an unknown variable.
+read_registry <- function(registry_file, functions_file = file.path(dirname(registry_file), "variable_functions.csv")) {
+  registry <- readr::read_csv(registry_file, col_types = readr::cols(.default = "c"), na = "") |>
     dplyr::mutate(
       export = export == "TRUE",
       tolerance = as.numeric(tolerance),
       dplyr::across(c(depends, label, snippet), ~ dplyr::coalesce(.x, ""))
     )
+  functions <- readr::read_csv(functions_file, col_types = "ccc")
+  unknown <- setdiff(functions$variable, registry$variable)
+  if (length(unknown) > 0) stop("variable_functions.csv names unknown variables: ", paste(unknown, collapse = ", "))
+  # one fn_<source> column per source
+  for (src in unique(functions$source)) {
+    rows <- functions[functions$source == src, ]
+    registry[[paste0("fn_", src)]] <- rows$fn[match(registry$variable, rows$variable)]
+  }
+  incomplete <- registry$variable[!stats::complete.cases(registry[, grep("^fn_", names(registry))])]
+  if (length(incomplete) > 0) stop("variables without a function for every source: ", paste(incomplete, collapse = ", "))
+  registry
 }
 
 #' The recode functions the registry names, as a named list. Target commands
 #' take this list (not function names), so targets re-runs a step when any
 #' recode function it uses changes.
 registry_functions <- function(registry) {
-  fns <- unique(c(registry$fn, registry$fn_unicon))
+  fns <- unique(unlist(registry[, paste0("fn_", registry_sources(registry))], use.names = FALSE))
   missing <- fns[!vapply(fns, exists, logical(1), mode = "function")]
   if (length(missing) > 0) stop("registry names undefined functions: ", paste(missing, collapse = ", "))
   purrr::set_names(purrr::map(fns, ~ get(.x, mode = "function")), fns)
 }
 
 #' Columns each variable reads: its function's arguments (column kind) or its
-#' declared depends (table kind). For one era, or (era = NULL) both eras,
-#' which is what the computation order needs.
-registry_inputs <- function(registry, recode_functions, era = NULL) {
-  eras <- if (is.null(era)) c("census", "unicon") else era
+#' declared depends (table kind). For one source, or (source = NULL) every
+#' source, which is what the computation order needs.
+registry_inputs <- function(registry, recode_functions, source = NULL) {
+  sources <- if (is.null(source)) registry_sources(registry) else source
   purrr::map(seq_len(nrow(registry)), function(i) {
     if (registry$kind[i] == "table") return(strsplit(registry$depends[i], ";")[[1]])
-    eras |>
-      purrr::map(~ names(formals(recode_functions[[era_fns(registry, .x)[i]]]))) |>
+    sources |>
+      purrr::map(~ names(formals(recode_functions[[source_fns(registry, .x)[i]]]))) |>
       unlist() |>
       unique()
   }) |>
     purrr::set_names(registry$variable)
 }
 
-#' Raw columns to read for one era: inputs that no registry variable produces
+#' Raw columns to read for one source: inputs that no registry variable produces
 #' (a variable reading a raw column of its own name, like hrhhid, counts as raw).
-registry_raw_columns <- function(registry, recode_functions, era = "census") {
-  inputs <- registry_inputs(registry, recode_functions, era)
+registry_raw_columns <- function(registry, recode_functions, source = "census_basic") {
+  inputs <- registry_inputs(registry, recode_functions, source)
   purrr::imap(inputs, ~ .x[.x == .y | !.x %in% registry$variable]) |>
     unlist(use.names = FALSE) |>
     setdiff(c(context_names, file_columns)) |>
@@ -101,15 +123,15 @@ stage_order <- function(registry, recode_functions, stage) {
 }
 
 #' Compute every variable of one stage, in dependency order, with the
-#' functions of the table's era. An empty table (e.g. ORG before 1979) just
-#' gets the columns.
+#' functions of the table's source. An empty table (e.g. ORG before 1979)
+#' just gets the columns.
 run_stage <- function(data, registry, recode_functions, stage, context) {
   if (nrow(data) == 0) {
     for (v in registry$variable[registry$stage == stage]) data[[v]] <- numeric(0)
     return(data)
   }
   # the basic stage starts before year exists: use the file's year
-  fn_column <- era_fns(registry, data_era(if ("year" %in% names(data)) data$year else data$file_year))
+  fn_column <- source_fns(registry, data_source(if ("year" %in% names(data)) data$year else data$file_year))
   for (v in stage_order(registry, recode_functions, stage)) {
     entry <- registry[registry$variable == v, ]
     fn_name <- fn_column[registry$variable == v]

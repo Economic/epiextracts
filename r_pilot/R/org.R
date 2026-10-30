@@ -5,7 +5,7 @@
 #' (as in Stata, so e.g. the hhid numbering only counts the households that
 #' remain). Distinct from recode_age(), which sets age to missing.
 filter_basic_universe <- function(raw) {
-  if (data_era(raw$file_year) == "unicon") return(dplyr::filter(raw, !is.na(u_age)))
+  if (data_source(raw$file_year) == "unicon_basic") return(dplyr::filter(raw, !is.na(u_age)))
   dplyr::filter(raw, recode_raw_age(peage, prtage) >= 0)
 }
 
@@ -21,14 +21,14 @@ filter_org_universe <- function(data) {
 }
 
 #' Basic table for a set of raw months: read the raw columns the registry
-#' needs for the files' era, apply the basic universe, compute every
+#' needs for the files' source, apply the basic universe, compute every
 #' basic-stage variable, keep registry columns. `source` picks the basic
 #' monthly files or the separate ORG files (1979-1983).
 recode_basic_year <- function(raw_files, registry, recode_functions, context, source = c("basic", "org")) {
   source <- match.arg(source)
   raw_files <- raw_files[is_org_file(raw_files) == (source == "org")]
   years <- as.integer(sub("^(org_)?([0-9]{4})_.*$", "\\2", basename(raw_files)))
-  columns <- registry_raw_columns(registry, recode_functions, data_era(years))
+  columns <- registry_raw_columns(registry, recode_functions, data_source(years))
   read_raw_year(raw_files, columns, context$telework_files) |>
     filter_basic_universe() |>
     run_stage(registry, recode_functions, "basic", context) |>

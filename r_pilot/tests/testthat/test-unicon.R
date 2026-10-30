@@ -1,8 +1,8 @@
-test_that("each year runs one era's functions", {
-  expect_equal(data_era(c(1980, 1993)), "unicon")
-  expect_equal(data_era(c(1994, 2026)), "census")
-  expect_equal(data_era(numeric(0)), "census")
-  expect_error(data_era(c(1993, 1994)), "mixes")
+test_that("each year runs one source's functions", {
+  expect_equal(data_source(c(1980, 1993)), "unicon_basic")
+  expect_equal(data_source(c(1994, 2026)), "census_basic")
+  expect_equal(data_source(numeric(0)), "census_basic")
+  expect_error(data_source(c(1993, 1994)), "mixes")
 })
 
 test_that("cached file names give the year, month and Stata's file flags", {
