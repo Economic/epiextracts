@@ -200,13 +200,39 @@ sample_labels <- function(registry, sample) {
   labels
 }
 
+# Value-label sets Stata attaches in some of a sample's years instead of the
+# variable's own (value_labels.csv holds the set under its own name): March
+# 1998-2000 statecensus is Census's hg_st60 renamed, full state names.
+value_label_overrides <- tibble::tribble(
+  ~sample, ~years,     ~variable,     ~label_set,
+  "march", 1998:2000,  "statecensus", "hg_st60"
+)
+
+#' Value labels for one sample and year: value_labels.csv with the year's
+#' value_label_overrides swapped in.
+sample_value_labels <- function(value_labels, sample, year) {
+  overrides <- value_label_overrides[value_label_overrides$sample == sample &
+                                       purrr::map_lgl(value_label_overrides$years, ~ any(year %in% .x)), ]
+  for (i in seq_len(nrow(overrides))) {
+    replacement <- value_labels[value_labels$variable == overrides$label_set[i], ]
+    replacement$variable <- overrides$variable[i]
+    value_labels <- dplyr::bind_rows(value_labels[value_labels$variable != overrides$variable[i], ], replacement)
+  }
+  value_labels
+}
+
 # years whose published files have statefips before division and region and
 # statecensus after them (generate_statefips.do merges the geocodes that way)
 state_swap_years <- list(basic = 1978:1993, org = 1978:1993, may = 1978:1993, march = 1977:2000)
 
+# years whose published files start with statecensus: March 1998-2000 rename
+# hg_st60, which comes first in the Census file
+statecensus_first_years <- list(march = 1998:2000)
+
 #' Exported columns for one sample, in published order: the registry order,
 #' or the sample's own order from sample_columns.csv (March). In
-#' state_swap_years, statefips and statecensus swap places.
+#' state_swap_years, statefips and statecensus swap places; in
+#' statecensus_first_years statecensus moves to the front.
 export_columns <- function(registry, sample, year = NULL) {
   columns <- registry$variable[registry$export & purrr::map_lgl(strsplit(registry$samples, ";"), ~ sample %in% .x)]
   own_order <- attr(registry, "sample_columns")
@@ -217,6 +243,9 @@ export_columns <- function(registry, sample, year = NULL) {
   if (length(year) == 1 && year %in% state_swap_years[[sample]]) {
     swap <- match(c("statecensus", "statefips"), columns)
     columns[swap] <- c("statefips", "statecensus")
+  }
+  if (length(year) == 1 && year %in% statecensus_first_years[[sample]]) {
+    columns <- c("statecensus", setdiff(columns, "statecensus"))
   }
   columns
 }

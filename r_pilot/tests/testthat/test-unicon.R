@@ -71,3 +71,43 @@ test_that("May rules", {
   d <- read_raw_year(file.path(dir, "march_1975_03.parquet"), "u_age")
   expect_equal(c(d$file_year, d$file_month, d$earnerinfo, d$basicfile), c(1975, 3, 0, 0))
 })
+
+test_that("March rules for the shared variables", {
+  geocodes <- build_state_geocodes(file.path(repo_dir, "suppdata/state_geocodes.csv"))
+  # 1962 has no geography; 1963-1967 Unicon codes to FIPS; 1968-1976 small states grouped; 1977+ Census codes
+  expect_equal(recode_statefips_unicon_march(c(1, 89), c(1962, 1962), geocodes), c(NA_real_, NA_real_))
+  expect_equal(recode_statefips_unicon_march(c(1, 89), c(1965, 1965), geocodes), c(23, 6))
+  expect_equal(recode_statefips_unicon_march(c(19, 99, 12), rep(1970, 3), geocodes), c(101, 111, 12))
+  expect_equal(recode_statefips_unicon_march(c(19, 99), c(1975, 1975), geocodes), c(112, 119))
+  expect_equal(recode_statefips_unicon_march(c(11, 93), c(1990, 1990), geocodes), c(23, 6))
+  expect_equal(recode_statecensus(c(101, 23), geocodes), c(101, 11))
+  # 1998-2000 Census state code, then FIPS
+  expect_equal(recode_statefips_census_march(c(11, 93), NA, c(1999, 1999), geocodes), c(23, 6))
+  expect_equal(recode_statefips_census_march(NA, c(23, 6), c(2005, 2005), geocodes), c(23, 6))
+  # metstat: citystat codes change in 1968
+  expect_equal(recode_metstat_unicon_march(c(0, 1, 2), NA, rep(1965, 3)), c(1, 1, 0))
+  expect_equal(recode_metstat_unicon_march(c(1, 2, 3), NA, rep(1970, 3)), c(1, 1, 0))
+  # 1962 race codes go through the 1963 rules in wbho (white missing); Hispanic overrides
+  expect_equal(recode_wbho_unicon_march(c(0, 1, 2), rep(1962, 3), c(0, 0, 0)), c(NA, 1, 2))
+  expect_equal(recode_wbho_unicon_march(c(1, 5, 1), rep(1990, 3), c(0, 0, 1)), c(1, 4, 3))
+  expect_equal(recode_raceorig_unicon_march(c(0, 1, 2), rep(1962, 3)), c(1, 2, 0))
+  # wbhom: March 2012 is outside both windows
+  expect_equal(recode_wbhom_census_march(c(1, 1), c(2011, 2012), c(3, 3), c(0, 0)), c(1, NA))
+  # unguarded comparisons treat missing as larger than any number
+  expect_equal(recode_wbo_only_census_march(c(1, 4, NA), NA, rep(2000, 3)), c(1, 3, 3))
+  expect_equal(march_hours_vary(c(-4, 40, NA, -1)), c(1, 0, 0, NA))
+  # hoursuorg from 1995 only in the years Stata's first record was in the earnings sample
+  expect_equal(recode_hoursuorg_unicon_march(c(40, 40), c(1994, 1994)), c(40, 40))
+  expect_equal(recode_hoursuorg_unicon_march(40, 1995), NA_real_)
+  expect_equal(recode_hoursuorg_census_march(c(40, -4), c(2011, 2011)), c(40, NA))
+  expect_equal(recode_hoursuorg_census_march(40, 2012), NA_real_)
+  # educ: 1962 grdcom 6 = completed, 7 = not; 1968-1987 grdhi 1-12 first
+  expect_equal(recode_educ_unicon_march(u__grdhi = c(12, 12, 18), u_grdhi = NA, u_grdcom = c(6, 7, 0),
+                                        u_grdatn = NA, year = rep(1962, 3)), c(2, 1, 5))
+  expect_equal(recode_educ_unicon_march(u__grdhi = c(16, 0), u_grdhi = c(5, 1), u_grdcom = c(1, 1),
+                                        u_grdatn = NA, year = c(1970, 1970)), c(4, 1))
+  # family income from 2019: ftot_r brackets grouped
+  expect_equal(recode_i_faminc_census_march(NA, NA, NA, c(1, 3, 8, 20, 41), rep(2019, 5)), c(1, 2, 6, 11, 14))
+  # reason absent: 1963-1967 codes onto the 1994 codes
+  expect_equal(recode_whyabsent_unicon_march(c(1, 5), NA, c(1965, 1965)), c(5, 14))
+})

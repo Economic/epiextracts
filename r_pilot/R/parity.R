@@ -159,6 +159,7 @@ compare_metadata_year <- function(reference_meta, registry, value_labels, sample
   if (is.null(reference_meta)) return(tibble::tibble())
   columns <- export_columns(registry, sample, year)
   in_reference <- columns[columns %in% reference_meta$columns]
+  value_labels <- sample_value_labels(value_labels, sample, year)
 
   # value labels as "value=label" strings, so sets can be compared
   label_set <- function(d, v) {

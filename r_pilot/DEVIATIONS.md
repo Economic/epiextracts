@@ -52,8 +52,31 @@ not listed here matches.
   - *Ported from `marchcps`:* the published 2026.10.13 extracts were built
     from the `marchcps` branch (`i_faminc`, `i_faminc_det`, `hoursvary`,
     published column order), so its `generate_*.do` scripts are the source.
-  - *March/May only, not yet relevant:* `marchwgt` is never run;
-    `generate_finalwgt.do` reads the March weight under `$maycps`.
+  - *March/May:* `marchwgt` is never run; `generate_finalwgt.do` reads the
+    March weight under `$maycps`, so March `finalwgt` is missing (reproduced).
+- **March quirks, reproduced (Phase 5.3)**; fixing any of them is a Phase 7
+  decision, made for both pipelines:
+  - `hoursuorg` from 1995: `if ernel == 1 {` (`prerelg` from 1998) is a
+    block `if`, so Stata reads only the first record, after the geocode
+    merge has sorted by state with ties in no fixed order. Every row gets
+    the hours in the years that record happened to be in the earnings
+    sample (1996, 2000, 2006, 2011, 2014), none in the others. R uses that
+    list of years (`march_hoursuorg_years`); a new year is missing. The
+    intended rule is a per-row qualifier.
+  - `statecensus` in 1998–2000 is Census's `hg_st60` renamed: it is the
+    first column and carries full state names as value labels
+    (`value_label_overrides`, `statecensus_first_years` in R/registry.R).
+  - 1962 geography is missing (the merge keeps only unmatched rows), as
+    for Basic 1976–1977.
+  - 1962 race codes (0 white, 1 black, 2 other) go through the 1963 rules
+    in `wbho`/`wbho_only`, so white is missing and black/other read as
+    white/black; `raceorig`/`wbo_only` have their own 1962 rules.
+  - `wbhom`/`wbhaom`: the 2003 window ends at 2012m1, so March 2012 is
+    missing. `wbo_only` 1988–1995 leaves American Indian (race 3) missing.
+  - No branch, so missing: `i_faminc` 1989, `famrel` 1968–1987,
+    `a_weekpay` (it reads `weekpay`, abbreviated to `weekpay_noadj`, which
+    is missing in March), `hoursu1`, the `hoursvary*` items,
+    `i_faminc_det`, `tc_earnhour` and the disability items.
   - Note/label typos: `pubfed` (class6 vs class8), `schenrl` (1993 vs 1984),
     `difficulty` ("Doesn't not"). Labels are copied as published, typos
     included; fixing them is a docs decision (Phase 5).

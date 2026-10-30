@@ -17,6 +17,7 @@ store_values <- function(x) {
 label_extract <- function(data, registry, value_labels, sample, label) {
   columns <- export_columns(registry, sample, unique(data$year))
   var_labels <- sample_labels(registry, sample)
+  value_labels <- sample_value_labels(value_labels, sample, unique(data$year))
   data <- data[, columns]
   for (v in columns) {
     data[[v]] <- store_values(data[[v]])

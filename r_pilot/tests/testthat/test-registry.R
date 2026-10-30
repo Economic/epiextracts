@@ -20,8 +20,8 @@ test_that("table-kind variables declare the columns they read", {
   expect_true(all(unlist(strsplit(tables$depends, ";")) %in% registry$variable))
 })
 
-test_that("value labels only cover exported variables", {
-  expect_true(all(value_labels$variable %in% registry$variable[registry$export]))
+test_that("value labels only cover exported variables and override sets", {
+  expect_true(all(value_labels$variable %in% c(registry$variable[registry$export], value_label_overrides$label_set)))
   expect_false(any(duplicated(value_labels[, c("variable", "value")])))
 })
 
@@ -75,6 +75,14 @@ test_that("March has its own column order, join keys and notes", {
   # the state columns swap in 1977-2000
   expect_lt(match("statefips", export_columns(registry, "march", 1990)), match("division", export_columns(registry, "march", 1990)))
   expect_true(all(sample_join_keys("march") %in% march))
+  # 1998-2000 start with statecensus, which carries hg_st60's full state names
+  expect_equal(export_columns(registry, "march", 1999)[1], "statecensus")
+  expect_equal(export_columns(registry, "march", 2001)[1], "year")
+  labels_1999 <- sample_value_labels(value_labels, "march", 1999)
+  expect_equal(labels_1999$label[labels_1999$variable == "statecensus" & labels_1999$value == 14], "Massachusetts")
+  expect_equal(sum(labels_1999$variable == "statecensus"), 51)
+  expect_identical(sample_value_labels(value_labels, "march", 2001), value_labels)
+  expect_identical(sample_value_labels(value_labels, "basic", 1999), value_labels)
   notes <- readr::read_csv(file.path(pilot_dir, "variable_notes.csv"), col_types = "ccic")
   expect_setequal(unique(notes$sample), c("basic", "march"))
   expect_true(all(notes_for(notes, "org")$sample == "basic"))
