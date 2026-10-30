@@ -1,145 +1,204 @@
 variable,family,stage,kind,depends,export,samples,tolerance,stata_type,label,snippet
-year,ids,basic,column,,TRUE,basic;org;may,0,integer,Year,
-month,ids,basic,column,,TRUE,basic;org;may,0,integer,Month,
-minsamp,ids,basic,column,,TRUE,basic;org;may,0,integer,Month in sample,
-hrhhid,ids,basic,column,,TRUE,basic;org;may,0,,CPS: Household identifier (Part 1),
-hrhhid2,ids,basic,column,,TRUE,basic;org;may,0,,CPS: Household identifier (Part 2),recode_hrhhid2
+year,ids,basic,column,,TRUE,basic;org;may;march,0,integer,Year,
+month,ids,basic,column,,TRUE,basic;org;may;march,0,integer,Month,
+minsamp,ids,basic,column,,TRUE,basic;org;may;march,0,integer,Month in sample,
+hrhhid,ids,basic,column,,TRUE,basic;org;may;march,0,,CPS: Household identifier (Part 1),
+hrhhid2,ids,basic,column,,TRUE,basic;org;may;march,0,,CPS: Household identifier (Part 2),recode_hrhhid2
 hrsample,ids,basic,column,,TRUE,basic;org;may,0,,CPS: Household sample identifier,recode_hrsample
 hrsersuf,ids,basic,column,,TRUE,basic;org;may,0,,May/Basic: Household serial suffix,recode_hrsersuf
 huhhnum,ids,basic,column,,TRUE,basic;org;may,0,integer,CPS: Household number,in_window;recode_huhhnum
-pulineno,ids,basic,column,,TRUE,basic;org;may,0,integer,CPS: Person line number within household,
-unicon_recnum,ids,basic,column,,TRUE,basic;org;may,0,integer,"Unicon unique person record, 1973-1993",
+pulineno,ids,basic,column,,TRUE,basic;org;may;march,0,integer,CPS: Person line number within household,
+unicon_recnum,ids,basic,column,,TRUE,basic;org;may;march,0,integer,"Unicon unique person record, 1973-1993",
 hhid,ids,basic,column,,TRUE,basic;org;may,0,,Household identifer (unique within month),
-famid,household,basic,column,,TRUE,basic;org;may,0,integer,Family identifer (unique within household),recode_famid
-personid,ids,basic,column,,TRUE,basic;org;may,0,,Person identifer (unique within household-month),
+famid,household,basic,column,,TRUE,basic;org;may;march,0,integer,Family identifer (unique within household),recode_famid
+personid,ids,basic,column,,TRUE,basic;org;may;march,0,,Person identifer (unique within household-month),
 proxy,household,basic,column,,TRUE,basic;org;may,0,integer,Self or proxy response,recode_proxy
-hhtype,household,basic,column,,TRUE,basic;org;may,0,,Household type,recode_hhtype
-famtype,household,basic,column,,TRUE,basic;org;may,0,,Family type (person level),recode_famtype
-finalwgt,weights,basic,column,,TRUE,basic;org;may,0.01,,Final basic monthly weight,
+hhtype,household,basic,column,,TRUE,basic;org;may;march,0,,Household type,recode_hhtype
+famtype,household,basic,column,,TRUE,basic;org;may;march,0,,Family type (person level),recode_famtype
+finalwgt,weights,basic,column,,TRUE,basic;org;may;march,0.01,,Final basic monthly weight,
 cmpwgt,weights,basic,column,,TRUE,basic;org;may,0.01,,Composited final monthly weight,recode_cmpwgt
 basicwgt,weights,basic,column,,TRUE,basic;org;may,0.01,,Basic monthly weight,recode_basicwgt
 orgwgt,weights,basic,column,,TRUE,basic;org;may,0.01,,Earnings weight,recode_orgwgt
-hhwgt,weights,basic,column,,TRUE,basic;org;may,0.01,,Household weight,recode_hhwgt
-famwgt,weights,basic,column,,TRUE,basic;org;may,0.01,,Family weight,recode_famwgt
-statecensus,geography,basic,column,,TRUE,basic;org;may,0,,State - Census code,build_state_geocodes;recode_statecensus
-division,geography,basic,column,,TRUE,basic;org;may,0,,Census division (1-9),build_state_geocodes;recode_division
-region,geography,basic,column,,TRUE,basic;org;may,0,,Census region (1-4),build_state_geocodes;recode_region
-statefips,geography,basic,column,,TRUE,basic;org;may,0,integer,State - FIPS code,recode_statefips
-countyfips,geography,basic,column,,TRUE,basic;org;may,0,,County - FIPS code,recode_countyfips
-cbsafips,geography,basic,column,,TRUE,basic;org;may,0,,Core Based Statistical Area - FIPS code,recode_cbsafips
-metstat,geography,basic,column,,TRUE,basic;org;may,0,,Metropolitan status,recode_metstat
-cbsasize,geography,basic,column,,TRUE,basic;org;may,0,,Size of metropolitan area (CBSA),recode_cbsasize
-age,demographics,basic,column,,TRUE,basic;org;may,0,integer,Age,recode_raw_age;recode_age
-female,demographics,basic,column,,TRUE,basic;org;may,0,integer,Female,recode_female
-hispanic,demographics,basic,column,,TRUE,basic;org;may,0,integer,Hispanic ethnicity,recode_hispanic
-wbho,demographics,basic,column,,TRUE,basic;org;may,0,integer,Race/ethnicity,recode_wbho
-wbhao,demographics,basic,column,,TRUE,basic;org;may,0,integer,"Race/ethnicity, including Asian",race_era;recode_wbhao
-wbhom,demographics,basic,column,,TRUE,basic;org;may,0,integer,"Race/ethnicity, including multiple",race_era;recode_wbhom
-wbhaom,demographics,basic,column,,TRUE,basic;org;may,0,integer,"Race/ethnicity, including Asian and multiple",race_era;recode_wbhaom
-raceorig,demographics,basic,column,,TRUE,basic;org;may,0,integer,"Race, minimally recoded, detailed",race_era;recode_raceorig
-wbo_only,demographics,basic,column,,TRUE,basic;org;may,0,integer,"Race: white only, black only, other",race_era;race_only;recode_wbo_only
-wbho_only,demographics,basic,column,,TRUE,basic;org;may,0,integer,"Race: white only, black only, hispanic, other",race_era;race_only;recode_wbho_only
-citistat,demographics,basic,column,,TRUE,basic;org;may,0,integer,"Citizenship status, detailed",recode_citistat
-citizen,demographics,basic,column,,TRUE,basic;org;may,0,integer,US citizen,recode_citizen
-married,demographics,basic,column,,TRUE,basic;org;may,0,integer,Married,recode_married
-veteran,demographics,basic,column,,TRUE,basic;org;may,0,integer,Veteran status,recode_veteran
+hhwgt,weights,basic,column,,TRUE,basic;org;may;march,0.01,,Household weight,recode_hhwgt
+famwgt,weights,basic,column,,TRUE,basic;org;may;march,0.01,,Family weight,recode_famwgt
+statecensus,geography,basic,column,,TRUE,basic;org;may;march,0,,State - Census code,build_state_geocodes;recode_statecensus
+division,geography,basic,column,,TRUE,basic;org;may;march,0,,Census division (1-9),build_state_geocodes;recode_division
+region,geography,basic,column,,TRUE,basic;org;may;march,0,,Census region (1-4),build_state_geocodes;recode_region
+statefips,geography,basic,column,,TRUE,basic;org;may;march,0,integer,State - FIPS code,recode_statefips
+countyfips,geography,basic,column,,TRUE,basic;org;may;march,0,,County - FIPS code,recode_countyfips
+cbsafips,geography,basic,column,,TRUE,basic;org;may;march,0,,Core Based Statistical Area - FIPS code,recode_cbsafips
+metstat,geography,basic,column,,TRUE,basic;org;may;march,0,,Metropolitan status,recode_metstat
+cbsasize,geography,basic,column,,TRUE,basic;org;may;march,0,,Size of metropolitan area (CBSA),recode_cbsasize
+age,demographics,basic,column,,TRUE,basic;org;may;march,0,integer,Age,recode_raw_age;recode_age
+female,demographics,basic,column,,TRUE,basic;org;may;march,0,integer,Female,recode_female
+hispanic,demographics,basic,column,,TRUE,basic;org;may;march,0,integer,Hispanic ethnicity,recode_hispanic
+wbho,demographics,basic,column,,TRUE,basic;org;may;march,0,integer,Race/ethnicity,recode_wbho
+wbhao,demographics,basic,column,,TRUE,basic;org;may;march,0,integer,"Race/ethnicity, including Asian",race_era;recode_wbhao
+wbhom,demographics,basic,column,,TRUE,basic;org;may;march,0,integer,"Race/ethnicity, including multiple",race_era;recode_wbhom
+wbhaom,demographics,basic,column,,TRUE,basic;org;may;march,0,integer,"Race/ethnicity, including Asian and multiple",race_era;recode_wbhaom
+raceorig,demographics,basic,column,,TRUE,basic;org;may;march,0,integer,"Race, minimally recoded, detailed",race_era;recode_raceorig
+wbo_only,demographics,basic,column,,TRUE,basic;org;may;march,0,integer,"Race: white only, black only, other",race_era;race_only;recode_wbo_only
+wbho_only,demographics,basic,column,,TRUE,basic;org;may;march,0,integer,"Race: white only, black only, hispanic, other",race_era;race_only;recode_wbho_only
+citistat,demographics,basic,column,,TRUE,basic;org;may;march,0,integer,"Citizenship status, detailed",recode_citistat
+citizen,demographics,basic,column,,TRUE,basic;org;may;march,0,integer,US citizen,recode_citizen
+married,demographics,basic,column,,TRUE,basic;org;may;march,0,integer,Married,recode_married
+veteran,demographics,basic,column,,TRUE,basic;org;may;march,0,integer,Veteran status,recode_veteran
 gradecom,education,basic,column,,TRUE,basic;org;may,0,,Completed highest grade attended,
-gradehi,education,basic,column,,TRUE,basic;org;may,0,,Highest grade attended,
-gradeatn,education,basic,column,,TRUE,basic;org;may,0,,"Education level attained, detailed, post-1991",recode_gradeatn
-educ,education,basic,column,,TRUE,basic;org;may,0,integer,Education level,recode_educ
-lfstat,labor force,basic,column,,TRUE,basic;org;may,0,integer,Labor-force status,recode_lfstat
-dlfstat,labor force,basic,column,,TRUE,basic;org;may,0,integer,Labor-force status,drop_niu;recode_dlfstat
-emp,labor force,basic,column,,TRUE,basic;org;may,0,integer,Employed,recode_emp
+gradehi,education,basic,column,,TRUE,basic;org;may;march,0,,Highest grade attended,
+gradeatn,education,basic,column,,TRUE,basic;org;may;march,0,,"Education level attained, detailed, post-1991",recode_gradeatn
+educ,education,basic,column,,TRUE,basic;org;may;march,0,integer,Education level,recode_educ
+lfstat,labor force,basic,column,,TRUE,basic;org;may;march,0,integer,Labor-force status,recode_lfstat
+dlfstat,labor force,basic,column,,TRUE,basic;org;may;march,0,integer,Labor-force status,drop_niu;recode_dlfstat
+emp,labor force,basic,column,,TRUE,basic;org;may;march,0,integer,Employed,recode_emp
 emphrs,labor force,basic,column,,TRUE,basic;org;may,0,integer,Reason not at work/hours last week,drop_niu;recode_emphrs
-unemp,labor force,basic,column,,TRUE,basic;org;may,0,integer,Unemployed,recode_unemp
-nilf,labor force,basic,column,,TRUE,basic;org;may,0,integer,Not in labor force,recode_nilf
+unemp,labor force,basic,column,,TRUE,basic;org;may;march,0,integer,Unemployed,recode_unemp
+nilf,labor force,basic,column,,TRUE,basic;org;may;march,0,integer,Not in labor force,recode_nilf
 samejob,labor force,basic,column,,TRUE,basic;org;may,0,integer,"Same employer as last month, at main job",yes_no;recode_samejob
-whyabsent,labor force,basic,column,,TRUE,basic;org;may,0,integer,Reason absent from work,drop_niu;recode_whyabsent
-whyunemp,labor force,basic,column,,TRUE,basic;org;may,0,integer,Reason for unemployment,drop_niu;recode_whyunemp
-selfemp,class of worker,basic,column,,TRUE,basic;org;may,0,integer,Self-employed (unincorporated),class_indicator;recode_selfemp
-selfinc,class of worker,basic,column,,TRUE,basic;org;may,0,integer,Incorporated self-employed,class_indicator;recode_selfinc
-cow1,class of worker,basic,column,,TRUE,basic;org;may,0,integer,"Class of Worker, 1st job",recode_cow1
+whyabsent,labor force,basic,column,,TRUE,basic;org;may;march,0,integer,Reason absent from work,drop_niu;recode_whyabsent
+whyunemp,labor force,basic,column,,TRUE,basic;org;may;march,0,integer,Reason for unemployment,drop_niu;recode_whyunemp
+selfemp,class of worker,basic,column,,TRUE,basic;org;may;march,0,integer,Self-employed (unincorporated),class_indicator;recode_selfemp
+selfinc,class of worker,basic,column,,TRUE,basic;org;may;march,0,integer,Incorporated self-employed,class_indicator;recode_selfinc
+cow1,class of worker,basic,column,,TRUE,basic;org;may;march,0,integer,"Class of Worker, 1st job",recode_cow1
 cow2,class of worker,basic,column,,TRUE,basic;org;may,0,integer,"Class of Worker, 2nd job",recode_cow2
 multjobs,labor force,basic,column,,TRUE,basic;org;may,0,integer,Multiple job holder,yes_no;recode_multjobs
 numjobs,labor force,basic,column,,TRUE,basic;org;may,0,integer,Number of jobs,recode_numjobs
-unmem,labor force,basic,column,,TRUE,basic;org;may,0,integer,Member of a union,recode_unmem
-uncov,labor force,basic,column,,TRUE,basic;org;may,0,integer,Covered by a union contract (not a member),recode_uncov
-union,labor force,basic,column,,TRUE,basic;org;may,0,integer,Represented by a union as a member or covered by contract,recode_union
-pubsec,labor force,basic,column,,TRUE,basic;org;may,0,integer,Public sector employee,recode_pubsec
-publoc,class of worker,basic,column,,TRUE,basic;org;may,0,integer,Local government employee,class_indicator;recode_publoc
-pubst,class of worker,basic,column,,TRUE,basic;org;may,0,integer,State government employee,class_indicator;recode_pubst
-pubfed,class of worker,basic,column,,TRUE,basic;org;may,0,integer,Federal government employee,class_indicator;recode_pubfed
-unempdur,labor force,basic,column,,TRUE,basic;org;may,0,integer,"Unemployment duration, in weeks",nonnegative;recode_unempdur
+unmem,labor force,basic,column,,TRUE,basic;org;may;march,0,integer,Member of a union,recode_unmem
+uncov,labor force,basic,column,,TRUE,basic;org;may;march,0,integer,Covered by a union contract (not a member),recode_uncov
+union,labor force,basic,column,,TRUE,basic;org;may;march,0,integer,Represented by a union as a member or covered by contract,recode_union
+pubsec,labor force,basic,column,,TRUE,basic;org;may;march,0,integer,Public sector employee,recode_pubsec
+publoc,class of worker,basic,column,,TRUE,basic;org;may;march,0,integer,Local government employee,class_indicator;recode_publoc
+pubst,class of worker,basic,column,,TRUE,basic;org;may;march,0,integer,State government employee,class_indicator;recode_pubst
+pubfed,class of worker,basic,column,,TRUE,basic;org;may;march,0,integer,Federal government employee,class_indicator;recode_pubfed
+unempdur,labor force,basic,column,,TRUE,basic;org;may;march,0,integer,"Unemployment duration, in weeks",nonnegative;recode_unempdur
 lookdur,labor force,basic,column,,TRUE,basic;org;may,0,integer,Job seeking duration (weeks),nonnegative;recode_lookdur
-discwork,labor force,basic,column,,TRUE,basic;org;may,0,integer,Discourged worker,recode_discwork
+discwork,labor force,basic,column,,TRUE,basic;org;may;march,0,integer,Discourged worker,recode_discwork
 ptecon,labor force,basic,column,,TRUE,basic;org;may,0,integer,Part-time for economic reasons,recode_ptecon
-ftptstat,labor force,basic,column,,TRUE,basic;org;may,0,integer,Full/part-time work status,recode_ftptstat
-paidhre,earnings,basic,column,,TRUE,basic;org;may,0,,Paid by hour,
-hoursu1,hours,basic,column,,TRUE,basic;org;may,0,integer,"Usual hours worked per week, main job",
+ftptstat,labor force,basic,column,,TRUE,basic;org;may;march,0,integer,Full/part-time work status,recode_ftptstat
+paidhre,earnings,basic,column,,TRUE,basic;org;may;march,0,,Paid by hour,
+hoursu1,hours,basic,column,,TRUE,basic;org;may;march,0,integer,"Usual hours worked per week, main job",
 hoursu2,hours,basic,column,,TRUE,basic;org;may,0,integer,"Usual hours worked per week, other jobs",nonnegative;recode_hoursu2
-hoursut,hours,basic,column,,TRUE,basic;org;may,0,integer,"Usual hours worked per week, all jobs",nonnegative;recode_hoursut
+hoursut,hours,basic,column,,TRUE,basic;org;may;march,0,integer,"Usual hours worked per week, all jobs",nonnegative;recode_hoursut
 hourslw1,hours,basic,column,,TRUE,basic;org;may,0,integer,"Hours worked last week, main job",nonnegative;recode_hourslw1
 hourslw2,hours,basic,column,,TRUE,basic;org;may,0,integer,"Hours worked last week, other jobs",nonnegative;recode_hourslw2
-hourslwt,hours,basic,column,,TRUE,basic;org;may,0,integer,"Hours worked last week, total",nonnegative;recode_hourslwt
+hourslwt,hours,basic,column,,TRUE,basic;org;may;march,0,integer,"Hours worked last week, total",nonnegative;recode_hourslwt
 hoursumay,hours,basic,column,,TRUE,basic;org;may,0,integer,Usual hours worked per week at main job (May supplement),
-hoursuorg,hours,basic,column,,TRUE,basic;org;may,0,integer,Usual hours worked per week at this rate/job (earner study),
-hoursvary1,hours,basic,column,,TRUE,basic;org;may,0,integer,"Usual hours vary, main job",
-hoursvary2,hours,basic,column,,TRUE,basic;org;may,0,integer,"Usual hours vary, other job",hours_vary;recode_hoursvary2
-hoursvaryt,hours,basic,column,,TRUE,basic;org;may,0,integer,"Usual hours vary, all jobs",hours_vary;recode_hoursvaryt
+hoursuorg,hours,basic,column,,TRUE,basic;org;may;march,0,integer,Usual hours worked per week at this rate/job (earner study),
+hoursvary1,hours,basic,column,,TRUE,basic;org;may;march,0,integer,"Usual hours vary, main job",
+hoursvary2,hours,basic,column,,TRUE,basic;org;may;march,0,integer,"Usual hours vary, other job",hours_vary;recode_hoursvary2
+hoursvaryt,hours,basic,column,,TRUE,basic;org;may;march,0,integer,"Usual hours vary, all jobs",hours_vary;recode_hoursvaryt
 hoursuint,hours,basic,column,,TRUE,basic;org;may,0,integer,"Usual hours worked weekly, intervalled",
-hoursvary,hours,basic,column,,TRUE,basic;org;may,0,integer,"Usual hours vary, main job",hours_vary;recode_hoursvary
-ind70,industry,basic,column,,TRUE,basic;org;may,0,,1970 Census Industry Classification,in_window;recode_ind70
-ind80,industry,basic,column,,TRUE,basic;org;may,0,,1980 Census Industry Classification,in_window;recode_ind80
-ind90,industry,basic,column,,TRUE,basic;org;may,0,,1990 Census Industry Classification,in_window;recode_ind90
-ind02,industry,basic,column,,TRUE,basic;org;may,0,,2002 Census Industry Classification,in_window;recode_ind02
-ind07,industry,basic,column,,TRUE,basic;org;may,0,,2007 Census Industry Classification,in_window;recode_ind07
-ind12,industry,basic,column,,TRUE,basic;org;may,0,,2012 Census Industry Classification,in_window;recode_ind12
-ind17,industry,basic,column,,TRUE,basic;org;may,0,,2017 Census Industry Classification,in_window;recode_ind17
-ind22,industry,basic,column,,TRUE,basic;org;may,0,,2022 Census Industry Classification,in_window;recode_ind22
-mind16,industry,basic,column,,TRUE,basic;org;may,0,integer,Major industry (consistent),recode_mind16
-manuf,industry,basic,column,,TRUE,basic;org;may,0,integer,Manufacturing industry,recode_manuf
-dind03,industry,basic,column,,TRUE,basic;org;may,0,integer,"Detailed industry recode, 2003-present",recode_dind03
-mind03,industry,basic,column,,TRUE,basic;org;may,0,integer,"Major industry recode, 2003-present",recode_mind03
-occcode,occupation,basic,column,,TRUE,basic;org;may,0,integer,Occupation: original census code,recode_occcode
-occ70,occupation,basic,column,,TRUE,basic;org;may,0,,1970 Census Occupation Classification,in_window;recode_occ70
-occ80,occupation,basic,column,,TRUE,basic;org;may,0,,1980 Census Occupation Classification,in_window;recode_occ80
-occ90,occupation,basic,column,,TRUE,basic;org;may,0,,1990 Census Occupation Classification,in_window;recode_occ90
-occ00,occupation,basic,column,,TRUE,basic;org;may,0,,2000 Census Occupation Classification,in_window;recode_occ00
-occ10,occupation,basic,column,,TRUE,basic;org;may,0,,2010 Census Occupation Classification,in_window;recode_occ10
-occ18,occupation,basic,column,,TRUE,basic;org;may,0,,2018 Census Occupation Classification,in_window;recode_occ18
-mocc10,occupation,basic,column,,TRUE,basic;org;may,0,integer,Major occupation (consistent),read_mocc10_crosswalk;recode_mocc10
-mocc03,occupation,basic,column,,TRUE,basic;org;may,0,integer,"Major occupation recode, 2003-present",recode_mocc03
-docc03,occupation,basic,column,,TRUE,basic;org;may,0,integer,"Detailed occupation recode, 2003-present",recode_docc03
+hoursvary,hours,basic,column,,TRUE,basic;org;may;march,0,integer,"Usual hours vary, main job",hours_vary;recode_hoursvary
+ind70,industry,basic,column,,TRUE,basic;org;may;march,0,,1970 Census Industry Classification,in_window;recode_ind70
+ind80,industry,basic,column,,TRUE,basic;org;may;march,0,,1980 Census Industry Classification,in_window;recode_ind80
+ind90,industry,basic,column,,TRUE,basic;org;may;march,0,,1990 Census Industry Classification,in_window;recode_ind90
+ind02,industry,basic,column,,TRUE,basic;org;may;march,0,,2002 Census Industry Classification,in_window;recode_ind02
+ind07,industry,basic,column,,TRUE,basic;org;may;march,0,,2007 Census Industry Classification,in_window;recode_ind07
+ind12,industry,basic,column,,TRUE,basic;org;may;march,0,,2012 Census Industry Classification,in_window;recode_ind12
+ind17,industry,basic,column,,TRUE,basic;org;may;march,0,,2017 Census Industry Classification,in_window;recode_ind17
+ind22,industry,basic,column,,TRUE,basic;org;may;march,0,,2022 Census Industry Classification,in_window;recode_ind22
+mind16,industry,basic,column,,TRUE,basic;org;may;march,0,integer,Major industry (consistent),recode_mind16
+manuf,industry,basic,column,,TRUE,basic;org;may;march,0,integer,Manufacturing industry,recode_manuf
+dind03,industry,basic,column,,TRUE,basic;org;may;march,0,integer,"Detailed industry recode, 2003-present",recode_dind03
+mind03,industry,basic,column,,TRUE,basic;org;may;march,0,integer,"Major industry recode, 2003-present",recode_mind03
+occcode,occupation,basic,column,,TRUE,basic;org;may;march,0,integer,Occupation: original census code,recode_occcode
+occ70,occupation,basic,column,,TRUE,basic;org;may;march,0,,1970 Census Occupation Classification,in_window;recode_occ70
+occ80,occupation,basic,column,,TRUE,basic;org;may;march,0,,1980 Census Occupation Classification,in_window;recode_occ80
+occ90,occupation,basic,column,,TRUE,basic;org;may;march,0,,1990 Census Occupation Classification,in_window;recode_occ90
+occ00,occupation,basic,column,,TRUE,basic;org;may;march,0,,2000 Census Occupation Classification,in_window;recode_occ00
+occ10,occupation,basic,column,,TRUE,basic;org;may;march,0,,2010 Census Occupation Classification,in_window;recode_occ10
+occ18,occupation,basic,column,,TRUE,basic;org;may;march,0,,2018 Census Occupation Classification,in_window;recode_occ18
+mocc10,occupation,basic,column,,TRUE,basic;org;may;march,0,integer,Major occupation (consistent),read_mocc10_crosswalk;recode_mocc10
+mocc03,occupation,basic,column,,TRUE,basic;org;may;march,0,integer,"Major occupation recode, 2003-present",recode_mocc03
+docc03,occupation,basic,column,,TRUE,basic;org;may;march,0,integer,"Detailed occupation recode, 2003-present",recode_docc03
 weekpay_noadj,earnings,basic,column,,TRUE,basic;org;may,0.01,,Weekly pay,recode_weekpay_noadj
 tc_weekpay,earnings,basic,column,,TRUE,basic;org;may,0,integer,Weekly pay top-coded by BLS,recode_tc_weekpay
-a_weekpay,earnings,basic,column,,TRUE,basic;org;may,0,integer,Weekly pay allocated by BLS,allocated;recode_a_weekpay
-earnhour,earnings,basic,column,,TRUE,basic;org;may,0.01,,Hourly wage (if hourly worker),
-a_earnhour,earnings,basic,column,,TRUE,basic;org;may,0,,Hourly earnings allocated by BLS,allocated;recode_a_earnhour
+a_weekpay,earnings,basic,column,,TRUE,basic;org;may;march,0,integer,Weekly pay allocated by BLS,allocated;recode_a_weekpay
+earnhour,earnings,basic,column,,TRUE,basic;org;may;march,0.01,,Hourly wage (if hourly worker),
+a_earnhour,earnings,basic,column,,TRUE,basic;org;may;march,0,,Hourly earnings allocated by BLS,allocated;recode_a_earnhour
 otcrec,earnings,basic,column,,TRUE,basic;org;may,0,integer,"Usually receive overtime, tips, commissions",recode_otcrec
 otcamt,earnings,basic,column,,TRUE,basic;org;may,0.01,integer,"Weekly earnings overtime, tips, commissions",recode_otcamt
 wage_noadj,earnings,basic,column,,TRUE,basic;org;may,0.01,,Hourly wage,recode_wage_noadj
 wageotc_noadj,earnings,basic,column,,TRUE,basic;org;may,0.01,,Hourly wage - OTC consistent,recode_wageotc_noadj
-tc_earnhour,earnings,basic,column,,TRUE,basic;org;may,0,integer,Wages top-coded by BLS,recode_tc_earnhour
-i_faminc,income,basic,column,,TRUE,basic;org;may,0,integer,Intervalled family income,recode_i_faminc
-i_faminc_det,income,basic,column,,TRUE,basic;org;may,0,,"Intervalled family income, detailed",recode_i_faminc_det
-ownchild,household,basic,column,,TRUE,basic;org;may,0,integer,Number of own children in primary family,recode_ownchild
-famrel,household,basic,column,,TRUE,basic;org;may,0,integer,Family relationship recode,recode_famrel
+tc_earnhour,earnings,basic,column,,TRUE,basic;org;may;march,0,integer,Wages top-coded by BLS,recode_tc_earnhour
+i_faminc,income,basic,column,,TRUE,basic;org;may;march,0,integer,Intervalled family income,recode_i_faminc
+i_faminc_det,income,basic,column,,TRUE,basic;org;may;march,0,,"Intervalled family income, detailed",recode_i_faminc_det
+ownchild,household,basic,column,,TRUE,basic;org;may;march,0,integer,Number of own children in primary family,recode_ownchild
+famrel,household,basic,column,,TRUE,basic;org;may;march,0,integer,Family relationship recode,recode_famrel
 agechild,household,basic,column,,TRUE,basic;org;may,0,integer,"Presence of own children, by age group",recode_agechild
 telework,hours,basic,column,,TRUE,basic;org;may,0,integer,Teleworked last week,recode_telework
 hourslwtw,hours,basic,column,,TRUE,basic;org;may,0,integer,Hours teleworked last week,recode_hourslwtw
-diffdress,disability,basic,column,,TRUE,basic;org;may,0,integer,Difficulty dressing,yes_no;recode_diffdress
-differrands,disability,basic,column,,TRUE,basic;org;may,0,integer,Difficulty doing errands,yes_no;recode_differrands
-diffhear,disability,basic,column,,TRUE,basic;org;may,0,integer,Hearing difficulty,yes_no;recode_diffhear
-diffmemory,disability,basic,column,,TRUE,basic;org;may,0,integer,Difficulty with memory,yes_no;recode_diffmemory
-diffphysical,disability,basic,column,,TRUE,basic;org;may,0,integer,Difficulty walking,yes_no;recode_diffphysical
-diffvision,disability,basic,column,,TRUE,basic;org;may,0,integer,Difficulty with vision,yes_no;recode_diffvision
-difficulty,disability,basic,column,,TRUE,basic;org;may,0,integer,Difficulty indicator,yes_no;recode_difficulty
-schenrl,education,basic,column,,TRUE,basic;org;may,0,integer,Enrolled in high school or college last week,yes_no;recode_schenrl
+diffdress,disability,basic,column,,TRUE,basic;org;may;march,0,integer,Difficulty dressing,yes_no;recode_diffdress
+differrands,disability,basic,column,,TRUE,basic;org;may;march,0,integer,Difficulty doing errands,yes_no;recode_differrands
+diffhear,disability,basic,column,,TRUE,basic;org;may;march,0,integer,Hearing difficulty,yes_no;recode_diffhear
+diffmemory,disability,basic,column,,TRUE,basic;org;may;march,0,integer,Difficulty with memory,yes_no;recode_diffmemory
+diffphysical,disability,basic,column,,TRUE,basic;org;may;march,0,integer,Difficulty walking,yes_no;recode_diffphysical
+diffvision,disability,basic,column,,TRUE,basic;org;may;march,0,integer,Difficulty with vision,yes_no;recode_diffvision
+difficulty,disability,basic,column,,TRUE,basic;org;may;march,0,integer,Difficulty indicator,yes_no;recode_difficulty
+schenrl,education,basic,column,,TRUE,basic;org;may;march,0,integer,Enrolled in high school or college last week,yes_no;recode_schenrl
 hoursu1i,hours,wages,table,hoursu1;hoursuint;orgwgt;age;minsamp;female;educ;wbho;citistat;married;statefips;union;pubsec;mind16,TRUE,basic;org;may,0,,"Imputed usual weekly hours, main job (ORG only)",file:hoursu1i.R
 weekpay,earnings,wages,table,weekpay_noadj;tc_weekpay;female;age;orgwgt;minsamp;month;year;basicwgt,TRUE,basic;org;may,0.01,,Weekly pay (top-code adjusted),add_weekpay
 wage,earnings,wages,table,wage_noadj;weekpay;hoursu1i;hoursu1;hoursvary1;paidhre;year;hoursuorg;hoursumay,TRUE,basic;org;may,0.01,,Hourly wage (adjusted),add_wage
 wageotc,earnings,wages,table,wageotc_noadj;wage;paidhre;year,TRUE,basic;org;may,0.01,,Hourly wage (adjusted) - OTC consistent,add_wageotc
 raw_age,demographics,basic,column,,FALSE,,,,,
-indcode,industry,basic,column,,FALSE,,,,,
+indcode,industry,basic,column,,TRUE,march,0,integer,Industry recode,
 ptwk,earnings,basic,column,,FALSE,,,,,
 ptdtrace,demographics,basic,column,,FALSE,,,,,
+hserial,ids,basic,column,,TRUE,march,0,,ASEC: Household serial number,
+asecwgt,weights,basic,column,,TRUE,march,0.01,integer,March/ASEC weight,
+faminc,income,basic,column,,TRUE,march,0,integer,Family income: continuous,
+famern,income,basic,column,,TRUE,march,0,integer,Total family earnings,
+famiws,income,basic,column,,TRUE,march,0,integer,Family income: wages & salaries (continuous),
+hhinc,income,basic,column,,TRUE,march,0,integer,Household income: continuous,
+hhpct,income,basic,column,,TRUE,march,0,integer,Household income percentiles,
+earn,income,basic,column,,TRUE,march,0,,Total personal earnings,
+wagesal,income,basic,column,,TRUE,march,0,,Wage and salary income,
+hoursly,annual work,basic,column,,TRUE,march,0,integer,Hours worked last year,
+wrkly,annual work,basic,column,,TRUE,march,0,integer,Worked any time last year,
+weeksly,annual work,basic,column,,TRUE,march,0,integer,Weeks worked last year,
+i_weeksly,annual work,basic,column,,TRUE,march,0,integer,Weeks worked last year: intervalled,
+hicov,health insurance,basic,column,,TRUE,march,0,integer,Health insurance coverage now,
+hicovly1,health insurance,basic,column,,TRUE,march,0,integer,"Health insurance coverage last year, original series",
+hicovly2,health insurance,basic,column,,TRUE,march,0,integer,"Health insurance coverage last year, HIA series",
+hicovly3,health insurance,basic,column,,TRUE,march,0,integer,"Health insurance coverage last year, HIB series",
+hicovly4,health insurance,basic,column,,TRUE,march,0,integer,"Health insurance coverage last year, redesigned questions, legacy processing",
+hicovly5,health insurance,basic,column,,TRUE,march,0,integer,"Health insurance coverage last year, updated processing",
+penplan,programs and housing,basic,column,,TRUE,march,0,integer,Employer-provided pension plan,
+penincl,programs and housing,basic,column,,TRUE,march,0,integer,Included in employer-provided pension plan,
+foodstamps,programs and housing,basic,column,,TRUE,march,0,integer,Received food stamps last year,
+hiihsly,health insurance,basic,column,,TRUE,march,0,integer,Indian health services last year,
+himcaidly,health insurance,basic,column,,TRUE,march,0,integer,Medicaid coverage last year,
+himcarely,health insurance,basic,column,,TRUE,march,0,integer,Medicare coverage last year,
+hiprivly,health insurance,basic,column,,TRUE,march,0,integer,Private health insurance coverage last year,
+higotherly,health insurance,basic,column,,TRUE,march,0,integer,Other government health insurance coverage last year,
+pubhouse,programs and housing,basic,column,,TRUE,march,0,integer,Living in public housing,
+hhtenure,programs and housing,basic,column,,TRUE,march,0,integer,Tenure of household,
+rentsub,programs and housing,basic,column,,TRUE,march,0,integer,Receives government-subsidized rent,
+offpovuniverse,poverty,basic,column,,TRUE,march,0,integer,Official poverty universe,
+offfaminc,income,basic,column,,TRUE,march,0,integer,Official family income,
+offpovcut,poverty,basic,column,,TRUE,march,0,integer,Offical poverty threshold value ,
+offpov,poverty,basic,column,,TRUE,march,0,integer,Offical poverty threshold,
+povlev,poverty,basic,column,,TRUE,march,0,integer,Poverty level,
+povrate,poverty,basic,column,,TRUE,march,0,integer,Poverty indicator,
+spmpov,poverty,basic,column,,TRUE,march,0,integer,SPM's poverty rate,
+spmpovcut,poverty,basic,column,,TRUE,march,0.01,integer,SPM's poverty threshold,
+spmresources,spm resources,basic,column,,TRUE,march,0.01,integer,SPM's resources,
+spmeitc,spm resources,basic,column,,TRUE,march,0,integer,SPM unit's earned income tax credit,
+spmfedtax,spm resources,basic,column,,TRUE,march,0,integer,SPM federal tax,
+spmstatetax,spm resources,basic,column,,TRUE,march,0,integer,SPM's state tax,
+spmschlunch,spm resources,basic,column,,TRUE,march,0,integer,SPM's school lunch subsidy,
+spmsnap,spm resources,basic,column,,TRUE,march,0,integer,SPM's SNAP subsidy,
+spmwic,spm resources,basic,column,,TRUE,march,0.01,integer,SPM's WIC subsidy,
+spmmortgage,spm resources,basic,column,,TRUE,march,0,integer,SPM's mortgage status,
+spmfamtype,poverty,basic,column,,TRUE,march,0,,SPM's family type (person level),
+cowly,annual work,basic,column,,TRUE,march,0,integer,"Class of Worker, longest job last year",
+dhhtype,household,basic,column,,TRUE,march,0,integer,Detailed household type,
+famkind,household,basic,column,,TRUE,march,0,integer,Kind of family,
+disability,household,basic,column,,TRUE,march,0,integer,Disability/health problem,
+parent,household,basic,column,,TRUE,march,0,integer,Parent present,
+lookdurly,annual work,basic,column,,TRUE,march,0,integer,Job seeking duration last year (weeks),
+spmwgt,weights,basic,column,,TRUE,march,0.01,integer,SPM's weight,
+hiownemp,health insurance,basic,column,,TRUE,march,0,integer,Policyholder of employer-provided health insurance,
+hiownemply,health insurance,basic,column,,TRUE,march,0,integer,Policyholder of employer-provided health insurance last year,
+hiownpaid,health insurance,basic,column,,TRUE,march,0,integer,Employer contribution to own employer-provided health insurance premium,
+hiownpaidly,health insurance,basic,column,,TRUE,march,0,integer,Employer contribution to own employer-provided health insurance premium last yea,
+redesign,ids,basic,column,,TRUE,march,0,integer,Included in 2014 ASEC redesign,

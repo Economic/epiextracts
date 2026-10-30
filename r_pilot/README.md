@@ -35,15 +35,16 @@ Rscript tests/testthat.R
 | `../config/release.yml` | Release version (written into each extract's data label) |
 | `../config/cpi_projection.yml` | CBO levels used to project CPI-U-RS past the last actual year |
 | `variables.csv` | The variable registry: one row per variable (see below) |
-| `variable_functions.csv` | Each variable's recode function per data source (`census_basic`, `unicon_basic`, ...) |
+| `variable_functions.csv` | Each variable's recode function per data source (`census_basic`, `unicon_basic`, `unicon_may`, `unicon_march`, `census_march`) |
+| `sample_columns.csv` | Column order for samples whose published order differs from the registry's (March) |
 | `value_labels.csv` | Value labels for exported variables |
-| `variable_notes.csv` | Stata notes for each variable (from `scripts/seed_notes.R`) |
+| `variable_notes.csv` | Stata notes for each variable and sample set ("basic" for Basic/ORG/May, "march"; from `scripts/seed_notes.R`) |
 | `crosswalks/mocc10.csv` | `mocc10` occupation code ranges by era (from `scripts/convert_mocc10.R`) |
 | `parity_exceptions.csv` | Known, documented differences the gate reports but allows |
 | `R/raw_ascii.R`, `R/dictionary.R` | Raw fixed-width parsing with the NBER dictionaries, the telework supplement, and the Unicon .dta files |
 | `R/registry.R` | Reads the registry and computes variables in dependency order |
 | `R/recode.R`, `R/demographics.R`, `R/labor.R`, `R/industry.R`, `R/geography.R` | Column recode functions (Census era) |
-| `R/unicon.R` | Unicon-era recode functions (the registry's `fn_unicon` column) |
+| `R/unicon.R`, `R/may.R`, `R/march.R` | Recode functions for the Unicon Basic, May and March sources |
 | `R/helpers.R` | Stata semantics in R: rounding, `replace ... if`, missing as +∞ |
 | `R/org.R` | Universe filters; builds each sample's extract |
 | `R/hoursu1i.R`, `R/topcode.R`, `R/wage.R` | The `wages` stage: hours imputation, top-coding, wage, wageotc (run on Basic and ORG) |

@@ -9,7 +9,7 @@ test_that("every registry function exists and there are no dependency cycles", {
 test_that("exported variables have a label, samples and a tolerance", {
   exported <- dplyr::filter(registry, export)
   expect_true(all(exported$label != ""))
-  expect_true(all(exported$samples == "basic;org;may"))
+  expect_true(all(exported$samples %in% c("basic;org;may", "basic;org;may;march", "march")))
   expect_true(all(exported$tolerance %in% c(0, 0.01)))
 })
 
@@ -43,7 +43,7 @@ test_that("every raw column exists in at least one dictionary the configured yea
 test_that("export columns follow registry order and exclude intermediates", {
   basic <- export_columns(registry, "basic")
   expect_false(any(c("raw_age", "indcode", "ptwk", "ptdtrace") %in% basic))
-  expect_equal(basic, registry$variable[registry$export])
+  expect_equal(basic, registry$variable[registry$export & grepl("basic", registry$samples)])
   expect_equal(export_columns(registry, "org"), basic)
 })
 
@@ -55,7 +55,7 @@ test_that("Unicon-era raw columns are all u_-prefixed Unicon columns", {
 })
 
 test_that("every variable has a function for every source", {
-  expect_setequal(registry_sources(registry), c("census_basic", "unicon_basic", "unicon_may"))
+  expect_setequal(registry_sources(registry), c("census_basic", "unicon_basic", "unicon_may", "census_march", "unicon_march"))
   fn_columns <- registry[, paste0("fn_", registry_sources(registry))]
   expect_false(anyNA(fn_columns))
   # an incomplete functions file is refused
@@ -65,4 +65,17 @@ test_that("every variable has a function for every source", {
   readr::write_csv(tibble::tibble(variable = c("year", "year", "month"), source = c("census_basic", "unicon_basic", "census_basic"),
                                   fn = "recode_survey_year"), file.path(dir, "variable_functions.csv"))
   expect_error(read_registry(file.path(dir, "variables.csv")), "without a function for every source: month")
+})
+
+test_that("March has its own column order, join keys and notes", {
+  march <- export_columns(registry, "march", 2014)
+  expect_length(march, 166)
+  expect_true(all(c("hserial", "asecwgt", "redesign", "indcode") %in% march))
+  expect_false(any(c("hhid", "basicwgt", "weekpay") %in% march))
+  # the state columns swap in 1977-2000
+  expect_lt(match("statefips", export_columns(registry, "march", 1990)), match("division", export_columns(registry, "march", 1990)))
+  expect_true(all(sample_join_keys("march") %in% march))
+  notes <- readr::read_csv(file.path(pilot_dir, "variable_notes.csv"), col_types = "ccic")
+  expect_setequal(unique(notes$sample), c("basic", "march"))
+  expect_true(all(notes_for(notes, "org")$sample == "basic"))
 })

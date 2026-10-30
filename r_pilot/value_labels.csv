@@ -5824,3 +5824,129 @@ difficulty,0,Doesn't not experience any diffulty
 difficulty,1,Experiences one or more difficulty
 schenrl,0,Not enrolled
 schenrl,1,Enrolled
+hhpct,0,Group quarters
+hhpct,1,Bottom 5%
+hhpct,2,Second 5%
+hhpct,3,Third 5%
+hhpct,4,Fourth 5%
+hhpct,5,Fifth 5%
+hhpct,6,Sixth 5%
+hhpct,7,Seventh 5%
+hhpct,8,Eighth 5%
+hhpct,9,Ninth 5%
+hhpct,10,Tenth 5%
+hhpct,11,Eleventh 5%
+hhpct,12,Twelfth 5%
+hhpct,13,Thirteenth 5%
+hhpct,14,Fourteenth 5%
+hhpct,15,Fifteenth 5%
+hhpct,16,Sixteenth 5%
+hhpct,17,Seventeenth 5%
+hhpct,18,Eighteenth 5%
+hhpct,19,Nineteenth 5%
+hhpct,20,Top 5%
+wrkly,0,Didn't work last year
+wrkly,1,Worked last year
+i_weeksly,1,1-13 weeks
+i_weeksly,2,14-26 weeks
+i_weeksly,3,27-39 weeks
+i_weeksly,4,40-47 weeks
+i_weeksly,5,48-49 weeks
+i_weeksly,6,50-52 weeks
+i_weeksly,7,Armed forces
+hicov,0,Not covered
+hicov,1,Covered
+hicovly1,0,Not covered
+hicovly1,1,Covered
+hicovly2,0,Not covered
+hicovly2,1,Covered
+hicovly3,0,Not covered
+hicovly3,1,Covered
+hicovly4,0,Not covered
+hicovly4,1,Covered
+hicovly5,0,Not covered
+hicovly5,1,Covered
+penplan,0,Employer does not provide pension
+penplan,1,Employer provides pension
+penincl,0,Not included in pension plan
+penincl,1,Included in pension plan
+foodstamps,0,Did not receive food stamps
+foodstamps,1,Received food stamps
+hiihsly,0,Not covered
+hiihsly,1,Covered
+himcaidly,0,Not covered
+himcaidly,1,Covered
+himcarely,0,Not covered
+himcarely,1,Covered
+hiprivly,0,Not covered
+hiprivly,1,Covered
+higotherly,0,Not covered
+higotherly,1,Covered
+pubhouse,0,Does not live in public housing
+pubhouse,1,Lives in public housing
+hhtenure,1,Owned or being bought
+hhtenure,2,Rented
+hhtenure,3,No cash rent
+rentsub,0,Does not recieve rent subsidy
+rentsub,1,Receives rent subsidy
+offpovuniverse,0,Not in poverty universe
+offpovuniverse,1,In poverty universe
+offpov,0,Above poverty threshold
+offpov,1,Below poverty threshold
+povlev,0,Below poverty level
+povlev,1,Above poverty level
+povlev,2,100–124% of poverty level
+povlev,3,125–149% of poverty level
+povlev,4,150% and above poverty level
+povrate,0,Below poverty level
+povrate,1,Above poverty level
+spmpov,0,Not in poverty
+spmpov,1,In poverty
+spmmortgage,1,Owner with mortgage
+spmmortgage,2,Owner w/o mortgage
+spmmortgage,3,Renter
+spmfamtype,1,Married couple family
+spmfamtype,2,Cohabitating partner
+spmfamtype,3,Female reference person
+spmfamtype,4,Male reference person
+spmfamtype,5,Unrelated individuals
+cowly,1,Private
+cowly,2,Government - Federal
+cowly,3,Government - State
+cowly,4,Government - Local
+cowly,5,"Self-employed, incorporated"
+cowly,6,"Self-employed, unincorporated"
+cowly,7,Without pay
+cowly,8,Government
+dhhtype,1,Householder
+dhhtype,2,Spouse of householder
+dhhtype,3,"Child of householder, under 18"
+dhhtype,4,"Child of household, 18 year and over"
+dhhtype,5,Other relative of householder
+dhhtype,6,Non-relative of householder
+dhhtype,7,Secondary individual
+famkind,1,Opposite-sex married couple family
+famkind,2,Same-sex married couple family
+famkind,3,Single-parent family
+disability,0,Not disabled
+disability,1,Disabled
+parent,1,Both parents present
+parent,2,Mother only
+parent,3,Father only
+parent,4,No parent present
+lookdurly,0,Not looking
+lookdurly,1,1–4 weeks
+lookdurly,2,5–14 weeks
+lookdurly,3,15–26 weeks
+lookdurly,4,27–39 weeks
+lookdurly,5,40 or more weeks
+hiownemp,0,Not policyholder
+hiownemp,1,Policyholder
+hiownemply,0,Not covered
+hiownemply,1,Covered
+hiownpaid,0,Paid none of premium
+hiownpaid,1,Paid all or some of premium
+hiownpaidly,0,Paid none of premium
+hiownpaidly,1,Paid all or some of premium
+redesign,0,Not included in redesign
+redesign,1,Included in redesign

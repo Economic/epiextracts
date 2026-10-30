@@ -10,7 +10,7 @@ library(dplyr)
 args <- commandArgs(trailingOnly = TRUE)
 reference_file <- if (length(args) > 0) args[1] else "/data/cps/org/epi/epi_cpsorg_2024.dta"
 
-registry <- readr::read_csv("variables.csv", col_types = readr::cols(.default = "c"), na = "")
+registry <- readr::read_csv("variables.csv", col_types = readr::cols(.default = "c"), na = "", trim_ws = FALSE)
 value_labels_file <- "value_labels.csv"
 value_labels <- if (file.exists(value_labels_file)) {
   readr::read_csv(value_labels_file, col_types = "cdc")
@@ -19,7 +19,7 @@ value_labels <- if (file.exists(value_labels_file)) {
 }
 
 # header only: labels without loading any rows
-reference <- haven::read_dta(reference_file, n_max = 0)
+reference <- haven::read_dta(reference_file, n_max = 0, encoding = "UTF-8")
 
 # variable labels for exported variables that have none
 registry <- registry |>

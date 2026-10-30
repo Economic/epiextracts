@@ -14,13 +14,37 @@
 #   publoc), and `notes difficult:` abbreviates difficulty
 # - a last line without a trailing newline is never run by Stata
 # - /* ... */ comments can split a note across lines
-# - notes inside `if $marchcps`/`if $maycps` blocks don't apply to Basic/ORG
+# - notes inside sample-specific blocks (`if $marchcps == 1`, ...) apply only
+#   when Stata runs that sample: notes are collected per sample, "basic" (used
+#   for Basic, ORG and May, which add the same notes) and "march"
 library(dplyr)
 
 args <- commandArgs(trailingOnly = TRUE)
 code_dir <- if (length(args) > 0) args[1] else "../code"
 registry <- readr::read_csv("variables.csv", col_types = readr::cols(.default = "c"), na = "")
 exported <- registry$variable[registry$export == "TRUE"]
+# Stata's sample globals for each set of notes
+sample_globals <- list(
+  basic = c(monthlycps = 1, maycps = 0, marchcps = 0),
+  march = c(monthlycps = 0, maycps = 0, marchcps = 1)
+)
+in_sample <- function(variable, sample) {
+  samples <- strsplit(registry$samples[match(variable, registry$variable)], ";")
+  purrr::map_lgl(samples, ~ if (sample == "basic") any(c("basic", "org", "may") %in% .x) else sample %in% .x)
+}
+
+#' Whether an if-block's sample condition holds for a sample: the
+#' `$global == value` terms joined by | (any) or & (all); blocks without
+#' sample terms (dates, $earnerinfo) count as holding.
+block_runs <- function(line, globals) {
+  terms <- regmatches(line, gregexpr("\\$(monthlycps|maycps|marchcps) == [01]", line))[[1]]
+  if (length(terms) == 0) return(TRUE)
+  truth <- purrr::map_lgl(terms, ~ {
+    parts <- strsplit(sub("^\\$", "", .x), " == ")[[1]]
+    globals[[parts[1]]] == as.numeric(parts[2])
+  })
+  if (grepl("\\|", line)) any(truth) else all(truth)
+}
 
 # script order: the foreach list in generate_variables.do, then adjust_wages.do
 foreach_list <- paste(readLines(file.path(code_dir, "generate_variables.do")), collapse = " ") |>
@@ -47,15 +71,16 @@ resolve_variable <- function(name) {
   if (length(hits) == 1) hits else NA_character_
 }
 
-script_notes <- function(var) {
+script_notes <- function(var, globals) {
   path <- file.path(code_dir, "variables", paste0("generate_", var, ".do"))
   if (!file.exists(path)) return(NULL)
-  # track open if-blocks, so notes under $marchcps/$maycps-only blocks are skipped
+  # track open if-blocks, so notes under blocks that don't run for the sample are skipped
   blocks <- character(0)
   found <- list()
   for (line in script_lines(path)) {
     note <- regmatches(line, regexec("^\\s*notes\\s+([A-Za-z0-9_]+)\\s*:\\s*(.*?)\\s*$", line))[[1]]
-    if (length(note) > 0 && !any(grepl("^\\s*if \\$(marchcps|maycps) == 1", blocks))) {
+    runs <- all(purrr::map_lgl(blocks[grepl("^\\s*if ", blocks)], block_runs, globals = globals))
+    if (length(note) > 0 && runs) {
       found[[length(found) + 1]] <- tibble(variable = resolve_variable(note[2]), text = note[3])
     }
     if (grepl("\\{\\s*$", line)) blocks <- c(blocks, line)
@@ -64,13 +89,17 @@ script_notes <- function(var) {
   bind_rows(found)
 }
 
-notes <- script_order |>
-  purrr::map(script_notes) |>
+notes <- names(sample_globals) |>
+  purrr::map(function(sample) {
+    script_order |>
+      purrr::map(script_notes, globals = sample_globals[[sample]]) |>
+      bind_rows() |>
+      filter(variable %in% exported, in_sample(variable, sample)) |>
+      # Stata numbers each variable's notes in the order they're added
+      mutate(sample = sample, note = row_number(), .by = variable)
+  }) |>
   bind_rows() |>
-  filter(variable %in% exported) |>
-  # Stata numbers each variable's notes in the order they're added
-  mutate(note = row_number(), .by = variable) |>
-  select(variable, note, text)
+  select(sample, variable, note, text)
 
 readr::write_csv(notes, "variable_notes.csv")
-cat(nrow(notes), "notes for", n_distinct(notes$variable), "variables\n")
+print(count(notes, sample, name = "notes"))

@@ -2,6 +2,8 @@
 # Relative paths are relative to the repo root.
 # The last year and month come from latestdata in config/release.yml.
 first_year: 1976
+# March (ASEC) extracts start here; the last year is latestmarch in release.yml
+march_first_year: 1962
 # May supplement extracts (Unicon files)
 may_years:
   first: 1973
@@ -18,6 +20,9 @@ paths:
   unicon_basic: /data/cps/basic/unicon
   unicon_org: /data/cps/org/unicon
   unicon_may: /data/cps/may/unicon
+  # March: Unicon .dta 1962-1997; Census 1998+ as process_rawmarch.ado's Stata output
+  unicon_march: /data/cps/march/unicon
+  census_march: /data/cps/march/census/stata
   reference: /data/cps
   dictionaries: code/dictionaries
   suppdata: suppdata

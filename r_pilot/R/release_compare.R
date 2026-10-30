@@ -8,7 +8,7 @@
 
 #' Value labels of every variable as "value=label; ..." strings (header only).
 value_label_sets <- function(path) {
-  header <- haven::read_dta(path, n_max = 0)
+  header <- haven::read_dta(path, n_max = 0, encoding = "UTF-8")
   purrr::map_chr(header, function(x) {
     labels <- attr(x, "labels")
     if (is.null(labels)) "" else paste(sort(paste0(unname(labels), "=", names(labels))), collapse = "; ")
@@ -73,7 +73,7 @@ compare_release_file <- function(r_file, stata_file, registry, exceptions, value
 #' are reported; values are compared for the years in value_years (all
 #' metadata checks run for every file).
 compare_release_dirs <- function(r_dir, stata_dir, registry, exceptions, value_years = integer(0)) {
-  pattern <- "^epi_cps(basic|org|may)_[0-9]{4}(_[0-9]+)?\\.dta$"
+  pattern <- "^epi_cps(basic|org|may|march)_[0-9]{4}(_[0-9]+)?\\.dta$"
   r_files <- list.files(r_dir, pattern = pattern)
   stata_files <- list.files(stata_dir, pattern = pattern)
   inventory <- tibble::tibble(file = union(r_files, stata_files), check = "file present", variable = "(file)") |>

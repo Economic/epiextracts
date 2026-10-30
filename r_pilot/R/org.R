@@ -31,8 +31,8 @@ recode_basic_year <- function(raw_files, registry, recode_functions, context, so
   columns <- registry_raw_columns(registry, recode_functions, data_source(years))
   read_raw_year(raw_files, columns, context$telework_files) |>
     filter_basic_universe() |>
-    run_stage(registry, recode_functions, "basic", context) |>
-    dplyr::select(dplyr::all_of(registry$variable[registry$stage == "basic"]))
+    run_stage(registry, recode_functions, "basic", context, samples = c("basic", "org")) |>
+    dplyr::select(dplyr::all_of(stage_variables(registry, "basic", c("basic", "org"), recode_functions)))
 }
 
 #' One year's May extract: the May file read with the unicon_may functions,
@@ -42,10 +42,26 @@ build_may_year <- function(raw_file, registry, recode_functions, context) {
   columns <- registry_raw_columns(registry, recode_functions, "unicon_may")
   data <- read_raw_year(raw_file, columns) |>
     dplyr::filter(!is.na(u_age)) |>
-    run_stage(registry, recode_functions, "basic", context, source = "unicon_may") |>
-    dplyr::select(dplyr::all_of(registry$variable[registry$stage == "basic"])) |>
-    run_stage(registry, recode_functions, "wages", context, source = "unicon_may")
+    run_stage(registry, recode_functions, "basic", context, source = "unicon_may", samples = "may") |>
+    dplyr::select(dplyr::all_of(stage_variables(registry, "basic", "may", recode_functions))) |>
+    run_stage(registry, recode_functions, "wages", context, source = "unicon_may", samples = "may")
   dplyr::select(data, dplyr::all_of(export_columns(registry, "may", unique(data$year))))
+}
+
+#' One year's March extract: the March file read with its source's functions
+#' (unicon_march before 1998, census_march after), the universe (Stata drops
+#' negative ages: age, or a_age from 1998), and every basic-stage variable.
+#' March has no wage stage. Rows keep file order, which some rules use.
+build_march_year <- function(raw_file, registry, recode_functions, context) {
+  year <- as.integer(sub("^march_([0-9]{4})_.*$", "\\1", basename(raw_file)))
+  source <- if (year < census_march_first_year) "unicon_march" else "census_march"
+  age_column <- if (source == "unicon_march") "u_age" else "m_a_age"
+  columns <- unique(c(registry_raw_columns(registry, recode_functions, source), age_column))
+  data <- read_raw_year(raw_file, columns)
+  data <- data[is.na(data[[age_column]]) | data[[age_column]] >= 0, ]
+  data <- data |>
+    run_stage(registry, recode_functions, "basic", context, source = source, samples = "march")
+  dplyr::select(data, dplyr::all_of(export_columns(registry, "march", year)))
 }
 
 #' The previous year's months in a partial year's trailing window, recoded
@@ -80,7 +96,7 @@ build_extract_year <- function(basic_year, trailing_window, raw_files, registry,
   }
   if (sample == "org") window <- filter_org_universe(window)
   window |>
-    run_stage(registry, recode_functions, "wages", context) |>
+    run_stage(registry, recode_functions, "wages", context, samples = c("basic", "org")) |>
     dplyr::filter(year == yr) |>
     dplyr::select(dplyr::all_of(export_columns(registry, sample, yr)))
 }

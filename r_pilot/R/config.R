@@ -50,7 +50,11 @@ is_partial_year <- function(year, release) {
   year == release$latest_year && release$latest_month < 12
 }
 
-#' A year with one annual file and no trailing window (May), in the shape of
+#' Latest March (ASEC) year from config/release.yml. Read apart from the
+#' latest month, so a new ASEC year only touches the March targets.
+read_latest_march <- function(release_file) as.integer(yaml::read_yaml(release_file)$latestmarch)
+
+#' A year with one annual file and no trailing window (May, March), in the shape of
 #' build_year_spec(), for write_extract() and reference_dta_path().
 annual_spec <- function(year, month = 5) list(year = year, months = month, partial = FALSE, window_months = integer(0))
 
@@ -72,7 +76,7 @@ read_release_version <- function(release_file) yaml::read_yaml(release_file)$ver
 #' Data label written into every extract, e.g. "EPI CPS Basic Monthly Extracts,
 #' Version 2026.10.13" (same wording as the Stata-made files).
 data_label <- function(sample, version) {
-  sample_name <- c(basic = "Basic Monthly", org = "ORG", may = "May")[[sample]]
+  sample_name <- c(basic = "Basic Monthly", org = "ORG", may = "May", march = "March")[[sample]]
   paste0("EPI CPS ", sample_name, " Extracts, Version ", version)
 }
 

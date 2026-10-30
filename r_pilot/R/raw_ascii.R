@@ -207,6 +207,60 @@ cache_may_year <- function(zip, config) {
   out_file
 }
 
+# --- March (ASEC) ------------------------------------------------------------
+# Unicon .dta for 1962-1997 (format 105, read with foreign; 1988 is the
+# bridge file "1988b"), and from 1998 process_rawmarch.ado's Stata output
+# (2001 is the expanded SCHIP file; 2014 has the redesigned and traditional
+# samples, combined with a redesign flag as create_extracts.ado does).
+# Census March columns are prefixed m_, Unicon ones u_.
+
+census_march_first_year <- 1998
+
+#' March input files for one year (file targets).
+march_zip_paths <- function(year, config) {
+  if (year < census_march_first_year) {
+    return(file.path(config$paths$unicon_march, sprintf("unicon_march_%d%s.dta.zip", year, if (year == 1988) "b" else "")))
+  }
+  names <- if (year == 2001) "cpsmarch_2001_schip" else if (year == 2014) c("cpsmarch_2014", "cpsmarch_2014_traditional") else sprintf("cpsmarch_%d", year)
+  file.path(config$paths$census_march, paste0(names, ".dta.zip"))
+}
+
+#' One March input file as a plain table with prefixed columns.
+read_march_file <- function(zip) {
+  exdir <- tempfile()
+  dir.create(exdir)
+  on.exit(unlink(exdir, recursive = TRUE))
+  path <- utils::unzip(zip, exdir = exdir)
+  if (startsWith(basename(zip), "unicon_")) {
+    data <- foreign::read.dta(path, convert.factors = FALSE, convert.underscore = FALSE)
+    attributes(data)[setdiff(names(attributes(data)), c("names", "row.names", "class"))] <- NULL
+    return(tibble::as_tibble(rlang::set_names(data, paste0("u_", names(data)))))
+  }
+  data <- haven::read_dta(path) |>
+    haven::zap_labels() |>
+    haven::zap_formats() |>
+    haven::zap_label()
+  rlang::set_names(data, paste0("m_", names(data)))
+}
+
+#' Cache one March year as march_YYYY_03.parquet (March of its year, as Stata
+#' dates it), in file order. 2014's two samples are stacked, redesigned first,
+#' with m_redesign 1/0.
+cache_march_year <- function(zips, config) {
+  out_dir <- file.path(config$paths$cache, "raw")
+  fs::dir_create(out_dir)
+  year <- as.integer(sub("^.*_([0-9]{4})[a-z]?(_[a-z]+)?\\.dta\\.zip$", "\\1", basename(zips[1])))
+  data <- purrr::map(zips, ~ {
+    d <- read_march_file(.x)
+    if (length(zips) > 1) d$m_redesign <- as.numeric(!grepl("_traditional", basename(.x)))
+    d
+  }) |>
+    dplyr::bind_rows()
+  out_file <- file.path(out_dir, sprintf("march_%d_03.parquet", year))
+  arrow::write_parquet(data, out_file)
+  out_file
+}
+
 #' One Unicon month as a plain table: labels and formats dropped, columns
 #' prefixed u_.
 read_unicon_month <- function(zip) {
@@ -263,14 +317,16 @@ read_raw_year <- function(raw_files, columns, telework_files = character(0)) {
         month_data <- dplyr::left_join(month_data, arrow::read_parquet(supplement, col_select = dplyr::all_of(c(keys, tw_columns))),
                                        by = keys, relationship = "many-to-one")
       }
-      # separate ORG and May files carry earnings data and aren't basic files
-      supplement_file <- grepl("^(org|may)_", basename(.x))
-      date <- as.integer(strsplit(sub("^(org|may)_", "", sub("\\.parquet$", "", basename(.x))), "_")[[1]])
+      # separate ORG and May files carry earnings data; March files don't
+      # (create_extracts.ado sets $earnerinfo to 0 for March); none are basic files
+      earnings_file <- grepl("^(org|may)_", basename(.x))
+      basic_file <- !grepl("^(org|may|march)_", basename(.x))
+      date <- as.integer(strsplit(sub("^(org|may|march)_", "", sub("\\.parquet$", "", basename(.x))), "_")[[1]])
       month_data |>
         dplyr::select(dplyr::any_of(columns)) |>
         dplyr::mutate(file_year = date[1], file_month = date[2],
-                      earnerinfo = as.numeric(supplement_file || date[1] >= 1982),
-                      basicfile = as.numeric(!supplement_file))
+                      earnerinfo = as.numeric(earnings_file || (basic_file && date[1] >= 1982)),
+                      basicfile = as.numeric(basic_file))
     }) |>
     dplyr::bind_rows()
   # columns no month of this year has

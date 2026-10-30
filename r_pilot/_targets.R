@@ -9,13 +9,14 @@ lapply(list.files("./R", full.names = TRUE), source)
 pipeline_config_file <- "../config/pipeline.yml"
 config <- read_pipeline_config(pipeline_config_file)
 release_month <- read_release_month("../config/release.yml")
+latest_march <- read_latest_march("../config/release.yml")
 worker_settings <- read_worker_settings(pipeline_config_file)
 output_dir <- read_output_dir(pipeline_config_file)
 
 # variable registry: what to compute and export (see R/registry.R)
 registry <- read_registry("variables.csv")
 recode_functions <- registry_functions(registry)
-value_labels <- readr::read_csv("value_labels.csv", col_types = "cdc")
+value_labels <- readr::read_csv("value_labels.csv", col_types = "cdc", trim_ws = FALSE)
 
 tar_option_set(
   format = "parquet",
@@ -162,18 +163,18 @@ tar_assign({
                                               years, data_label("org", release_version)) |>
     tar_target(pattern = map(reference_org_meta, years))
 
-  parity_values_csv = create_csv(dplyr::bind_rows(parity_basic_values, parity_org_values, parity_may_values),
+  parity_values_csv = create_csv(dplyr::bind_rows(parity_basic_values, parity_org_values, parity_may_values, parity_march_values),
                                  file.path(config$paths$reports, "parity_values.csv")) |>
     tar_file()
 
-  parity_metadata_csv = create_csv(dplyr::bind_rows(parity_basic_metadata, parity_org_metadata, parity_may_metadata),
+  parity_metadata_csv = create_csv(dplyr::bind_rows(parity_basic_metadata, parity_org_metadata, parity_may_metadata, parity_march_metadata),
                                    file.path(config$paths$reports, "parity_metadata.csv")) |>
     tar_file()
 
   # fails the build on any mismatch; runs after both reports are written
   parity_summary = parity_gate(
-      dplyr::bind_rows(parity_basic_values, parity_org_values, parity_may_values),
-      dplyr::bind_rows(parity_basic_metadata, parity_org_metadata, parity_may_metadata)
+      dplyr::bind_rows(parity_basic_values, parity_org_values, parity_may_values, parity_march_values),
+      dplyr::bind_rows(parity_basic_metadata, parity_org_metadata, parity_may_metadata, parity_march_metadata)
     ) |>
     tar_target()
 
@@ -181,7 +182,7 @@ tar_assign({
   # FINAL RELEASE #
   #################
   # one file per year; one per month for a partial year
-  variable_notes = readr::read_csv(notes_file, col_types = "cic") |>
+  variable_notes = readr::read_csv(notes_file, col_types = "ccic") |>
     tar_target()
 
   basic_feather = label_extract(basic_extract, registry, value_labels, "basic", data_label("basic", release_version)) |>
@@ -196,13 +197,13 @@ tar_assign({
   # labels and notes as in the Stata-made files. The wages-stage variables
   # stay float, as they're created after Stata's compress (R/dta.R).
   basic_dta = label_extract(basic_extract, registry, value_labels, "basic", data_label("basic", release_version)) |>
-    write_extract("basic", output_dir, year_spec, "dta", variable_notes,
+    write_extract("basic", output_dir, year_spec, "dta", notes_for(variable_notes, "basic"),
                   uncompressed = registry$variable[registry$stage == "wages"],
                   integer_vars = registry$variable[registry$stata_type == "integer"]) |>
     tar_target(pattern = map(basic_extract, year_spec), format = "file")
 
   org_dta = label_extract(org_extract, registry, value_labels, "org", data_label("org", release_version)) |>
-    write_extract("org", output_dir, year_spec, "dta", variable_notes,
+    write_extract("org", output_dir, year_spec, "dta", notes_for(variable_notes, "org"),
                   uncompressed = registry$variable[registry$stage == "wages"],
                   integer_vars = registry$variable[registry$stata_type == "integer"]) |>
     tar_target(pattern = map(org_extract, year_spec), format = "file")
@@ -230,7 +231,7 @@ tar_assign({
     tar_target(pattern = map(may_extract, may_years), format = "file")
 
   may_dta = label_extract(may_extract, registry, value_labels, "may", data_label("may", release_version)) |>
-    write_extract("may", output_dir, annual_spec(may_years), "dta", variable_notes,
+    write_extract("may", output_dir, annual_spec(may_years), "dta", notes_for(variable_notes, "may"),
                   integer_vars = registry$variable[registry$stata_type == "integer"]) |>
     tar_target(pattern = map(may_extract, may_years), format = "file")
 
@@ -249,4 +250,46 @@ tar_assign({
   parity_may_metadata = compare_metadata_year(reference_may_meta, registry, value_labels, "may",
                                               may_years, data_label("may", release_version)) |>
     tar_target(pattern = map(reference_may_meta, may_years))
+
+  #########
+  # MARCH #
+  #########
+  # March (ASEC), 1962 to latestmarch: one input file per year (2014: two
+  # samples), sources unicon_march/census_march, no wage stage
+  march_years = seq(config$march_first_year, latest_march) |>
+    tar_target(format = "rds")
+
+  march_zips = march_zip_paths(march_years, config) |>
+    tar_target(pattern = map(march_years), format = "file")
+
+  march_raw = cache_march_year(march_zips, config) |>
+    tar_target(pattern = map(march_zips), format = "file")
+
+  march_extract = build_march_year(march_raw, registry, recode_functions, recode_context) |>
+    tar_target(pattern = map(march_raw))
+
+  march_feather = label_extract(march_extract, registry, value_labels, "march", data_label("march", release_version)) |>
+    write_extract("march", output_dir, annual_spec(march_years, 3)) |>
+    tar_target(pattern = map(march_extract, march_years), format = "file")
+
+  march_dta = label_extract(march_extract, registry, value_labels, "march", data_label("march", release_version)) |>
+    write_extract("march", output_dir, annual_spec(march_years, 3), "dta", notes_for(variable_notes, "march"),
+                  integer_vars = registry$variable[registry$stata_type == "integer"]) |>
+    tar_target(pattern = map(march_extract, march_years), format = "file")
+
+  reference_march_dta = reference_dta_path(annual_spec(march_years, 3), "march", config) |>
+    tar_target(pattern = map(march_years), format = "file")
+
+  reference_march_parquet = cache_reference_year(reference_march_dta, config$paths$cache) |>
+    tar_target(pattern = map(reference_march_dta), format = "file")
+
+  reference_march_meta = reference_metadata(reference_march_dta) |>
+    tar_target(pattern = map(reference_march_dta), iteration = "list", format = "rds")
+
+  parity_march_values = compare_values_year(march_feather, reference_march_parquet, registry, "march", parity_exceptions) |>
+    tar_target(pattern = map(march_feather, reference_march_parquet))
+
+  parity_march_metadata = compare_metadata_year(reference_march_meta, registry, value_labels, "march",
+                                                march_years, data_label("march", release_version)) |>
+    tar_target(pattern = map(reference_march_meta, march_years))
 })

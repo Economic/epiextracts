@@ -32,6 +32,10 @@ label_extract <- function(data, registry, value_labels, sample, label) {
   data
 }
 
+#' A sample's Stata notes from variable_notes.csv: Basic, ORG and May share
+#' the "basic" set; March has its own (scripts add some notes only for March).
+notes_for <- function(notes, sample) notes[notes$sample == if (sample == "march") "march" else "basic", ]
+
 #' Write one year's labelled extract as .feather or .dta: one annual file, or
 #' one file per month for a partial year (epi_cps<sample>_<year>_<month>.<ext>,
 #' as Stata does). .dta files also carry the variables' notes; `uncompressed`

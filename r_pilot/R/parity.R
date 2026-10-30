@@ -6,8 +6,12 @@
 # exceptions (parity_exceptions.csv), which are reported but allowed.
 
 # unique in every year: personid is missing before 1998 and hhid before 1984,
-# so Unicon years add Unicon's record number (missing, and so matching, from 1994)
+# so Unicon years add Unicon's record number (missing, and so matching, from 1994).
+# March has no hhid: hrhhid2 (2005-2018) and hserial (2001 SCHIP, 2014's two
+# samples) make its rows unique.
 join_keys <- c("year", "month", "hrhhid", "hhid", "pulineno", "unicon_recnum")
+march_join_keys <- c("year", "month", "hrhhid", "hrhhid2", "hserial", "pulineno", "unicon_recnum")
+sample_join_keys <- function(sample) if (sample == "march") march_join_keys else join_keys
 
 #' Published Stata extract(s) for one year and sample: the annual file, or
 #' the monthly files for a partial year (spec: see build_year_spec()).
@@ -37,10 +41,14 @@ cache_reference_year <- function(dta_paths, cache_dir) {
 }
 
 #' Published metadata: column order, variable labels, value labels, data label.
+#' Labels and names come byte for byte from the file header
+#' (read_dta_metadata(); haven trims trailing spaces from variable labels);
+#' value labels from haven, read as UTF-8 (the files hold UTF-8 text).
 reference_metadata <- function(dta_paths) {
   if (length(dta_paths) == 0) return(NULL)
   # monthly files of a partial year share one layout; the first stands for all
-  header <- haven::read_dta(dta_paths[1], n_max = 0)
+  header <- haven::read_dta(dta_paths[1], n_max = 0, encoding = "UTF-8")
+  raw <- read_dta_metadata(dta_paths[1])
   value_labels <- names(header) |>
     purrr::map(~ {
       labels <- attr(header[[.x]], "labels")
@@ -49,10 +57,10 @@ reference_metadata <- function(dta_paths) {
     }) |>
     dplyr::bind_rows()
   list(
-    columns = names(header),
-    var_labels = purrr::map_chr(header, ~ attr(.x, "label") %||% ""),
+    columns = raw$variables$variable,
+    var_labels = stats::setNames(raw$variables$label, raw$variables$variable),
     value_labels = value_labels,
-    data_label = attr(header, "label") %||% ""
+    data_label = raw$data_label
   )
 }
 
@@ -93,11 +101,12 @@ compare_values_year <- function(r_files, reference_parquet, registry, sample, ex
 #' vectors) from each side; reference_columns lists what the reference has.
 compare_values <- function(read_r, read_reference, reference_columns, registry, sample, exceptions, batch_size = 20) {
   columns <- export_columns(registry, sample)
+  keys <- sample_join_keys(sample)
 
   # match rows once on the keys; row positions then line up every column
-  r_keys <- dplyr::mutate(read_r(join_keys), .r = dplyr::row_number())
-  s_keys <- dplyr::mutate(read_reference(join_keys), .s = dplyr::row_number())
-  matched <- dplyr::inner_join(r_keys, s_keys, by = join_keys)
+  r_keys <- dplyr::mutate(read_r(keys), .r = dplyr::row_number())
+  s_keys <- dplyr::mutate(read_reference(keys), .s = dplyr::row_number())
+  matched <- dplyr::inner_join(r_keys, s_keys, by = keys)
   n_only_r <- sum(!r_keys$.r %in% matched$.r)
   n_only_stata <- sum(!s_keys$.s %in% matched$.s)
   n_r_rows <- nrow(r_keys)
@@ -127,7 +136,7 @@ compare_values <- function(read_r, read_reference, reference_columns, registry, 
       n_excepted_mismatch = sum((missingness | differs) & excepted)
     )
   }
-  to_compare <- setdiff(columns, join_keys)
+  to_compare <- setdiff(columns, keys)
   missing_from_reference <- setdiff(to_compare, reference_columns)
   in_both <- intersect(to_compare, reference_columns)
   report <- split(in_both, ceiling(seq_along(in_both) / batch_size)) |>

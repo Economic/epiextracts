@@ -66,4 +66,8 @@ test_that("May rules", {
   arrow::write_parquet(tibble::tibble(u_age = 30), file.path(dir, "may_1975_05.parquet"))
   d <- read_raw_year(file.path(dir, "may_1975_05.parquet"), "u_age")
   expect_equal(c(d$file_year, d$file_month, d$earnerinfo, d$basicfile), c(1975, 5, 1, 0))
+  # March files: no earnings data ($earnerinfo 0), not basic monthly
+  arrow::write_parquet(tibble::tibble(u_age = 30), file.path(dir, "march_1975_03.parquet"))
+  d <- read_raw_year(file.path(dir, "march_1975_03.parquet"), "u_age")
+  expect_equal(c(d$file_year, d$file_month, d$earnerinfo, d$basicfile), c(1975, 3, 0, 0))
 })

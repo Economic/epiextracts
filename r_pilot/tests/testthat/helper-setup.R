@@ -7,5 +7,5 @@ for (f in list.files(file.path(pilot_dir, "R"), full.names = TRUE)) source(f)
 
 registry <- read_registry(file.path(pilot_dir, "variables.csv"))
 recode_functions <- registry_functions(registry)
-value_labels <- readr::read_csv(file.path(pilot_dir, "value_labels.csv"), col_types = "cdc")
+value_labels <- readr::read_csv(file.path(pilot_dir, "value_labels.csv"), col_types = "cdc", trim_ws = FALSE)
 config <- read_pipeline_config(file.path(repo_dir, "config/pipeline.yml"))
