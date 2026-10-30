@@ -129,3 +129,20 @@ test_that("March industry and occupation rules", {
   expect_equal(recode_mocc03_census_march(c(0, 3), c(2005, 2005)), c(0, 3))
   expect_equal(recode_mind03_census_march(c(0, 3), c(2005, 2005)), c(NA, 3))
 })
+
+test_that("March income and annual work rules", {
+  # income universe: ages 14+ before 1980, 15+ after; missing age keeps the amount
+  expect_equal(march_income_universe(c(100, 100, 100), c(14, 14, NA), c(1979, 1980, 1980)), c(100, NA, 100))
+  # weeks worked: 1963-1975 file intervals (codes down one, 9 armed forces), then grouped weeks
+  expect_equal(recode_i_weeksly_unicon_march(c(1, 2, 7, 9), rep(1970, 4)), c(NA, 1, 6, 7))
+  expect_equal(recode_i_weeksly_unicon_march(c(0, 13, 48, 52), rep(1990, 4)), c(NA, 1, 5, 6))
+  expect_equal(recode_weeksly_census_march(c(0, 52, 53)), c(NA, 52, NA))
+  # class of worker last year: four classes through 1975 (1962 from 0); 1988-1989 civilians who worked
+  expect_equal(recode_cowly_unicon_march(c(0, 1, 2, 3), NA, NA, rep(1962, 4)), c(1, 8, 6, 7))
+  expect_equal(recode_cowly_unicon_march(c(2, 2), c(1, 2), c(1, 1), c(1988, 1988)), c(2, NA))
+  # weeks looking: codes 1-6 down one; 0 when no weeks looking (from 1998)
+  expect_equal(recode_lookdurly_census_march(c(1, 3, 7), c(5, 0, 5)), c(0, 0, NA))
+  # integer-created variables beyond a long stay full precision; others are stored as float
+  expect_equal(store_values(c(9451204315, 1), integer = TRUE), c(9451204315, 1))
+  expect_false(store_values(9451204315) == 9451204315)
+})

@@ -834,3 +834,94 @@ recode_mocc03_census_march <- function(m_a_mjocc, year) march_recode_2003(m_a_mj
 march_recode_2003 <- function(x, year, lowest) {
   dplyr::if_else(year >= 2003 & x >= lowest, as.numeric(x), NA_real_)
 }
+
+# --- income (generate_earn/wagesal/faminc/famern/famiws/hhinc/hhpct.do) --------
+# Amounts as the files carry them, from the year each first appears
+march_from <- function(x, year, first) dplyr::if_else(year >= first, as.numeric(x), NA_real_)
+recode_earn_unicon_march <- function(u_incern, year) march_from(u_incern, year, 1976)
+recode_earn_census_march <- function(m_pearnval) as.numeric(m_pearnval)
+recode_faminc_unicon_march <- function(u__faminc, year) march_from(u__faminc, year, 1963)
+recode_faminc_census_march <- function(m_ftotval) as.numeric(m_ftotval)
+recode_famern_unicon_march <- function(u_famern, year) march_from(u_famern, year, 1968)
+recode_famern_census_march <- function(m_fearnval) as.numeric(m_fearnval)
+recode_famiws_unicon_march <- function(u_fmiwag, year) march_from(u_fmiwag, year, 1976)
+recode_famiws_census_march <- function(m_fwsval) as.numeric(m_fwsval)
+recode_hhinc_unicon_march <- function(u__hhinc, year) march_from(u__hhinc, year, 1968)
+recode_hhinc_census_march <- function(m_htotval) as.numeric(m_htotval)
+recode_hhpct_unicon_march <- function(u_hhpct, year) march_from(u_hhpct, year, 1976)
+recode_hhpct_census_march <- function(m_hpctcut) as.numeric(m_hpctcut)
+
+# wage and salary income, for ages 14+ (15+ from 1980), the income universe
+recode_wagesal_unicon_march <- function(u__incwag, age, year) march_income_universe(u__incwag, age, year)
+recode_wagesal_census_march <- function(m_wsal_val, age, year) march_income_universe(m_wsal_val, age, year)
+march_income_universe <- function(x, age, year) {
+  youngest <- dplyr::if_else(year < 1980, 14, 15)
+  # missing age is not below the cutoff in Stata
+  dplyr::if_else(!is.na(age) & age < youngest, NA_real_, as.numeric(x))
+}
+
+# --- annual work (generate_hoursly/wrkly/weeksly/i_weeksly/cowly/lookdurly.do)
+# usual weekly hours last year from 1976; 0 is missing
+recode_hoursly_unicon_march <- function(u_hrslyr, year) {
+  hours <- march_from(u_hrslyr, year, 1976)
+  dplyr::if_else(hours == 0, NA_real_, hours)
+}
+recode_hoursly_census_march <- function(m_hrswk) dplyr::if_else(m_hrswk == 0, NA_real_, as.numeric(m_hrswk))
+
+# worked last year from 1989 (1 yes, 2 no)
+recode_wrkly_unicon_march <- function(u_chkwrk, year) dplyr::if_else(year >= 1989, yes_no(u_chkwrk), NA_real_)
+recode_wrkly_census_march <- function(m_wrk_ck) yes_no(m_wrk_ck)
+
+# weeks worked last year (1-52) from 1976, and in intervals: 1963-1975 the
+# files' own intervals (codes 1-7 down one, armed forces 9 as 7), then
+# grouped from the weeks; 0 weeks is missing
+recode_weeksly_unicon_march <- function(u_wkslyr, year) march_weeks(march_from(u_wkslyr, year, 1976))
+recode_weeksly_census_march <- function(m_wkswork) march_weeks(m_wkswork)
+march_weeks <- function(weeks) dplyr::if_else(weeks >= 1 & weeks <= 52, as.numeric(weeks), NA_real_)
+march_weeks_interval <- function(weeks) {
+  dplyr::case_when(
+    weeks >= 1 & weeks <= 13 ~ 1,
+    weeks >= 14 & weeks <= 26 ~ 2,
+    weeks >= 27 & weeks <= 39 ~ 3,
+    weeks >= 40 & weeks <= 47 ~ 4,
+    weeks >= 48 & weeks <= 49 ~ 5,
+    weeks >= 50 & weeks <= 52 ~ 6,
+    TRUE ~ NA_real_
+  )
+}
+recode_i_weeksly_unicon_march <- function(u_wkslyr, year) {
+  yr <- unique(year)
+  if (yr == 1962) return(rep(NA_real_, length(year)))
+  if (yr >= 1976) return(march_weeks_interval(u_wkslyr))
+  dplyr::case_when(u_wkslyr >= 2 & u_wkslyr <= 7 ~ u_wkslyr - 1, u_wkslyr == 9 ~ 7, TRUE ~ NA_real_)
+}
+recode_i_weeksly_census_march <- function(m_wkswork) march_weeks_interval(m_wkswork)
+
+#' class of worker on the longest job last year: 1962-1975 four classes
+#' (private, government 8, self-employed 6, without pay 7; 1962 numbered from
+#' 0), then the file's own codes (positive values). 1988-1989 keep it only
+#' for civilians (_popstat 1) who worked last year (chkwrk 1).
+recode_cowly_unicon_march <- function(u_clslyr, u__popstat, u_chkwrk, year) {
+  yr <- unique(year)
+  if (yr <= 1975) {
+    from <- if (yr == 1962) 0:3 else 1:4
+    return(c(1, 8, 6, 7)[match(u_clslyr, from)])
+  }
+  cowly <- dplyr::if_else(u_clslyr > 0, as.numeric(u_clslyr), NA_real_)
+  if (yr %in% 1988:1989) cowly <- dplyr::if_else(u__popstat %in% 1 & u_chkwrk %in% 1, cowly, NA_real_)
+  cowly
+}
+recode_cowly_census_march <- function(m_ljcw) dplyr::if_else(m_ljcw > 0, as.numeric(m_ljcw), NA_real_)
+
+#' weeks looking for work last year, intervalled: codes 1-6 down one (code 7
+#' and negative codes missing), from 1968; ages 14+ (15+ from 1980). From
+#' 1998 welknw, 0 for anyone with no weeks looking (nwlkwk 0).
+recode_lookdurly_unicon_march <- function(u_wklknw, age, year) {
+  if (unique(year) < 1968) return(rep(NA_real_, length(year)))
+  lookdurly <- dplyr::if_else(u_wklknw > 0 & u_wklknw < 7, u_wklknw - 1, NA_real_)
+  march_income_universe(lookdurly, age, year)
+}
+recode_lookdurly_census_march <- function(m_welknw, m_nwlkwk) {
+  lookdurly <- dplyr::if_else(m_welknw > 0 & m_welknw < 7, m_welknw - 1, NA_real_)
+  stata_replace(lookdurly, m_nwlkwk == 0 & lookdurly > 0, 0)
+}
