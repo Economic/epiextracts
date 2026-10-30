@@ -35,6 +35,19 @@ recode_basic_year <- function(raw_files, registry, recode_functions, context, so
     dplyr::select(dplyr::all_of(registry$variable[registry$stage == "basic"]))
 }
 
+#' One year's May extract: the May file read with the unicon_may functions,
+#' the basic universe (Unicon: age not missing), every basic-stage variable,
+#' then the wage stage, which adjust_wages.do runs on May too.
+build_may_year <- function(raw_file, registry, recode_functions, context) {
+  columns <- registry_raw_columns(registry, recode_functions, "unicon_may")
+  data <- read_raw_year(raw_file, columns) |>
+    dplyr::filter(!is.na(u_age)) |>
+    run_stage(registry, recode_functions, "basic", context, source = "unicon_may") |>
+    dplyr::select(dplyr::all_of(registry$variable[registry$stage == "basic"])) |>
+    run_stage(registry, recode_functions, "wages", context, source = "unicon_may")
+  dplyr::select(data, dplyr::all_of(export_columns(registry, "may", unique(data$year))))
+}
+
 #' The previous year's months in a partial year's trailing window, recoded
 #' from the raw cache like any basic table (spec: see build_year_spec()).
 #'

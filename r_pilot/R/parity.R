@@ -162,7 +162,7 @@ compare_metadata_year <- function(reference_meta, registry, value_labels, sample
       check = "variable label",
       variable = in_reference,
       published = unname(reference_meta$var_labels[in_reference]),
-      r = registry$label[match(in_reference, registry$variable)]
+      r = unname(sample_labels(registry, sample)[in_reference])
     ),
     tibble::tibble(
       check = "value labels",

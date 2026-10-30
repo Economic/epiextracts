@@ -182,6 +182,31 @@ unicon_zip_paths <- function(spec, config) {
   c(basic, org)
 }
 
+#' One May supplement file (Unicon, one per year) as a plain table with u_
+#' columns. These are old Stata format 105, which haven can't read, so
+#' foreign::read.dta reads them.
+read_may_file <- function(zip) {
+  exdir <- tempfile()
+  dir.create(exdir)
+  on.exit(unlink(exdir, recursive = TRUE))
+  data <- foreign::read.dta(utils::unzip(zip, exdir = exdir), convert.factors = FALSE, convert.underscore = FALSE)
+  attributes(data)[setdiff(names(attributes(data)), c("names", "row.names", "class"))] <- NULL
+  tibble::as_tibble(rlang::set_names(data, paste0("u_", names(data))))
+}
+
+#' The May file for one year (a file target).
+may_zip_path <- function(year, config) file.path(config$paths$unicon_may, sprintf("unicon_may_%d.dta.zip", year))
+
+#' Cache one May file as may_YYYY_05.parquet (May of its year, as Stata dates it).
+cache_may_year <- function(zip, config) {
+  out_dir <- file.path(config$paths$cache, "raw")
+  fs::dir_create(out_dir)
+  year <- as.integer(sub("^unicon_may_([0-9]{4})\\.dta\\.zip$", "\\1", basename(zip)))
+  out_file <- file.path(out_dir, sprintf("may_%d_05.parquet", year))
+  arrow::write_parquet(read_may_file(zip), out_file)
+  out_file
+}
+
 #' One Unicon month as a plain table: labels and formats dropped, columns
 #' prefixed u_.
 read_unicon_month <- function(zip) {
@@ -207,11 +232,11 @@ cache_unicon_year <- function(spec, raw_zips, out_dir) {
   })
 }
 
-# columns read_raw_year() adds from the cached file name ([org_]YYYY_MM.parquet):
+# columns read_raw_year() adds from the cached file name ([org_|may_]YYYY_MM.parquet):
 # year and month come from the file, as in Stata (year(dofm($date))); and
 # create_extracts.ado's $earnerinfo (the file has earnings data: Census
-# files, Unicon basic files from 1982, the separate ORG files) and $basicfile
-# (a basic monthly file rather than a separate ORG file)
+# files, Unicon basic files from 1982, the separate ORG files, the May files)
+# and $basicfile (a basic monthly file rather than a separate ORG or May file)
 file_columns <- c("file_year", "file_month", "earnerinfo", "basicfile")
 
 #' Which cached files are basic months and which separate ORG months.
@@ -238,13 +263,14 @@ read_raw_year <- function(raw_files, columns, telework_files = character(0)) {
         month_data <- dplyr::left_join(month_data, arrow::read_parquet(supplement, col_select = dplyr::all_of(c(keys, tw_columns))),
                                        by = keys, relationship = "many-to-one")
       }
-      org_file <- is_org_file(.x)
-      date <- as.integer(strsplit(sub("^org_", "", sub("\\.parquet$", "", basename(.x))), "_")[[1]])
+      # separate ORG and May files carry earnings data and aren't basic files
+      supplement_file <- grepl("^(org|may)_", basename(.x))
+      date <- as.integer(strsplit(sub("^(org|may)_", "", sub("\\.parquet$", "", basename(.x))), "_")[[1]])
       month_data |>
         dplyr::select(dplyr::any_of(columns)) |>
         dplyr::mutate(file_year = date[1], file_month = date[2],
-                      earnerinfo = as.numeric(org_file || date[1] >= 1982),
-                      basicfile = as.numeric(!org_file))
+                      earnerinfo = as.numeric(supplement_file || date[1] >= 1982),
+                      basicfile = as.numeric(!supplement_file))
     }) |>
     dplyr::bind_rows()
   # columns no month of this year has

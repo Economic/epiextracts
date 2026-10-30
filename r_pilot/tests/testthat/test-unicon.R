@@ -48,3 +48,22 @@ test_that("1978-1993 files order the state columns as Stata wrote them", {
   expect_equal(export_columns(registry, "basic", 1977), export_columns(registry, "basic"))
   expect_equal(export_columns(registry, "basic", 2005), export_columns(registry, "basic"))
 })
+
+test_that("May rules", {
+  # May union items are coded 0 = yes; coverage starts in 1977; union missing through 1976
+  expect_equal(recode_unmem_may(c(0, 1, NA)), c(1, 0, NA))
+  expect_equal(recode_uncov_may(c(0, 0), c(1976, 1977)), c(NA, 1))
+  expect_equal(recode_union_may(c(1, 1), c(NA, NA), c(1976, 1977)), c(NA, 1))
+  # paid hourly: hourpd (0 = yes) through 1978, _ernpdh after
+  expect_equal(recode_paidhre_may(c(0, NA), c(NA, 1), c(1978, 1979)), c(1, 1))
+  # 1980 May earnings are missing; earlier nonhourly wages use the May hours question
+  expect_equal(recode_weekpay_noadj_may(c(NA, NA), c(500, 500), c(1980, 1981)), c(NA, 500))
+  expect_equal(recode_wage_noadj_may(paidhre = c(0, 0, 1), earnhour = c(NA, NA, 5), weekpay_noadj = c(400, 400, NA),
+                                     hoursumay = c(40, NA, NA), hoursuorg = c(NA, 20, NA), year = c(1977, 1981, 1980)),
+               c(10, 20, NA))
+  # May files are supplement files: earnings data, not basic monthly
+  dir <- tempfile(); dir.create(dir)
+  arrow::write_parquet(tibble::tibble(u_age = 30), file.path(dir, "may_1975_05.parquet"))
+  d <- read_raw_year(file.path(dir, "may_1975_05.parquet"), "u_age")
+  expect_equal(c(d$file_year, d$file_month, d$earnerinfo, d$basicfile), c(1975, 5, 1, 0))
+})

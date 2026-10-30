@@ -16,6 +16,9 @@
 #   export     TRUE = written to the extracts and parity-checked; FALSE = intermediate
 #   samples    samples the exported column appears in ("basic;org" or "org")
 #   tolerance  parity tolerance: 0 = exact, 0.01 for Stata float columns (weights, dollars)
+#   stata_type "integer" if the Stata script creates it as byte/int/long (so
+#                Stata promotes it to long, never float, when values grow);
+#                blank = Stata's default float
 #   label      variable label (Stata/haven); value labels live in value_labels.csv
 #   snippet    functions shown on the docs site ("fn1;fn2" or "file:<R file>"); blank = none
 #
@@ -23,6 +26,7 @@
 # data source (variable, source, fn). A source is a kind of input file:
 #   census_basic  Census Basic monthly files, 1994+
 #   unicon_basic  Unicon Basic monthly files, 1976-1993 (R/unicon.R)
+#   unicon_may    Unicon May supplement files, 1973-1981 (R/may.R)
 # Each table comes wholly from one source and runs that source's functions;
 # the same function under two sources means one rule for both. Every
 # variable needs a function for every source (unicon_missing when there is
@@ -56,7 +60,7 @@ read_registry <- function(registry_file, functions_file = file.path(dirname(regi
     dplyr::mutate(
       export = export == "TRUE",
       tolerance = as.numeric(tolerance),
-      dplyr::across(c(depends, label, snippet), ~ dplyr::coalesce(.x, ""))
+      dplyr::across(c(depends, label, snippet, stata_type), ~ dplyr::coalesce(.x, ""))
     )
   functions <- readr::read_csv(functions_file, col_types = "ccc")
   unknown <- setdiff(functions$variable, registry$variable)
@@ -123,15 +127,16 @@ stage_order <- function(registry, recode_functions, stage) {
 }
 
 #' Compute every variable of one stage, in dependency order, with the
-#' functions of the table's source. An empty table (e.g. ORG before 1979)
-#' just gets the columns.
-run_stage <- function(data, registry, recode_functions, stage, context) {
+#' functions of the table's source: given, or for Basic/ORG worked out from
+#' the years. An empty table (e.g. ORG before 1979) just gets the columns.
+run_stage <- function(data, registry, recode_functions, stage, context, source = NULL) {
   if (nrow(data) == 0) {
     for (v in registry$variable[registry$stage == stage]) data[[v]] <- numeric(0)
     return(data)
   }
   # the basic stage starts before year exists: use the file's year
-  fn_column <- source_fns(registry, data_source(if ("year" %in% names(data)) data$year else data$file_year))
+  if (is.null(source)) source <- data_source(if ("year" %in% names(data)) data$year else data$file_year)
+  fn_column <- source_fns(registry, source)
   for (v in stage_order(registry, recode_functions, stage)) {
     entry <- registry[registry$variable == v, ]
     fn_name <- fn_column[registry$variable == v]
@@ -149,6 +154,23 @@ run_stage <- function(data, registry, recode_functions, stage, context) {
     }
   }
   data
+}
+
+# Variable labels Stata leaves unset for a sample: generate_cmpwgt.do labels
+# cmpwgt inside its Basic-only ($monthlycps) branch, so May files leave it
+# unlabelled.
+sample_label_overrides <- tibble::tribble(
+  ~sample, ~variable, ~label,
+  "may",   "cmpwgt",  ""
+)
+
+#' Variable labels for one sample, named by variable: the registry's, with
+#' sample_label_overrides applied.
+sample_labels <- function(registry, sample) {
+  labels <- stats::setNames(registry$label, registry$variable)
+  overrides <- sample_label_overrides[sample_label_overrides$sample == sample, ]
+  labels[overrides$variable] <- overrides$label
+  labels
 }
 
 #' Exported columns for one sample, in registry (= published) order. In

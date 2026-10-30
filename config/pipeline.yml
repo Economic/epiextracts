@@ -2,6 +2,10 @@
 # Relative paths are relative to the repo root.
 # The last year and month come from latestdata in config/release.yml.
 first_year: 1976
+# May supplement extracts (Unicon files)
+may_years:
+  first: 1973
+  last: 1981
 # months with no CPS data at all (October 2025 was not collected: federal shutdown)
 skip_months: ["2025m10"]
 # Census-2000-based reweights (nwsswgt, nwcmpwgt, nworwgt) replace the regular weights in these years
@@ -13,6 +17,7 @@ paths:
   # Unicon .dta files for 1976-1993 (separate ORG files: 1979-1983)
   unicon_basic: /data/cps/basic/unicon
   unicon_org: /data/cps/org/unicon
+  unicon_may: /data/cps/may/unicon
   reference: /data/cps
   dictionaries: code/dictionaries
   suppdata: suppdata

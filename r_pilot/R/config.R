@@ -21,6 +21,7 @@ read_pipeline_config <- function(config_file) {
   # absolute paths stay as they are; relative ones hang off the repo root
   config$paths <- purrr::map(config$paths, ~ if (startsWith(.x, "/")) .x else file.path(repo_root, .x))
   config$reweight_years <- seq(config$reweight_years$first, config$reweight_years$last)
+  config$may_years <- seq(config$may_years$first, config$may_years$last)
   config
 }
 
@@ -49,6 +50,10 @@ is_partial_year <- function(year, release) {
   year == release$latest_year && release$latest_month < 12
 }
 
+#' A year with one annual file and no trailing window (May), in the shape of
+#' build_year_spec(), for write_extract() and reference_dta_path().
+annual_spec <- function(year, month = 5) list(year = year, months = month, partial = FALSE, window_months = integer(0))
+
 #' Everything about one year that depends on the release: its months,
 #' whether it's partial, and, for a partial year, the previous year's months
 #' in its trailing window (e.g. 2025m10-m12 for 2026m1-m9, minus skipped
@@ -67,7 +72,7 @@ read_release_version <- function(release_file) yaml::read_yaml(release_file)$ver
 #' Data label written into every extract, e.g. "EPI CPS Basic Monthly Extracts,
 #' Version 2026.10.13" (same wording as the Stata-made files).
 data_label <- function(sample, version) {
-  sample_name <- c(basic = "Basic Monthly", org = "ORG")[[sample]]
+  sample_name <- c(basic = "Basic Monthly", org = "ORG", may = "May")[[sample]]
   paste0("EPI CPS ", sample_name, " Extracts, Version ", version)
 }
 

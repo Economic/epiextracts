@@ -16,6 +16,7 @@ store_values <- function(x) {
 #' Select, store and label one sample's exported columns.
 label_extract <- function(data, registry, value_labels, sample, label) {
   columns <- export_columns(registry, sample, unique(data$year))
+  var_labels <- sample_labels(registry, sample)
   data <- data[, columns]
   for (v in columns) {
     data[[v]] <- store_values(data[[v]])
@@ -25,7 +26,7 @@ label_extract <- function(data, registry, value_labels, sample, label) {
       values <- if (is.integer(data[[v]])) as.integer(labels$value) else labels$value
       data[[v]] <- haven::labelled(data[[v]], labels = stats::setNames(values, labels$label))
     }
-    attr(data[[v]], "label") <- registry$label[registry$variable == v]
+    attr(data[[v]], "label") <- var_labels[[v]]
   }
   attr(data, "label") <- label
   data
@@ -38,13 +39,13 @@ label_extract <- function(data, registry, value_labels, sample, label) {
 #' (see write_stata_dta()). A partial year's monthly files are compressed
 #' after the wage adjustments (create_extracts.ado), so there they shrink too.
 write_extract <- function(data, sample, output_dir, spec, format = c("feather", "dta"), notes = NULL,
-                          uncompressed = character(0)) {
+                          uncompressed = character(0), integer_vars = character(0)) {
   format <- match.arg(format)
   # no file for years without the sample (ORG before 1979)
   if (nrow(data) == 0) return(character(0))
   write_file <- function(d, file) {
     fs::dir_create(fs::path_dir(file))
-    if (format == "feather") arrow::write_feather(d, file) else write_stata_dta(d, file, notes, uncompressed = uncompressed)
+    if (format == "feather") arrow::write_feather(d, file) else write_stata_dta(d, file, notes, uncompressed = uncompressed, integer_vars = integer_vars)
     file
   }
   yr <- spec$year

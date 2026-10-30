@@ -16,14 +16,18 @@ stata_missing <- list(byte = 101L, int = 32741L, long = 2147483621L, float = 2^1
 #' Storage type Stata's `compress` leaves a column in. Stata creates numeric
 #' variables as float unless told otherwise; compress shrinks whole numbers
 #' to byte or int when they fit, but leaves other whole-number floats alone
-#' (a long saves nothing over a float). Strings are as wide as the longest value.
-stata_storage_type <- function(x) {
+#' (a long saves nothing over a float). A variable created as byte/int/long
+#' (`integer`) is promoted to a larger integer type as values grow, never to
+#' float, so its whole numbers end as byte, int or long. Strings are as wide
+#' as the longest value.
+stata_storage_type <- function(x, integer = FALSE) {
   if (is.character(x)) return(paste0("str", max(1L, nchar(x, type = "bytes"), na.rm = TRUE)))
   v <- x[!is.na(x)]
   if (length(v) == 0) return("byte")
   if (any(v != round(v))) return("float")
   if (min(v) >= -127 && max(v) <= 100) return("byte")
   if (min(v) >= -32767 && max(v) <= 32740) return("int")
+  if (integer && min(v) >= -2147483647 && max(v) <= 2147483620) return("long")
   # whole numbers a float holds exactly (|x| <= 2^24) stay float
   if (max(abs(v)) <= 2^24) return("float")
   if (min(v) >= -2147483647 && max(v) <= 2147483620) return("long")
@@ -109,11 +113,14 @@ characteristic_bytes <- function(variable, name, contents) {
 #'   (mocc10's label is called occ_lab).
 #' uncompressed: variables Stata creates after `compress` (adjust_wages.do's
 #'   hoursu1i, weekpay, wage, wageotc), which keep Stata's default float.
-write_stata_dta <- function(data, path, notes, label_names = c(mocc10 = "occ_lab"), uncompressed = character(0)) {
+#' integer_vars: variables the scripts create as byte/int/long (stata_type in
+#'   variables.csv; see stata_storage_type()).
+write_stata_dta <- function(data, path, notes, label_names = c(mocc10 = "occ_lab"), uncompressed = character(0),
+                            integer_vars = character(0)) {
   k <- ncol(data)
   n <- nrow(data)
   vars <- names(data)
-  types <- vapply(data, stata_storage_type, character(1))
+  types <- vapply(vars, function(v) stata_storage_type(data[[v]], v %in% integer_vars), character(1))
   types[vars %in% uncompressed & !startsWith(types, "str")] <- "float"
   # bytes per value: a string's width, or the numeric type's size
   type_size <- vapply(types, function(t) if (startsWith(t, "str")) as.integer(sub("str", "", t)) else stata_type_size[[t]], integer(1))

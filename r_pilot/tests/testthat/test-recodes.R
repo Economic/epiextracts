@@ -97,6 +97,9 @@ test_that("values are stored as Stata stores them", {
   expect_equal(stata_storage_type(c(1, 100, NA)), "byte")
   expect_equal(stata_storage_type(c(-5, 30000)), "int")
   expect_equal(stata_storage_type(c(1, 99999)), "float")
+  # created as byte/int/long: promoted to long, not float
+  expect_equal(stata_storage_type(c(1, 99999), integer = TRUE), "long")
+  expect_equal(stata_storage_type(c(1.5, 2), integer = TRUE), "float")
   expect_equal(stata_storage_type(c(1.5, 2)), "float")
   expect_equal(stata_storage_type(c("ab", "")), "str2")
   expect_equal(stata_storage_type(c("", "")), "str1")

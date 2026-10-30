@@ -9,7 +9,7 @@ test_that("every registry function exists and there are no dependency cycles", {
 test_that("exported variables have a label, samples and a tolerance", {
   exported <- dplyr::filter(registry, export)
   expect_true(all(exported$label != ""))
-  expect_true(all(exported$samples == "basic;org"))
+  expect_true(all(exported$samples == "basic;org;may"))
   expect_true(all(exported$tolerance %in% c(0, 0.01)))
 })
 
@@ -55,12 +55,12 @@ test_that("Unicon-era raw columns are all u_-prefixed Unicon columns", {
 })
 
 test_that("every variable has a function for every source", {
-  expect_setequal(registry_sources(registry), c("census_basic", "unicon_basic"))
+  expect_setequal(registry_sources(registry), c("census_basic", "unicon_basic", "unicon_may"))
   fn_columns <- registry[, paste0("fn_", registry_sources(registry))]
   expect_false(anyNA(fn_columns))
   # an incomplete functions file is refused
   dir <- tempfile(); dir.create(dir)
-  readr::write_csv(registry[1:2, c("variable", "family", "stage", "kind", "depends", "export", "samples", "tolerance", "label", "snippet")],
+  readr::write_csv(registry[1:2, c("variable", "family", "stage", "kind", "depends", "export", "samples", "tolerance", "stata_type", "label", "snippet")],
                    file.path(dir, "variables.csv"))
   readr::write_csv(tibble::tibble(variable = c("year", "year", "month"), source = c("census_basic", "unicon_basic", "census_basic"),
                                   fn = "recode_survey_year"), file.path(dir, "variable_functions.csv"))

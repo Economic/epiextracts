@@ -162,18 +162,18 @@ tar_assign({
                                               years, data_label("org", release_version)) |>
     tar_target(pattern = map(reference_org_meta, years))
 
-  parity_values_csv = create_csv(dplyr::bind_rows(parity_basic_values, parity_org_values),
+  parity_values_csv = create_csv(dplyr::bind_rows(parity_basic_values, parity_org_values, parity_may_values),
                                  file.path(config$paths$reports, "parity_values.csv")) |>
     tar_file()
 
-  parity_metadata_csv = create_csv(dplyr::bind_rows(parity_basic_metadata, parity_org_metadata),
+  parity_metadata_csv = create_csv(dplyr::bind_rows(parity_basic_metadata, parity_org_metadata, parity_may_metadata),
                                    file.path(config$paths$reports, "parity_metadata.csv")) |>
     tar_file()
 
   # fails the build on any mismatch; runs after both reports are written
   parity_summary = parity_gate(
-      dplyr::bind_rows(parity_basic_values, parity_org_values),
-      dplyr::bind_rows(parity_basic_metadata, parity_org_metadata)
+      dplyr::bind_rows(parity_basic_values, parity_org_values, parity_may_values),
+      dplyr::bind_rows(parity_basic_metadata, parity_org_metadata, parity_may_metadata)
     ) |>
     tar_target()
 
@@ -197,11 +197,56 @@ tar_assign({
   # stay float, as they're created after Stata's compress (R/dta.R).
   basic_dta = label_extract(basic_extract, registry, value_labels, "basic", data_label("basic", release_version)) |>
     write_extract("basic", output_dir, year_spec, "dta", variable_notes,
-                  uncompressed = registry$variable[registry$stage == "wages"]) |>
+                  uncompressed = registry$variable[registry$stage == "wages"],
+                  integer_vars = registry$variable[registry$stata_type == "integer"]) |>
     tar_target(pattern = map(basic_extract, year_spec), format = "file")
 
   org_dta = label_extract(org_extract, registry, value_labels, "org", data_label("org", release_version)) |>
     write_extract("org", output_dir, year_spec, "dta", variable_notes,
-                  uncompressed = registry$variable[registry$stage == "wages"]) |>
+                  uncompressed = registry$variable[registry$stage == "wages"],
+                  integer_vars = registry$variable[registry$stata_type == "integer"]) |>
     tar_target(pattern = map(org_extract, year_spec), format = "file")
+
+  #######
+  # MAY #
+  #######
+  # May supplement, 1973-1981: one Unicon file per year, its own functions
+  # (source unicon_may), the wage stage, and its own parity checks. Stata
+  # compresses May after the wage stage, so nothing stays uncompressed
+  may_years = config$may_years |>
+    tar_target(format = "rds")
+
+  may_zip = may_zip_path(may_years, config) |>
+    tar_target(pattern = map(may_years), format = "file")
+
+  may_raw = cache_may_year(may_zip, config) |>
+    tar_target(pattern = map(may_zip), format = "file")
+
+  may_extract = build_may_year(may_raw, registry, recode_functions, recode_context) |>
+    tar_target(pattern = map(may_raw))
+
+  may_feather = label_extract(may_extract, registry, value_labels, "may", data_label("may", release_version)) |>
+    write_extract("may", output_dir, annual_spec(may_years)) |>
+    tar_target(pattern = map(may_extract, may_years), format = "file")
+
+  may_dta = label_extract(may_extract, registry, value_labels, "may", data_label("may", release_version)) |>
+    write_extract("may", output_dir, annual_spec(may_years), "dta", variable_notes,
+                  integer_vars = registry$variable[registry$stata_type == "integer"]) |>
+    tar_target(pattern = map(may_extract, may_years), format = "file")
+
+  reference_may_dta = reference_dta_path(annual_spec(may_years), "may", config) |>
+    tar_target(pattern = map(may_years), format = "file")
+
+  reference_may_parquet = cache_reference_year(reference_may_dta, config$paths$cache) |>
+    tar_target(pattern = map(reference_may_dta), format = "file")
+
+  reference_may_meta = reference_metadata(reference_may_dta) |>
+    tar_target(pattern = map(reference_may_dta), iteration = "list", format = "rds")
+
+  parity_may_values = compare_values_year(may_feather, reference_may_parquet, registry, "may", parity_exceptions) |>
+    tar_target(pattern = map(may_feather, reference_may_parquet))
+
+  parity_may_metadata = compare_metadata_year(reference_may_meta, registry, value_labels, "may",
+                                              may_years, data_label("may", release_version)) |>
+    tar_target(pattern = map(reference_may_meta, may_years))
 })
