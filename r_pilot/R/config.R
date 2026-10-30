@@ -60,10 +60,13 @@ build_year_spec <- function(year, config, release) {
   list(year = year, months = months, partial = partial, window_months = window_months)
 }
 
+#' The release version from config/release.yml. A target of its own, so
+#' editing other release values (or comments) doesn't rewrite every file.
+read_release_version <- function(release_file) yaml::read_yaml(release_file)$version
+
 #' Data label written into every extract, e.g. "EPI CPS Basic Monthly Extracts,
 #' Version 2026.10.13" (same wording as the Stata-made files).
-data_label <- function(sample, release_file) {
-  version <- yaml::read_yaml(release_file)$version
+data_label <- function(sample, version) {
   sample_name <- c(basic = "Basic Monthly", org = "ORG")[[sample]]
   paste0("EPI CPS ", sample_name, " Extracts, Version ", version)
 }

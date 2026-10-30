@@ -5,7 +5,7 @@ lapply(list.files("./R", full.names = TRUE), source)
 # Stable settings (paths, first year, skipped months): ../config/pipeline.yml.
 # The latest month (../config/release.yml) only reaches targets through
 # `years` and `year_spec`, so a new release rebuilds just the current year
-# (see R/config.R). The version reaches them through release_file.
+# (see R/config.R). The version reaches them through release_version.
 pipeline_config_file <- "../config/pipeline.yml"
 config <- read_pipeline_config(pipeline_config_file)
 release_month <- read_release_month("../config/release.yml")
@@ -36,6 +36,10 @@ tar_assign({
   ###############
   release_file = "../config/release.yml" |>
     tar_file()
+
+  # only the version reaches the files: other release.yml edits rebuild nothing
+  release_version = read_release_version(release_file) |>
+    tar_target(format = "rds")
 
   cpi_file = file.path(config$paths$suppdata, "cpiurs_extended.csv") |>
     tar_file()
@@ -151,11 +155,11 @@ tar_assign({
     tar_target(pattern = map(org_feather, reference_org_parquet))
 
   parity_basic_metadata = compare_metadata_year(reference_basic_meta, registry, value_labels, "basic",
-                                                years, data_label("basic", release_file)) |>
+                                                years, data_label("basic", release_version)) |>
     tar_target(pattern = map(reference_basic_meta, years))
 
   parity_org_metadata = compare_metadata_year(reference_org_meta, registry, value_labels, "org",
-                                              years, data_label("org", release_file)) |>
+                                              years, data_label("org", release_version)) |>
     tar_target(pattern = map(reference_org_meta, years))
 
   parity_values_csv = create_csv(dplyr::bind_rows(parity_basic_values, parity_org_values),
@@ -180,23 +184,23 @@ tar_assign({
   variable_notes = readr::read_csv(notes_file, col_types = "cic") |>
     tar_target()
 
-  basic_feather = label_extract(basic_extract, registry, value_labels, "basic", data_label("basic", release_file)) |>
+  basic_feather = label_extract(basic_extract, registry, value_labels, "basic", data_label("basic", release_version)) |>
     write_extract("basic", output_dir, year_spec) |>
     tar_target(pattern = map(basic_extract, year_spec), format = "file")
 
-  org_feather = label_extract(org_extract, registry, value_labels, "org", data_label("org", release_file)) |>
+  org_feather = label_extract(org_extract, registry, value_labels, "org", data_label("org", release_version)) |>
     write_extract("org", output_dir, year_spec) |>
     tar_target(pattern = map(org_extract, year_spec), format = "file")
 
   # Stata .dta (format 117, as saveold version(13) writes): storage types,
   # labels and notes as in the Stata-made files. The wages-stage variables
   # stay float, as they're created after Stata's compress (R/dta.R).
-  basic_dta = label_extract(basic_extract, registry, value_labels, "basic", data_label("basic", release_file)) |>
+  basic_dta = label_extract(basic_extract, registry, value_labels, "basic", data_label("basic", release_version)) |>
     write_extract("basic", output_dir, year_spec, "dta", variable_notes,
                   uncompressed = registry$variable[registry$stage == "wages"]) |>
     tar_target(pattern = map(basic_extract, year_spec), format = "file")
 
-  org_dta = label_extract(org_extract, registry, value_labels, "org", data_label("org", release_file)) |>
+  org_dta = label_extract(org_extract, registry, value_labels, "org", data_label("org", release_version)) |>
     write_extract("org", output_dir, year_spec, "dta", variable_notes,
                   uncompressed = registry$variable[registry$stage == "wages"]) |>
     tar_target(pattern = map(org_extract, year_spec), format = "file")
