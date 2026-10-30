@@ -1,11 +1,11 @@
 # March (ASEC) extracts
 
-The EPI CPS March extracts cover the Annual Social and Economic Supplement (ASEC) to the Current Population Survey from 1962 to {{ latestmarch }}. Files are named `epi_cpsmarch_{year}`.
+The EPI CPS March extracts cover the Annual Social and Economic Supplement (ASEC) to the Current Population Survey from 1962 to {{ release.latestmarch }}. Files are named `epi_cpsmarch_{year}`.
 
 Years       | Source
 :-----------|:-----------------------
 1962 - 1997 | Unicon CPS March
-1998 - {{ latestmarch }} | Census CPS ASEC public use files
+1998 - {{ release.latestmarch }} | Census CPS ASEC public use files
 
 Version 2026.10.13 rebuilds the March (ASEC) extracts for all years and adds 2019–2026. Results from earlier versions of the March extracts will not always match the current version. This page describes what changed, the breaks in the underlying survey, where the extracts differ from IPUMS, and which variables are limited to certain years.
 

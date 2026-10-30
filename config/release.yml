@@ -3,3 +3,5 @@
 # site (website/R/write_variables.R) and the Makefile.
 version: 2026.10.13
 latestdata: 2026m9
+# latest March (ASEC) year released
+latestmarch: 2026

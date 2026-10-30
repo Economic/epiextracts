@@ -46,9 +46,3 @@ plugins:
 
 dev_addr: '127.0.0.1:8282'
 
-# version and latest data month now live in ../config/release.yml
-extra:
-  version: 2026.10.13
-  latestdata: 2026m9
-  latestmarch: 2026
-  year: 2026
