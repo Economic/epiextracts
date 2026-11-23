@@ -6,6 +6,9 @@ If you use the EPI extracts for your research, please cite them as
     Economic Policy Institute. {{ year }}. Current Population Survey Extracts, Version {{ version }}, https://microdata.epi.org.
 
 ## Recent changes
+### Version 2026.11.12 -- 2026-11-12
+#### Added
+* October 2026 extracts
 ### Version 2026.10.13 -- 2026-10-13
 This release rebuilds the March (ASEC) extracts for all years and extends them through 2026. Weighted estimates and some variable names differ from prior versions; see [March (ASEC) extracts](../methodology/asec.md).
 #### Added
